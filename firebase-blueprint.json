@@ -1,0 +1,84 @@
+{
+  "$schema": "https://firebase.google.com/docs/firestore/blueprint/v1",
+  "entities": {
+    "User": {
+      "collection": "users",
+      "fields": {
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "createdAt": { "type": "timestamp" },
+        "lastActive": { "type": "timestamp" }
+      }
+    },
+    "Journal": {
+      "collection": "users/{userId}/journals",
+      "fields": {
+        "id": { "type": "string" },
+        "content": { "type": "string" },
+        "topicTags": { "type": "array" },
+        "createdAt": { "type": "timestamp" },
+        "updatedAt": { "type": "timestamp" },
+        "snapshotId": { "type": "string", "optional": true }
+      }
+    },
+    "Conversation": {
+      "collection": "users/{userId}/conversations",
+      "fields": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "journalId": { "type": "string", "optional": true },
+        "createdAt": { "type": "timestamp" },
+        "updatedAt": { "type": "timestamp" }
+      }
+    },
+    "Message": {
+      "collection": "users/{userId}/conversations/{conversationId}/messages",
+      "fields": {
+        "id": { "type": "string" },
+        "role": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "timestamp" }
+      }
+    },
+    "ThoughtSnapshot": {
+      "collection": "users/{userId}/thoughtSnapshots",
+      "fields": {
+        "id": { "type": "string" },
+        "sourceJournalId": { "type": "string" },
+        "topic": { "type": "string" },
+        "tags": { "type": "array" },
+        "positionStatement": { "type": "string" },
+        "userEdited": { "type": "boolean" },
+        "createdAt": { "type": "timestamp" },
+        "approvedAt": { "type": "timestamp" }
+      }
+    },
+    "ThoughtDiff": {
+      "collection": "users/{userId}/thoughtDiffs",
+      "fields": {
+        "id": { "type": "string" },
+        "earlierSnapshotId": { "type": "string" },
+        "laterSnapshotId": { "type": "string" },
+        "earlierJournalId": { "type": "string" },
+        "laterJournalId": { "type": "string" },
+        "topic": { "type": "string" },
+        "apparentShift": { "type": "string" },
+        "apparentContinuity": { "type": "string" },
+        "userFeedback": { "type": "string", "optional": true },
+        "createdAt": { "type": "timestamp" }
+      }
+    },
+    "Provenance": {
+      "collection": "users/{userId}/provenance",
+      "fields": {
+        "id": { "type": "string" },
+        "diffId": { "type": "string" },
+        "earlierJournalId": { "type": "string" },
+        "laterJournalId": { "type": "string" },
+        "earlierSnapshotId": { "type": "string" },
+        "laterSnapshotId": { "type": "string" },
+        "createdAt": { "type": "timestamp" }
+      }
+    }
+  }
+}

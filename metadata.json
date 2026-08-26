@@ -1,0 +1,6 @@
+{
+  "name": "MirrorTrace",
+  "description": "A secure, evidence-first AI journaling application with Thought Diffs, provenance tracking, and private reflection sessions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
