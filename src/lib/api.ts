@@ -12,6 +12,10 @@ import type {
   ThoughtDiffProvenance,
   GenerateDiffResponse,
   DiffRelationshipStatus,
+  PerspectiveWatch,
+  PerspectiveWatchStatus,
+  CreatePerspectiveWatchPayload,
+  MirrorTraceMemoryExport,
 } from '../types.ts';
 
 export class ApiError extends Error {
@@ -516,4 +520,115 @@ export async function submitDiffFeedback(
       }),
     }
   );
+}
+
+
+/* ============================================================
+   PERSPECTIVE WATCH API
+   ============================================================ */
+
+export async function createPerspectiveWatch(
+  payload: CreatePerspectiveWatchPayload
+): Promise<{
+  success: boolean;
+  watch: PerspectiveWatch;
+  alreadyExists?: boolean;
+}> {
+  return fetchWithAuth<{
+    success: boolean;
+    watch: PerspectiveWatch;
+    alreadyExists?: boolean;
+  }>('/api/perspective-watches', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function fetchPerspectiveWatches(): Promise<
+  PerspectiveWatch[]
+> {
+  const data =
+    await fetchWithAuth<{
+      watches: PerspectiveWatch[];
+    }>('/api/perspective-watches', {
+      method: 'GET',
+    });
+
+  return Array.isArray(data.watches)
+    ? data.watches
+    : [];
+}
+
+export async function updatePerspectiveWatchStatus(
+  watchId: string,
+  status: PerspectiveWatchStatus
+): Promise<{
+  success: boolean;
+  watch: PerspectiveWatch;
+}> {
+  return fetchWithAuth<{
+    success: boolean;
+    watch: PerspectiveWatch;
+  }>(
+    `/api/perspective-watches/${watchId}`,
+    {
+      method: 'PATCH',
+      body: JSON.stringify({
+        status,
+      }),
+    }
+  );
+}
+
+/* ============================================================
+   MEMORY EXPORT API
+   ============================================================ */
+
+export async function fetchMemoryExport(): Promise<
+  MirrorTraceMemoryExport
+> {
+  return fetchWithAuth<MirrorTraceMemoryExport>(
+    '/api/memory/export',
+    {
+      method: 'GET',
+    }
+  );
+}
+
+export async function downloadMemoryExport(): Promise<void> {
+  const exportData =
+    await fetchMemoryExport();
+
+  const blob = new Blob(
+    [
+      JSON.stringify(
+        exportData,
+        null,
+        2
+      ),
+    ],
+    {
+      type: 'application/json',
+    }
+  );
+
+  const url =
+    URL.createObjectURL(blob);
+
+  try {
+    const anchor =
+      document.createElement('a');
+
+    anchor.href = url;
+    anchor.download =
+      `mirrortrace-memory-${new Date()
+        .toISOString()
+        .slice(0, 10)}.json`;
+
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+  } finally {
+    URL.revokeObjectURL(url);
+  }
 }
