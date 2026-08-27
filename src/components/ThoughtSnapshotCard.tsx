@@ -15,6 +15,7 @@ import {
 import type {
   ThoughtSnapshotProposal,
   ThoughtSnapshot,
+  MemoryRetention,
 } from '../types.ts';
 
 import { approveThoughtSnapshot } from '../lib/api.ts';
@@ -42,6 +43,9 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
 
   const [editedTagsInput, setEditedTagsInput] =
     useState(proposal.tags.join(', '));
+
+  const [memoryRetention, setMemoryRetention] =
+    useState<MemoryRetention>('until_removed');
 
   const [approving, setApproving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -89,6 +93,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
         topic,
         tags,
         userEdited: edited,
+        memoryRetention,
       });
 
       onAccepted(res.snapshot);
@@ -316,6 +321,63 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
             </div>
           </div>
         )}
+
+        {/* Time-bound memory consent */}
+        <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="max-w-xl">
+              <p className="text-xs font-bold text-stone-900">
+                Memory permission
+              </p>
+
+              <p className="mt-1 text-[10px] leading-relaxed text-stone-600">
+                Choose how long this approved interpretation may be reused for
+                future Thought Diff matching. Expiry does not delete your
+                journal or snapshot; it only removes the snapshot from future
+                AI-memory comparisons.
+              </p>
+            </div>
+
+            <select
+              id="snapshot-memory-retention"
+              value={memoryRetention}
+              onChange={(event) =>
+                setMemoryRetention(
+                  event.target.value as MemoryRetention
+                )
+              }
+              disabled={approving}
+              className="min-w-[180px] rounded-xl border border-amber-300 bg-white px-3 py-2 text-xs font-semibold text-stone-800 outline-none transition-colors focus:border-amber-700 disabled:opacity-60"
+              aria-label="Thought Snapshot memory retention"
+            >
+              <option value="until_removed">
+                Until I remove it
+              </option>
+
+              <option value="30_days">
+                30 days
+              </option>
+
+              <option value="180_days">
+                6 months
+              </option>
+
+              <option value="365_days">
+                1 year
+              </option>
+            </select>
+          </div>
+
+          <div className="mt-3 rounded-xl border border-amber-200 bg-white px-3 py-2">
+            <p className="text-[10px] leading-relaxed text-stone-600">
+              <strong className="text-stone-900">
+                Time-bound consent:
+              </strong>{' '}
+              MirrorTrace will not use an expired snapshot as evidence for a
+              new Thought Diff unless you approve a new interpretation later.
+            </p>
+          </div>
+        </div>
 
         {/* Explicit consent boundary */}
         <div className="rounded-xl bg-stone-950 px-4 py-3">

@@ -1,4 +1,5 @@
 import React, {
+  useEffect,
   useState,
 } from 'react';
 
@@ -17,17 +18,25 @@ import {
   X,
   Clock3,
   Fingerprint,
+  BellRing,
+  Mail,
+  CalendarClock,
 } from 'lucide-react';
 
 import type {
   ThoughtDiff,
   ThoughtDiffProvenance,
   DiffRelationshipStatus,
+  PerspectiveWatch,
+  PerspectiveWatchDelayDays,
 } from '../types.ts';
 
 import {
   submitDiffFeedback,
   fetchDiffProvenance,
+  createPerspectiveWatch,
+  fetchPerspectiveWatches,
+  updatePerspectiveWatchStatus,
 } from '../lib/api.ts';
 
 interface ThoughtDiffCardProps {
@@ -98,6 +107,156 @@ export const ThoughtDiffCard:
       useState<string | null>(
         null
       );
+
+    const [
+      watch,
+      setWatch,
+    ] =
+      useState<PerspectiveWatch | null>(
+        null
+      );
+
+    const [
+      watchDelayDays,
+      setWatchDelayDays,
+    ] =
+      useState<PerspectiveWatchDelayDays>(
+        30
+      );
+
+    const [
+      watchEmailEnabled,
+      setWatchEmailEnabled,
+    ] =
+      useState(false);
+
+    const [
+      watchSaving,
+      setWatchSaving,
+    ] =
+      useState(false);
+
+    const [
+      watchMessage,
+      setWatchMessage,
+    ] =
+      useState<string | null>(
+        null
+      );
+
+    useEffect(() => {
+      let cancelled = false;
+
+      const loadWatch = async () => {
+        try {
+          const watches =
+            await fetchPerspectiveWatches();
+
+          if (cancelled) {
+            return;
+          }
+
+          const existing =
+            watches.find(
+              (item) =>
+                item.diffId === diff.id &&
+                (
+                  item.status ===
+                    'scheduled' ||
+                  item.status ===
+                    'due'
+                )
+            ) || null;
+
+          setWatch(existing);
+        } catch (err) {
+          console.warn(
+            '[MirrorTrace] Could not load Perspective Watch:',
+            err
+          );
+        }
+      };
+
+      void loadWatch();
+
+      return () => {
+        cancelled = true;
+      };
+    }, [diff.id]);
+
+    const handleCreateWatch =
+      async () => {
+        try {
+          setWatchSaving(true);
+          setWatchMessage(null);
+
+          const response =
+            await createPerspectiveWatch({
+              diffId: diff.id,
+              delayDays:
+                watchDelayDays,
+              emailEnabled:
+                watchEmailEnabled,
+            });
+
+          setWatch(
+            response.watch
+          );
+
+          setWatchMessage(
+            response.alreadyExists
+              ? 'This perspective is already being watched.'
+              : 'Perspective Watch scheduled.'
+          );
+        } catch (
+          err: unknown
+        ) {
+          setWatchMessage(
+            (err as Error)
+              ?.message ||
+              'Could not schedule this Perspective Watch.'
+          );
+        } finally {
+          setWatchSaving(false);
+        }
+      };
+
+    const handleDismissWatch =
+      async () => {
+        if (!watch) {
+          return;
+        }
+
+        try {
+          setWatchSaving(true);
+          setWatchMessage(null);
+
+          const response =
+            await updatePerspectiveWatchStatus(
+              watch.id,
+              'dismissed'
+            );
+
+          setWatch(null);
+
+          setWatchMessage(
+            response.watch.status ===
+              'dismissed'
+              ? 'Perspective Watch dismissed.'
+              : 'Perspective Watch updated.'
+          );
+        } catch (
+          err: unknown
+        ) {
+          setWatchMessage(
+            (err as Error)
+              ?.message ||
+              'Could not dismiss this Perspective Watch.'
+          );
+        } finally {
+          setWatchSaving(false);
+        }
+      };
 
     const handleOpenProvenance =
       async () => {
@@ -627,6 +786,169 @@ export const ThoughtDiffCard:
                   Inspect provenance
                 </button>
               </div>
+            </section>
+
+            {/* Perspective Watch */}
+            <section className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4">
+              <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                <div className="max-w-xl">
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 text-amber-900">
+                      <BellRing className="h-4 w-4" />
+                    </div>
+
+                    <div>
+                      <h4 className="text-xs font-bold text-stone-950">
+                        Perspective Watch
+                      </h4>
+
+                      <p className="text-[10px] text-stone-500">
+                        Revisit a change intentionally instead of letting AI
+                        decide what matters.
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="mt-3 text-xs leading-relaxed text-stone-700">
+                    MirrorTrace can surface this approved perspective again
+                    later and ask whether it still reflects your thinking.
+                    Scheduling is explicit, revocable, and owner-bound.
+                  </p>
+                </div>
+
+                {watch ? (
+                  <div className="min-w-[260px] rounded-xl border border-amber-300 bg-white p-3">
+                    <div className="flex items-start gap-2">
+                      <CalendarClock className="mt-0.5 h-4 w-4 shrink-0 text-amber-800" />
+
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-stone-900">
+                          {watch.status === 'due'
+                            ? 'Ready to revisit'
+                            : 'Revisit scheduled'}
+                        </p>
+
+                        <p className="mt-1 text-[10px] leading-relaxed text-stone-600">
+                          {new Date(
+                            watch.revisitAt
+                          ).toLocaleString(
+                            undefined,
+                            {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                              hour: 'numeric',
+                              minute: '2-digit',
+                            }
+                          )}
+                        </p>
+
+                        {watch.emailEnabled && (
+                          <p className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold text-amber-900">
+                            <Mail className="h-3 w-3" />
+                            Email reminder enabled
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        void handleDismissWatch()
+                      }
+                      disabled={watchSaving}
+                      className="mt-3 w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-[10px] font-semibold text-stone-600 transition-colors hover:bg-stone-100 disabled:opacity-60"
+                    >
+                      Stop watching
+                    </button>
+                  </div>
+                ) : (
+                  <div className="min-w-[270px] space-y-3 rounded-xl border border-amber-300 bg-white p-3">
+                    <div>
+                      <label
+                        htmlFor={`watch-delay-${diff.id}`}
+                        className="text-[10px] font-bold uppercase tracking-wide text-stone-500"
+                      >
+                        Revisit after
+                      </label>
+
+                      <select
+                        id={`watch-delay-${diff.id}`}
+                        value={watchDelayDays}
+                        onChange={(event) =>
+                          setWatchDelayDays(
+                            Number(
+                              event.target.value
+                            ) as PerspectiveWatchDelayDays
+                          )
+                        }
+                        disabled={watchSaving}
+                        className="mt-1 w-full rounded-lg border border-stone-300 bg-stone-50 px-3 py-2 text-xs font-semibold text-stone-800 outline-none transition-colors focus:border-amber-700"
+                      >
+                        <option value={7}>
+                          7 days
+                        </option>
+
+                        <option value={30}>
+                          30 days
+                        </option>
+
+                        <option value={90}>
+                          90 days
+                        </option>
+                      </select>
+                    </div>
+
+                    <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-stone-200 bg-stone-50 p-2.5">
+                      <input
+                        type="checkbox"
+                        checked={watchEmailEnabled}
+                        onChange={(event) =>
+                          setWatchEmailEnabled(
+                            event.target.checked
+                          )
+                        }
+                        disabled={watchSaving}
+                        className="mt-0.5"
+                      />
+
+                      <span>
+                        <span className="flex items-center gap-1 text-[10px] font-bold text-stone-800">
+                          <Mail className="h-3 w-3 text-amber-800" />
+                          Email me when due
+                        </span>
+
+                        <span className="mt-0.5 block text-[9px] leading-relaxed text-stone-500">
+                          Email contains only the topic and a secure link back
+                          to MirrorTrace — never your full journal text.
+                        </span>
+                      </span>
+                    </label>
+
+                    <button
+                      id={`btn-watch-perspective-${diff.id}`}
+                      type="button"
+                      onClick={() =>
+                        void handleCreateWatch()
+                      }
+                      disabled={watchSaving}
+                      className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-amber-900 px-3 py-2.5 text-xs font-bold text-white transition-colors hover:bg-amber-950 disabled:opacity-60"
+                    >
+                      <BellRing className="h-3.5 w-3.5" />
+                      {watchSaving
+                        ? 'Scheduling...'
+                        : 'Watch this perspective'}
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {watchMessage && (
+                <div className="mt-3 rounded-xl border border-amber-200 bg-white px-3 py-2 text-[10px] font-medium text-stone-700">
+                  {watchMessage}
+                </div>
+              )}
             </section>
 
             {/* Feedback */}
