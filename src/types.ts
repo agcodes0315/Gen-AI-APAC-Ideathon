@@ -9,11 +9,17 @@ export interface JournalEntry {
   id: string;
   content: string;
   topicTags: string[];
-  createdAt: string; // ISO string for client
+  createdAt: string;
   updatedAt: string;
   snapshotId?: string | null;
   snapshot?: ThoughtSnapshot | null;
 }
+
+export type MemoryRetention =
+  | 'until_removed'
+  | '30_days'
+  | '180_days'
+  | '365_days';
 
 export interface ThoughtSnapshot {
   id: string;
@@ -25,6 +31,15 @@ export interface ThoughtSnapshot {
   userEdited: boolean;
   createdAt: string;
   approvedAt?: string | null;
+
+  /**
+   * MirrorTrace consent lifecycle.
+   *
+   * `until_removed` means the snapshot remains eligible for
+   * Thought Diff matching until the user deletes it.
+   */
+  memoryRetention?: MemoryRetention;
+  memoryExpiresAt?: string | null;
 }
 
 export interface ThoughtSnapshotProposal {
@@ -40,6 +55,12 @@ export interface ApproveSnapshotPayload {
   topic: string;
   tags: string[];
   userEdited?: boolean;
+
+  /**
+   * Explicit user choice controlling how long this approved
+   * interpretation is eligible for future AI-memory reuse.
+   */
+  memoryRetention?: MemoryRetention;
 }
 
 export interface Conversation {
@@ -114,4 +135,49 @@ export interface GenerateDiffResponse {
   message?: string;
   diff?: ThoughtDiff;
   provenance?: ThoughtDiffProvenance;
+}
+
+/* ============================================================
+   PERSPECTIVE WATCH
+   ============================================================ */
+
+export type PerspectiveWatchStatus =
+  | 'scheduled'
+  | 'due'
+  | 'completed'
+  | 'dismissed';
+
+export type PerspectiveWatchDelayDays = 7 | 30 | 90;
+
+export interface PerspectiveWatch {
+  id: string;
+  diffId: string;
+  topic: string;
+  revisitAt: string;
+  status: PerspectiveWatchStatus;
+  emailEnabled: boolean;
+  createdAt: string;
+  updatedAt: string;
+  notifiedAt?: string | null;
+  completedAt?: string | null;
+}
+
+export interface CreatePerspectiveWatchPayload {
+  diffId: string;
+  delayDays: PerspectiveWatchDelayDays;
+  emailEnabled: boolean;
+}
+
+/* ============================================================
+   MEMORY EXPORT
+   ============================================================ */
+
+export interface MirrorTraceMemoryExport {
+  exportVersion: 1;
+  exportedAt: string;
+  journals: JournalEntry[];
+  thoughtSnapshots: ThoughtSnapshot[];
+  thoughtDiffs: ThoughtDiff[];
+  provenance: ThoughtDiffProvenance[];
+  perspectiveWatches: PerspectiveWatch[];
 }
