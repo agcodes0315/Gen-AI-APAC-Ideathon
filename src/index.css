@@ -1,1 +1,251 @@
 @import "tailwindcss";
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+
+  --mirror-paper: #fffdf8;
+  --mirror-paper-soft: #faf7f1;
+  --mirror-ink: #1c1917;
+  --mirror-copper: #92400e;
+  --mirror-copper-deep: #78350f;
+  --mirror-amber-soft: #fef3c7;
+  --mirror-border: #e7e5e4;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      rgba(245, 158, 11, 0.045),
+      transparent 30rem
+    ),
+    #f5f5f4;
+  color: var(--mirror-ink);
+}
+
+button,
+a,
+input,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  outline-offset: 3px;
+}
+
+::selection {
+  background: #fde68a;
+  color: #451a03;
+}
+
+/* Main overview hero */
+.mirrortrace-hero {
+  position: relative;
+  background:
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(217, 119, 6, 0.11),
+      transparent 19rem
+    ),
+    linear-gradient(
+      135deg,
+      #fffdf8 0%,
+      #faf7f1 55%,
+      #fffaf0 100%
+    );
+  box-shadow:
+    0 1px 2px rgba(28, 25, 23, 0.03),
+    0 12px 40px rgba(120, 53, 15, 0.045);
+}
+
+.mirrortrace-hero::after {
+  content: "";
+  position: absolute;
+  width: 15rem;
+  height: 15rem;
+  right: -6rem;
+  top: -7rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(217, 119, 6, 0.13);
+  pointer-events: none;
+}
+
+/* Header trust chips */
+.mirrortrace-trust-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid rgba(214, 211, 209, 0.9);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.75);
+  padding: 0.35rem 0.65rem;
+  font-size: 0.67rem;
+  font-weight: 600;
+  color: #57534e;
+  backdrop-filter: blur(8px);
+}
+
+/* Dashboard statistic cards */
+.mirrortrace-stat-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(214, 211, 209, 0.9);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 1.35rem;
+  box-shadow:
+    0 1px 2px rgba(28, 25, 23, 0.04),
+    0 8px 25px rgba(28, 25, 23, 0.025);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.mirrortrace-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(180, 83, 9, 0.38);
+  box-shadow:
+    0 3px 8px rgba(28, 25, 23, 0.05),
+    0 16px 32px rgba(120, 53, 15, 0.06);
+}
+
+.mirrortrace-stat-card-warm {
+  background:
+    radial-gradient(
+      circle at 92% 8%,
+      rgba(245, 158, 11, 0.1),
+      transparent 10rem
+    ),
+    #fffdf8;
+}
+
+.mirrortrace-stat-card-dark {
+  border-color: #292524;
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(245, 158, 11, 0.12),
+      transparent 11rem
+    ),
+    linear-gradient(
+      145deg,
+      #1c1917,
+      #292524
+    );
+}
+
+/* Flagship Thought Diff */
+.mirrortrace-diff-feature {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  border: 1px solid rgba(217, 119, 6, 0.28);
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(
+      circle at 95% 0%,
+      rgba(245, 158, 11, 0.08),
+      transparent 18rem
+    ),
+    linear-gradient(
+      145deg,
+      #fffdf8,
+      #fffaf0
+    );
+  padding: 1.5rem;
+  box-shadow:
+    0 1px 2px rgba(28, 25, 23, 0.04),
+    0 16px 45px rgba(120, 53, 15, 0.055);
+}
+
+/* Quick-action cards */
+.mirrortrace-action-card {
+  display: block;
+  text-align: left;
+  border: 1px solid rgba(214, 211, 209, 0.9);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 1.35rem;
+  box-shadow:
+    0 1px 2px rgba(28, 25, 23, 0.035);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.mirrortrace-action-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(180, 83, 9, 0.32);
+  box-shadow:
+    0 10px 28px rgba(120, 53, 15, 0.055);
+}
+
+/* Modal scrollbar */
+.mirrortrace-modal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #d6d3d1 transparent;
+}
+
+.mirrortrace-modal-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mirrortrace-modal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mirrortrace-modal-scroll::-webkit-scrollbar-thumb {
+  background: #d6d3d1;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.mirrortrace-modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Small page entrance animation */
+@keyframes mirrortrace-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: mirrortrace-fade-in 260ms ease-out both;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 
 import { auth, logOut } from './lib/firebase.ts';
@@ -27,6 +27,18 @@ import type {
 type MainTab = 'overview' | 'journal' | 'history';
 type HistorySubTab = 'reflections' | 'diffs';
 
+const scrollPageToTop = () => {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'auto',
+  });
+
+  // Extra fallback for embedded/preview environments.
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+};
+
 export default function App() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -51,6 +63,7 @@ export default function App() {
   const [refreshCounter, setRefreshCounter] =
     useState(0);
 
+  // Global dashboard data
   const [entries, setEntries] =
     useState<JournalEntry[]>([]);
 
@@ -61,13 +74,10 @@ export default function App() {
     useState<ThoughtDiff[]>([]);
 
   const [dataLoading, setDataLoading] =
-    useState(false);
-
-  const [dataError, setDataError] =
-    useState<string | null>(null);
+    useState(true);
 
   /*
-   * Firebase Authentication
+   * Authentication listener
    */
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(
@@ -82,16 +92,6 @@ export default function App() {
           });
         } else {
           setUser(null);
-
-          setEntries([]);
-          setSnapshots([]);
-          setDiffs([]);
-
-          setActiveTab('overview');
-          setHistorySubTab('reflections');
-          setFilterApprovedSnapshots(false);
-          setHighlightDiffId(null);
-          setPrivateSessionMode(false);
         }
 
         setAuthLoading(false);
@@ -102,83 +102,64 @@ export default function App() {
   }, []);
 
   /*
-   * Single source of truth for Overview data.
+   * IMPORTANT:
+   * Reset scroll whenever the visible application page changes.
+   *
+   * useLayoutEffect runs immediately after React updates the DOM,
+   * preventing the new view from appearing at the previous page's
+   * scroll position.
    */
-  const loadData = useCallback(async () => {
+  useLayoutEffect(() => {
+    scrollPageToTop();
+  }, [
+    activeTab,
+    historySubTab,
+    user?.uid,
+  ]);
+
+  /*
+   * Load authenticated user's dashboard data.
+   */
+  const loadData = async () => {
     if (!user) {
       return;
     }
 
-    setDataLoading(true);
-    setDataError(null);
-
     try {
+      setDataLoading(true);
+
       const [
         journalData,
         snapshotData,
         diffData,
       ] = await Promise.all([
-        fetchJournalEntries(),
-        fetchThoughtSnapshots(),
-        fetchThoughtDiffs(),
+        fetchJournalEntries().catch(() => []),
+        fetchThoughtSnapshots().catch(() => []),
+        fetchThoughtDiffs().catch(() => []),
       ]);
 
-      setEntries(
-        Array.isArray(journalData)
-          ? journalData
-          : []
-      );
-
-      setSnapshots(
-        Array.isArray(snapshotData)
-          ? snapshotData
-          : []
-      );
-
-      setDiffs(
-        Array.isArray(diffData)
-          ? diffData
-          : []
-      );
-    } catch (err: unknown) {
+      setEntries(journalData);
+      setSnapshots(snapshotData);
+      setDiffs(diffData);
+    } catch (err) {
       console.error(
-        '[MirrorTrace] Dashboard data load failed:',
+        'Failed to load user data:',
         err
       );
-
-      setDataError(
-        (err as Error)?.message ||
-          'Unable to refresh MirrorTrace data.'
-      );
-
-      /*
-       * Important:
-       * We intentionally keep previous data.
-       *
-       * A temporary API failure must not turn
-       * 2 snapshots into a fake "0 snapshots".
-       */
     } finally {
       setDataLoading(false);
     }
-  }, [user]);
+  };
 
-  /*
-   * Initial load and refresh after persistent mutations.
-   */
   useEffect(() => {
     if (user) {
       void loadData();
     }
-  }, [user, refreshCounter, loadData]);
+  }, [user, refreshCounter]);
 
   /*
-   * Child components call this whenever Firestore data changed.
+   * Sign out
    */
-  const handleDataChanged = useCallback(() => {
-    setRefreshCounter((previous) => previous + 1);
-  }, []);
-
   const handleSignOut = async () => {
     try {
       await logOut();
@@ -187,19 +168,42 @@ export default function App() {
       setEntries([]);
       setSnapshots([]);
       setDiffs([]);
+
+      setActiveTab('overview');
+      setHistorySubTab('reflections');
+      setFilterApprovedSnapshots(false);
+      setHighlightDiffId(null);
+      setPrivateSessionMode(false);
+      setExternalTags([]);
+
+      requestAnimationFrame(() => {
+        scrollPageToTop();
+      });
     } catch (err) {
       console.error(
-        '[MirrorTrace] Logout error:',
+        'Logout error:',
         err
       );
     }
   };
 
-  const handleEntrySaved = (_entry: JournalEntry) => {
-    handleDataChanged();
+  /*
+   * Trigger global refresh after a journal entry is saved.
+   */
+  const handleEntrySaved = (
+    _entry: JournalEntry
+  ) => {
+    setRefreshCounter(
+      (previous) => previous + 1
+    );
   };
 
-  const handleSuggestedTagClick = (tag: string) => {
+  /*
+   * Suggested BrainstormChat tag -> JournalEditor
+   */
+  const handleSuggestedTagClick = (
+    tag: string
+  ) => {
     setExternalTags((previous) =>
       previous.includes(tag)
         ? previous
@@ -207,6 +211,9 @@ export default function App() {
     );
   };
 
+  /*
+   * Central application navigation.
+   */
   const handleNavigate = (
     tab: MainTab,
     options?: {
@@ -216,33 +223,46 @@ export default function App() {
       highlightDiffId?: string;
     }
   ) => {
-    /*
-     * Normal Reflect & Chat navigation disables
-     * Private Session.
-     *
-     * The Private Session dashboard action enables it.
-     */
-    if (tab === 'journal') {
-      setPrivateSessionMode(
-        Boolean(options?.privateSession)
-      );
+    if (
+      options?.privateSession
+    ) {
+      setPrivateSessionMode(true);
+    } else if (
+      tab === 'journal'
+    ) {
+      setPrivateSessionMode(false);
     }
 
     if (options?.subTab) {
-      setHistorySubTab(options.subTab);
+      setHistorySubTab(
+        options.subTab
+      );
     }
 
     setFilterApprovedSnapshots(
-      Boolean(options?.filterApprovedSnapshots)
+      Boolean(
+        options?.filterApprovedSnapshots
+      )
     );
 
     setHighlightDiffId(
-      options?.highlightDiffId || null
+      options?.highlightDiffId ?? null
     );
 
     setActiveTab(tab);
+
+    /*
+     * Handles navigation where React state may already contain
+     * the same tab value.
+     */
+    requestAnimationFrame(() => {
+      scrollPageToTop();
+    });
   };
 
+  /*
+   * Authentication loading screen
+   */
   if (authLoading) {
     return (
       <div className="min-h-screen bg-stone-100 flex flex-col items-center justify-center space-y-3">
@@ -261,14 +281,30 @@ export default function App() {
     );
   }
 
+  /*
+   * Public landing/authentication screen
+   */
   if (!user) {
     return (
       <AuthView
-        onSuccess={handleDataChanged}
+        onSuccess={() => {
+          setActiveTab('overview');
+
+          setRefreshCounter(
+            (previous) => previous + 1
+          );
+
+          requestAnimationFrame(() => {
+            scrollPageToTop();
+          });
+        }}
       />
     );
   }
 
+  /*
+   * Authenticated application
+   */
   return (
     <div className="min-h-screen bg-stone-100 flex flex-col justify-between">
       <div className="w-full">
@@ -282,35 +318,23 @@ export default function App() {
         />
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {dataError && activeTab === 'overview' && (
-            <div className="mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
-              <p className="text-xs text-amber-950">
-                MirrorTrace could not completely refresh
-                your dashboard. Your previously loaded
-                data is still shown.
-              </p>
-
-              <button
-                type="button"
-                onClick={() => void loadData()}
-                className="text-xs font-semibold text-amber-900 underline shrink-0"
-              >
-                Retry
-              </button>
-            </div>
-          )}
-
-          {activeTab === 'overview' && (
+          {/* Overview */}
+          {activeTab ===
+            'overview' && (
             <DashboardOverview
               entries={entries}
               snapshots={snapshots}
               diffs={diffs}
               loading={dataLoading}
-              onNavigate={handleNavigate}
+              onNavigate={
+                handleNavigate
+              }
             />
           )}
 
-          {activeTab === 'journal' && (
+          {/* Reflect & Chat */}
+          {activeTab ===
+            'journal' && (
             <div className="space-y-6 animate-fade-in">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
                 <div>
@@ -319,8 +343,10 @@ export default function App() {
                   </h1>
 
                   <p className="text-xs text-stone-500 font-sans">
-                    Articulate thoughts with the brainstorm
-                    companion, or write down your reflection
+                    Articulate thoughts
+                    with the brainstorm
+                    companion, or write
+                    down your reflection
                     directly.
                   </p>
                 </div>
@@ -329,8 +355,12 @@ export default function App() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 <div className="lg:col-span-6 space-y-6">
                   <JournalEditor
-                    onEntrySaved={handleEntrySaved}
-                    externalTags={externalTags}
+                    onEntrySaved={
+                      handleEntrySaved
+                    }
+                    externalTags={
+                      externalTags
+                    }
                     onClearExternalTags={() =>
                       setExternalTags([])
                     }
@@ -351,7 +381,9 @@ export default function App() {
             </div>
           )}
 
-          {activeTab === 'history' && (
+          {/* Journal History */}
+          {activeTab ===
+            'history' && (
             <div className="space-y-6 animate-fade-in">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
                 <div>
@@ -360,20 +392,26 @@ export default function App() {
                   </h1>
 
                   <p className="text-xs text-stone-500 font-sans">
-                    All reflections saved securely under
-                    your verified Firebase UID.
+                    All reflections saved
+                    securely under your
+                    verified Firebase UID.
                   </p>
                 </div>
               </div>
 
               <JournalList
-                onRefreshTrigger={refreshCounter}
-                initialSubTab={historySubTab}
+                onRefreshTrigger={
+                  refreshCounter
+                }
+                initialSubTab={
+                  historySubTab
+                }
                 filterApprovedSnapshots={
                   filterApprovedSnapshots
                 }
-                highlightDiffId={highlightDiffId}
-                onDataChanged={handleDataChanged}
+                highlightDiffId={
+                  highlightDiffId
+                }
               />
             </div>
           )}

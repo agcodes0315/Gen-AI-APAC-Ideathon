@@ -15,6 +15,7 @@ import {
   FileText,
   X,
   Info,
+  PlayCircle,
 } from 'lucide-react';
 
 import type {
@@ -24,9 +25,8 @@ import type {
   ThoughtDiffProvenance,
 } from '../types.ts';
 
-import {
-  fetchDiffProvenance,
-} from '../lib/api.ts';
+import { fetchDiffProvenance } from '../lib/api.ts';
+import { GuidedDemoModal } from './GuidedDemoModal.tsx';
 
 export interface DashboardNavigationOptions {
   privateSession?: boolean;
@@ -47,132 +47,109 @@ interface DashboardOverviewProps {
   ) => void;
 }
 
-export const DashboardOverview:
-  React.FC<DashboardOverviewProps> = ({
-    entries,
-    snapshots,
-    diffs,
-    loading,
-    onNavigate,
-  }) => {
-    const [
-      showHowItWorks,
-      setShowHowItWorks,
-    ] = useState(false);
+export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
+  entries,
+  snapshots,
+  diffs,
+  loading,
+  onNavigate,
+}) => {
+  const [showHowItWorks, setShowHowItWorks] = useState(false);
+  const [showGuidedDemo, setShowGuidedDemo] = useState(false);
 
-    const [
-      selectedDiffForProvenance,
-      setSelectedDiffForProvenance,
-    ] = useState<ThoughtDiff | null>(null);
+  const [selectedDiffForProvenance, setSelectedDiffForProvenance] =
+    useState<ThoughtDiff | null>(null);
 
-    const [
-      provenanceData,
-      setProvenanceData,
-    ] =
-      useState<ThoughtDiffProvenance | null>(
-        null
+  const [provenanceData, setProvenanceData] =
+    useState<ThoughtDiffProvenance | null>(null);
+
+  const [loadingProvenance, setLoadingProvenance] = useState(false);
+  const [provenanceError, setProvenanceError] = useState<string | null>(null);
+
+  const reflectionsCount = entries.length;
+  const approvedSnapshotsCount = snapshots.length;
+  const thoughtDiffsCount = diffs.length;
+
+  const latestDiff = diffs.length > 0 ? diffs[0] : null;
+
+  const handleOpenEvidence = async (diff: ThoughtDiff) => {
+    setSelectedDiffForProvenance(diff);
+    setProvenanceData(null);
+    setProvenanceError(null);
+    setLoadingProvenance(true);
+
+    try {
+      const provenance = await fetchDiffProvenance(diff.id);
+      setProvenanceData(provenance);
+    } catch (err: unknown) {
+      setProvenanceError(
+        (err as Error)?.message || 'Unable to load provenance evidence.'
       );
+    } finally {
+      setLoadingProvenance(false);
+    }
+  };
 
-    const [
-      loadingProvenance,
-      setLoadingProvenance,
-    ] = useState(false);
+  const handleStartFromDemo = () => {
+    setShowGuidedDemo(false);
+    onNavigate('journal');
+  };
 
-    const [
-      provenanceError,
-      setProvenanceError,
-    ] =
-      useState<string | null>(
-        null
-      );
-
-    /*
-     * /api/thought-snapshots already returns
-     * APPROVED snapshots only.
-     */
-    const reflectionsCount =
-      entries.length;
-
-    const approvedSnapshotsCount =
-      snapshots.length;
-
-    const thoughtDiffsCount =
-      diffs.length;
-
-    /*
-     * Backend returns newest Thought Diff first.
-     */
-    const latestDiff =
-      diffs.length > 0
-        ? diffs[0]
-        : null;
-
-    const handleOpenEvidence =
-      async (diff: ThoughtDiff) => {
-        setSelectedDiffForProvenance(
-          diff
-        );
-
-        setProvenanceData(null);
-        setProvenanceError(null);
-        setLoadingProvenance(true);
-
-        try {
-          const provenance =
-            await fetchDiffProvenance(
-              diff.id
-            );
-
-          setProvenanceData(
-            provenance
-          );
-        } catch (err: unknown) {
-          setProvenanceError(
-            (err as Error)?.message ||
-              'Unable to load provenance evidence.'
-          );
-        } finally {
-          setLoadingProvenance(
-            false
-          );
-        }
-      };
-
-    return (
+  return (
+    <>
       <div className="space-y-8 animate-fade-in">
         {/* Header */}
-        <div className="space-y-3 border-b border-stone-200/80 pb-6">
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight">
-              MirrorTrace
-            </h1>
+        <div className="space-y-4 border-b border-stone-200/80 pb-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <h1 className="text-2xl sm:text-3xl font-serif font-bold text-stone-900 tracking-tight">
+                  MirrorTrace
+                </h1>
 
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300/80 shadow-xs">
-              <GitCompare className="w-3.5 h-3.5 text-amber-800" />
-              Version control for your thinking.
-            </span>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300/80 shadow-xs">
+                  <GitCompare className="w-3.5 h-3.5 text-amber-800" />
+                  Version control for your thinking.
+                </span>
+              </div>
+
+              <p className="text-sm sm:text-base text-stone-600 font-sans max-w-3xl leading-relaxed">
+                Track how your ideas evolve with consent, evidence, and
+                complete control over AI memory.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowGuidedDemo(true)}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-stone-300 bg-white text-stone-800 text-xs sm:text-sm font-semibold hover:border-amber-400 hover:bg-amber-50 transition-colors"
+              >
+                <PlayCircle className="w-4 h-4 text-amber-800" />
+                See Example Journey
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onNavigate('journal')}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-amber-50 text-xs sm:text-sm font-semibold transition-colors"
+              >
+                <PenLine className="w-4 h-4" />
+                Write a Reflection
+              </button>
+            </div>
           </div>
-
-          <p className="text-sm sm:text-base text-stone-600 font-sans max-w-3xl leading-relaxed">
-            Track how your ideas evolve — with consent,
-            evidence, and complete control over AI memory.
-          </p>
         </div>
 
         {/* Dashboard statistics */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-          {/* Reflections */}
           <button
             id="stat-reflections"
             type="button"
             onClick={() =>
-              onNavigate(
-                'history',
-                {
-                  subTab:
-                    'reflections',
-                }
-              )
+              onNavigate('history', {
+                subTab: 'reflections',
+              })
             }
             className="text-left bg-white rounded-xl border border-stone-200/90 p-5 shadow-xs hover:border-amber-700/40 hover:shadow-sm transition-all cursor-pointer group"
           >
@@ -188,14 +165,10 @@ export const DashboardOverview:
 
             <div className="mt-3 flex items-baseline gap-2">
               <span className="text-3xl font-serif font-bold text-stone-900">
-                {loading
-                  ? '—'
-                  : reflectionsCount}
+                {loading ? '—' : reflectionsCount}
               </span>
 
-              <span className="text-xs text-stone-600 font-medium">
-                saved
-              </span>
+              <span className="text-xs text-stone-600 font-medium">saved</span>
             </div>
 
             <p className="mt-1 text-xs text-stone-600 font-sans">
@@ -203,21 +176,14 @@ export const DashboardOverview:
             </p>
           </button>
 
-          {/* Approved snapshots */}
           <button
             id="stat-snapshots"
             type="button"
             onClick={() =>
-              onNavigate(
-                'history',
-                {
-                  subTab:
-                    'reflections',
-
-                  filterApprovedSnapshots:
-                    true,
-                }
-              )
+              onNavigate('history', {
+                subTab: 'reflections',
+                filterApprovedSnapshots: true,
+              })
             }
             className="text-left bg-white rounded-xl border border-stone-200/90 p-5 shadow-xs hover:border-amber-700/40 hover:shadow-sm transition-all cursor-pointer group"
           >
@@ -233,9 +199,7 @@ export const DashboardOverview:
 
             <div className="mt-3 flex items-baseline gap-2">
               <span className="text-3xl font-serif font-bold text-stone-900">
-                {loading
-                  ? '—'
-                  : approvedSnapshotsCount}
+                {loading ? '—' : approvedSnapshotsCount}
               </span>
 
               <span className="text-xs text-stone-600 font-medium">
@@ -248,17 +212,13 @@ export const DashboardOverview:
             </p>
           </button>
 
-          {/* Thought diffs */}
           <button
             id="stat-diffs"
             type="button"
             onClick={() =>
-              onNavigate(
-                'history',
-                {
-                  subTab: 'diffs',
-                }
-              )
+              onNavigate('history', {
+                subTab: 'diffs',
+              })
             }
             className="text-left bg-white rounded-xl border border-stone-200/90 p-5 shadow-xs hover:border-amber-700/40 hover:shadow-sm transition-all cursor-pointer group"
           >
@@ -274,9 +234,7 @@ export const DashboardOverview:
 
             <div className="mt-3 flex items-baseline gap-2">
               <span className="text-3xl font-serif font-bold text-stone-900">
-                {loading
-                  ? '—'
-                  : thoughtDiffsCount}
+                {loading ? '—' : thoughtDiffsCount}
               </span>
 
               <span className="text-xs text-stone-600 font-medium">
@@ -295,30 +253,20 @@ export const DashboardOverview:
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-serif font-bold text-stone-900 flex items-center gap-2">
               <GitCompare className="w-5 h-5 text-amber-800" />
-
-              <span>
-                Perspective Evolution
-              </span>
+              <span>Perspective Evolution</span>
             </h2>
 
             {thoughtDiffsCount > 1 && (
               <button
                 type="button"
                 onClick={() =>
-                  onNavigate(
-                    'history',
-                    {
-                      subTab:
-                        'diffs',
-                    }
-                  )
+                  onNavigate('history', {
+                    subTab: 'diffs',
+                  })
                 }
                 className="text-xs font-semibold text-amber-900 hover:text-amber-950 flex items-center gap-1 hover:underline cursor-pointer"
               >
-                <span>
-                  View all {thoughtDiffsCount} Thought Diffs
-                </span>
-
+                <span>View all {thoughtDiffsCount} Thought Diffs</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             )}
@@ -328,16 +276,10 @@ export const DashboardOverview:
             <div
               id="recent-perspective-shift-card"
               onClick={() =>
-                onNavigate(
-                  'history',
-                  {
-                    subTab:
-                      'diffs',
-
-                    highlightDiffId:
-                      latestDiff.id,
-                  }
-                )
+                onNavigate('history', {
+                  subTab: 'diffs',
+                  highlightDiffId: latestDiff.id,
+                })
               }
               className="bg-stone-50 border border-stone-200/90 rounded-2xl p-6 shadow-xs space-y-6 transition-all hover:border-amber-700/40 cursor-pointer group"
             >
@@ -355,20 +297,14 @@ export const DashboardOverview:
 
                 <div className="text-[11px] font-mono text-stone-600 flex items-center gap-1">
                   <Calendar className="w-3.5 h-3.5 text-stone-400" />
-
                   <span>
                     Diff generated{' '}
-                    {new Date(
-                      latestDiff.createdAt
-                    ).toLocaleDateString(
+                    {new Date(latestDiff.createdAt).toLocaleDateString(
                       undefined,
                       {
-                        month:
-                          'short',
-                        day:
-                          'numeric',
-                        year:
-                          'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
                       }
                     )}
                   </span>
@@ -437,8 +373,8 @@ export const DashboardOverview:
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
                 <p className="text-xs text-stone-600">
-                  Verified against your original authenticated
-                  reflection records.
+                  Verified against your original authenticated reflection
+                  records.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-2">
@@ -447,10 +383,7 @@ export const DashboardOverview:
                     type="button"
                     onClick={(event) => {
                       event.stopPropagation();
-
-                      void handleOpenEvidence(
-                        latestDiff
-                      );
+                      void handleOpenEvidence(latestDiff);
                     }}
                     className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
                   >
@@ -464,16 +397,10 @@ export const DashboardOverview:
                     onClick={(event) => {
                       event.stopPropagation();
 
-                      onNavigate(
-                        'history',
-                        {
-                          subTab:
-                            'diffs',
-
-                          highlightDiffId:
-                            latestDiff.id,
-                        }
-                      );
+                      onNavigate('history', {
+                        subTab: 'diffs',
+                        highlightDiffId: latestDiff.id,
+                      });
                     }}
                     className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-amber-50 text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
                   >
@@ -498,9 +425,8 @@ export const DashboardOverview:
                 </h3>
 
                 <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                  MirrorTrace needs two approved reflections
-                  on a related topic before it can compare
-                  how your perspective evolved.
+                  MirrorTrace needs two approved reflections on a related topic
+                  before it can compare how your perspective evolved.
                 </p>
               </div>
 
@@ -508,9 +434,7 @@ export const DashboardOverview:
                 <button
                   id="btn-create-another-reflection"
                   type="button"
-                  onClick={() =>
-                    onNavigate('journal')
-                  }
+                  onClick={() => onNavigate('journal')}
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-800 hover:bg-amber-900 text-amber-50 text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
                 >
                   <PenLine className="w-4 h-4" />
@@ -518,17 +442,13 @@ export const DashboardOverview:
                 </button>
 
                 <button
-                  id="btn-see-how-it-works"
+                  id="btn-see-demo"
                   type="button"
-                  onClick={() =>
-                    setShowHowItWorks(
-                      true
-                    )
-                  }
+                  onClick={() => setShowGuidedDemo(true)}
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs sm:text-sm font-semibold transition-colors cursor-pointer"
                 >
-                  <Info className="w-4 h-4 text-stone-600" />
-                  See How It Works
+                  <PlayCircle className="w-4 h-4 text-amber-800" />
+                  See Example Journey
                 </button>
               </div>
             </div>
@@ -544,9 +464,7 @@ export const DashboardOverview:
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <button
               type="button"
-              onClick={() =>
-                onNavigate('journal')
-              }
+              onClick={() => onNavigate('journal')}
               className="text-left bg-white rounded-xl border border-stone-200/90 p-5 shadow-xs hover:border-amber-700/40 hover:shadow-sm transition-all cursor-pointer group"
             >
               <div className="w-9 h-9 rounded-lg bg-amber-100 text-amber-900 flex items-center justify-center">
@@ -558,15 +476,12 @@ export const DashboardOverview:
               </h3>
 
               <p className="mt-2 text-xs text-stone-600 leading-relaxed">
-                Compose a new journal entry or brainstorm
-                with the AI companion.
+                Compose a new journal entry or brainstorm with the AI
+                companion.
               </p>
 
               <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-xs font-semibold text-amber-900">
-                <span>
-                  Open Reflect & Chat
-                </span>
-
+                <span>Open Reflect & Chat</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </div>
             </button>
@@ -574,13 +489,9 @@ export const DashboardOverview:
             <button
               type="button"
               onClick={() =>
-                onNavigate(
-                  'journal',
-                  {
-                    privateSession:
-                      true,
-                  }
-                )
+                onNavigate('journal', {
+                  privateSession: true,
+                })
               }
               className="text-left bg-white rounded-xl border border-stone-200/90 p-5 shadow-xs hover:border-purple-300 hover:shadow-sm transition-all cursor-pointer group"
             >
@@ -599,15 +510,12 @@ export const DashboardOverview:
               </div>
 
               <p className="mt-2 text-xs text-stone-600 leading-relaxed">
-                Reflect freely without saving to Firestore
-                history or generating AI memory.
+                Reflect freely without saving to Firestore history or
+                generating AI memory.
               </p>
 
               <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-xs font-semibold text-purple-900">
-                <span>
-                  Start Private Session
-                </span>
-
+                <span>Start Private Session</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </div>
             </button>
@@ -615,13 +523,9 @@ export const DashboardOverview:
             <button
               type="button"
               onClick={() =>
-                onNavigate(
-                  'history',
-                  {
-                    subTab:
-                      'reflections',
-                  }
-                )
+                onNavigate('history', {
+                  subTab: 'reflections',
+                })
               }
               className="text-left bg-white rounded-xl border border-stone-200/90 p-5 shadow-xs hover:border-amber-700/40 hover:shadow-sm transition-all cursor-pointer group"
             >
@@ -634,19 +538,25 @@ export const DashboardOverview:
               </h3>
 
               <p className="mt-2 text-xs text-stone-600 leading-relaxed">
-                Browse your private timeline, approved
-                snapshots, and full comparison history.
+                Browse your private timeline, approved snapshots, and full
+                comparison history.
               </p>
 
               <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-xs font-semibold text-stone-800">
-                <span>
-                  Explore History
-                </span>
-
+                <span>Explore History</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </div>
             </button>
           </div>
+
+          <button
+            type="button"
+            onClick={() => setShowHowItWorks(true)}
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-stone-500 hover:text-amber-900"
+          >
+            <Info className="w-4 h-4" />
+            How does MirrorTrace work?
+          </button>
         </div>
 
         {/* How It Works Modal */}
@@ -660,18 +570,14 @@ export const DashboardOverview:
                   </h3>
 
                   <p className="text-xs text-stone-600">
-                    Version control for your thinking in
-                    three evidence-grounded steps.
+                    Version control for your thinking in three evidence-grounded
+                    steps.
                   </p>
                 </div>
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowHowItWorks(
-                      false
-                    )
-                  }
+                  onClick={() => setShowHowItWorks(false)}
                   className="p-1 text-stone-400 hover:text-stone-700"
                 >
                   <X className="w-5 h-5" />
@@ -685,8 +591,8 @@ export const DashboardOverview:
                   </strong>
 
                   <p className="text-xs text-stone-600 mt-1">
-                    Reflect normally or use Gemini to help
-                    articulate a complicated thought.
+                    Reflect normally or use Gemini to help articulate a
+                    complicated thought.
                   </p>
                 </div>
 
@@ -696,9 +602,8 @@ export const DashboardOverview:
                   </strong>
 
                   <p className="text-xs text-stone-600 mt-1">
-                    Gemini can propose an interpretation,
-                    but persistent AI memory requires your
-                    explicit approval.
+                    Gemini can propose an interpretation, but persistent AI
+                    memory requires your explicit approval.
                   </p>
                 </div>
 
@@ -708,9 +613,8 @@ export const DashboardOverview:
                   </strong>
 
                   <p className="text-xs text-stone-600 mt-1">
-                    Related approved reflections can be
-                    compared to show what changed and what
-                    stayed consistent.
+                    Related approved reflections can be compared to show what
+                    changed and what stayed consistent.
                   </p>
                 </div>
               </div>
@@ -719,21 +623,16 @@ export const DashboardOverview:
                 <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
 
                 <p>
-                  MirrorTrace is a reflective tool, not a
-                  diagnostic system. Unapproved
-                  interpretations never become persistent
-                  Thought Snapshots.
+                  MirrorTrace is a reflective tool, not a diagnostic system.
+                  Unapproved interpretations never become persistent Thought
+                  Snapshots.
                 </p>
               </div>
 
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowHowItWorks(
-                      false
-                    )
-                  }
+                  onClick={() => setShowHowItWorks(false)}
                   className="px-4 py-2 rounded-lg text-xs font-semibold text-stone-600 hover:bg-stone-100"
                 >
                   Close
@@ -742,13 +641,19 @@ export const DashboardOverview:
                 <button
                   type="button"
                   onClick={() => {
-                    setShowHowItWorks(
-                      false
-                    );
+                    setShowHowItWorks(false);
+                    setShowGuidedDemo(true);
+                  }}
+                  className="px-4 py-2 rounded-lg text-xs font-semibold border border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100"
+                >
+                  See Example Journey
+                </button>
 
-                    onNavigate(
-                      'journal'
-                    );
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowHowItWorks(false);
+                    onNavigate('journal');
                   }}
                   className="px-4 py-2 rounded-lg text-xs font-semibold bg-amber-800 text-amber-50 hover:bg-amber-900"
                 >
@@ -770,18 +675,13 @@ export const DashboardOverview:
                   </h3>
 
                   <p className="text-xs text-stone-600">
-                    Exact source reflections and provenance
-                    verification
+                    Exact source reflections and provenance verification
                   </p>
                 </div>
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setSelectedDiffForProvenance(
-                      null
-                    )
-                  }
+                  onClick={() => setSelectedDiffForProvenance(null)}
                   className="p-1 text-stone-400 hover:text-stone-700"
                 >
                   <X className="w-5 h-5" />
@@ -791,7 +691,6 @@ export const DashboardOverview:
               {loadingProvenance ? (
                 <div className="py-8 flex flex-col items-center gap-2 text-xs text-stone-500">
                   <div className="w-5 h-5 border-2 border-stone-300 border-t-amber-800 rounded-full animate-spin" />
-
                   Loading source provenance...
                 </div>
               ) : provenanceError ? (
@@ -801,13 +700,9 @@ export const DashboardOverview:
               ) : provenanceData ? (
                 <div className="space-y-4">
                   <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-stone-800">
-                    MirrorTrace generated this comparison
-                    from your authenticated, user-approved
-                    reflections on{' '}
-                    <strong>
-                      {selectedDiffForProvenance.topic}
-                    </strong>
-                    .
+                    MirrorTrace generated this comparison from your
+                    authenticated, user-approved reflections on{' '}
+                    <strong>{selectedDiffForProvenance.topic}</strong>.
                   </div>
 
                   <div className="border border-stone-200 rounded-lg p-4 space-y-2">
@@ -843,9 +738,7 @@ export const DashboardOverview:
 
                     {provenanceData.laterDate && (
                       <p className="font-mono text-[10px] text-stone-500">
-                        {new Date(
-                          provenanceData.laterDate
-                        ).toLocaleString()}
+                        {new Date(provenanceData.laterDate).toLocaleString()}
                       </p>
                     )}
 
@@ -864,9 +757,8 @@ export const DashboardOverview:
                     <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
 
                     <p className="font-mono text-[10px] text-stone-600">
-                      User UID: Verified • Isolation:
-                      Owner Namespace • Zero Cross-User
-                      Visibility
+                      User UID: Verified • Isolation: Owner Namespace • Zero
+                      Cross-User Visibility
                     </p>
                   </div>
                 </div>
@@ -875,11 +767,7 @@ export const DashboardOverview:
               <div className="flex justify-end">
                 <button
                   type="button"
-                  onClick={() =>
-                    setSelectedDiffForProvenance(
-                      null
-                    )
-                  }
+                  onClick={() => setSelectedDiffForProvenance(null)}
                   className="px-4 py-2 bg-stone-900 text-white text-xs font-semibold rounded-lg hover:bg-stone-800"
                 >
                   Close Provenance View
@@ -889,5 +777,12 @@ export const DashboardOverview:
           </div>
         )}
       </div>
-    );
-  };
+
+      <GuidedDemoModal
+        isOpen={showGuidedDemo}
+        onClose={() => setShowGuidedDemo(false)}
+        onStartWriting={handleStartFromDemo}
+      />
+    </>
+  );
+};
