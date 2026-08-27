@@ -43,19 +43,26 @@ export default function App() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
-  const [activeTab, setActiveTab] = useState<MainTab>('overview');
+  const [activeTab, setActiveTab] =
+    useState<MainTab>('overview');
 
   const [historySubTab, setHistorySubTab] =
     useState<HistorySubTab>('reflections');
 
-  const [filterApprovedSnapshots, setFilterApprovedSnapshots] =
-    useState(false);
+  const [
+    filterApprovedSnapshots,
+    setFilterApprovedSnapshots,
+  ] = useState(false);
 
-  const [highlightDiffId, setHighlightDiffId] =
-    useState<string | null>(null);
+  const [
+    highlightDiffId,
+    setHighlightDiffId,
+  ] = useState<string | null>(null);
 
-  const [privateSessionMode, setPrivateSessionMode] =
-    useState(false);
+  const [
+    privateSessionMode,
+    setPrivateSessionMode,
+  ] = useState(false);
 
   const [externalTags, setExternalTags] =
     useState<string[]>([]);
@@ -87,8 +94,10 @@ export default function App() {
           setUser({
             uid: firebaseUser.uid,
             email: firebaseUser.email,
-            displayName: firebaseUser.displayName,
-            photoURL: firebaseUser.photoURL,
+            displayName:
+              firebaseUser.displayName,
+            photoURL:
+              firebaseUser.photoURL,
           });
         } else {
           setUser(null);
@@ -102,12 +111,7 @@ export default function App() {
   }, []);
 
   /*
-   * IMPORTANT:
-   * Reset scroll whenever the visible application page changes.
-   *
-   * useLayoutEffect runs immediately after React updates the DOM,
-   * preventing the new view from appearing at the previous page's
-   * scroll position.
+   * Reset scroll whenever visible page changes.
    */
   useLayoutEffect(() => {
     scrollPageToTop();
@@ -133,9 +137,15 @@ export default function App() {
         snapshotData,
         diffData,
       ] = await Promise.all([
-        fetchJournalEntries().catch(() => []),
-        fetchThoughtSnapshots().catch(() => []),
-        fetchThoughtDiffs().catch(() => []),
+        fetchJournalEntries().catch(
+          () => []
+        ),
+        fetchThoughtSnapshots().catch(
+          () => []
+        ),
+        fetchThoughtDiffs().catch(
+          () => []
+        ),
       ]);
 
       setEntries(journalData);
@@ -151,6 +161,11 @@ export default function App() {
     }
   };
 
+  /*
+   * Reload global data whenever:
+   * - user changes
+   * - refreshCounter changes
+   */
   useEffect(() => {
     if (user) {
       void loadData();
@@ -199,6 +214,21 @@ export default function App() {
   };
 
   /*
+   * Trigger global refresh whenever JournalList
+   * changes persisted state such as:
+   *
+   * - snapshot approval
+   * - snapshot deletion
+   * - journal deletion
+   * - Thought Diff generation
+   */
+  const handleDataChanged = () => {
+    setRefreshCounter(
+      (previous) => previous + 1
+    );
+  };
+
+  /*
    * Suggested BrainstormChat tag -> JournalEditor
    */
   const handleSuggestedTagClick = (
@@ -223,9 +253,7 @@ export default function App() {
       highlightDiffId?: string;
     }
   ) => {
-    if (
-      options?.privateSession
-    ) {
+    if (options?.privateSession) {
       setPrivateSessionMode(true);
     } else if (
       tab === 'journal'
@@ -246,14 +274,15 @@ export default function App() {
     );
 
     setHighlightDiffId(
-      options?.highlightDiffId ?? null
+      options?.highlightDiffId ??
+        null
     );
 
     setActiveTab(tab);
 
     /*
-     * Handles navigation where React state may already contain
-     * the same tab value.
+     * Handles navigation where React state
+     * may already contain the same tab value.
      */
     requestAnimationFrame(() => {
       scrollPageToTop();
@@ -275,7 +304,8 @@ export default function App() {
         <div className="w-6 h-6 border-2 border-stone-300 border-t-amber-800 rounded-full animate-spin" />
 
         <p className="text-xs text-stone-500 font-sans">
-          Verifying authentication session...
+          Verifying authentication
+          session...
         </p>
       </div>
     );
@@ -291,12 +321,15 @@ export default function App() {
           setActiveTab('overview');
 
           setRefreshCounter(
-            (previous) => previous + 1
+            (previous) =>
+              previous + 1
           );
 
-          requestAnimationFrame(() => {
-            scrollPageToTop();
-          });
+          requestAnimationFrame(
+            () => {
+              scrollPageToTop();
+            }
+          );
         }}
       />
     );
@@ -314,10 +347,13 @@ export default function App() {
           onTabChange={(tab) =>
             handleNavigate(tab)
           }
-          onSignOut={handleSignOut}
+          onSignOut={
+            handleSignOut
+          }
         />
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
           {/* Overview */}
           {activeTab ===
             'overview' && (
@@ -325,7 +361,9 @@ export default function App() {
               entries={entries}
               snapshots={snapshots}
               diffs={diffs}
-              loading={dataLoading}
+              loading={
+                dataLoading
+              }
               onNavigate={
                 handleNavigate
               }
@@ -353,6 +391,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
                 <div className="lg:col-span-6 space-y-6">
                   <JournalEditor
                     onEntrySaved={
@@ -362,7 +401,9 @@ export default function App() {
                       externalTags
                     }
                     onClearExternalTags={() =>
-                      setExternalTags([])
+                      setExternalTags(
+                        []
+                      )
                     }
                     initialPrivateSession={
                       privateSessionMode
@@ -385,6 +426,7 @@ export default function App() {
           {activeTab ===
             'history' && (
             <div className="space-y-6 animate-fade-in">
+
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
                 <div>
                   <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
@@ -411,6 +453,9 @@ export default function App() {
                 }
                 highlightDiffId={
                   highlightDiffId
+                }
+                onDataChanged={
+                  handleDataChanged
                 }
               />
             </div>
