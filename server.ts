@@ -367,9 +367,37 @@ app.delete(
       }
       for (const diffDoc of linkedDiffsEarlier.docs) {
         batch.delete(diffDoc.ref);
+
+        batch.delete(
+          firestore
+            .collection('users')
+            .doc(uid)
+            .collection('perspectiveWatches')
+            .doc(diffDoc.id)
+        );
+
+        batch.delete(
+          firestore
+            .collection('perspectiveWatchQueue')
+            .doc(`${uid}_${diffDoc.id}`)
+        );
       }
       for (const diffDoc of linkedDiffsLater.docs) {
         batch.delete(diffDoc.ref);
+
+        batch.delete(
+          firestore
+            .collection('users')
+            .doc(uid)
+            .collection('perspectiveWatches')
+            .doc(diffDoc.id)
+        );
+
+        batch.delete(
+          firestore
+            .collection('perspectiveWatchQueue')
+            .doc(`${uid}_${diffDoc.id}`)
+        );
       }
       for (const provDoc of linkedProvenanceEarlier.docs) {
         batch.delete(provDoc.ref);
@@ -575,6 +603,24 @@ app.post(
       const tags = sanitizeTags(body.tags).slice(0, 5);
       const userEdited = Boolean(body.userEdited);
 
+      const requestedMemoryRetention =
+        safeString(body.memoryRetention) ||
+        'until_removed';
+
+      if (
+        !ALLOWED_MEMORY_RETENTIONS.includes(
+          requestedMemoryRetention as MemoryRetentionValue
+        )
+      ) {
+        return res.status(400).json({
+          error:
+            'Invalid memoryRetention. Allowed values: until_removed, 30_days, 180_days, 365_days.',
+        });
+      }
+
+      const memoryRetention =
+        requestedMemoryRetention as MemoryRetentionValue;
+
       if (!sourceJournalId) {
         return res.status(400).json({
           error: 'Missing required field: sourceJournalId.',
@@ -651,6 +697,16 @@ app.post(
             userEdited: Boolean(existingData.userEdited),
             createdAt: String(existingData.createdAt || new Date().toISOString()),
             approvedAt: String(existingData.approvedAt || new Date().toISOString()),
+            memoryRetention:
+              ALLOWED_MEMORY_RETENTIONS.includes(
+                safeString(existingData.memoryRetention) as MemoryRetentionValue
+              )
+                ? safeString(existingData.memoryRetention)
+                : 'until_removed',
+            memoryExpiresAt:
+              typeof existingData.memoryExpiresAt === 'string'
+                ? existingData.memoryExpiresAt
+                : null,
           },
         });
       }
@@ -665,6 +721,12 @@ app.post(
 
       const nowIso = new Date().toISOString();
 
+      const memoryExpiresAt =
+        computeMemoryExpiresAt(
+          memoryRetention,
+          nowIso
+        );
+
       const snapshotPayload = stripUndefined({
         id: snapshotRef.id,
         sourceJournalId,
@@ -675,6 +737,8 @@ app.post(
         userEdited,
         createdAt: nowIso,
         approvedAt: nowIso,
+        memoryRetention,
+        memoryExpiresAt,
         serverCreatedAt: FieldValue.serverTimestamp(),
         serverApprovedAt: FieldValue.serverTimestamp(),
       });
@@ -707,6 +771,8 @@ app.post(
           userEdited,
           createdAt: nowIso,
           approvedAt: nowIso,
+          memoryRetention,
+          memoryExpiresAt,
         },
       });
     } catch (err: unknown) {
@@ -764,6 +830,16 @@ app.get(
           userEdited: Boolean(data.userEdited),
           createdAt: String(data.createdAt || new Date().toISOString()),
           approvedAt: String(data.approvedAt || new Date().toISOString()),
+          memoryRetention:
+            ALLOWED_MEMORY_RETENTIONS.includes(
+              safeString(data.memoryRetention) as MemoryRetentionValue
+            )
+              ? safeString(data.memoryRetention)
+              : 'until_removed',
+          memoryExpiresAt:
+            typeof data.memoryExpiresAt === 'string'
+              ? data.memoryExpiresAt
+              : null,
         };
       });
 
@@ -858,9 +934,37 @@ app.delete(
 
       for (const diffDoc of linkedDiffsEarlier.docs) {
         batch.delete(diffDoc.ref);
+
+        batch.delete(
+          firestore
+            .collection('users')
+            .doc(uid)
+            .collection('perspectiveWatches')
+            .doc(diffDoc.id)
+        );
+
+        batch.delete(
+          firestore
+            .collection('perspectiveWatchQueue')
+            .doc(`${uid}_${diffDoc.id}`)
+        );
       }
       for (const diffDoc of linkedDiffsLater.docs) {
         batch.delete(diffDoc.ref);
+
+        batch.delete(
+          firestore
+            .collection('users')
+            .doc(uid)
+            .collection('perspectiveWatches')
+            .doc(diffDoc.id)
+        );
+
+        batch.delete(
+          firestore
+            .collection('perspectiveWatchQueue')
+            .doc(`${uid}_${diffDoc.id}`)
+        );
       }
       for (const provDoc of linkedProvenanceEarlier.docs) {
         batch.delete(provDoc.ref);
@@ -941,6 +1045,94 @@ function getTagOverlapCount(tagsA: string[], tagsB: string[]): { count: number; 
   return { count: sharedTags.length, sharedTags };
 }
 
+
+type MemoryRetentionValue =
+  | 'until_removed'
+  | '30_days'
+  | '180_days'
+  | '365_days';
+
+const ALLOWED_MEMORY_RETENTIONS: MemoryRetentionValue[] = [
+  'until_removed',
+  '30_days',
+  '180_days',
+  '365_days',
+];
+
+function computeMemoryExpiresAt(
+  retention: MemoryRetentionValue,
+  approvedAtIso: string
+): string | null {
+  if (retention === 'until_removed') {
+    return null;
+  }
+
+  const days =
+    retention === '30_days'
+      ? 30
+      : retention === '180_days'
+        ? 180
+        : 365;
+
+  const approvedAt =
+    new Date(approvedAtIso);
+
+  approvedAt.setUTCDate(
+    approvedAt.getUTCDate() + days
+  );
+
+  return approvedAt.toISOString();
+}
+
+function isSnapshotMemoryActive(
+  data: FirebaseFirestore.DocumentData,
+  nowMs = Date.now()
+): boolean {
+  if (data.approvalStatus !== 'approved') {
+    return false;
+  }
+
+  const expiresAt =
+    safeString(data.memoryExpiresAt);
+
+  if (!expiresAt) {
+    return true;
+  }
+
+  const expiresAtMs =
+    new Date(expiresAt).getTime();
+
+  return (
+    Number.isFinite(expiresAtMs) &&
+    expiresAtMs > nowMs
+  );
+}
+
+function serializePerspectiveWatch(
+  doc: FirebaseFirestore.DocumentSnapshot
+) {
+  const data = doc.data() || {};
+
+  return {
+    id: doc.id,
+    diffId: String(data.diffId || ''),
+    topic: String(data.topic || ''),
+    revisitAt: String(data.revisitAt || ''),
+    status: String(data.status || 'scheduled'),
+    emailEnabled: Boolean(data.emailEnabled),
+    createdAt: String(data.createdAt || ''),
+    updatedAt: String(data.updatedAt || data.createdAt || ''),
+    notifiedAt:
+      typeof data.notifiedAt === 'string'
+        ? data.notifiedAt
+        : null,
+    completedAt:
+      typeof data.completedAt === 'string'
+        ? data.completedAt
+        : null,
+  };
+}
+
 /**
  * GENERATE THOUGHT DIFF
  *
@@ -996,6 +1188,21 @@ app.post(
         });
       }
 
+      if (!isSnapshotMemoryActive(laterData)) {
+        console.log('thought-diff:no-match', {
+          reason: 'latest_snapshot_memory_expired',
+          latestSnapshotId,
+          memoryExpiresAt: laterData.memoryExpiresAt,
+        });
+
+        return res.status(200).json({
+          success: true,
+          diffCreated: false,
+          message:
+            'This approved Thought Snapshot has expired from reusable AI memory and is no longer eligible for new Thought Diff matching.',
+        });
+      }
+
       const laterJournalId = safeString(laterData.sourceJournalId);
       const laterJournalDoc = await firestore
         .collection('users')
@@ -1033,6 +1240,15 @@ app.post(
       const candidateDocs = candidatesQuery.docs.filter((d) => {
         if (d.id === latestSnapshotId) return false;
         const cData = d.data() || {};
+
+        if (!isSnapshotMemoryActive(cData)) {
+          console.log('thought-diff:candidate-rejected-expired-memory', {
+            candidateId: d.id,
+            memoryExpiresAt: cData.memoryExpiresAt || null,
+          });
+          return false;
+        }
+
         const cJournalId = safeString(cData.sourceJournalId);
         if (!cJournalId || cJournalId === laterJournalId) {
           console.log('thought-diff:candidate-rejected-same-journal', {
@@ -1674,6 +1890,21 @@ app.get(
           });
 
           cleanupBatch.delete(doc.ref);
+
+          cleanupBatch.delete(
+            firestore
+              .collection('users')
+              .doc(uid)
+              .collection('perspectiveWatches')
+              .doc(doc.id)
+          );
+
+          cleanupBatch.delete(
+            firestore
+              .collection('perspectiveWatchQueue')
+              .doc(`${uid}_${doc.id}`)
+          );
+
           if (provenanceId) {
             const provRef = firestore
               .collection('users')
@@ -1791,12 +2022,29 @@ app.get(
         // Clean up invalid provenance and diff
         const cleanupBatch = firestore.batch();
         cleanupBatch.delete(provDoc.ref);
+
         const diffRef = firestore
           .collection('users')
           .doc(uid)
           .collection('thoughtDiffs')
           .doc(diffId);
+
         cleanupBatch.delete(diffRef);
+
+        cleanupBatch.delete(
+          firestore
+            .collection('users')
+            .doc(uid)
+            .collection('perspectiveWatches')
+            .doc(diffId)
+        );
+
+        cleanupBatch.delete(
+          firestore
+            .collection('perspectiveWatchQueue')
+            .doc(`${uid}_${diffId}`)
+        );
+
         await cleanupBatch.commit();
 
         return res.status(422).json({
@@ -1841,12 +2089,29 @@ app.get(
         // Clean up invalid reversed provenance and diff
         const cleanupBatch = firestore.batch();
         cleanupBatch.delete(provDoc.ref);
+
         const diffRef = firestore
           .collection('users')
           .doc(uid)
           .collection('thoughtDiffs')
           .doc(diffId);
+
         cleanupBatch.delete(diffRef);
+
+        cleanupBatch.delete(
+          firestore
+            .collection('users')
+            .doc(uid)
+            .collection('perspectiveWatches')
+            .doc(diffId)
+        );
+
+        cleanupBatch.delete(
+          firestore
+            .collection('perspectiveWatchQueue')
+            .doc(`${uid}_${diffId}`)
+        );
+
         await cleanupBatch.commit();
 
         return res.status(422).json({
@@ -1949,11 +2214,60 @@ app.post(
         });
       }
 
+      const nowIso =
+        new Date().toISOString();
+
       await diffRef.update({
         relationshipStatus: status,
-        updatedAt: new Date().toISOString(),
+        updatedAt: nowIso,
         serverUpdatedAt: FieldValue.serverTimestamp(),
       });
+
+      if (
+        status === 'not_related' ||
+        status === 'incorrect_interpretation'
+      ) {
+        const watchRef = firestore
+          .collection('users')
+          .doc(uid)
+          .collection('perspectiveWatches')
+          .doc(diffId);
+
+        const watchDoc =
+          await watchRef.get();
+
+        if (watchDoc.exists) {
+          const batch =
+            firestore.batch();
+
+          batch.update(
+            watchRef,
+            {
+              status: 'dismissed',
+              updatedAt: nowIso,
+              serverUpdatedAt:
+                FieldValue.serverTimestamp(),
+            }
+          );
+
+          batch.set(
+            firestore
+              .collection('perspectiveWatchQueue')
+              .doc(`${uid}_${diffId}`),
+            {
+              status: 'dismissed',
+              updatedAt: nowIso,
+              serverUpdatedAt:
+                FieldValue.serverTimestamp(),
+            },
+            {
+              merge: true,
+            }
+          );
+
+          await batch.commit();
+        }
+      }
 
       return res.status(200).json({
         success: true,
@@ -1970,6 +2284,1301 @@ app.post(
         error: 'feedback_failed',
         code: String(errorObj?.code ?? 'unknown'),
         message: errorObj?.message || 'Failed to update diff feedback.',
+      });
+    }
+  }
+);
+
+
+/* ============================================================
+   4.6. PERSPECTIVE WATCH + MEMORY CONTROL ROUTES
+   ============================================================ */
+
+/**
+ * CREATE / REPLACE A PERSPECTIVE WATCH
+ *
+ * Perspective Watch is deliberately user-initiated.
+ * MirrorTrace never decides autonomously which belief deserves monitoring.
+ *
+ * One active watch is stored per Thought Diff:
+ * users/{uid}/perspectiveWatches/{diffId}
+ *
+ * A minimal server-only queue record is mirrored at:
+ * perspectiveWatchQueue/{uid}_{diffId}
+ *
+ * Client Firestore rules do not expose that queue.
+ */
+app.post(
+  '/api/perspective-watches',
+  authMiddleware,
+  async (req: AuthenticatedRequest, res) => {
+    try {
+      const uid = req.user!.uid;
+
+      const body =
+        req.body &&
+        typeof req.body === 'object'
+          ? req.body
+          : {};
+
+      const diffId =
+        safeString(body.diffId);
+
+      const delayDays =
+        Number(body.delayDays);
+
+      const emailEnabled =
+        Boolean(body.emailEnabled);
+
+      if (!diffId) {
+        return res.status(400).json({
+          error:
+            'Thought Diff ID is required.',
+        });
+      }
+
+      if (
+        ![7, 30, 90].includes(
+          delayDays
+        )
+      ) {
+        return res.status(400).json({
+          error:
+            'delayDays must be 7, 30, or 90.',
+        });
+      }
+
+      const diffRef = firestore
+        .collection('users')
+        .doc(uid)
+        .collection('thoughtDiffs')
+        .doc(diffId);
+
+      const diffDoc =
+        await diffRef.get();
+
+      if (!diffDoc.exists) {
+        return res.status(404).json({
+          error:
+            'Thought Diff not found or unauthorized.',
+        });
+      }
+
+      const diffData =
+        diffDoc.data() || {};
+
+      const relationshipStatus =
+        safeString(
+          diffData.relationshipStatus
+        ) || 'verified';
+
+      if (
+        relationshipStatus ===
+          'not_related' ||
+        relationshipStatus ===
+          'incorrect_interpretation'
+      ) {
+        return res.status(409).json({
+          error:
+            'This Thought Diff is not eligible for Perspective Watch because it has been rejected or marked unrelated.',
+        });
+      }
+
+      const authenticatedEmail =
+        safeString(
+          (
+            req.user as {
+              email?: unknown;
+            }
+          ).email
+        );
+
+      if (
+        emailEnabled &&
+        !authenticatedEmail
+      ) {
+        return res.status(400).json({
+          error:
+            'Your signed-in account does not expose an email address, so an email reminder cannot be enabled.',
+        });
+      }
+
+      const watchRef = firestore
+        .collection('users')
+        .doc(uid)
+        .collection(
+          'perspectiveWatches'
+        )
+        .doc(diffId);
+
+      const existingWatch =
+        await watchRef.get();
+
+      if (
+        existingWatch.exists &&
+        ['scheduled', 'due'].includes(
+          safeString(
+            existingWatch.data()
+              ?.status
+          )
+        )
+      ) {
+        return res.status(200).json({
+          success: true,
+          alreadyExists: true,
+          watch:
+            serializePerspectiveWatch(
+              existingWatch
+            ),
+        });
+      }
+
+      const now =
+        new Date();
+
+      const revisit =
+        new Date(
+          now.getTime() +
+            delayDays *
+              24 *
+              60 *
+              60 *
+              1000
+        );
+
+      const nowIso =
+        now.toISOString();
+
+      const revisitAt =
+        revisit.toISOString();
+
+      const topic =
+        safeString(diffData.topic) ||
+        'Perspective';
+
+      const queueId =
+        `${uid}_${diffId}`;
+
+      const queueRef =
+        firestore
+          .collection(
+            'perspectiveWatchQueue'
+          )
+          .doc(queueId);
+
+      const watchPayload =
+        stripUndefined({
+          id: watchRef.id,
+          diffId,
+          topic,
+          revisitAt,
+          status: 'scheduled',
+          emailEnabled,
+          notificationEmail:
+            emailEnabled
+              ? authenticatedEmail
+              : null,
+          createdAt: nowIso,
+          updatedAt: nowIso,
+          notifiedAt: null,
+          completedAt: null,
+          queueId,
+          serverCreatedAt:
+            FieldValue.serverTimestamp(),
+          serverUpdatedAt:
+            FieldValue.serverTimestamp(),
+        });
+
+      const queuePayload =
+        stripUndefined({
+          id: queueId,
+          uid,
+          watchId:
+            watchRef.id,
+          diffId,
+          topic,
+          revisitAt,
+          status: 'scheduled',
+          emailEnabled,
+          notificationEmail:
+            emailEnabled
+              ? authenticatedEmail
+              : null,
+          createdAt: nowIso,
+          updatedAt: nowIso,
+          serverCreatedAt:
+            FieldValue.serverTimestamp(),
+          serverUpdatedAt:
+            FieldValue.serverTimestamp(),
+        });
+
+      const batch =
+        firestore.batch();
+
+      batch.set(
+        watchRef,
+        watchPayload
+      );
+
+      batch.set(
+        queueRef,
+        queuePayload
+      );
+
+      await batch.commit();
+
+      const saved =
+        await watchRef.get();
+
+      return res.status(201).json({
+        success: true,
+        watch:
+          serializePerspectiveWatch(
+            saved
+          ),
+      });
+    } catch (err: unknown) {
+      const errorObj =
+        err as {
+          code?: string | number;
+          message?: string;
+        };
+
+      console.error(
+        '[MirrorTrace] Perspective Watch creation failed',
+        {
+          code: errorObj?.code,
+          message:
+            errorObj?.message,
+        }
+      );
+
+      return res.status(500).json({
+        error:
+          'perspective_watch_create_failed',
+        code:
+          String(
+            errorObj?.code ??
+              'unknown'
+          ),
+        message:
+          errorObj?.message ||
+          'Failed to schedule Perspective Watch.',
+      });
+    }
+  }
+);
+
+/**
+ * LIST PERSPECTIVE WATCHES
+ *
+ * Due state is resolved server-side using revisitAt.
+ */
+app.get(
+  '/api/perspective-watches',
+  authMiddleware,
+  async (req: AuthenticatedRequest, res) => {
+    try {
+      const uid =
+        req.user!.uid;
+
+      const snapshot =
+        await firestore
+          .collection('users')
+          .doc(uid)
+          .collection(
+            'perspectiveWatches'
+          )
+          .orderBy(
+            'createdAt',
+            'desc'
+          )
+          .limit(50)
+          .get();
+
+      const nowMs =
+        Date.now();
+
+      const updateBatch =
+        firestore.batch();
+
+      let hasUpdates =
+        false;
+
+      const watches =
+        snapshot.docs.map(
+          (doc) => {
+            const data =
+              doc.data() || {};
+
+            const currentStatus =
+              safeString(
+                data.status
+              ) ||
+              'scheduled';
+
+            const revisitAt =
+              safeString(
+                data.revisitAt
+              );
+
+            let resolvedStatus =
+              currentStatus;
+
+            const revisitMs =
+              new Date(
+                revisitAt
+              ).getTime();
+
+            if (
+              currentStatus ===
+                'scheduled' &&
+              Number.isFinite(
+                revisitMs
+              ) &&
+              revisitMs <= nowMs
+            ) {
+              resolvedStatus =
+                'due';
+
+              updateBatch.update(
+                doc.ref,
+                {
+                  status: 'due',
+                  updatedAt:
+                    new Date().toISOString(),
+                  serverUpdatedAt:
+                    FieldValue.serverTimestamp(),
+                }
+              );
+
+              hasUpdates =
+                true;
+            }
+
+            return {
+              id: doc.id,
+              diffId:
+                String(
+                  data.diffId || ''
+                ),
+              topic:
+                String(
+                  data.topic || ''
+                ),
+              revisitAt,
+              status:
+                resolvedStatus,
+              emailEnabled:
+                Boolean(
+                  data.emailEnabled
+                ),
+              createdAt:
+                String(
+                  data.createdAt || ''
+                ),
+              updatedAt:
+                String(
+                  data.updatedAt ||
+                    data.createdAt ||
+                    ''
+                ),
+              notifiedAt:
+                typeof data.notifiedAt ===
+                'string'
+                  ? data.notifiedAt
+                  : null,
+              completedAt:
+                typeof data.completedAt ===
+                'string'
+                  ? data.completedAt
+                  : null,
+            };
+          }
+        );
+
+      if (hasUpdates) {
+        await updateBatch.commit();
+      }
+
+      return res.status(200).json({
+        watches,
+      });
+    } catch (err: unknown) {
+      const errorObj =
+        err as {
+          code?: string | number;
+          message?: string;
+        };
+
+      return res.status(500).json({
+        error:
+          'perspective_watches_fetch_failed',
+        code:
+          String(
+            errorObj?.code ??
+              'unknown'
+          ),
+        message:
+          errorObj?.message ||
+          'Failed to retrieve Perspective Watches.',
+      });
+    }
+  }
+);
+
+/**
+ * UPDATE PERSPECTIVE WATCH STATUS
+ *
+ * Users may complete or dismiss their own watch.
+ */
+app.patch(
+  '/api/perspective-watches/:id',
+  authMiddleware,
+  async (req: AuthenticatedRequest, res) => {
+    try {
+      const uid =
+        req.user!.uid;
+
+      const watchId =
+        safeString(
+          req.params.id
+        );
+
+      const body =
+        req.body &&
+        typeof req.body ===
+          'object'
+          ? req.body
+          : {};
+
+      const requestedStatus =
+        safeString(
+          body.status
+        );
+
+      const allowedStatuses = [
+        'completed',
+        'dismissed',
+      ];
+
+      if (!watchId) {
+        return res.status(400).json({
+          error:
+            'Perspective Watch ID is required.',
+        });
+      }
+
+      if (
+        !allowedStatuses.includes(
+          requestedStatus
+        )
+      ) {
+        return res.status(400).json({
+          error:
+            'Perspective Watch status must be completed or dismissed.',
+        });
+      }
+
+      const watchRef =
+        firestore
+          .collection('users')
+          .doc(uid)
+          .collection(
+            'perspectiveWatches'
+          )
+          .doc(watchId);
+
+      const watchDoc =
+        await watchRef.get();
+
+      if (!watchDoc.exists) {
+        return res.status(404).json({
+          error:
+            'Perspective Watch not found.',
+        });
+      }
+
+      const nowIso =
+        new Date().toISOString();
+
+      const queueId =
+        safeString(
+          watchDoc.data()
+            ?.queueId
+        ) ||
+        `${uid}_${watchId}`;
+
+      const queueRef =
+        firestore
+          .collection(
+            'perspectiveWatchQueue'
+          )
+          .doc(queueId);
+
+      const batch =
+        firestore.batch();
+
+      batch.update(
+        watchRef,
+        stripUndefined({
+          status:
+            requestedStatus,
+          updatedAt:
+            nowIso,
+          completedAt:
+            requestedStatus ===
+            'completed'
+              ? nowIso
+              : null,
+          serverUpdatedAt:
+            FieldValue.serverTimestamp(),
+        })
+      );
+
+      batch.set(
+        queueRef,
+        {
+          status:
+            requestedStatus,
+          updatedAt:
+            nowIso,
+          serverUpdatedAt:
+            FieldValue.serverTimestamp(),
+        },
+        {
+          merge: true,
+        }
+      );
+
+      await batch.commit();
+
+      const updated =
+        await watchRef.get();
+
+      return res.status(200).json({
+        success: true,
+        watch:
+          serializePerspectiveWatch(
+            updated
+          ),
+      });
+    } catch (err: unknown) {
+      const errorObj =
+        err as {
+          code?: string | number;
+          message?: string;
+        };
+
+      return res.status(500).json({
+        error:
+          'perspective_watch_update_failed',
+        code:
+          String(
+            errorObj?.code ??
+              'unknown'
+          ),
+        message:
+          errorObj?.message ||
+          'Failed to update Perspective Watch.',
+      });
+    }
+  }
+);
+
+/**
+ * EXPORT USER-GOVERNED MIRRORTRACE MEMORY
+ *
+ * This endpoint exports only records under the authenticated UID.
+ * Internal prompts, tokens, server timestamps and notification email
+ * addresses are intentionally excluded.
+ */
+app.get(
+  '/api/memory/export',
+  authMiddleware,
+  async (req: AuthenticatedRequest, res) => {
+    try {
+      const uid =
+        req.user!.uid;
+
+      const userRef =
+        firestore
+          .collection('users')
+          .doc(uid);
+
+      const [
+        journalsSnapshot,
+        snapshotsSnapshot,
+        diffsSnapshot,
+        provenanceSnapshot,
+        watchesSnapshot,
+      ] =
+        await Promise.all([
+          userRef
+            .collection(
+              'journals'
+            )
+            .orderBy(
+              'createdAt',
+              'asc'
+            )
+            .limit(500)
+            .get(),
+
+          userRef
+            .collection(
+              'thoughtSnapshots'
+            )
+            .orderBy(
+              'createdAt',
+              'asc'
+            )
+            .limit(500)
+            .get(),
+
+          userRef
+            .collection(
+              'thoughtDiffs'
+            )
+            .orderBy(
+              'createdAt',
+              'asc'
+            )
+            .limit(500)
+            .get(),
+
+          userRef
+            .collection(
+              'provenance'
+            )
+            .orderBy(
+              'createdAt',
+              'asc'
+            )
+            .limit(500)
+            .get(),
+
+          userRef
+            .collection(
+              'perspectiveWatches'
+            )
+            .orderBy(
+              'createdAt',
+              'asc'
+            )
+            .limit(500)
+            .get(),
+        ]);
+
+      const journals =
+        journalsSnapshot.docs.map(
+          (doc) => {
+            const data =
+              doc.data() || {};
+
+            return {
+              id: doc.id,
+              content:
+                String(
+                  data.content || ''
+                ),
+              topicTags:
+                Array.isArray(
+                  data.topicTags
+                )
+                  ? data.topicTags
+                  : [],
+              createdAt:
+                String(
+                  data.createdAt || ''
+                ),
+              updatedAt:
+                String(
+                  data.updatedAt ||
+                    data.createdAt ||
+                    ''
+                ),
+              snapshotId:
+                typeof data.snapshotId ===
+                'string'
+                  ? data.snapshotId
+                  : null,
+            };
+          }
+        );
+
+      const thoughtSnapshots =
+        snapshotsSnapshot.docs.map(
+          (doc) => {
+            const data =
+              doc.data() || {};
+
+            return {
+              id: doc.id,
+              sourceJournalId:
+                String(
+                  data.sourceJournalId ||
+                    ''
+                ),
+              positionStatement:
+                String(
+                  data.positionStatement ||
+                    ''
+                ),
+              topic:
+                String(
+                  data.topic || ''
+                ),
+              tags:
+                Array.isArray(
+                  data.tags
+                )
+                  ? data.tags
+                  : [],
+              approvalStatus:
+                String(
+                  data.approvalStatus ||
+                    'approved'
+                ),
+              userEdited:
+                Boolean(
+                  data.userEdited
+                ),
+              createdAt:
+                String(
+                  data.createdAt || ''
+                ),
+              approvedAt:
+                typeof data.approvedAt ===
+                'string'
+                  ? data.approvedAt
+                  : null,
+              memoryRetention:
+                ALLOWED_MEMORY_RETENTIONS.includes(
+                  safeString(
+                    data.memoryRetention
+                  ) as MemoryRetentionValue
+                )
+                  ? safeString(
+                      data.memoryRetention
+                    )
+                  : 'until_removed',
+              memoryExpiresAt:
+                typeof data.memoryExpiresAt ===
+                'string'
+                  ? data.memoryExpiresAt
+                  : null,
+            };
+          }
+        );
+
+      const thoughtDiffs =
+        diffsSnapshot.docs.map(
+          (doc) => {
+            const data =
+              doc.data() || {};
+
+            return {
+              id: doc.id,
+              earlierSnapshotId:
+                String(
+                  data.earlierSnapshotId ||
+                    ''
+                ),
+              laterSnapshotId:
+                String(
+                  data.laterSnapshotId ||
+                    ''
+                ),
+              earlierJournalId:
+                String(
+                  data.earlierJournalId ||
+                    ''
+                ),
+              laterJournalId:
+                String(
+                  data.laterJournalId ||
+                    ''
+                ),
+              topic:
+                String(
+                  data.topic || ''
+                ),
+              earlierPosition:
+                String(
+                  data.earlierPosition ||
+                    ''
+                ),
+              laterPosition:
+                String(
+                  data.laterPosition ||
+                    ''
+                ),
+              apparentShift:
+                String(
+                  data.apparentShift ||
+                    ''
+                ),
+              apparentContinuity:
+                String(
+                  data.apparentContinuity ||
+                    ''
+                ),
+              relationshipAssessment:
+                String(
+                  data.relationshipAssessment ||
+                    ''
+                ),
+              relationshipStatus:
+                String(
+                  data.relationshipStatus ||
+                    'verified'
+                ),
+              provenanceId:
+                typeof data.provenanceId ===
+                'string'
+                  ? data.provenanceId
+                  : undefined,
+              createdAt:
+                String(
+                  data.createdAt || ''
+                ),
+            };
+          }
+        );
+
+      const provenance =
+        provenanceSnapshot.docs.map(
+          (doc) => {
+            const data =
+              doc.data() || {};
+
+            return {
+              id: doc.id,
+              diffId:
+                String(
+                  data.diffId || ''
+                ),
+              earlierSnapshotId:
+                String(
+                  data.earlierSnapshotId ||
+                    ''
+                ),
+              laterSnapshotId:
+                String(
+                  data.laterSnapshotId ||
+                    ''
+                ),
+              earlierJournalId:
+                String(
+                  data.earlierJournalId ||
+                    ''
+                ),
+              laterJournalId:
+                String(
+                  data.laterJournalId ||
+                    ''
+                ),
+              earlierDate:
+                String(
+                  data.earlierDate || ''
+                ),
+              laterDate:
+                String(
+                  data.laterDate || ''
+                ),
+              earlierExcerpt:
+                String(
+                  data.earlierExcerpt ||
+                    ''
+                ),
+              laterExcerpt:
+                String(
+                  data.laterExcerpt ||
+                    ''
+                ),
+              earlierPosition:
+                String(
+                  data.earlierPosition ||
+                    ''
+                ),
+              laterPosition:
+                String(
+                  data.laterPosition ||
+                    ''
+                ),
+              createdAt:
+                String(
+                  data.createdAt || ''
+                ),
+            };
+          }
+        );
+
+      const perspectiveWatches =
+        watchesSnapshot.docs.map(
+          (doc) =>
+            serializePerspectiveWatch(
+              doc
+            )
+        );
+
+      return res.status(200).json({
+        exportVersion: 1,
+        exportedAt:
+          new Date().toISOString(),
+        journals,
+        thoughtSnapshots,
+        thoughtDiffs,
+        provenance,
+        perspectiveWatches,
+      });
+    } catch (err: unknown) {
+      const errorObj =
+        err as {
+          code?: string | number;
+          message?: string;
+        };
+
+      return res.status(500).json({
+        error:
+          'memory_export_failed',
+        code:
+          String(
+            errorObj?.code ??
+              'unknown'
+          ),
+        message:
+          errorObj?.message ||
+          'Failed to export MirrorTrace memory.',
+      });
+    }
+  }
+);
+
+/**
+ * INTERNAL SCHEDULER ENDPOINT
+ *
+ * Intended for Google Cloud Scheduler.
+ *
+ * Required environment variable:
+ * MIRRORTRACE_SCHEDULER_SECRET
+ *
+ * Optional environment variables:
+ * MIRRORTRACE_APP_URL
+ * MIRRORTRACE_MAIL_COLLECTION (default: mail)
+ *
+ * If Firebase Trigger Email is installed and configured to watch the
+ * selected collection, writing the mail document causes email delivery.
+ */
+app.post(
+  '/api/internal/process-perspective-watches',
+  async (req, res) => {
+    try {
+      const expectedSecret =
+        safeString(
+          process.env
+            .MIRRORTRACE_SCHEDULER_SECRET
+        );
+
+      if (!expectedSecret) {
+        return res.status(503).json({
+          error:
+            'scheduler_not_configured',
+          message:
+            'MIRRORTRACE_SCHEDULER_SECRET is not configured.',
+        });
+      }
+
+      const providedSecret =
+        safeString(
+          req.get(
+            'x-mirrortrace-scheduler-secret'
+          )
+        );
+
+      if (
+        !providedSecret ||
+        providedSecret !==
+          expectedSecret
+      ) {
+        return res.status(401).json({
+          error:
+            'scheduler_unauthorized',
+        });
+      }
+
+      const nowIso =
+        new Date().toISOString();
+
+      const dueQueue =
+        await firestore
+          .collection(
+            'perspectiveWatchQueue'
+          )
+          .where(
+            'revisitAt',
+            '<=',
+            nowIso
+          )
+          .limit(100)
+          .get();
+
+      let processed =
+        0;
+
+      let emailsQueued =
+        0;
+
+      for (
+        const queueDoc of
+        dueQueue.docs
+      ) {
+        const queueData =
+          queueDoc.data() || {};
+
+        if (
+          safeString(
+            queueData.status
+          ) !== 'scheduled'
+        ) {
+          continue;
+        }
+
+        const uid =
+          safeString(
+            queueData.uid
+          );
+
+        const watchId =
+          safeString(
+            queueData.watchId
+          );
+
+        if (
+          !uid ||
+          !watchId
+        ) {
+          continue;
+        }
+
+        const watchRef =
+          firestore
+            .collection('users')
+            .doc(uid)
+            .collection(
+              'perspectiveWatches'
+            )
+            .doc(watchId);
+
+        const mailCollection =
+          safeString(
+            process.env
+              .MIRRORTRACE_MAIL_COLLECTION
+          ) || 'mail';
+
+        const mailRef =
+          firestore
+            .collection(
+              mailCollection
+            )
+            .doc(
+              `perspective-watch-${queueDoc.id}`
+            );
+
+        const appUrl =
+          safeString(
+            process.env
+              .MIRRORTRACE_APP_URL
+          );
+
+        let emailQueued =
+          false;
+
+        await firestore.runTransaction(
+          async (transaction) => {
+            const freshQueue =
+              await transaction.get(
+                queueDoc.ref
+              );
+
+            const freshWatch =
+              await transaction.get(
+                watchRef
+              );
+
+            if (
+              !freshQueue.exists ||
+              !freshWatch.exists
+            ) {
+              return;
+            }
+
+            const freshQueueData =
+              freshQueue.data() ||
+              {};
+
+            const freshWatchData =
+              freshWatch.data() ||
+              {};
+
+            if (
+              safeString(
+                freshQueueData.status
+              ) !== 'scheduled' ||
+              safeString(
+                freshWatchData.status
+              ) !== 'scheduled'
+            ) {
+              return;
+            }
+
+            const emailEnabled =
+              Boolean(
+                freshWatchData.emailEnabled
+              );
+
+            const notificationEmail =
+              safeString(
+                freshWatchData.notificationEmail
+              );
+
+            const alreadyNotified =
+              Boolean(
+                safeString(
+                  freshWatchData.notifiedAt
+                )
+              );
+
+            const topic =
+              safeString(
+                freshWatchData.topic
+              ) ||
+              'a perspective';
+
+            if (
+              emailEnabled &&
+              notificationEmail &&
+              !alreadyNotified
+            ) {
+              const openAppLine =
+                appUrl
+                  ? `Open MirrorTrace: ${appUrl}`
+                  : 'Open MirrorTrace to review it securely.';
+
+              transaction.set(
+                mailRef,
+                {
+                  to: [
+                    notificationEmail,
+                  ],
+                  message: {
+                    subject:
+                      `A perspective you wanted to revisit — ${topic}`,
+                    text:
+                      [
+                        'A perspective you chose to watch in MirrorTrace is ready to revisit.',
+                        '',
+                        `Topic: ${topic}`,
+                        '',
+                        'For privacy, this email does not include your journal text or full AI memory.',
+                        openAppLine,
+                      ].join('\n'),
+                  },
+                  mirrorTraceMetadata: {
+                    type:
+                      'perspective_watch_due',
+                    uid,
+                    watchId,
+                    diffId:
+                      safeString(
+                        freshWatchData.diffId
+                      ),
+                  },
+                  createdAt:
+                    nowIso,
+                },
+                {
+                  merge: false,
+                }
+              );
+
+              emailQueued =
+                true;
+            }
+
+            transaction.update(
+              watchRef,
+              {
+                status: 'due',
+                notifiedAt:
+                  emailQueued
+                    ? nowIso
+                    : freshWatchData.notifiedAt ||
+                      null,
+                updatedAt:
+                  nowIso,
+                serverUpdatedAt:
+                  FieldValue.serverTimestamp(),
+              }
+            );
+
+            transaction.update(
+              queueDoc.ref,
+              {
+                status: 'processed',
+                processedAt:
+                  nowIso,
+                updatedAt:
+                  nowIso,
+                serverUpdatedAt:
+                  FieldValue.serverTimestamp(),
+              }
+            );
+          }
+        );
+
+        processed++;
+
+        if (emailQueued) {
+          emailsQueued++;
+        }
+      }
+
+      return res.status(200).json({
+        success: true,
+        processed,
+        emailsQueued,
+        checkedAt:
+          nowIso,
+      });
+    } catch (err: unknown) {
+      const errorObj =
+        err as {
+          code?: string | number;
+          message?: string;
+        };
+
+      console.error(
+        '[MirrorTrace] Perspective Watch scheduler failed',
+        {
+          code: errorObj?.code,
+          message:
+            errorObj?.message,
+        }
+      );
+
+      return res.status(500).json({
+        error:
+          'perspective_watch_scheduler_failed',
+        code:
+          String(
+            errorObj?.code ??
+              'unknown'
+          ),
+        message:
+          errorObj?.message ||
+          'Failed to process due Perspective Watches.',
       });
     }
   }

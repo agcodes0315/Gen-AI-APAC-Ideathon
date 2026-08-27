@@ -43,6 +43,34 @@ service cloud.firestore {
           if request.auth != null &&
              request.auth.uid == userId;
       }
+
+      /*
+       * Perspective Watch remains owner-bound exactly like the
+       * journal, approved memory, Thought Diffs and provenance.
+       */
+      match /perspectiveWatches/{watchId} {
+        allow read, write:
+          if request.auth != null &&
+             request.auth.uid == userId;
+      }
+    }
+
+    /*
+     * IMPORTANT:
+     *
+     * perspectiveWatchQueue/* and mail/* are intentionally NOT
+     * exposed to browser clients. They are written only through
+     * the Firebase Admin SDK running on the trusted backend.
+     *
+     * Admin SDK access is controlled by IAM and bypasses client
+     * Firestore Security Rules.
+     */
+    match /perspectiveWatchQueue/{queueId} {
+      allow read, write: if false;
+    }
+
+    match /mail/{mailId} {
+      allow read, write: if false;
     }
 
     match /{document=**} {
