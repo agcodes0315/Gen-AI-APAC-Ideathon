@@ -42,10 +42,6 @@ function safeText(
    PUBLIC FIREBASE WEB CONFIG
    ============================================================ */
 
-/**
- * These values are intentionally public Firebase Web SDK config.
- * This route never returns server credentials or service-account data.
- */
 router.get(
   '/api/notifications/firebase-config',
   (_req, res) => {
@@ -120,6 +116,68 @@ router.get(
 );
 
 /* ============================================================
+   PUSH STATUS
+   ============================================================ */
+
+router.get(
+  '/api/notifications/push/status',
+  authMiddleware,
+  async (
+    req:
+      AuthenticatedRequest,
+    res
+  ) => {
+    try {
+      const uid =
+        req.user!.uid;
+
+      const snapshot =
+        await firestore
+          .collection('users')
+          .doc(uid)
+          .collection(
+            'pushDevices'
+          )
+          .where(
+            'enabled',
+            '==',
+            true
+          )
+          .limit(25)
+          .get();
+
+      return res
+        .status(200)
+        .json({
+          success:
+            true,
+
+          registeredDevices:
+            snapshot.size,
+        });
+    } catch (
+      error
+    ) {
+      console.error(
+        '[MirrorTrace Push] Status lookup failed:',
+        (error as Error)
+          ?.message
+      );
+
+      return res
+        .status(500)
+        .json({
+          error:
+            'push_status_failed',
+
+          message:
+            'Could not read push-device registration status.',
+        });
+    }
+  }
+);
+
+/* ============================================================
    REGISTER DEVICE
    ============================================================ */
 
@@ -184,11 +242,29 @@ router.post(
           ),
       });
 
+      const snapshot =
+        await firestore
+          .collection('users')
+          .doc(uid)
+          .collection(
+            'pushDevices'
+          )
+          .where(
+            'enabled',
+            '==',
+            true
+          )
+          .limit(25)
+          .get();
+
       return res
         .status(201)
         .json({
           success:
             true,
+
+          registeredDevices:
+            snapshot.size,
 
           message:
             'This device is registered for MirrorTrace push notifications.',
@@ -209,6 +285,8 @@ router.post(
             'push_registration_failed',
 
           message:
+            (error as Error)
+              ?.message ||
             'Could not register this device for notifications.',
         });
     }
@@ -261,11 +339,29 @@ router.post(
         token
       );
 
+      const snapshot =
+        await firestore
+          .collection('users')
+          .doc(uid)
+          .collection(
+            'pushDevices'
+          )
+          .where(
+            'enabled',
+            '==',
+            true
+          )
+          .limit(25)
+          .get();
+
       return res
         .status(200)
         .json({
           success:
             true,
+
+          registeredDevices:
+            snapshot.size,
         });
     } catch (
       error
@@ -354,12 +450,28 @@ router.post(
           });
       }
 
+      if (
+        result.delivered ===
+        0
+      ) {
+        return res
+          .status(502)
+          .json({
+            error:
+              'push_delivery_failed',
+
+            message:
+              'MirrorTrace found the registered device, but Firebase could not deliver the test notification.',
+
+            ...result,
+          });
+      }
+
       return res
         .status(200)
         .json({
           success:
-            result.delivered >
-            0,
+            true,
 
           ...result,
         });
@@ -388,19 +500,9 @@ router.post(
 );
 
 /* ============================================================
-   INTERNAL PERSPECTIVE PUSH PROCESSOR
+   INTERNAL PERSPECTIVE WATCH PUSH PROCESSOR
    ============================================================ */
 
-/**
- * This endpoint is intentionally separate from the existing email
- * Perspective Watch processor so existing email logic remains untouched.
- *
- * Cloud Scheduler may call:
- *
- * POST /api/internal/process-perspective-push
- * header:
- * x-mirrortrace-scheduler-secret
- */
 router.post(
   '/api/internal/process-perspective-push',
   async (
@@ -608,6 +710,10 @@ router.post(
             updateData
               .pushNotifiedAt =
               nowIso;
+
+            updateData
+              .pushError =
+              null;
           }
 
           if (

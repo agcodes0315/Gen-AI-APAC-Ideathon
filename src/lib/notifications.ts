@@ -19,24 +19,29 @@ export type PushPermissionState =
   | 'denied'
   | 'granted';
 
+export interface PushSubscriptionStatus {
+  supported: boolean;
+
+  configured: boolean;
+
+  permission:
+    PushPermissionState;
+
+  registeredDevices:
+    number;
+}
+
 export interface PushRegistrationResult {
   success: boolean;
 
   permission:
     PushPermissionState;
 
-  token?: string;
+  registeredDevices:
+    number;
 
-  message: string;
-}
-
-export interface PushSubscriptionStatus {
-  supported: boolean;
-
-  permission:
-    PushPermissionState;
-
-  configured: boolean;
+  message:
+    string;
 }
 
 const SERVICE_WORKER_PATH =
@@ -55,7 +60,7 @@ function getVapidKey():
 }
 
 /* ============================================================
-   FIREBASE MESSAGING
+   MESSAGING SUPPORT
    ============================================================ */
 
 async function getMessagingIfSupported():
@@ -102,186 +107,11 @@ async function getMessagingIfSupported():
 }
 
 /* ============================================================
-   SERVICE WORKER
-   ============================================================ */
-
-function waitForWorkerState(
-  worker:
-    ServiceWorker
-): Promise<void> {
-  if (
-    worker.state ===
-      'activated'
-  ) {
-    return Promise.resolve();
-  }
-
-  return new Promise(
-    (
-      resolve,
-      reject
-    ) => {
-      const timeout =
-        window.setTimeout(
-          () => {
-            reject(
-              new Error(
-                'MirrorTrace notification worker did not activate in time.'
-              )
-            );
-          },
-          15000
-        );
-
-      const handleStateChange =
-        () => {
-          if (
-            worker.state ===
-              'activated'
-          ) {
-            window.clearTimeout(
-              timeout
-            );
-
-            worker.removeEventListener(
-              'statechange',
-              handleStateChange
-            );
-
-            resolve();
-          }
-
-          if (
-            worker.state ===
-              'redundant'
-          ) {
-            window.clearTimeout(
-              timeout
-            );
-
-            worker.removeEventListener(
-              'statechange',
-              handleStateChange
-            );
-
-            reject(
-              new Error(
-                'MirrorTrace notification worker became redundant before activation.'
-              )
-            );
-          }
-        };
-
-      worker.addEventListener(
-        'statechange',
-        handleStateChange
-      );
-    }
-  );
-}
-
-async function waitForRegistrationActive(
-  registration:
-    ServiceWorkerRegistration
-): Promise<ServiceWorkerRegistration> {
-  if (
-    registration.active
-  ) {
-    return registration;
-  }
-
-  const worker =
-    registration.installing ||
-    registration.waiting;
-
-  if (worker) {
-    await waitForWorkerState(
-      worker
-    );
-  }
-
-  /*
-   * Give the browser a chance to promote the worker
-   * from waiting/installing -> active.
-   */
-  for (
-    let attempt = 0;
-    attempt < 30;
-    attempt += 1
-  ) {
-    if (
-      registration.active
-    ) {
-      return registration;
-    }
-
-    await new Promise(
-      (resolve) =>
-        window.setTimeout(
-          resolve,
-          100
-        )
-    );
-  }
-
-  throw new Error(
-    'MirrorTrace service worker is installed but is not active yet. Reload the page once and try again.'
-  );
-}
-
-async function registerMessagingServiceWorker():
-  Promise<ServiceWorkerRegistration> {
-  if (
-    !(
-      'serviceWorker'
-      in navigator
-    )
-  ) {
-    throw new Error(
-      'Service workers are not supported in this browser.'
-    );
-  }
-
-  /*
-   * Registering the same URL updates an existing worker
-   * instead of creating unrelated registrations.
-   */
-  const registration =
-    await navigator
-      .serviceWorker
-      .register(
-        SERVICE_WORKER_PATH,
-        {
-          scope:
-            SERVICE_WORKER_SCOPE,
-
-          updateViaCache:
-            'none',
-        }
-      );
-
-  /*
-   * Force Chrome to inspect the new worker file rather than
-   * continuing to use an older development copy.
-   */
-  await registration
-    .update()
-    .catch(
-      () => undefined
-    );
-
-  return waitForRegistrationActive(
-    registration
-  );
-}
-
-/* ============================================================
-   AUTHENTICATED NOTIFICATION API
+   AUTH REQUEST
    ============================================================ */
 
 async function authenticatedRequest(
   url: string,
-
   options:
     RequestInit = {}
 ): Promise<
@@ -324,7 +154,6 @@ async function authenticatedRequest(
       url,
       {
         ...options,
-
         headers,
       }
     );
@@ -361,6 +190,207 @@ async function authenticatedRequest(
 }
 
 /* ============================================================
+   SERVICE WORKER
+   ============================================================ */
+
+function waitForWorkerState(
+  worker:
+    ServiceWorker
+): Promise<void> {
+  if (
+    worker.state ===
+      'activated'
+  ) {
+    return Promise.resolve();
+  }
+
+  return new Promise(
+    (
+      resolve,
+      reject
+    ) => {
+      const timeout =
+        window.setTimeout(
+          () => {
+            reject(
+              new Error(
+                'The MirrorTrace notification worker did not activate in time.'
+              )
+            );
+          },
+          15000
+        );
+
+      const handleStateChange =
+        () => {
+          if (
+            worker.state ===
+              'activated'
+          ) {
+            window.clearTimeout(
+              timeout
+            );
+
+            worker.removeEventListener(
+              'statechange',
+              handleStateChange
+            );
+
+            resolve();
+          }
+
+          if (
+            worker.state ===
+              'redundant'
+          ) {
+            window.clearTimeout(
+              timeout
+            );
+
+            worker.removeEventListener(
+              'statechange',
+              handleStateChange
+            );
+
+            reject(
+              new Error(
+                'The MirrorTrace notification worker became redundant.'
+              )
+            );
+          }
+        };
+
+      worker.addEventListener(
+        'statechange',
+        handleStateChange
+      );
+    }
+  );
+}
+
+async function registerMessagingServiceWorker():
+  Promise<ServiceWorkerRegistration> {
+  if (
+    !(
+      'serviceWorker'
+      in navigator
+    )
+  ) {
+    throw new Error(
+      'Service workers are not supported in this browser.'
+    );
+  }
+
+  const registration =
+    await navigator
+      .serviceWorker
+      .register(
+        SERVICE_WORKER_PATH,
+        {
+          scope:
+            SERVICE_WORKER_SCOPE,
+
+          updateViaCache:
+            'none',
+        }
+      );
+
+  await registration
+    .update()
+    .catch(
+      () => undefined
+    );
+
+  if (
+    registration.active
+  ) {
+    return registration;
+  }
+
+  const worker =
+    registration.installing ||
+    registration.waiting;
+
+  if (worker) {
+    await waitForWorkerState(
+      worker
+    );
+  }
+
+  for (
+    let attempt = 0;
+    attempt < 30;
+    attempt += 1
+  ) {
+    if (
+      registration.active
+    ) {
+      return registration;
+    }
+
+    await new Promise(
+      (
+        resolve
+      ) =>
+        window.setTimeout(
+          resolve,
+          100
+        )
+    );
+  }
+
+  throw new Error(
+    'The notification worker is installed but not active. Reload MirrorTrace and try again.'
+  );
+}
+
+/* ============================================================
+   BACKEND DEVICE COUNT
+   ============================================================ */
+
+async function getBackendRegistrationCount():
+  Promise<number> {
+  try {
+    const data =
+      await authenticatedRequest(
+        '/api/notifications/push/status',
+        {
+          method:
+            'GET',
+        }
+      );
+
+    const count =
+      Number(
+        data.registeredDevices ||
+          0
+      );
+
+    if (
+      !Number.isFinite(
+        count
+      )
+    ) {
+      return 0;
+    }
+
+    return Math.max(
+      0,
+      count
+    );
+  } catch (
+    error
+  ) {
+    console.warn(
+      '[MirrorTrace] Could not read push registration status:',
+      error
+    );
+
+    return 0;
+  }
+}
+
+/* ============================================================
    STATUS
    ============================================================ */
 
@@ -372,18 +402,23 @@ export async function getPushSubscriptionStatus():
   const messaging =
     await getMessagingIfSupported();
 
+  const registeredDevices =
+    await getBackendRegistrationCount();
+
   if (!messaging) {
     return {
       supported:
         false,
 
-      permission:
-        'unsupported',
-
       configured:
         Boolean(
           vapidKey
         ),
+
+      permission:
+        'unsupported',
+
+      registeredDevices,
     };
   }
 
@@ -391,18 +426,20 @@ export async function getPushSubscriptionStatus():
     supported:
       true,
 
-    permission:
-      Notification.permission,
-
     configured:
       Boolean(
         vapidKey
       ),
+
+    permission:
+      Notification.permission,
+
+    registeredDevices,
   };
 }
 
 /* ============================================================
-   ENABLE
+   ENABLE / REGISTER
    ============================================================ */
 
 export async function enablePushNotifications():
@@ -421,6 +458,9 @@ export async function enablePushNotifications():
           ? Notification.permission
           : 'unsupported',
 
+      registeredDevices:
+        0,
+
       message:
         'Firebase Web Push is not configured. Add VITE_FIREBASE_VAPID_KEY first.',
     };
@@ -436,6 +476,9 @@ export async function enablePushNotifications():
 
       permission:
         'unsupported',
+
+      registeredDevices:
+        0,
 
       message:
         'Push notifications are not supported in this browser or device context.',
@@ -464,6 +507,9 @@ export async function enablePushNotifications():
 
       permission,
 
+      registeredDevices:
+        0,
+
       message:
         permission ===
         'denied'
@@ -488,33 +534,21 @@ export async function enablePushNotifications():
       permission:
         'granted',
 
+      registeredDevices:
+        await getBackendRegistrationCount(),
+
       message:
         (error as Error)
           ?.message ||
-        'MirrorTrace could not activate its notification service worker.',
+        'Could not activate the MirrorTrace notification worker.',
     };
   }
 
-  if (
-    !registration.active
-  ) {
-    return {
-      success:
-        false,
-
-      permission:
-        'granted',
-
-      message:
-        'The notification worker is not active yet. Reload MirrorTrace once and try again.',
-    };
-  }
-
-  let token:
+  let fcmToken:
     string;
 
   try {
-    token =
+    fcmToken =
       await getToken(
         messaging,
         {
@@ -528,7 +562,7 @@ export async function enablePushNotifications():
     error: unknown
   ) {
     console.error(
-      '[MirrorTrace] FCM token creation failed:',
+      '[MirrorTrace] FCM token generation failed:',
       error
     );
 
@@ -539,14 +573,17 @@ export async function enablePushNotifications():
       permission:
         'granted',
 
+      registeredDevices:
+        await getBackendRegistrationCount(),
+
       message:
         (error as Error)
           ?.message ||
-        'Firebase could not create a push subscription for this device.',
+        'Firebase could not generate a notification token for this device.',
     };
   }
 
-  if (!token) {
+  if (!fcmToken) {
     return {
       success:
         false,
@@ -554,49 +591,88 @@ export async function enablePushNotifications():
       permission:
         'granted',
 
+      registeredDevices:
+        await getBackendRegistrationCount(),
+
       message:
-        'Firebase did not return a notification token for this device.',
+        'Firebase did not return a notification token.',
     };
   }
 
-  await authenticatedRequest(
-    '/api/notifications/push/register',
-    {
-      method:
-        'POST',
+  try {
+    const result =
+      await authenticatedRequest(
+        '/api/notifications/push/register',
+        {
+          method:
+            'POST',
 
-      body:
-        JSON.stringify({
-          token,
+          body:
+            JSON.stringify({
+              token:
+                fcmToken,
 
-          platform:
-            navigator.platform ||
-            'web',
+              platform:
+                navigator.platform ||
+                'web',
 
-          userAgent:
-            navigator.userAgent,
+              userAgent:
+                navigator.userAgent,
 
-          timezone:
-            Intl
-              .DateTimeFormat()
-              .resolvedOptions()
-              .timeZone,
-        }),
-    }
-  );
+              timezone:
+                Intl
+                  .DateTimeFormat()
+                  .resolvedOptions()
+                  .timeZone,
+            }),
+        }
+      );
 
-  return {
-    success:
-      true,
+    const registeredDevices =
+      Number(
+        result.registeredDevices ||
+          1
+      );
 
-    permission:
-      'granted',
+    return {
+      success:
+        true,
 
-    token,
+      permission:
+        'granted',
 
-    message:
-      'Push notifications are enabled on this device.',
-  };
+      registeredDevices:
+        Number.isFinite(
+          registeredDevices
+        )
+          ? Math.max(
+              1,
+              registeredDevices
+            )
+          : 1,
+
+      message:
+        'This device is registered for MirrorTrace push notifications.',
+    };
+  } catch (
+    error: unknown
+  ) {
+    return {
+      success:
+        false,
+
+      permission:
+        'granted',
+
+      registeredDevices:
+        await getBackendRegistrationCount(),
+
+      message:
+        (error as Error)
+          ?.message ||
+        'The browser token was created, but MirrorTrace could not save this device registration.',
+    };
+  }
 }
 
 /* ============================================================
@@ -604,19 +680,19 @@ export async function enablePushNotifications():
    ============================================================ */
 
 export async function disablePushNotifications():
-  Promise<void> {
+  Promise<number> {
   const messaging =
     await getMessagingIfSupported();
 
   if (!messaging) {
-    return;
+    return getBackendRegistrationCount();
   }
 
   const vapidKey =
     getVapidKey();
 
   if (!vapidKey) {
-    return;
+    return getBackendRegistrationCount();
   }
 
   try {
@@ -646,8 +722,6 @@ export async function disablePushNotifications():
               token,
             }),
         }
-      ).catch(
-        () => undefined
       );
     }
 
@@ -662,10 +736,12 @@ export async function disablePushNotifications():
       error
     );
   }
+
+  return getBackendRegistrationCount();
 }
 
 /* ============================================================
-   TEST
+   TEST PUSH
    ============================================================ */
 
 export async function sendTestPushNotification():
@@ -680,7 +756,7 @@ export async function sendTestPushNotification():
 }
 
 /* ============================================================
-   FOREGROUND DELIVERY
+   FOREGROUND MESSAGES
    ============================================================ */
 
 export async function subscribeToForegroundMessages(

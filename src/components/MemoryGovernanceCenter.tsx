@@ -40,8 +40,8 @@ import {
 } from '../lib/api.ts';
 
 import {
-  NotificationSettings,
-} from './NotificationSettings.tsx';
+  PushNotificationSettings,
+} from './PushNotificationSettings.tsx';
 
 interface MemoryGovernanceCenterProps {
   onMemoryChanged?: () => void;
@@ -585,7 +585,7 @@ export const MemoryGovernanceCenter:
         )}
 
         {/* Notification delivery */}
-        <NotificationSettings />
+        <PushNotificationSettings />
 
         {/* Governance principles */}
         <section className="grid grid-cols-1 gap-3 lg:grid-cols-3">
