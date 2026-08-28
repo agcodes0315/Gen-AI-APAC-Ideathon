@@ -41,6 +41,10 @@ import {
   SecurityBadge,
 } from './components/SecurityBadge.tsx';
 
+import {
+  MemoryGovernanceCenter,
+} from './components/MemoryGovernanceCenter.tsx';
+
 import SupportCenter from './components/SupportCenter.tsx';
 
 import ProductReviews from './components/ProductReviews.tsx';
@@ -64,6 +68,7 @@ export type MainTab =
   | 'overview'
   | 'journal'
   | 'history'
+  | 'memory'
   | 'support'
   | 'feedback';
 
@@ -71,20 +76,19 @@ type HistorySubTab =
   | 'reflections'
   | 'diffs';
 
-const scrollPageToTop =
-  () => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'auto',
-    });
+const scrollPageToTop = () => {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'auto',
+  });
 
-    document.documentElement.scrollTop =
-      0;
+  document.documentElement.scrollTop =
+    0;
 
-    document.body.scrollTop =
-      0;
-  };
+  document.body.scrollTop =
+    0;
+};
 
 export default function App() {
   const [
@@ -174,7 +178,7 @@ export default function App() {
     useState(true);
 
   /* ============================================================
-     AUTHENTICATION
+     AUTH
      ============================================================ */
 
   useEffect(() => {
@@ -217,7 +221,7 @@ export default function App() {
   }, []);
 
   /* ============================================================
-     SCROLL MANAGEMENT
+     PAGE SCROLL
      ============================================================ */
 
   useLayoutEffect(() => {
@@ -229,7 +233,7 @@ export default function App() {
   ]);
 
   /* ============================================================
-     LOAD USER DATA
+     USER DATA
      ============================================================ */
 
   const loadData =
@@ -364,7 +368,7 @@ export default function App() {
     };
 
   /* ============================================================
-     JOURNAL CALLBACKS
+     JOURNAL EVENTS
      ============================================================ */
 
   const handleEntrySaved =
@@ -473,7 +477,7 @@ export default function App() {
     };
 
   /* ============================================================
-     AUTH LOADING
+     LOADING
      ============================================================ */
 
   if (
@@ -481,7 +485,9 @@ export default function App() {
   ) {
     return (
       <div className="min-h-screen bg-stone-100 flex flex-col items-center justify-center space-y-3">
+
         <div className="w-10 h-10 rounded-xl bg-amber-800 flex items-center justify-center text-amber-50 shadow-xs">
+
           <span className="font-serif font-bold text-lg">
             M
           </span>
@@ -528,12 +534,14 @@ export default function App() {
   }
 
   /* ============================================================
-     AUTHENTICATED APPLICATION
+     APPLICATION
      ============================================================ */
 
   return (
     <div className="min-h-screen bg-stone-100 flex flex-col justify-between">
+
       <div className="w-full">
+
         <Navbar
           user={
             user
@@ -581,7 +589,7 @@ export default function App() {
           )}
 
           {/* ==================================================
-              REFLECT + CHAT
+              REFLECT & CHAT
               ================================================== */}
 
           {activeTab ===
@@ -591,18 +599,14 @@ export default function App() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
 
                 <div>
+
                   <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
-                    Reflective
-                    Space
+                    Reflective Space
                   </h1>
 
                   <p className="text-xs text-stone-500 font-sans">
-                    Articulate
-                    thoughts with
-                    the brainstorm
-                    companion, or
-                    write down your
-                    reflection
+                    Articulate thoughts with the brainstorm
+                    companion, or write down your reflection
                     directly.
                   </p>
                 </div>
@@ -611,6 +615,7 @@ export default function App() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
                 <div className="lg:col-span-6 space-y-6">
+
                   <JournalEditor
                     onEntrySaved={
                       handleEntrySaved
@@ -630,6 +635,7 @@ export default function App() {
                 </div>
 
                 <div className="lg:col-span-6">
+
                   <BrainstormChat
                     onSuggestedTagClick={
                       handleSuggestedTagClick
@@ -651,17 +657,14 @@ export default function App() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
 
                 <div>
+
                   <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
-                    Journal
-                    History
+                    Journal History
                   </h1>
 
                   <p className="text-xs text-stone-500 font-sans">
-                    All reflections
-                    saved securely
-                    under your
-                    verified
-                    Firebase UID.
+                    All reflections saved securely under your
+                    verified Firebase UID.
                   </p>
                 </div>
               </div>
@@ -684,7 +687,26 @@ export default function App() {
           )}
 
           {/* ==================================================
-              CUSTOMER SUPPORT
+              MEMORY GOVERNANCE
+              ================================================== */}
+
+          {activeTab ===
+            'memory' && (
+            <MemoryGovernanceCenter
+              onMemoryChanged={() => {
+                setRefreshCounter(
+                  (
+                    previous
+                  ) =>
+                    previous +
+                    1
+                );
+              }}
+            />
+          )}
+
+          {/* ==================================================
+              SUPPORT
               ================================================== */}
 
           {activeTab ===
@@ -696,8 +718,7 @@ export default function App() {
                 <div className="flex flex-wrap items-center gap-2">
 
                   <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
-                    Customer
-                    Support
+                    Customer Support
                   </h1>
 
                   <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700">
@@ -705,10 +726,8 @@ export default function App() {
                   </span>
                 </div>
 
-                <p className="mt-1 text-xs text-stone-500 font-sans">
-                  Ask for help
-                  without exposing
-                  your private
+                <p className="mt-1 text-xs text-stone-500">
+                  Ask for help without exposing your private
                   reflection history.
                 </p>
               </div>
@@ -718,7 +737,7 @@ export default function App() {
           )}
 
           {/* ==================================================
-              PRODUCT FEEDBACK
+              FEEDBACK
               ================================================== */}
 
           {activeTab ===
@@ -734,18 +753,13 @@ export default function App() {
                   </h1>
 
                   <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-800">
-                    Consent
-                    controlled
+                    Consent controlled
                   </span>
                 </div>
 
-                <p className="mt-1 text-xs text-stone-500 font-sans">
-                  Share product
-                  feedback and
-                  choose whether a
-                  review may be
-                  considered for
-                  public display.
+                <p className="mt-1 text-xs text-stone-500">
+                  Share product feedback and decide whether your
+                  review may be considered for public display.
                 </p>
               </div>
 
@@ -756,13 +770,6 @@ export default function App() {
           <SecurityBadge />
         </main>
       </div>
-
-      {/* ======================================================
-          ADMIN ACCESS
-
-          Component renders its launcher only after the
-          backend verifies an admin/super_admin Firebase claim.
-          ====================================================== */}
 
       <AdminPanelLauncher />
     </div>
