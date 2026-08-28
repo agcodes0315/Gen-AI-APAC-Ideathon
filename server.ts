@@ -2,6 +2,7 @@
 
 import express from 'express';
 import path from 'path';
+import { adminRouter } from './server/adminRoutes.ts';
 import { createServer as createViteServer } from 'vite';
 
 import {
@@ -29,6 +30,7 @@ import {
 
 import { notificationRouter } from './server/notificationRoutes.ts';
 import { emailRouter } from './server/emailRoutes.ts';
+import { supportReviewRouter } from './server/supportReviewRoutes.ts';
 
 const app = express();
 
@@ -63,6 +65,8 @@ console.log('[MirrorTrace] Backend configuration', {
 
 app.use(notificationRouter);
 app.use(emailRouter);
+app.use(adminRouter);
+app.use(supportReviewRouter);
 
 /* ============================================================
    3. HEALTH ROUTE
@@ -4353,6 +4357,8 @@ startServer().catch(
     process.exit(1);
   }
 );
+
+
 
 
 
