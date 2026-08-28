@@ -12,7 +12,8 @@ import {
   Compass,
   Moon,
   Sun,
-  Database,
+  LifeBuoy,
+  Star,
 } from 'lucide-react';
 
 import type {
@@ -23,7 +24,8 @@ type MainTab =
   | 'overview'
   | 'journal'
   | 'history'
-  | 'memory';
+  | 'support'
+  | 'feedback';
 
 interface NavbarProps {
   user:
@@ -97,9 +99,10 @@ export const Navbar:
         getInitialTheme
       );
 
-    /*
-     * Global application theme.
-     */
+    /* ========================================================
+       GLOBAL THEME
+       ======================================================== */
+
     useEffect(() => {
       const root =
         document
@@ -175,7 +178,10 @@ export const Navbar:
 
           <div className="mirrortrace-navbar-inner">
 
-            {/* Brand */}
+            {/* ==================================================
+                BRAND
+                ================================================== */}
+
             <button
               type="button"
               onClick={() =>
@@ -208,13 +214,17 @@ export const Navbar:
                 </div>
 
                 <p className="mirrortrace-brand-subtitle">
-                  Version control for
-                  your thinking
+                  Version control
+                  for your
+                  thinking
                 </p>
               </div>
             </button>
 
-            {/* Desktop navigation */}
+            {/* ==================================================
+                DESKTOP NAVIGATION
+                ================================================== */}
+
             <nav
               className="mirrortrace-main-nav"
               aria-label="Primary navigation"
@@ -284,31 +294,56 @@ export const Navbar:
               </button>
 
               <button
-                id="tab-memory"
+                id="tab-support"
                 type="button"
                 onClick={() =>
                   onTabChange(
-                    'memory'
+                    'support'
                   )
                 }
                 className={
                   navClass(
-                    'memory'
+                    'support'
                   )
                 }
               >
-                <Database className="w-4 h-4" />
+                <LifeBuoy className="w-4 h-4" />
 
                 <span>
-                  Memory Control
+                  Support
+                </span>
+              </button>
+
+              <button
+                id="tab-feedback"
+                type="button"
+                onClick={() =>
+                  onTabChange(
+                    'feedback'
+                  )
+                }
+                className={
+                  navClass(
+                    'feedback'
+                  )
+                }
+              >
+                <Star className="w-4 h-4" />
+
+                <span>
+                  Feedback
                 </span>
               </button>
             </nav>
 
-            {/* Right controls */}
+            {/* ==================================================
+                RIGHT CONTROLS
+                ================================================== */}
+
             <div className="mirrortrace-navbar-actions">
 
               {/* Theme toggle */}
+
               <button
                 id="btn-theme-toggle"
                 type="button"
@@ -338,6 +373,7 @@ export const Navbar:
               </button>
 
               {/* Profile */}
+
               <div className="mirrortrace-profile">
 
                 {user
@@ -368,6 +404,7 @@ export const Navbar:
               </div>
 
               {/* Sign out */}
+
               <button
                 id="btn-sign-out"
                 type="button"
@@ -385,8 +422,14 @@ export const Navbar:
             </div>
           </div>
 
-          {/* Mobile navigation */}
-          <nav className="mirrortrace-mobile-nav">
+          {/* ==================================================
+              MOBILE NAVIGATION
+              ================================================== */}
+
+          <nav
+            className="mirrortrace-mobile-nav"
+            aria-label="Mobile navigation"
+          >
 
             <button
               type="button"
@@ -421,7 +464,7 @@ export const Navbar:
             >
               <MessageSquareText className="w-4 h-4" />
 
-              Reflect & Chat
+              Reflect
             </button>
 
             <button
@@ -439,25 +482,43 @@ export const Navbar:
             >
               <BookOpen className="w-4 h-4" />
 
-              Journal History
+              History
             </button>
 
             <button
               type="button"
               onClick={() =>
                 onTabChange(
-                  'memory'
+                  'support'
                 )
               }
               className={
                 navClass(
-                  'memory'
+                  'support'
                 )
               }
             >
-              <Database className="w-4 h-4" />
+              <LifeBuoy className="w-4 h-4" />
 
-              Memory
+              Support
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                onTabChange(
+                  'feedback'
+                )
+              }
+              className={
+                navClass(
+                  'feedback'
+                )
+              }
+            >
+              <Star className="w-4 h-4" />
+
+              Feedback
             </button>
           </nav>
         </div>
