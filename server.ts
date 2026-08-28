@@ -28,6 +28,7 @@ import {
 } from './server/utils/sanitizer.ts';
 
 import { notificationRouter } from './server/notificationRoutes.ts';
+import { emailRouter } from './server/emailRoutes.ts';
 
 const app = express();
 
@@ -61,6 +62,7 @@ console.log('[MirrorTrace] Backend configuration', {
 });
 
 app.use(notificationRouter);
+app.use(emailRouter);
 
 /* ============================================================
    3. HEALTH ROUTE
@@ -4351,4 +4353,6 @@ startServer().catch(
     process.exit(1);
   }
 );
+
+
 

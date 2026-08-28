@@ -27,13 +27,15 @@ import {
   type PushPermissionState,
 } from '../lib/notifications.ts';
 
+import {
+  getEmailStatus,
+  sendTestEmail,
+  verifyEmailConnection,
+} from '../lib/emailNotifications.ts';
+
 interface PushNotificationSettingsProps {
   emailAddress?: string | null;
 }
-
-/* ============================================================
-   FOREGROUND SYSTEM NOTIFICATION
-   ============================================================ */
 
 async function showForegroundSystemNotification(
   title: string,
@@ -82,9 +84,11 @@ async function showForegroundSystemNotification(
         },
       }
     );
-  } catch (error) {
+  } catch (
+    error
+  ) {
     console.warn(
-      '[MirrorTrace] Foreground system notification could not be displayed:',
+      '[MirrorTrace] Foreground notification display failed:',
       error
     );
   }
@@ -139,8 +143,32 @@ export const PushNotificationSettings:
       useState(false);
 
     const [
-      testing,
-      setTesting,
+      testingPush,
+      setTestingPush,
+    ] =
+      useState(false);
+
+    const [
+      emailConfigured,
+      setEmailConfigured,
+    ] =
+      useState(false);
+
+    const [
+      checkingEmail,
+      setCheckingEmail,
+    ] =
+      useState(true);
+
+    const [
+      verifyingEmail,
+      setVerifyingEmail,
+    ] =
+      useState(false);
+
+    const [
+      testingEmail,
+      setTestingEmail,
     ] =
       useState(false);
 
@@ -160,18 +188,10 @@ export const PushNotificationSettings:
         null
       );
 
-    /*
-     * Used to avoid showing a duplicate fallback notification
-     * if Firebase already delivered the foreground message.
-     */
     const lastForegroundMessageAt =
       useRef(0);
 
-    /* ========================================================
-       LOAD STATUS
-       ======================================================== */
-
-    const refreshStatus =
+    const refreshPushStatus =
       useCallback(
         async () => {
           try {
@@ -201,14 +221,8 @@ export const PushNotificationSettings:
             err: unknown
           ) {
             console.error(
-              '[MirrorTrace] Failed to refresh notification status:',
+              '[MirrorTrace] Push status refresh failed:',
               err
-            );
-
-            setError(
-              (err as Error)
-                ?.message ||
-                'Could not read notification status.'
             );
           } finally {
             setLoadingStatus(
@@ -219,12 +233,56 @@ export const PushNotificationSettings:
         []
       );
 
-    /* ========================================================
-       FOREGROUND FCM
-       ======================================================== */
+    const refreshEmailStatus =
+      useCallback(
+        async () => {
+          try {
+            setCheckingEmail(
+              true
+            );
+
+            const status =
+              await getEmailStatus();
+
+            setEmailConfigured(
+              status.configured
+            );
+          } catch (
+            err: unknown
+          ) {
+            console.warn(
+              '[MirrorTrace] Email status refresh failed:',
+              err
+            );
+
+            setEmailConfigured(
+              false
+            );
+          } finally {
+            setCheckingEmail(
+              false
+            );
+          }
+        },
+        []
+      );
+
+    const refreshAll =
+      useCallback(
+        async () => {
+          await Promise.all([
+            refreshPushStatus(),
+            refreshEmailStatus(),
+          ]);
+        },
+        [
+          refreshPushStatus,
+          refreshEmailStatus,
+        ]
+      );
 
     useEffect(() => {
-      void refreshStatus();
+      void refreshAll();
 
       let unsubscribe:
         (() => void) |
@@ -255,10 +313,6 @@ export const PushNotificationSettings:
             `${title}: ${body}`
           );
 
-          /*
-           * Foreground FCM messages do not automatically
-           * create a Windows/browser notification.
-           */
           void showForegroundSystemNotification(
             title,
             body,
@@ -298,14 +352,10 @@ export const PushNotificationSettings:
         unsubscribe?.();
       };
     }, [
-      refreshStatus,
+      refreshAll,
     ]);
 
-    /* ========================================================
-       REGISTER
-       ======================================================== */
-
-    const handleEnable =
+    const handleEnablePush =
       async () => {
         try {
           setEnabling(
@@ -343,7 +393,7 @@ export const PushNotificationSettings:
             );
           }
 
-          await refreshStatus();
+          await refreshPushStatus();
         } catch (
           err: unknown
         ) {
@@ -359,11 +409,7 @@ export const PushNotificationSettings:
         }
       };
 
-    /* ========================================================
-       DISABLE
-       ======================================================== */
-
-    const handleDisable =
+    const handleDisablePush =
       async () => {
         try {
           setDisabling(
@@ -380,7 +426,7 @@ export const PushNotificationSettings:
 
           await disablePushNotifications();
 
-          await refreshStatus();
+          await refreshPushStatus();
 
           setMessage(
             'This browser was removed from MirrorTrace push delivery.'
@@ -400,14 +446,10 @@ export const PushNotificationSettings:
         }
       };
 
-    /* ========================================================
-       TEST
-       ======================================================== */
-
-    const handleTest =
+    const handleTestPush =
       async () => {
         try {
-          setTesting(
+          setTestingPush(
             true
           );
 
@@ -428,12 +470,6 @@ export const PushNotificationSettings:
             'Test push accepted. Waiting for Firebase delivery...'
           );
 
-          /*
-           * Give Firebase a short window to deliver through onMessage().
-           *
-           * If the foreground event does not arrive, we still verify
-           * that Windows/browser notification presentation itself works.
-           */
           window.setTimeout(
             () => {
               if (
@@ -471,12 +507,95 @@ export const PushNotificationSettings:
           setError(
             (err as Error)
               ?.message ||
-              'Could not send the test notification.'
+              'Could not send the test push notification.'
           );
 
-          await refreshStatus();
+          await refreshPushStatus();
         } finally {
-          setTesting(
+          setTestingPush(
+            false
+          );
+        }
+      };
+
+    const handleVerifyEmail =
+      async () => {
+        try {
+          setVerifyingEmail(
+            true
+          );
+
+          setError(
+            null
+          );
+
+          setMessage(
+            null
+          );
+
+          await verifyEmailConnection();
+
+          setEmailConfigured(
+            true
+          );
+
+          setMessage(
+            'SMTP connection verified successfully.'
+          );
+        } catch (
+          err: unknown
+        ) {
+          setError(
+            (err as Error)
+              ?.message ||
+              'Could not verify SMTP connection.'
+          );
+        } finally {
+          setVerifyingEmail(
+            false
+          );
+        }
+      };
+
+    const handleTestEmail =
+      async () => {
+        try {
+          setTestingEmail(
+            true
+          );
+
+          setError(
+            null
+          );
+
+          setMessage(
+            null
+          );
+
+          const result =
+            await sendTestEmail();
+
+          if (
+            result.success
+          ) {
+            setMessage(
+              'Test email sent. Check your signed-in inbox.'
+            );
+          } else {
+            setError(
+              'The email server responded but did not confirm delivery.'
+            );
+          }
+        } catch (
+          err: unknown
+        ) {
+          setError(
+            (err as Error)
+              ?.message ||
+              'Could not send the test email.'
+          );
+        } finally {
+          setTestingEmail(
             false
           );
         }
@@ -489,10 +608,6 @@ export const PushNotificationSettings:
     const deviceRegistered =
       registeredDevices >
       0;
-
-    /* ========================================================
-       UI
-       ======================================================== */
 
     return (
       <section className="rounded-2xl border border-stone-200 bg-white shadow-sm">
@@ -510,17 +625,16 @@ export const PushNotificationSettings:
 
           <p className="mt-1 max-w-3xl text-xs leading-relaxed text-stone-500">
             Choose how MirrorTrace can bring a Perspective Watch back to you.
-            Notifications contain only safe topic-level context and never
-            your private journal text.
+            Notifications contain only safe topic-level context and never your
+            private journal text.
           </p>
         </div>
 
         <div className="divide-y divide-stone-200">
 
-          {/* EMAIL */}
           <div className="p-5 sm:p-6">
 
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 
               <div className="flex items-start gap-3">
 
@@ -535,8 +649,9 @@ export const PushNotificationSettings:
                     Email reminders
                   </h3>
 
-                  <p className="mt-1 text-xs text-stone-500">
-                    Sent only when you explicitly enable email on a Perspective Watch.
+                  <p className="mt-1 max-w-xl text-xs text-stone-500">
+                    Email is sent only for Perspective Watches where you
+                    explicitly opt in.
                   </p>
 
                   {emailAddress && (
@@ -544,19 +659,86 @@ export const PushNotificationSettings:
                       Signed-in address: {emailAddress}
                     </p>
                   )}
+
+                  <div className="mt-3 flex flex-wrap gap-2">
+
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold text-emerald-800">
+
+                      <ShieldCheck className="h-3 w-3" />
+
+                      Opt-in per watch
+                    </span>
+
+                    {checkingEmail ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-stone-100 px-2.5 py-1 text-[10px] font-semibold text-stone-600">
+
+                        <Loader2 className="h-3 w-3 animate-spin" />
+
+                        Checking SMTP
+                      </span>
+                    ) : emailConfigured ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-[10px] font-semibold text-blue-800">
+
+                        <CheckCircle2 className="h-3 w-3" />
+
+                        SMTP configured
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[10px] font-semibold text-amber-900">
+
+                        <TriangleAlert className="h-3 w-3" />
+
+                        SMTP unavailable
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-emerald-800">
+              <div className="flex shrink-0 flex-wrap gap-2">
 
-                <ShieldCheck className="h-3.5 w-3.5" />
+                <button
+                  type="button"
+                  onClick={() =>
+                    void handleVerifyEmail()
+                  }
+                  disabled={
+                    verifyingEmail
+                  }
+                  className="inline-flex items-center gap-2 rounded-xl border border-stone-300 bg-white px-3.5 py-2.5 text-xs font-semibold text-stone-700 transition-colors hover:bg-stone-50 disabled:opacity-50"
+                >
+                  {verifyingEmail ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <RefreshCw className="h-4 w-4" />
+                  )}
 
-                Opt-in per watch
-              </span>
+                  Verify SMTP
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    void handleTestEmail()
+                  }
+                  disabled={
+                    testingEmail ||
+                    !emailConfigured
+                  }
+                  className="inline-flex items-center gap-2 rounded-xl bg-amber-200 px-4 py-2.5 text-xs font-bold text-stone-950 transition-colors hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {testingEmail ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
+
+                  Send test email
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* PUSH */}
           <div className="p-5 sm:p-6">
 
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
@@ -587,12 +769,6 @@ export const PushNotificationSettings:
                         <TriangleAlert className="h-3 w-3" />
 
                         VAPID key required
-                      </span>
-                    )}
-
-                    {!supported && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-stone-100 px-2.5 py-1 text-[10px] font-semibold text-stone-600">
-                        Push unsupported in this browser
                       </span>
                     )}
 
@@ -638,14 +814,14 @@ export const PushNotificationSettings:
                   <button
                     type="button"
                     onClick={() =>
-                      void handleEnable()
+                      void handleEnablePush()
                     }
                     disabled={
                       enabling ||
                       !supported ||
                       !configured
                     }
-                    className="inline-flex items-center gap-2 rounded-xl bg-stone-950 px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex items-center gap-2 rounded-xl bg-stone-950 px-4 py-2.5 text-xs font-semibold text-white disabled:opacity-50"
                   >
                     {enabling ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -664,14 +840,14 @@ export const PushNotificationSettings:
                     <button
                       type="button"
                       onClick={() =>
-                        void handleTest()
+                        void handleTestPush()
                       }
                       disabled={
-                        testing
+                        testingPush
                       }
-                      className="inline-flex items-center gap-2 rounded-xl bg-stone-950 px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-stone-800 disabled:opacity-50"
+                      className="inline-flex items-center gap-2 rounded-xl bg-stone-950 px-4 py-2.5 text-xs font-semibold text-white disabled:opacity-50"
                     >
-                      {testing ? (
+                      {testingPush ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
                       ) : (
                         <Send className="h-4 w-4" />
@@ -683,12 +859,12 @@ export const PushNotificationSettings:
                     <button
                       type="button"
                       onClick={() =>
-                        void handleDisable()
+                        void handleDisablePush()
                       }
                       disabled={
                         disabling
                       }
-                      className="inline-flex items-center gap-2 rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-xs font-semibold text-stone-700 transition-colors hover:bg-stone-50 disabled:opacity-50"
+                      className="inline-flex items-center gap-2 rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-xs font-semibold text-stone-700 disabled:opacity-50"
                     >
                       {disabling ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -704,16 +880,18 @@ export const PushNotificationSettings:
                 <button
                   type="button"
                   onClick={() =>
-                    void refreshStatus()
+                    void refreshAll()
                   }
                   disabled={
-                    loadingStatus
+                    loadingStatus ||
+                    checkingEmail
                   }
-                  className="inline-flex items-center gap-2 rounded-xl border border-stone-300 bg-white px-3.5 py-2.5 text-xs font-semibold text-stone-700 transition-colors hover:bg-stone-50 disabled:opacity-50"
+                  className="inline-flex items-center gap-2 rounded-xl border border-stone-300 bg-white px-3.5 py-2.5 text-xs font-semibold text-stone-700 disabled:opacity-50"
                 >
                   <RefreshCw
                     className={
-                      loadingStatus
+                      loadingStatus ||
+                      checkingEmail
                         ? 'h-4 w-4 animate-spin'
                         : 'h-4 w-4'
                     }
