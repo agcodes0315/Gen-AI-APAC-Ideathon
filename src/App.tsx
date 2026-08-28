@@ -1,15 +1,49 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import {
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 
-import { auth, logOut } from './lib/firebase.ts';
+import {
+  onAuthStateChanged,
+} from 'firebase/auth';
 
-import { Navbar } from './components/Navbar.tsx';
-import { AuthView } from './components/AuthView.tsx';
-import { DashboardOverview } from './components/DashboardOverview.tsx';
-import { JournalEditor } from './components/JournalEditor.tsx';
-import { BrainstormChat } from './components/BrainstormChat.tsx';
-import { JournalList } from './components/JournalList.tsx';
-import { SecurityBadge } from './components/SecurityBadge.tsx';
+import {
+  auth,
+  logOut,
+} from './lib/firebase.ts';
+
+import {
+  Navbar,
+} from './components/Navbar.tsx';
+
+import {
+  AuthView,
+} from './components/AuthView.tsx';
+
+import {
+  DashboardOverview,
+} from './components/DashboardOverview.tsx';
+
+import {
+  JournalEditor,
+} from './components/JournalEditor.tsx';
+
+import {
+  BrainstormChat,
+} from './components/BrainstormChat.tsx';
+
+import {
+  JournalList,
+} from './components/JournalList.tsx';
+
+import {
+  SecurityBadge,
+} from './components/SecurityBadge.tsx';
+
+import {
+  MemoryGovernanceCenter,
+} from './components/MemoryGovernanceCenter.tsx';
 
 import {
   fetchJournalEntries,
@@ -24,8 +58,15 @@ import type {
   ThoughtDiff,
 } from './types.ts';
 
-type MainTab = 'overview' | 'journal' | 'history';
-type HistorySubTab = 'reflections' | 'diffs';
+export type MainTab =
+  | 'overview'
+  | 'journal'
+  | 'history'
+  | 'memory';
+
+export type HistorySubTab =
+  | 'reflections'
+  | 'diffs';
 
 const scrollPageToTop = () => {
   window.scrollTo({
@@ -34,84 +75,151 @@ const scrollPageToTop = () => {
     behavior: 'auto',
   });
 
-  // Extra fallback for embedded/preview environments.
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
+  /*
+   * Extra fallback for embedded preview
+   * environments such as AI Studio.
+   */
+  document.documentElement.scrollTop =
+    0;
+
+  document.body.scrollTop =
+    0;
 };
 
 export default function App() {
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [authLoading, setAuthLoading] = useState(true);
+  const [
+    user,
+    setUser,
+  ] =
+    useState<UserProfile | null>(
+      null
+    );
 
-  const [activeTab, setActiveTab] =
-    useState<MainTab>('overview');
+  const [
+    authLoading,
+    setAuthLoading,
+  ] =
+    useState(true);
 
-  const [historySubTab, setHistorySubTab] =
-    useState<HistorySubTab>('reflections');
+  const [
+    activeTab,
+    setActiveTab,
+  ] =
+    useState<MainTab>(
+      'overview'
+    );
+
+  const [
+    historySubTab,
+    setHistorySubTab,
+  ] =
+    useState<HistorySubTab>(
+      'reflections'
+    );
 
   const [
     filterApprovedSnapshots,
     setFilterApprovedSnapshots,
-  ] = useState(false);
+  ] =
+    useState(false);
 
   const [
     highlightDiffId,
     setHighlightDiffId,
-  ] = useState<string | null>(null);
+  ] =
+    useState<string | null>(
+      null
+    );
 
   const [
     privateSessionMode,
     setPrivateSessionMode,
-  ] = useState(false);
+  ] =
+    useState(false);
 
-  const [externalTags, setExternalTags] =
+  const [
+    externalTags,
+    setExternalTags,
+  ] =
     useState<string[]>([]);
 
-  const [refreshCounter, setRefreshCounter] =
+  const [
+    refreshCounter,
+    setRefreshCounter,
+  ] =
     useState(0);
 
-  // Global dashboard data
-  const [entries, setEntries] =
+  /*
+   * Global dashboard data
+   */
+  const [
+    entries,
+    setEntries,
+  ] =
     useState<JournalEntry[]>([]);
 
-  const [snapshots, setSnapshots] =
+  const [
+    snapshots,
+    setSnapshots,
+  ] =
     useState<ThoughtSnapshot[]>([]);
 
-  const [diffs, setDiffs] =
+  const [
+    diffs,
+    setDiffs,
+  ] =
     useState<ThoughtDiff[]>([]);
 
-  const [dataLoading, setDataLoading] =
+  const [
+    dataLoading,
+    setDataLoading,
+  ] =
     useState(true);
 
   /*
-   * Authentication listener
+   * Firebase authentication listener.
    */
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      (firebaseUser) => {
-        if (firebaseUser) {
-          setUser({
-            uid: firebaseUser.uid,
-            email: firebaseUser.email,
-            displayName:
-              firebaseUser.displayName,
-            photoURL:
-              firebaseUser.photoURL,
-          });
-        } else {
-          setUser(null);
+    const unsubscribe =
+      onAuthStateChanged(
+        auth,
+        (
+          firebaseUser
+        ) => {
+          if (
+            firebaseUser
+          ) {
+            setUser({
+              uid:
+                firebaseUser.uid,
+
+              email:
+                firebaseUser.email,
+
+              displayName:
+                firebaseUser.displayName,
+
+              photoURL:
+                firebaseUser.photoURL,
+            });
+          } else {
+            setUser(
+              null
+            );
+          }
+
+          setAuthLoading(
+            false
+          );
         }
+      );
 
-        setAuthLoading(false);
-      }
-    );
-
-    return () => unsubscribe();
+    return () =>
+      unsubscribe();
   }, []);
 
   /*
-   * Reset scroll whenever visible page changes.
+   * Ensure each app view begins at the top.
    */
   useLayoutEffect(() => {
     scrollPageToTop();
@@ -122,179 +230,263 @@ export default function App() {
   ]);
 
   /*
-   * Load authenticated user's dashboard data.
+   * Load authenticated dashboard data.
    */
-  const loadData = async () => {
-    if (!user) {
-      return;
-    }
+  const loadData =
+    async () => {
+      if (!user) {
+        return;
+      }
 
-    try {
-      setDataLoading(true);
+      try {
+        setDataLoading(
+          true
+        );
 
-      const [
-        journalData,
-        snapshotData,
-        diffData,
-      ] = await Promise.all([
-        fetchJournalEntries().catch(
-          () => []
-        ),
-        fetchThoughtSnapshots().catch(
-          () => []
-        ),
-        fetchThoughtDiffs().catch(
-          () => []
-        ),
-      ]);
+        const [
+          journalData,
+          snapshotData,
+          diffData,
+        ] =
+          await Promise.all([
+            fetchJournalEntries()
+              .catch(
+                () => []
+              ),
 
-      setEntries(journalData);
-      setSnapshots(snapshotData);
-      setDiffs(diffData);
-    } catch (err) {
-      console.error(
-        'Failed to load user data:',
+            fetchThoughtSnapshots()
+              .catch(
+                () => []
+              ),
+
+            fetchThoughtDiffs()
+              .catch(
+                () => []
+              ),
+          ]);
+
+        setEntries(
+          journalData
+        );
+
+        setSnapshots(
+          snapshotData
+        );
+
+        setDiffs(
+          diffData
+        );
+      } catch (
         err
-      );
-    } finally {
-      setDataLoading(false);
-    }
-  };
+      ) {
+        console.error(
+          'Failed to load user data:',
+          err
+        );
+      } finally {
+        setDataLoading(
+          false
+        );
+      }
+    };
 
-  /*
-   * Reload global data whenever:
-   * - user changes
-   * - refreshCounter changes
-   */
   useEffect(() => {
     if (user) {
       void loadData();
     }
-  }, [user, refreshCounter]);
+  }, [
+    user,
+    refreshCounter,
+  ]);
 
   /*
-   * Sign out
+   * Central callback used whenever
+   * persisted Firestore state changes.
    */
-  const handleSignOut = async () => {
-    try {
-      await logOut();
-
-      setUser(null);
-      setEntries([]);
-      setSnapshots([]);
-      setDiffs([]);
-
-      setActiveTab('overview');
-      setHistorySubTab('reflections');
-      setFilterApprovedSnapshots(false);
-      setHighlightDiffId(null);
-      setPrivateSessionMode(false);
-      setExternalTags([]);
-
-      requestAnimationFrame(() => {
-        scrollPageToTop();
-      });
-    } catch (err) {
-      console.error(
-        'Logout error:',
-        err
+  const handleDataChanged =
+    () => {
+      setRefreshCounter(
+        (
+          previous
+        ) =>
+          previous + 1
       );
-    }
-  };
+    };
 
   /*
-   * Trigger global refresh after a journal entry is saved.
+   * Sign out.
    */
-  const handleEntrySaved = (
-    _entry: JournalEntry
-  ) => {
-    setRefreshCounter(
-      (previous) => previous + 1
-    );
-  };
+  const handleSignOut =
+    async () => {
+      try {
+        await logOut();
+
+        setUser(
+          null
+        );
+
+        setEntries(
+          []
+        );
+
+        setSnapshots(
+          []
+        );
+
+        setDiffs(
+          []
+        );
+
+        setActiveTab(
+          'overview'
+        );
+
+        setHistorySubTab(
+          'reflections'
+        );
+
+        setFilterApprovedSnapshots(
+          false
+        );
+
+        setHighlightDiffId(
+          null
+        );
+
+        setPrivateSessionMode(
+          false
+        );
+
+        setExternalTags(
+          []
+        );
+
+        requestAnimationFrame(
+          () => {
+            scrollPageToTop();
+          }
+        );
+      } catch (
+        err
+      ) {
+        console.error(
+          'Logout error:',
+          err
+        );
+      }
+    };
 
   /*
-   * Trigger global refresh whenever JournalList
-   * changes persisted state such as:
-   *
-   * - snapshot approval
-   * - snapshot deletion
-   * - journal deletion
-   * - Thought Diff generation
+   * Trigger global refresh after
+   * a journal entry is saved.
    */
-  const handleDataChanged = () => {
-    setRefreshCounter(
-      (previous) => previous + 1
-    );
-  };
+  const handleEntrySaved =
+    (
+      _entry:
+        JournalEntry
+    ) => {
+      setRefreshCounter(
+        (
+          previous
+        ) =>
+          previous + 1
+      );
+    };
 
   /*
-   * Suggested BrainstormChat tag -> JournalEditor
+   * Suggested BrainstormChat tag
+   * -> JournalEditor.
    */
-  const handleSuggestedTagClick = (
-    tag: string
-  ) => {
-    setExternalTags((previous) =>
-      previous.includes(tag)
-        ? previous
-        : [...previous, tag]
-    );
-  };
+  const handleSuggestedTagClick =
+    (
+      tag: string
+    ) => {
+      setExternalTags(
+        (
+          previous
+        ) =>
+          previous.includes(
+            tag
+          )
+            ? previous
+            : [
+                ...previous,
+                tag,
+              ]
+      );
+    };
 
   /*
    * Central application navigation.
    */
-  const handleNavigate = (
-    tab: MainTab,
-    options?: {
-      privateSession?: boolean;
-      subTab?: HistorySubTab;
-      filterApprovedSnapshots?: boolean;
-      highlightDiffId?: string;
-    }
-  ) => {
-    if (options?.privateSession) {
-      setPrivateSessionMode(true);
-    } else if (
-      tab === 'journal'
-    ) {
-      setPrivateSessionMode(false);
-    }
+  const handleNavigate =
+    (
+      tab:
+        MainTab,
 
-    if (options?.subTab) {
-      setHistorySubTab(
-        options.subTab
+      options?: {
+        privateSession?: boolean;
+        subTab?: HistorySubTab;
+        filterApprovedSnapshots?: boolean;
+        highlightDiffId?: string;
+      }
+    ) => {
+      if (
+        options?.privateSession
+      ) {
+        setPrivateSessionMode(
+          true
+        );
+      } else if (
+        tab ===
+        'journal'
+      ) {
+        setPrivateSessionMode(
+          false
+        );
+      }
+
+      if (
+        options?.subTab
+      ) {
+        setHistorySubTab(
+          options.subTab
+        );
+      }
+
+      setFilterApprovedSnapshots(
+        Boolean(
+          options
+            ?.filterApprovedSnapshots
+        )
       );
-    }
 
-    setFilterApprovedSnapshots(
-      Boolean(
-        options?.filterApprovedSnapshots
-      )
-    );
+      setHighlightDiffId(
+        options
+          ?.highlightDiffId ??
+          null
+      );
 
-    setHighlightDiffId(
-      options?.highlightDiffId ??
-        null
-    );
+      setActiveTab(
+        tab
+      );
 
-    setActiveTab(tab);
-
-    /*
-     * Handles navigation where React state
-     * may already contain the same tab value.
-     */
-    requestAnimationFrame(() => {
-      scrollPageToTop();
-    });
-  };
+      requestAnimationFrame(
+        () => {
+          scrollPageToTop();
+        }
+      );
+    };
 
   /*
-   * Authentication loading screen
+   * Authentication loading screen.
    */
-  if (authLoading) {
+  if (
+    authLoading
+  ) {
     return (
       <div className="min-h-screen bg-stone-100 flex flex-col items-center justify-center space-y-3">
+
         <div className="w-10 h-10 rounded-xl bg-amber-800 flex items-center justify-center text-amber-50 shadow-xs">
           <span className="font-serif font-bold text-lg">
             M
@@ -312,16 +504,20 @@ export default function App() {
   }
 
   /*
-   * Public landing/authentication screen
+   * Public authentication screen.
    */
   if (!user) {
     return (
       <AuthView
         onSuccess={() => {
-          setActiveTab('overview');
+          setActiveTab(
+            'overview'
+          );
 
           setRefreshCounter(
-            (previous) =>
+            (
+              previous
+            ) =>
               previous + 1
           );
 
@@ -336,16 +532,26 @@ export default function App() {
   }
 
   /*
-   * Authenticated application
+   * Authenticated application.
    */
   return (
     <div className="min-h-screen bg-stone-100 flex flex-col justify-between">
+
       <div className="w-full">
+
         <Navbar
-          user={user}
-          activeTab={activeTab}
-          onTabChange={(tab) =>
-            handleNavigate(tab)
+          user={
+            user
+          }
+          activeTab={
+            activeTab
+          }
+          onTabChange={(
+            tab
+          ) =>
+            handleNavigate(
+              tab
+            )
           }
           onSignOut={
             handleSignOut
@@ -358,9 +564,15 @@ export default function App() {
           {activeTab ===
             'overview' && (
             <DashboardOverview
-              entries={entries}
-              snapshots={snapshots}
-              diffs={diffs}
+              entries={
+                entries
+              }
+              snapshots={
+                snapshots
+              }
+              diffs={
+                diffs
+              }
               loading={
                 dataLoading
               }
@@ -374,7 +586,9 @@ export default function App() {
           {activeTab ===
             'journal' && (
             <div className="space-y-6 animate-fade-in">
+
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
+
                 <div>
                   <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
                     Reflective Space
@@ -393,6 +607,7 @@ export default function App() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
                 <div className="lg:col-span-6 space-y-6">
+
                   <JournalEditor
                     onEntrySaved={
                       handleEntrySaved
@@ -412,6 +627,7 @@ export default function App() {
                 </div>
 
                 <div className="lg:col-span-6">
+
                   <BrainstormChat
                     onSuggestedTagClick={
                       handleSuggestedTagClick
@@ -428,6 +644,7 @@ export default function App() {
             <div className="space-y-6 animate-fade-in">
 
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
+
                 <div>
                   <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
                     Journal History
@@ -459,6 +676,16 @@ export default function App() {
                 }
               />
             </div>
+          )}
+
+          {/* Memory Governance */}
+          {activeTab ===
+            'memory' && (
+            <MemoryGovernanceCenter
+              onMemoryChanged={
+                handleDataChanged
+              }
+            />
           )}
 
           <SecurityBadge />

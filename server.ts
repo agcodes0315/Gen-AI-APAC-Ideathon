@@ -1,3 +1,5 @@
+﻿import 'dotenv/config';
+
 import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
@@ -24,6 +26,8 @@ import {
   sanitizeTags,
   safeString,
 } from './server/utils/sanitizer.ts';
+
+import { notificationRouter } from './server/notificationRoutes.ts';
 
 const app = express();
 
@@ -55,6 +59,8 @@ console.log('[MirrorTrace] Backend configuration', {
   geminiConfigured: Boolean(process.env.GEMINI_API_KEY),
   nodeEnv: process.env.NODE_ENV || 'development',
 });
+
+app.use(notificationRouter);
 
 /* ============================================================
    3. HEALTH ROUTE
@@ -3474,7 +3480,7 @@ app.post(
                   ],
                   message: {
                     subject:
-                      `A perspective you wanted to revisit — ${topic}`,
+                      `A perspective you wanted to revisit â€” ${topic}`,
                     text:
                       [
                         'A perspective you chose to watch in MirrorTrace is ready to revisit.',
@@ -4345,3 +4351,4 @@ startServer().catch(
     process.exit(1);
   }
 );
+

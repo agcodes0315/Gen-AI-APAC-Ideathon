@@ -13,9 +13,7 @@ import type {
   GenerateDiffResponse,
   DiffRelationshipStatus,
   PerspectiveWatch,
-  PerspectiveWatchStatus,
-  CreatePerspectiveWatchPayload,
-  MirrorTraceMemoryExport,
+  PerspectiveWatchDelayDays,
 } from '../types.ts';
 
 export class ApiError extends Error {
@@ -35,9 +33,10 @@ export class ApiError extends Error {
   }
 }
 
-/**
- * Authenticated request helper.
- */
+/* ============================================================
+   AUTHENTICATED REQUEST HELPER
+   ============================================================ */
+
 async function fetchWithAuth<T>(
   url: string,
   options: RequestInit = {}
@@ -103,16 +102,10 @@ async function fetchWithAuth<T>(
   return data as T;
 }
 
-/**
- * Runtime validation for JournalEntry.
- *
- * This keeps the UI from attempting:
- *
- * journal.id
- *
- * when an unexpected/malformed response reaches
- * the browser.
- */
+/* ============================================================
+   JOURNAL VALIDATION HELPERS
+   ============================================================ */
+
 function isJournalEntry(
   value: unknown
 ): value is JournalEntry {
@@ -133,11 +126,6 @@ function isJournalEntry(
   );
 }
 
-/**
- * Compare journal contents to recover an entry
- * that was successfully persisted even if the POST
- * response shape was unexpectedly malformed.
- */
 function findMatchingJournal(
   entries: JournalEntry[],
   content: string
@@ -163,11 +151,6 @@ export async function createJournalEntry(
 ): Promise<{
   journal: JournalEntry;
 }> {
-  /**
-   * `entry` is included only as a compatibility
-   * fallback in case an older preview runtime returns
-   * a differently named field.
-   */
   const data = await fetchWithAuth<{
     success?: boolean;
     journal?: JournalEntry;
@@ -180,18 +163,12 @@ export async function createJournalEntry(
     }),
   });
 
-  /**
-   * Normal expected backend response.
-   */
   if (isJournalEntry(data.journal)) {
     return {
       journal: data.journal,
     };
   }
 
-  /**
-   * Compatibility fallback.
-   */
   if (isJournalEntry(data.entry)) {
     console.warn(
       '[MirrorTrace] Journal API returned `entry` instead of `journal`. Using compatibility fallback.'
@@ -202,15 +179,6 @@ export async function createJournalEntry(
     };
   }
 
-  /**
-   * IMPORTANT:
-   * The write may already have succeeded even though
-   * the response object is malformed.
-   *
-   * Instead of telling the user to retry and creating
-   * a duplicate, fetch the canonical journal list and
-   * recover the newly saved record.
-   */
   console.warn(
     '[MirrorTrace] Journal POST response did not contain a valid journal object. Attempting canonical recovery.'
   );
@@ -238,10 +206,6 @@ export async function createJournalEntry(
       matchingEntry &&
       isJournalEntry(matchingEntry)
     ) {
-      console.warn(
-        '[MirrorTrace] Recovered successfully persisted journal entry from canonical history.'
-      );
-
       return {
         journal: matchingEntry,
       };
@@ -522,26 +486,45 @@ export async function submitDiffFeedback(
   );
 }
 
-
 /* ============================================================
    PERSPECTIVE WATCH API
    ============================================================ */
 
 export async function createPerspectiveWatch(
-  payload: CreatePerspectiveWatchPayload
+  params: {
+    diffId: string;
+    delayDays: PerspectiveWatchDelayDays;
+    emailEnabled: boolean;
+  }
 ): Promise<{
   success: boolean;
-  watch: PerspectiveWatch;
   alreadyExists?: boolean;
+  watch: PerspectiveWatch;
 }> {
+  if (!params.diffId) {
+    throw new ApiError(
+      'Thought Diff ID is required.',
+      400,
+      'DIFF_ID_REQUIRED'
+    );
+  }
+
   return fetchWithAuth<{
     success: boolean;
-    watch: PerspectiveWatch;
     alreadyExists?: boolean;
-  }>('/api/perspective-watches', {
-    method: 'POST',
-    body: JSON.stringify(payload),
-  });
+    watch: PerspectiveWatch;
+  }>(
+    '/api/perspective-watches',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        diffId: params.diffId,
+        delayDays: params.delayDays,
+        emailEnabled:
+          params.emailEnabled,
+      }),
+    }
+  );
 }
 
 export async function fetchPerspectiveWatches(): Promise<
@@ -550,9 +533,12 @@ export async function fetchPerspectiveWatches(): Promise<
   const data =
     await fetchWithAuth<{
       watches: PerspectiveWatch[];
-    }>('/api/perspective-watches', {
-      method: 'GET',
-    });
+    }>(
+      '/api/perspective-watches',
+      {
+        method: 'GET',
+      }
+    );
 
   return Array.isArray(data.watches)
     ? data.watches
@@ -561,11 +547,19 @@ export async function fetchPerspectiveWatches(): Promise<
 
 export async function updatePerspectiveWatchStatus(
   watchId: string,
-  status: PerspectiveWatchStatus
+  status: 'completed' | 'dismissed'
 ): Promise<{
   success: boolean;
   watch: PerspectiveWatch;
 }> {
+  if (!watchId) {
+    throw new ApiError(
+      'Perspective Watch ID is required.',
+      400,
+      'WATCH_ID_REQUIRED'
+    );
+  }
+
   return fetchWithAuth<{
     success: boolean;
     watch: PerspectiveWatch;
@@ -581,10 +575,20 @@ export async function updatePerspectiveWatchStatus(
 }
 
 /* ============================================================
-   MEMORY EXPORT API
+   MEMORY GOVERNANCE API
    ============================================================ */
 
-export async function fetchMemoryExport(): Promise<
+export interface MirrorTraceMemoryExport {
+  exportVersion: number;
+  exportedAt: string;
+  journals: unknown[];
+  thoughtSnapshots: unknown[];
+  thoughtDiffs: unknown[];
+  provenance: unknown[];
+  perspectiveWatches: unknown[];
+}
+
+export async function exportMirrorTraceMemory(): Promise<
   MirrorTraceMemoryExport
 > {
   return fetchWithAuth<MirrorTraceMemoryExport>(
@@ -595,14 +599,18 @@ export async function fetchMemoryExport(): Promise<
   );
 }
 
-export async function downloadMemoryExport(): Promise<void> {
-  const exportData =
-    await fetchMemoryExport();
+/**
+ * Downloads the authenticated user's governed MirrorTrace memory
+ * as a local JSON file.
+ */
+export async function downloadMirrorTraceMemory(): Promise<void> {
+  const exported =
+    await exportMirrorTraceMemory();
 
   const blob = new Blob(
     [
       JSON.stringify(
-        exportData,
+        exported,
         null,
         2
       ),
@@ -615,20 +623,31 @@ export async function downloadMemoryExport(): Promise<void> {
   const url =
     URL.createObjectURL(blob);
 
-  try {
-    const anchor =
-      document.createElement('a');
+  const link =
+    document.createElement('a');
 
-    anchor.href = url;
-    anchor.download =
-      `mirrortrace-memory-${new Date()
-        .toISOString()
-        .slice(0, 10)}.json`;
+  const timestamp =
+    new Date()
+      .toISOString()
+      .replace(
+        /[:.]/g,
+        '-'
+      );
 
-    document.body.appendChild(anchor);
-    anchor.click();
-    anchor.remove();
-  } finally {
-    URL.revokeObjectURL(url);
-  }
+  link.href = url;
+
+  link.download =
+    `mirrortrace-memory-${timestamp}.json`;
+
+  document.body.appendChild(
+    link
+  );
+
+  link.click();
+
+  link.remove();
+
+  URL.revokeObjectURL(
+    url
+  );
 }

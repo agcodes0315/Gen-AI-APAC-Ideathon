@@ -12,28 +12,33 @@ import {
   Compass,
   Moon,
   Sun,
+  Database,
 } from 'lucide-react';
 
 import type {
   UserProfile,
 } from '../types.ts';
 
+type MainTab =
+  | 'overview'
+  | 'journal'
+  | 'history'
+  | 'memory';
+
 interface NavbarProps {
-  user: UserProfile;
+  user:
+    UserProfile;
 
   activeTab:
-    | 'overview'
-    | 'journal'
-    | 'history';
+    MainTab;
 
   onTabChange: (
     tab:
-      | 'overview'
-      | 'journal'
-      | 'history'
+      MainTab
   ) => void;
 
-  onSignOut: () => void;
+  onSignOut:
+    () => void;
 }
 
 type ThemeMode =
@@ -58,21 +63,27 @@ const getInitialTheme =
       );
 
     if (
-      saved === 'light' ||
-      saved === 'dark'
+      saved ===
+        'light' ||
+      saved ===
+        'dark'
     ) {
       return saved;
     }
 
-    return window.matchMedia(
-      '(prefers-color-scheme: dark)'
-    ).matches
+    return window
+      .matchMedia(
+        '(prefers-color-scheme: dark)'
+      )
+      .matches
       ? 'dark'
       : 'light';
   };
 
 export const Navbar:
-  React.FC<NavbarProps> = ({
+  React.FC<
+    NavbarProps
+  > = ({
     user,
     activeTab,
     onTabChange,
@@ -91,7 +102,8 @@ export const Navbar:
      */
     useEffect(() => {
       const root =
-        document.documentElement;
+        document
+          .documentElement;
 
       root.setAttribute(
         'data-theme',
@@ -99,7 +111,8 @@ export const Navbar:
       );
 
       if (
-        theme === 'dark'
+        theme ===
+        'dark'
       ) {
         root.classList.add(
           'dark'
@@ -114,39 +127,50 @@ export const Navbar:
         STORAGE_KEY,
         theme
       );
-    }, [theme]);
+    }, [
+      theme,
+    ]);
 
     const toggleTheme =
       () => {
         setTheme(
-          (current) =>
-            current === 'dark'
+          (
+            current
+          ) =>
+            current ===
+            'dark'
               ? 'light'
               : 'dark'
         );
       };
 
-    const navClass = (
-      tab:
-        | 'overview'
-        | 'journal'
-        | 'history'
-    ) => {
-      const active =
-        activeTab === tab;
+    const navClass =
+      (
+        tab:
+          MainTab
+      ) => {
+        const active =
+          activeTab ===
+          tab;
 
-      return [
-        'mirrortrace-nav-button',
-        active
-          ? 'mirrortrace-nav-button-active'
-          : '',
-      ]
-        .filter(Boolean)
-        .join(' ');
-    };
+        return [
+          'mirrortrace-nav-button',
+
+          active
+            ? 'mirrortrace-nav-button-active'
+            : '',
+        ]
+          .filter(
+            Boolean
+          )
+          .join(
+            ' '
+          );
+      };
 
     return (
       <header className="mirrortrace-navbar">
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="mirrortrace-navbar-inner">
@@ -162,11 +186,13 @@ export const Navbar:
               className="mirrortrace-brand"
               aria-label="MirrorTrace Overview"
             >
+
               <div className="mirrortrace-logo">
                 M
               </div>
 
               <div className="min-w-0">
+
                 <div className="flex items-center gap-2">
 
                   <span className="mirrortrace-brand-name">
@@ -174,7 +200,9 @@ export const Navbar:
                   </span>
 
                   <span className="mirrortrace-uid-chip">
+
                     <ShieldCheck className="w-3 h-3" />
+
                     Isolated UID
                   </span>
                 </div>
@@ -186,11 +214,12 @@ export const Navbar:
               </div>
             </button>
 
-            {/* Navigation */}
+            {/* Desktop navigation */}
             <nav
               className="mirrortrace-main-nav"
               aria-label="Primary navigation"
             >
+
               <button
                 id="tab-overview"
                 type="button"
@@ -199,9 +228,11 @@ export const Navbar:
                     'overview'
                   )
                 }
-                className={navClass(
-                  'overview'
-                )}
+                className={
+                  navClass(
+                    'overview'
+                  )
+                }
               >
                 <Compass className="w-4 h-4" />
 
@@ -218,9 +249,11 @@ export const Navbar:
                     'journal'
                   )
                 }
-                className={navClass(
-                  'journal'
-                )}
+                className={
+                  navClass(
+                    'journal'
+                  )
+                }
               >
                 <MessageSquareText className="w-4 h-4" />
 
@@ -237,14 +270,37 @@ export const Navbar:
                     'history'
                   )
                 }
-                className={navClass(
-                  'history'
-                )}
+                className={
+                  navClass(
+                    'history'
+                  )
+                }
               >
                 <BookOpen className="w-4 h-4" />
 
                 <span>
                   Journal History
+                </span>
+              </button>
+
+              <button
+                id="tab-memory"
+                type="button"
+                onClick={() =>
+                  onTabChange(
+                    'memory'
+                  )
+                }
+                className={
+                  navClass(
+                    'memory'
+                  )
+                }
+              >
+                <Database className="w-4 h-4" />
+
+                <span>
+                  Memory Control
                 </span>
               </button>
             </nav>
@@ -261,12 +317,14 @@ export const Navbar:
                 }
                 className="mirrortrace-theme-toggle"
                 title={
-                  theme === 'dark'
+                  theme ===
+                  'dark'
                     ? 'Switch to light mode'
                     : 'Switch to dark mode'
                 }
                 aria-label={
-                  theme === 'dark'
+                  theme ===
+                  'dark'
                     ? 'Switch to light mode'
                     : 'Switch to dark mode'
                 }
@@ -282,7 +340,8 @@ export const Navbar:
               {/* Profile */}
               <div className="mirrortrace-profile">
 
-                {user.photoURL ? (
+                {user
+                  .photoURL ? (
                   <img
                     src={
                       user.photoURL
@@ -301,7 +360,8 @@ export const Navbar:
                 )}
 
                 <span className="mirrortrace-profile-name">
-                  {user.displayName ||
+                  {user
+                    .displayName ||
                     user.email ||
                     'User'}
                 </span>
@@ -325,8 +385,9 @@ export const Navbar:
             </div>
           </div>
 
-          {/* Small-screen nav */}
+          {/* Mobile navigation */}
           <nav className="mirrortrace-mobile-nav">
+
             <button
               type="button"
               onClick={() =>
@@ -334,11 +395,14 @@ export const Navbar:
                   'overview'
                 )
               }
-              className={navClass(
-                'overview'
-              )}
+              className={
+                navClass(
+                  'overview'
+                )
+              }
             >
               <Compass className="w-4 h-4" />
+
               Overview
             </button>
 
@@ -349,11 +413,14 @@ export const Navbar:
                   'journal'
                 )
               }
-              className={navClass(
-                'journal'
-              )}
+              className={
+                navClass(
+                  'journal'
+                )
+              }
             >
               <MessageSquareText className="w-4 h-4" />
+
               Reflect & Chat
             </button>
 
@@ -364,12 +431,33 @@ export const Navbar:
                   'history'
                 )
               }
-              className={navClass(
-                'history'
-              )}
+              className={
+                navClass(
+                  'history'
+                )
+              }
             >
               <BookOpen className="w-4 h-4" />
+
               Journal History
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                onTabChange(
+                  'memory'
+                )
+              }
+              className={
+                navClass(
+                  'memory'
+                )
+              }
+            >
+              <Database className="w-4 h-4" />
+
+              Memory
             </button>
           </nav>
         </div>
