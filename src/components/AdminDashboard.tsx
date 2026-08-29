@@ -652,11 +652,11 @@ export default function AdminDashboard(
               MirrorTrace
             </div>
 
-            <h1 className="mt-2 font-serif text-3xl font-bold sm:text-4xl">
+            <h1 className="mt-2 font-serif text-3xl font-bold sm:text-4xl mirrortrace-admin-title-float">
               Security & Operations
             </h1>
 
-            <p className="mt-2 max-w-xl text-sm text-white/55">
+            <p className="mt-2 max-w-xl text-sm text-white/80 mirrortrace-admin-subtitle-float">
               Operational visibility without private journal visibility.
             </p>
           </div>
@@ -1422,22 +1422,25 @@ function ReviewModerationCard(
 
       <div className="mt-4 flex flex-wrap gap-2">
 
-        <button
-          type="button"
-          disabled={
-            saving ||
-            !props.review
-              .allowPublic
-          }
-          onClick={() =>
-            void changeState(
-              'approved'
-            )
-          }
-          className="rounded-lg bg-emerald-700 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-40"
-        >
-          Approve
-        </button>
+        {props.review.moderationState !==
+          'approved' && (
+          <button
+            type="button"
+            disabled={
+              saving ||
+              !props.review
+                .allowPublic
+            }
+            onClick={() =>
+              void changeState(
+                'approved'
+              )
+            }
+            className="rounded-lg bg-emerald-700 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-40"
+          >
+            Approve
+          </button>
+        )}
 
         <button
           type="button"

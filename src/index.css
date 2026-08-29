@@ -2150,3 +2150,313 @@ button[class*="bg-white"] {
     animation: none !important;
   }
 }
+
+
+/* ============================================================
+   MIRRORTRACE HERO CLARITY + ADMIN MODERATION v5
+   Final override block.
+   ============================================================ */
+
+/* New uploaded image for the two hero blocks only. */
+.mirrortrace-user-hero,
+.mirrortrace-admin-hero {
+  background-image:
+    linear-gradient(
+      102deg,
+      rgba(5, 10, 16, 0.34) 0%,
+      rgba(10, 18, 26, 0.20) 45%,
+      rgba(19, 27, 34, 0.14) 100%
+    ),
+    url("/ui/mirrortrace3.jpeg") !important;
+
+  background-size: cover !important;
+  background-position: center 48% !important;
+  background-repeat: no-repeat !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  border:
+    1px solid
+    rgba(236, 239, 244, 0.18) !important;
+
+  box-shadow:
+    0 22px 56px
+    rgba(3, 8, 13, 0.20) !important;
+}
+
+/* Avoid foggy overlays inside the two hero blocks. */
+.mirrortrace-user-hero
+[class*="backdrop-blur"],
+.mirrortrace-admin-hero
+[class*="backdrop-blur"] {
+  backdrop-filter:
+    blur(1.5px) !important;
+
+  -webkit-backdrop-filter:
+    blur(1.5px) !important;
+}
+
+/* Bright, crisp Overview text. */
+.mirrortrace-user-hero h1 {
+  color:
+    #F8FAFC !important;
+
+  text-shadow:
+    0 3px 18px
+    rgba(0, 0, 0, 0.34);
+}
+
+.mirrortrace-user-hero h1 span {
+  color:
+    #C98A43 !important;
+}
+
+.mirrortrace-overview-copy {
+  color:
+    #E2EAF0 !important;
+
+  text-shadow:
+    0 2px 12px
+    rgba(0, 0, 0, 0.28);
+}
+
+/* Crisp Overview CTAs. */
+.mirrortrace-user-hero button {
+  backdrop-filter:
+    blur(1.5px) !important;
+
+  -webkit-backdrop-filter:
+    blur(1.5px) !important;
+
+  box-shadow:
+    0 10px 24px
+    rgba(6, 10, 14, 0.16);
+}
+
+.mirrortrace-user-hero button:first-of-type {
+  background:
+    rgba(12, 19, 25, 0.84) !important;
+
+  color:
+    #F8FAFC !important;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.15) !important;
+}
+
+.mirrortrace-user-hero button:last-of-type {
+  background:
+    rgba(97, 112, 87, 0.50) !important;
+
+  color:
+    #F4F7F1 !important;
+
+  border:
+    1px solid
+    rgba(163, 181, 151, 0.30) !important;
+}
+
+/* Security & Operations readability. */
+.mirrortrace-admin-hero {
+  color:
+    #F7FAFC !important;
+}
+
+.mirrortrace-admin-hero h1 {
+  color:
+    #FFFFFF !important;
+
+  text-shadow:
+    0 3px 20px
+    rgba(0, 0, 0, 0.40);
+}
+
+.mirrortrace-admin-hero .text-amber-200 {
+  color:
+    #D8A25A !important;
+}
+
+.mirrortrace-admin-hero p {
+  color:
+    #DDE6EE !important;
+}
+
+/* Privacy boundary still readable without hiding the trees. */
+.mirrortrace-admin-hero
+.bg-emerald-300\/10 {
+  background:
+    rgba(23, 55, 46, 0.34) !important;
+
+  border-color:
+    rgba(125, 207, 169, 0.24) !important;
+
+  backdrop-filter:
+    blur(1.5px) !important;
+
+  -webkit-backdrop-filter:
+    blur(1.5px) !important;
+}
+
+/* Slow up/down motion on Security & Operations. */
+.mirrortrace-admin-title-float {
+  animation:
+    mirrortraceAdminTitleFloat
+    6.8s
+    ease-in-out
+    infinite;
+
+  will-change:
+    transform;
+}
+
+.mirrortrace-admin-subtitle-float {
+  animation:
+    mirrortraceAdminSubtitleFloat
+    6.8s
+    ease-in-out
+    infinite;
+
+  animation-delay:
+    0.35s;
+
+  will-change:
+    transform;
+}
+
+@keyframes mirrortraceAdminTitleFloat {
+  0%,
+  100% {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+  }
+
+  50% {
+    transform:
+      translate3d(
+        0,
+        -10px,
+        0
+      );
+  }
+}
+
+@keyframes mirrortraceAdminSubtitleFloat {
+  0%,
+  100% {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+  }
+
+  50% {
+    transform:
+      translate3d(
+        0,
+        7px,
+        0
+      );
+  }
+}
+
+/* Keep existing Overview floating motion. */
+.mirrortrace-float-title {
+  animation:
+    mirrortraceOverviewTitleFloat
+    6.4s
+    ease-in-out
+    infinite;
+}
+
+.mirrortrace-float-actions {
+  animation:
+    mirrortraceOverviewActionsFloat
+    6.4s
+    ease-in-out
+    infinite;
+
+  animation-delay:
+    0.30s;
+}
+
+@keyframes mirrortraceOverviewTitleFloat {
+  0%,
+  100% {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+  }
+
+  50% {
+    transform:
+      translate3d(
+        0,
+        -10px,
+        0
+      );
+  }
+}
+
+@keyframes mirrortraceOverviewActionsFloat {
+  0%,
+  100% {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+  }
+
+  50% {
+    transform:
+      translate3d(
+        0,
+        7px,
+        0
+      );
+  }
+}
+
+/* Lower blur on dashboard/admin cards so branches remain recognizable. */
+.mirrortrace-dashboard-overview
+.rounded-3xl.border,
+.mirrortrace-dashboard-overview
+.rounded-2xl.border,
+.mirrortrace-admin-dashboard
+.rounded-3xl.border,
+.mirrortrace-admin-dashboard
+.rounded-2xl.border {
+  backdrop-filter:
+    blur(2px)
+    saturate(108%) !important;
+
+  -webkit-backdrop-filter:
+    blur(2px)
+    saturate(108%) !important;
+}
+
+/* Accessibility. */
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  .mirrortrace-admin-title-float,
+  .mirrortrace-admin-subtitle-float,
+  .mirrortrace-float-title,
+  .mirrortrace-float-actions {
+    animation:
+      none !important;
+  }
+}

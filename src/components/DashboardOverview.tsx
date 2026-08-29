@@ -313,7 +313,7 @@ export const DashboardOverview:
                   </span>
                 </h1>
 
-                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/60 sm:text-base">
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/82 sm:text-base mirrortrace-overview-copy">
                   Track how your ideas evolve with consent, evidence, and complete control over AI memory.
                 </p>
 

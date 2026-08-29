@@ -1,26 +1,25 @@
+MirrorTrace Hero + Review Moderation Fix v5
 
-MirrorTrace Clear Glass v4
-
-Replace these files completely:
+REPLACE COMPLETELY:
 - src/components/AdminDashboard.tsx
-- src/components/AdminPanelLauncher.tsx
 - src/components/DashboardOverview.tsx
-- src/components/MemoryGovernanceCenter.tsx
-- src/components/Navbar.tsx
-- src/App.tsx
 - src/index.css
-- public/ui/moody-nature.jpeg
 
-What changed:
-- Much less blur on cards and panels
-- Background image remains clearly visible through cards
-- Brighter text across dark-glass surfaces
-- Security & Operations title/subtitle now float slowly up/down
-- Overview hero keeps the same clearer sharp-background style
-- Current Reflection State removed from Overview hero
+ADD:
+- public/ui/mirrortrace3.jpeg
 
-Run:
-npm run dev
+FIXES:
+- Approved reviews no longer show Approve again.
+- Hide and Reject remain available.
+- mirrortrace3.jpeg is used for Overview and Admin hero blocks.
+- Hero blur reduced to almost zero.
+- Security & Operations title/subtitle float slowly.
+- Overview title/CTA motion remains.
+- Text contrast improved.
 
-Push:
-git add . && git commit -m "Refine MirrorTrace glass UI and hero animations" && git push origin main
+VERIFY:
+npm run lint
+npm run build
+
+PUSH:
+git add .; git commit -m "Fix review moderation and sharpen MirrorTrace hero backgrounds"; git push origin main
