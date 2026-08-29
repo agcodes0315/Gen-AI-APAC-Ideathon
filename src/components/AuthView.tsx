@@ -192,19 +192,6 @@ const GoogleIcon = () => (
   </svg>
 );
 
-function easeInOutCubic(
-  value: number
-): number {
-  return value < 0.5
-    ? 4 * value * value * value
-    : 1 -
-        Math.pow(
-          -2 * value + 2,
-          3
-        ) /
-          2;
-}
-
 function getAccentClasses(
   accent: FeatureCard['accent']
 ): {
@@ -394,44 +381,47 @@ export const AuthView:
         target:
           featureSectionRef,
         offset: [
-          'start start',
-          'end end',
+          'start end',
+          'end start',
         ],
       });
 
     /*
-      Softer spring = more realistic lag and less "snapping".
-      This is intentionally much gentler than the previous version.
+      HYBRID FEATURE MOTION
+
+      Vertical page scrolling gives the two rows a small decorative nudge:
+      - top row moves left
+      - bottom row moves right
+
+      The rows themselves stay horizontally browsable at all times, so
+      users can pause anywhere and swipe/trackpad/Shift+wheel through every
+      card without fighting the vertical-scroll animation.
     */
     const smoothFeatureProgress =
       useSpring(
         featureProgress,
         {
           stiffness:
-            34,
+            46,
           damping:
-            18,
+            24,
           mass:
-            1.15,
+            0.95,
           restDelta:
             0.0005,
         }
       );
 
-    const horizontalDistance =
+    const nudgeDistance =
       Math.max(
-        420,
+        120,
         Math.min(
           viewportWidth *
-            0.58,
-          980
+            0.14,
+          230
         )
       );
 
-    /*
-      Numeric pixel transforms are used here instead of vw strings.
-      That makes Motion's spring interpolation significantly smoother.
-    */
     const topX =
       useTransform(
         smoothFeatureProgress,
@@ -445,9 +435,9 @@ export const AuthView:
               0,
             ]
           : [
-              horizontalDistance *
-                0.22,
-              -horizontalDistance,
+              nudgeDistance *
+                0.55,
+              -nudgeDistance,
             ]
       );
 
@@ -464,51 +454,13 @@ export const AuthView:
               0,
             ]
           : [
-              -horizontalDistance,
-              horizontalDistance *
-                0.22,
+              -nudgeDistance,
+              nudgeDistance *
+                0.55,
             ]
       );
 
-    const showcaseScale =
-      useTransform(
-        smoothFeatureProgress,
-        [
-          0,
-          0.5,
-          1,
-        ],
-        reducedMotion
-          ? [
-              1,
-              1,
-              1,
-            ]
-          : [
-              0.992,
-              1,
-              0.992,
-            ]
-      );
-
-    const showcaseOpacity =
-      useTransform(
-        smoothFeatureProgress,
-        [
-          0,
-          0.06,
-          0.94,
-          1,
-        ],
-        [
-          0.9,
-          1,
-          1,
-          0.94,
-        ]
-      );
-
-    const headingY =
+    const featureHeadingY =
       useTransform(
         smoothFeatureProgress,
         [
@@ -523,9 +475,9 @@ export const AuthView:
               0,
             ]
           : [
-              14,
+              10,
               0,
-              -7,
+              -6,
             ]
       );
 
@@ -578,104 +530,22 @@ export const AuthView:
         id:
           string
       ) => {
-        const target =
-          document.getElementById(
-            id
-          );
-
-        if (
-          !target
-        ) {
-          return;
-        }
-
         setMobileOpen(
           false
         );
 
-        if (
-          reducedMotion
-        ) {
-          target.scrollIntoView({
+        document
+          .getElementById(
+            id
+          )
+          ?.scrollIntoView({
             behavior:
-              'auto',
+              reducedMotion
+                ? 'auto'
+                : 'smooth',
             block:
               'start',
           });
-
-          return;
-        }
-
-        const start =
-          window.scrollY;
-
-        const targetY =
-          target
-            .getBoundingClientRect()
-            .top +
-          window.scrollY -
-          20;
-
-        const distance =
-          targetY -
-          start;
-
-        const duration =
-          Math.min(
-            1350,
-            Math.max(
-              820,
-              Math.abs(
-                distance
-              ) *
-                0.58
-            )
-          );
-
-        const startTime =
-          performance.now();
-
-        const step =
-          (
-            now:
-              number
-          ) => {
-            const elapsed =
-              now -
-              startTime;
-
-            const progress =
-              Math.min(
-                elapsed /
-                  duration,
-                1
-              );
-
-            const eased =
-              easeInOutCubic(
-                progress
-              );
-
-            window.scrollTo(
-              0,
-              start +
-                distance *
-                  eased
-            );
-
-            if (
-              progress <
-              1
-            ) {
-              requestAnimationFrame(
-                step
-              );
-            }
-          };
-
-        requestAnimationFrame(
-          step
-        );
       };
 
     return (
@@ -985,7 +855,7 @@ export const AuthView:
         </section>
 
         {/* ======================================================
-            SOFT, STICKY SCROLL SHOWCASE
+            HYBRID SCROLL + BROWSE FEATURE SHOWCASE
             ====================================================== */}
 
         <section
@@ -993,113 +863,263 @@ export const AuthView:
           ref={
             featureSectionRef
           }
-          className="mirrortrace-showcase-section"
+          className="mirrortrace-feature-section"
         >
-          <div className="mirrortrace-showcase-sticky">
-
+          <motion.div
+            style={{
+              y:
+                featureHeadingY,
+            }}
+            className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8"
+          >
             <motion.div
-              style={{
-                y:
-                  headingY,
+              initial={{
                 opacity:
-                  showcaseOpacity,
+                  0,
+                y:
+                  reducedMotion
+                    ? 0
+                    : 20,
               }}
-              className="relative z-20 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8"
+              whileInView={{
+                opacity:
+                  1,
+                y:
+                  0,
+              }}
+              viewport={{
+                once:
+                  true,
+                amount:
+                  0.25,
+              }}
+              transition={{
+                duration:
+                  0.55,
+              }}
             >
-              <div className="text-xs font-bold uppercase tracking-[0.22em] text-amber-800">
+              <div className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--mt-accent)]">
                 Built around your decisions
               </div>
 
-              <h2 className="mt-3 font-serif text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+              <h2 className="mt-3 font-serif text-4xl font-bold tracking-tight text-[var(--mt-text)] sm:text-5xl lg:text-6xl">
                 Reflection that moves with you.
               </h2>
 
-              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-stone-600">
-                As your thinking changes, MirrorTrace keeps consent, memory, provenance, and future revisits connected.
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[var(--mt-text-muted)]">
+                Scroll down to see the rows gently move in opposite directions.
+                Pause anywhere and browse every card horizontally with a
+                trackpad, swipe, Shift + mouse wheel, or the arrow controls.
               </p>
             </motion.div>
+          </motion.div>
 
-            <motion.div
-              style={{
-                scale:
-                  showcaseScale,
-                opacity:
-                  showcaseOpacity,
-              }}
-              className="mirrortrace-showcase-window mt-10"
-            >
-              <div className="mirrortrace-showcase-edge mirrortrace-showcase-edge-left" />
-              <div className="mirrortrace-showcase-edge mirrortrace-showcase-edge-right" />
+          <div className="mirrortrace-feature-shell mx-auto mt-11 max-w-[1600px]">
 
-              <motion.div
-                style={{
-                  x:
-                    topX,
+            <div className="mirrortrace-lane-heading">
+              <span>
+                Core reflection flow
+              </span>
+
+              <span className="mirrortrace-browse-hint">
+                Browse left / right
+              </span>
+            </div>
+
+            <div className="mirrortrace-lane-wrap">
+              <button
+                type="button"
+                aria-label="Scroll top feature row left"
+                className="mirrortrace-lane-arrow mirrortrace-lane-arrow-left"
+                onClick={(event) => {
+                  const lane =
+                    event.currentTarget
+                      .parentElement
+                      ?.querySelector(
+                        '.mirrortrace-card-lane'
+                      ) as
+                        HTMLElement |
+                        null;
+
+                  lane?.scrollBy({
+                    left:
+                      -380,
+                    behavior:
+                      reducedMotion
+                        ? 'auto'
+                        : 'smooth',
+                  });
                 }}
-                className="mirrortrace-scroll-row mirrortrace-scroll-row-top"
               >
-                {TOP_ROW.map(
-                  (
-                    card
-                  ) => (
-                    <FeatureCardView
-                      key={
-                        card.id
-                      }
-                      card={
-                        card
-                      }
-                    />
-                  )
-                )}
-              </motion.div>
+                ‹
+              </button>
 
-              <motion.div
-                style={{
-                  x:
-                    bottomX,
+              <div className="mirrortrace-card-lane">
+                <motion.div
+                  style={{
+                    x:
+                      topX,
+                  }}
+                  className="mirrortrace-scroll-row"
+                >
+                  {TOP_ROW.map(
+                    (
+                      card
+                    ) => (
+                      <FeatureCardView
+                        key={
+                          card.id
+                        }
+                        card={
+                          card
+                        }
+                      />
+                    )
+                  )}
+                </motion.div>
+              </div>
+
+              <button
+                type="button"
+                aria-label="Scroll top feature row right"
+                className="mirrortrace-lane-arrow mirrortrace-lane-arrow-right"
+                onClick={(event) => {
+                  const lane =
+                    event.currentTarget
+                      .parentElement
+                      ?.querySelector(
+                        '.mirrortrace-card-lane'
+                      ) as
+                        HTMLElement |
+                        null;
+
+                  lane?.scrollBy({
+                    left:
+                      380,
+                    behavior:
+                      reducedMotion
+                        ? 'auto'
+                        : 'smooth',
+                  });
                 }}
-                className="mirrortrace-scroll-row mirrortrace-scroll-row-bottom mt-5"
               >
-                {BOTTOM_ROW.map(
-                  (
-                    card
-                  ) => (
-                    <FeatureCardView
-                      key={
-                        card.id
-                      }
-                      card={
-                        card
-                      }
-                    />
-                  )
-                )}
-              </motion.div>
-            </motion.div>
+                ›
+              </button>
+            </div>
 
-            <div className="relative z-20 mx-auto mt-9 max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="grid gap-3 md:grid-cols-3">
-                <div className="mirrortrace-summary-pill">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-700" />
-                  <span>
-                    Consent-bound memory
-                  </span>
-                </div>
+            <div className="mirrortrace-lane-heading mt-8">
+              <span>
+                Control, safety & follow-up
+              </span>
 
-                <div className="mirrortrace-summary-pill">
-                  <RefreshCcw className="h-4 w-4 text-blue-700" />
-                  <span>
-                    Evidence-backed change
-                  </span>
-                </div>
+              <span className="mirrortrace-browse-hint">
+                Browse left / right
+              </span>
+            </div>
 
-                <div className="mirrortrace-summary-pill">
-                  <ShieldCheck className="h-4 w-4 text-amber-800" />
-                  <span>
-                    Owner-isolated by design
-                  </span>
-                </div>
+            <div className="mirrortrace-lane-wrap">
+              <button
+                type="button"
+                aria-label="Scroll bottom feature row left"
+                className="mirrortrace-lane-arrow mirrortrace-lane-arrow-left"
+                onClick={(event) => {
+                  const lane =
+                    event.currentTarget
+                      .parentElement
+                      ?.querySelector(
+                        '.mirrortrace-card-lane'
+                      ) as
+                        HTMLElement |
+                        null;
+
+                  lane?.scrollBy({
+                    left:
+                      -380,
+                    behavior:
+                      reducedMotion
+                        ? 'auto'
+                        : 'smooth',
+                  });
+                }}
+              >
+                ‹
+              </button>
+
+              <div className="mirrortrace-card-lane">
+                <motion.div
+                  style={{
+                    x:
+                      bottomX,
+                  }}
+                  className="mirrortrace-scroll-row"
+                >
+                  {BOTTOM_ROW.map(
+                    (
+                      card
+                    ) => (
+                      <FeatureCardView
+                        key={
+                          card.id
+                        }
+                        card={
+                          card
+                        }
+                      />
+                    )
+                  )}
+                </motion.div>
+              </div>
+
+              <button
+                type="button"
+                aria-label="Scroll bottom feature row right"
+                className="mirrortrace-lane-arrow mirrortrace-lane-arrow-right"
+                onClick={(event) => {
+                  const lane =
+                    event.currentTarget
+                      .parentElement
+                      ?.querySelector(
+                        '.mirrortrace-card-lane'
+                      ) as
+                        HTMLElement |
+                        null;
+
+                  lane?.scrollBy({
+                    left:
+                      380,
+                    behavior:
+                      reducedMotion
+                        ? 'auto'
+                        : 'smooth',
+                  });
+                }}
+              >
+                ›
+              </button>
+            </div>
+          </div>
+
+          <div className="mx-auto mt-10 max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid gap-3 md:grid-cols-3">
+              <div className="mirrortrace-summary-pill">
+                <CheckCircle2 className="h-4 w-4 text-[var(--mt-success)]" />
+                <span>
+                  Consent-bound memory
+                </span>
+              </div>
+
+              <div className="mirrortrace-summary-pill">
+                <RefreshCcw className="h-4 w-4 text-[var(--mt-accent)]" />
+                <span>
+                  Evidence-backed change
+                </span>
+              </div>
+
+              <div className="mirrortrace-summary-pill">
+                <ShieldCheck className="h-4 w-4 text-[var(--mt-accent-strong)]" />
+                <span>
+                  Owner-isolated by design
+                </span>
               </div>
             </div>
           </div>
