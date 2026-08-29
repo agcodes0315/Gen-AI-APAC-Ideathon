@@ -314,6 +314,17 @@ export const AuthView:
       );
 
     const [
+      viewportWidth,
+      setViewportWidth,
+    ] =
+      useState(
+        typeof window !==
+          'undefined'
+          ? window.innerWidth
+          : 1440
+      );
+
+    const [
       loading,
       setLoading,
     ] =
@@ -342,6 +353,26 @@ export const AuthView:
       >([]);
 
     useEffect(() => {
+      const handleResize =
+        () => {
+          setViewportWidth(
+            window.innerWidth
+          );
+        };
+
+      window.addEventListener(
+        'resize',
+        handleResize
+      );
+
+      return () =>
+        window.removeEventListener(
+          'resize',
+          handleResize
+        );
+    }, []);
+
+    useEffect(() => {
       void getPublicReviews()
         .then(
           setReviews
@@ -355,17 +386,6 @@ export const AuthView:
         );
     }, []);
 
-    /*
-      EXACT VIDEO-STYLE MOTION:
-      The entire Features section is taller than the viewport.
-      Its inner showcase stays sticky while the user scrolls vertically.
-
-      Vertical scrolling drives horizontal movement:
-      - TOP row moves LEFT
-      - BOTTOM row moves RIGHT
-
-      No horizontal user scrolling is required.
-    */
     const {
       scrollYProgress:
         featureProgress,
@@ -379,19 +399,39 @@ export const AuthView:
         ],
       });
 
+    /*
+      Softer spring = more realistic lag and less "snapping".
+      This is intentionally much gentler than the previous version.
+    */
     const smoothFeatureProgress =
       useSpring(
         featureProgress,
         {
           stiffness:
-            82,
+            34,
           damping:
-            22,
+            18,
           mass:
-            0.45,
+            1.15,
+          restDelta:
+            0.0005,
         }
       );
 
+    const horizontalDistance =
+      Math.max(
+        420,
+        Math.min(
+          viewportWidth *
+            0.58,
+          980
+        )
+      );
+
+    /*
+      Numeric pixel transforms are used here instead of vw strings.
+      That makes Motion's spring interpolation significantly smoother.
+    */
     const topX =
       useTransform(
         smoothFeatureProgress,
@@ -401,12 +441,13 @@ export const AuthView:
         ],
         reducedMotion
           ? [
-              '0vw',
-              '0vw',
+              0,
+              0,
             ]
           : [
-              '6vw',
-              '-42vw',
+              horizontalDistance *
+                0.22,
+              -horizontalDistance,
             ]
       );
 
@@ -419,12 +460,13 @@ export const AuthView:
         ],
         reducedMotion
           ? [
-              '0vw',
-              '0vw',
+              0,
+              0,
             ]
           : [
-              '-42vw',
-              '6vw',
+              -horizontalDistance,
+              horizontalDistance *
+                0.22,
             ]
       );
 
@@ -443,9 +485,9 @@ export const AuthView:
               1,
             ]
           : [
-              0.985,
+              0.992,
               1,
-              0.985,
+              0.992,
             ]
       );
 
@@ -454,15 +496,15 @@ export const AuthView:
         smoothFeatureProgress,
         [
           0,
-          0.08,
-          0.92,
+          0.06,
+          0.94,
           1,
         ],
         [
-          0.82,
+          0.9,
           1,
           1,
-          0.88,
+          0.94,
         ]
       );
 
@@ -481,9 +523,9 @@ export const AuthView:
               0,
             ]
           : [
-              18,
+              14,
               0,
-              -10,
+              -7,
             ]
       );
 
@@ -580,13 +622,13 @@ export const AuthView:
 
         const duration =
           Math.min(
-            1150,
+            1350,
             Math.max(
-              700,
+              820,
               Math.abs(
                 distance
               ) *
-                0.5
+                0.58
             )
           );
 
@@ -639,10 +681,6 @@ export const AuthView:
     return (
       <div className="mirrortrace-auth-page min-h-screen bg-stone-950 text-white">
 
-        {/* ======================================================
-            CINEMATIC HERO
-            ====================================================== */}
-
         <section
           id="hero"
           className="relative min-h-screen overflow-hidden bg-stone-950"
@@ -671,42 +709,7 @@ export const AuthView:
 
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-stone-950 to-transparent" />
 
-          <motion.div
-            className="absolute left-[8%] top-[24%] h-48 w-48 rounded-full bg-amber-300/15 blur-3xl"
-            animate={
-              reducedMotion
-                ? undefined
-                : {
-                    x: [
-                      0,
-                      14,
-                      0,
-                    ],
-                    y: [
-                      0,
-                      -18,
-                      0,
-                    ],
-                    scale: [
-                      1,
-                      1.08,
-                      1,
-                    ],
-                  }
-            }
-            transition={{
-              duration:
-                9,
-              repeat:
-                Infinity,
-              ease:
-                'easeInOut',
-            }}
-          />
-
           <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
-
-            {/* NAVBAR */}
 
             <div className="sticky top-0 z-30 pt-4 sm:pt-6">
               <div className="mirrortrace-liquid-nav mx-auto flex max-w-6xl items-center justify-between rounded-full px-4 py-3 sm:px-6">
@@ -862,8 +865,6 @@ export const AuthView:
               )}
             </div>
 
-            {/* HERO CONTENT */}
-
             <div className="flex flex-1 items-center py-16 sm:py-24">
               <motion.div
                 initial={{
@@ -984,7 +985,7 @@ export const AuthView:
         </section>
 
         {/* ======================================================
-            STICKY SCROLL SHOWCASE
+            SOFT, STICKY SCROLL SHOWCASE
             ====================================================== */}
 
         <section
@@ -1103,10 +1104,6 @@ export const AuthView:
             </div>
           </div>
         </section>
-
-        {/* ======================================================
-            SECURITY
-            ====================================================== */}
 
         <section
           id="security"
@@ -1253,10 +1250,6 @@ export const AuthView:
             </div>
           </div>
         </section>
-
-        {/* ======================================================
-            PUBLIC REVIEWS
-            ====================================================== */}
 
         <section
           id="reviews"

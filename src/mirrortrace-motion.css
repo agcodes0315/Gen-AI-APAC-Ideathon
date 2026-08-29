@@ -1,14 +1,25 @@
 /*
-  MirrorTrace cinematic landing motion.
+  MirrorTrace smoother scroll-linked showcase.
 
-  IMPORTANT:
-  This file intentionally prevents horizontal page scrolling.
-  The feature rows move horizontally only as a VISUAL EFFECT
-  while the user scrolls vertically.
+  The rows are horizontally animated by vertical page scroll.
+  No visible horizontal scrollbar should appear in normal motion mode.
 */
+
+html,
+body,
+#root {
+  max-width:
+    100%;
+
+  overflow-x:
+    hidden;
+}
 
 .mirrortrace-auth-page {
   width:
+    100%;
+
+  max-width:
     100%;
 
   overflow-x:
@@ -35,7 +46,8 @@
     );
 
   border:
-    1px solid
+    1px
+    solid
     rgba(
       255,
       255,
@@ -72,7 +84,7 @@
 }
 
 /* ============================================================
-   STICKY, SCROLL-DRIVEN SHOWCASE
+   LONGER STICKY SCROLL = SLOWER, SMOOTHER HORIZONTAL MOTION
    ============================================================ */
 
 .mirrortrace-showcase-section {
@@ -80,10 +92,10 @@
     relative;
 
   height:
-    225vh;
+    320vh;
 
   min-height:
-    1500px;
+    2200px;
 
   background:
     #f7f5ef;
@@ -121,7 +133,9 @@
     hidden;
 
   padding:
-    72px 0 54px;
+    62px
+    0
+    48px;
 }
 
 .mirrortrace-showcase-window {
@@ -131,8 +145,14 @@
   width:
     100%;
 
+  max-width:
+    100vw;
+
   overflow:
     hidden;
+
+  contain:
+    paint;
 
   will-change:
     transform,
@@ -149,9 +169,6 @@
   gap:
     22px;
 
-  will-change:
-    transform;
-
   transform:
     translate3d(
       0,
@@ -159,8 +176,14 @@
       0
     );
 
+  will-change:
+    transform;
+
   backface-visibility:
     hidden;
+
+  -webkit-font-smoothing:
+    antialiased;
 }
 
 .mirrortrace-scroll-row-top {
@@ -201,7 +224,7 @@
       255,
       255,
       255,
-      0.96
+      0.97
     );
 
   padding:
@@ -220,7 +243,7 @@
 
   transition:
     transform
-      280ms
+      360ms
       cubic-bezier(
         0.22,
         1,
@@ -228,35 +251,35 @@
         1
       ),
     box-shadow
-      280ms
+      360ms
       ease,
     border-color
-      280ms
+      360ms
       ease;
 }
 
 .mirrortrace-scroll-card:hover {
   transform:
-    translateY(-7px)
-    scale(1.012);
+    translateY(-6px)
+    scale(1.009);
 
   border-color:
     rgba(
       180,
       83,
       9,
-      0.26
+      0.24
     );
 
   box-shadow:
     0
       22px
-      60px
+      58px
       rgba(
         41,
         37,
         36,
-        0.13
+        0.11
       );
 }
 
@@ -275,9 +298,9 @@
 
   width:
     clamp(
-      44px,
-      8vw,
-      150px
+      42px,
+      7vw,
+      135px
     );
 
   pointer-events:
@@ -292,7 +315,7 @@
     linear-gradient(
       90deg,
       #f7f5ef
-        10%,
+        8%,
       rgba(
         247,
         245,
@@ -311,7 +334,7 @@
     linear-gradient(
       270deg,
       #f7f5ef
-        10%,
+        8%,
       rgba(
         247,
         245,
@@ -399,7 +422,7 @@
 
   animation:
     mirrortrace-review-marquee
-    44s
+    46s
     linear
     infinite;
 
@@ -493,15 +516,15 @@ mirrortrace-review-marquee {
 ) {
   .mirrortrace-showcase-section {
     height:
-      205vh;
+      285vh;
 
     min-height:
-      1350px;
+      1850px;
   }
 
   .mirrortrace-showcase-sticky {
     padding-top:
-      64px;
+      54px;
   }
 
   .mirrortrace-scroll-row {
@@ -527,10 +550,10 @@ mirrortrace-review-marquee {
 ) {
   .mirrortrace-showcase-section {
     height:
-      190vh;
+      250vh;
 
     min-height:
-      1220px;
+      1550px;
   }
 
   .mirrortrace-showcase-sticky {
@@ -538,7 +561,7 @@ mirrortrace-review-marquee {
       flex-start;
 
     padding-top:
-      70px;
+      64px;
 
     padding-bottom:
       38px;
@@ -566,24 +589,18 @@ mirrortrace-review-marquee {
 
   .mirrortrace-review-track {
     animation-duration:
-      38s;
+      40s;
   }
 }
 
 /* ============================================================
-   ACCESSIBILITY
+   REDUCED MOTION FALLBACK
    ============================================================ */
 
 @media (
   prefers-reduced-motion:
     reduce
 ) {
-  .mirrortrace-scroll-row {
-    transform:
-      none
-      !important;
-  }
-
   .mirrortrace-showcase-section {
     height:
       auto;
@@ -603,6 +620,23 @@ mirrortrace-review-marquee {
   .mirrortrace-showcase-window {
     overflow-x:
       auto;
+
+    scrollbar-width:
+      none;
+
+    -ms-overflow-style:
+      none;
+  }
+
+  .mirrortrace-showcase-window::-webkit-scrollbar {
+    display:
+      none;
+  }
+
+  .mirrortrace-scroll-row {
+    transform:
+      none
+      !important;
   }
 
   .mirrortrace-scroll-card {
@@ -619,5 +653,13 @@ mirrortrace-review-marquee {
   .mirrortrace-review-stage {
     overflow-x:
       auto;
+
+    scrollbar-width:
+      none;
+  }
+
+  .mirrortrace-review-stage::-webkit-scrollbar {
+    display:
+      none;
   }
 }

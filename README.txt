@@ -1,31 +1,21 @@
-MirrorTrace Sticky Scroll Showcase
+MirrorTrace Smooth Scroll v3
 
-This version matches the uploaded reference video much more closely.
+REPLACE COMPLETELY:
+- src/components/AuthView.tsx
+- src/mirrortrace-motion.css
 
-THE IMPORTANT DIFFERENCE:
-The cards do NOT autoplay on a timer and the user does NOT horizontally scroll.
+WHY THIS VERSION IS SMOOTHER:
+- spring stiffness reduced from 82 to 34
+- damping tuned to 18
+- mass raised to 1.15 to create inertia
+- string/vw transforms replaced with numeric pixel transforms
+- feature section length increased to 320vh
+- horizontal translation spread over much more vertical scroll distance
+- navbar scroll duration increased slightly
+- overflow-x is hidden/clip on html/body/root/auth page
+- reduced-motion fallback hides its scrollbar visually
 
-Instead:
-1. The Features section is ~225vh tall.
-2. Its content becomes sticky for roughly one viewport.
-3. While the user scrolls DOWN vertically:
-   - top row moves LEFT
-   - bottom row moves RIGHT
-4. Scroll back UP and both rows reverse.
-5. When the section finishes, the page naturally continues to Security.
-
-NO HORIZONTAL SCROLLBAR:
-The AuthView wrapper and sticky showcase both clip x-overflow.
-
-REPLACE:
-src/components/AuthView.tsx
-src/mirrortrace-motion.css
-
-KEEP:
-public/hero/mirrortrace-hero.mp4
-public/hero/mirrortrace-poster.jpg
-
-VERIFY:
+RUN:
 npm run lint
 npm run build
 
