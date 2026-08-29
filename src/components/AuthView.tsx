@@ -1,351 +1,1358 @@
-import React, { useState } from 'react';
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+
 import {
+  AlertCircle,
+  ArrowRight,
+  BellRing,
+  BookOpen,
+  CheckCircle2,
+  Clock3,
+  Database,
+  EyeOff,
+  GitCompare,
+  Lock,
+  Menu,
+  MessagesSquare,
+  RefreshCcw,
   ShieldCheck,
   Sparkles,
-  Lock,
-  ArrowRight,
-  AlertCircle,
-  GitCompare,
-  EyeOff,
-  CheckCircle2,
-  BookOpen,
+  Star,
+  X,
 } from 'lucide-react';
 
-import { signInWithGoogle } from '../lib/firebase.ts';
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'motion/react';
+
+import {
+  signInWithGoogle,
+} from '../lib/firebase.ts';
+
+import {
+  getPublicReviews,
+  type ProductReview,
+} from '../lib/supportReviews.ts';
+
+import '../mirrortrace-motion.css';
 
 interface AuthViewProps {
   onSuccess?: () => void;
 }
 
-export const AuthView: React.FC<AuthViewProps> = ({ onSuccess }) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+type FeatureCard = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  body: string;
+  icon:
+    React.ComponentType<{
+      className?: string;
+    }>;
+  accent:
+    | 'amber'
+    | 'emerald'
+    | 'blue'
+    | 'violet'
+    | 'stone';
+};
 
-  const handleSignIn = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+const HERO_VIDEO =
+  '/hero/mirrortrace-hero.mp4';
 
-      await signInWithGoogle();
-      onSuccess?.();
-    } catch (err: unknown) {
-      console.error('Sign-in error:', err);
+const HERO_POSTER =
+  '/hero/mirrortrace-poster.jpg';
 
-      setError(
-        'Unable to complete Google sign-in. Please allow popups and try again.'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+const TOP_ROW: FeatureCard[] = [
+  {
+    id: 'reflect',
+    eyebrow: 'Reflection',
+    title: 'Write naturally',
+    body:
+      'Capture a thought in your own words, with Gemini available only as a companion.',
+    icon: BookOpen,
+    accent: 'amber',
+  },
+  {
+    id: 'memory',
+    eyebrow: 'AI Memory',
+    title: 'Approve what persists',
+    body:
+      'Suggested Thought Snapshots stay pending until you explicitly approve them.',
+    icon: Sparkles,
+    accent: 'violet',
+  },
+  {
+    id: 'diff',
+    eyebrow: 'Perspective',
+    title: 'See what changed',
+    body:
+      'Thought Diffs compare approved positions and preserve the evidence behind the shift.',
+    icon: GitCompare,
+    accent: 'blue',
+  },
+  {
+    id: 'private',
+    eyebrow: 'Private Session',
+    title: 'Reflect without persistence',
+    body:
+      'Use an ephemeral space when you want no journal history, memory, or future comparison.',
+    icon: EyeOff,
+    accent: 'stone',
+  },
+  {
+    id: 'watch',
+    eyebrow: 'Perspective Watch',
+    title: 'Revisit later',
+    body:
+      'Schedule a future check-in and receive an optional reminder when it is time to reflect again.',
+    icon: Clock3,
+    accent: 'emerald',
+  },
+];
+
+const BOTTOM_ROW: FeatureCard[] = [
+  {
+    id: 'provenance',
+    eyebrow: 'Provenance',
+    title: 'Ask “why am I seeing this?”',
+    body:
+      'Trace a generated comparison back to the exact authenticated reflections that support it.',
+    icon: ShieldCheck,
+    accent: 'emerald',
+  },
+  {
+    id: 'support',
+    eyebrow: 'Support',
+    title: 'Ask for help safely',
+    body:
+      'Support receives only the text you intentionally submit, never your private journal automatically.',
+    icon: MessagesSquare,
+    accent: 'blue',
+  },
+  {
+    id: 'notifications',
+    eyebrow: 'Notifications',
+    title: 'Stay on schedule',
+    body:
+      'Perspective Watch can deliver browser push and email reminders through your configured preferences.',
+    icon: BellRing,
+    accent: 'amber',
+  },
+  {
+    id: 'governance',
+    eyebrow: 'Memory Governance',
+    title: 'Review and revoke',
+    body:
+      'Inspect approved memories, retention, watches, export, and revocation from one control center.',
+    icon: Database,
+    accent: 'violet',
+  },
+  {
+    id: 'security',
+    eyebrow: 'Security',
+    title: 'Owner-bound by design',
+    body:
+      'Private application data remains scoped to the authenticated Firebase UID.',
+    icon: Lock,
+    accent: 'stone',
+  },
+];
+
+const GoogleIcon = () => (
+  <svg
+    className="h-5 w-5"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <path
+      fill="#EA4335"
+      d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.2 9 5 12 5z"
+    />
+    <path
+      fill="#4285F4"
+      d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"
+    />
+    <path
+      fill="#FBBC05"
+      d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 12s.7 2.3 1.9 4.7l3.7-2.9z"
+    />
+    <path
+      fill="#34A853"
+      d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.2-6.4-5.2L1.9 16c1.8 3.7 5.6 7 10.1 7z"
+    />
+  </svg>
+);
+
+function easeInOutCubic(
+  value: number
+): number {
+  return value < 0.5
+    ? 4 * value * value * value
+    : 1 -
+        Math.pow(
+          -2 * value + 2,
+          3
+        ) /
+          2;
+}
+
+function getAccentClasses(
+  accent: FeatureCard['accent']
+): {
+  icon: string;
+  chip: string;
+} {
+  switch (accent) {
+    case 'emerald':
+      return {
+        icon:
+          'bg-emerald-100 text-emerald-800',
+        chip:
+          'text-emerald-700',
+      };
+
+    case 'blue':
+      return {
+        icon:
+          'bg-blue-100 text-blue-800',
+        chip:
+          'text-blue-700',
+      };
+
+    case 'violet':
+      return {
+        icon:
+          'bg-violet-100 text-violet-800',
+        chip:
+          'text-violet-700',
+      };
+
+    case 'stone':
+      return {
+        icon:
+          'bg-stone-100 text-stone-700',
+        chip:
+          'text-stone-600',
+      };
+
+    default:
+      return {
+        icon:
+          'bg-amber-100 text-amber-900',
+        chip:
+          'text-amber-800',
+      };
+  }
+}
+
+function FeatureCardView({
+  card,
+}: {
+  card: FeatureCard;
+}) {
+  const Icon =
+    card.icon;
+
+  const classes =
+    getAccentClasses(
+      card.accent
+    );
 
   return (
-    <div className="min-h-screen bg-stone-100 text-stone-900">
-      <div className="min-h-screen grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr]">
-        {/* Left: Product Story */}
-        <section className="relative overflow-hidden border-b lg:border-b-0 lg:border-r border-stone-200 bg-[#fffdf8]">
-          {/* Decorative background */}
-          <div className="absolute -top-32 -left-24 h-80 w-80 rounded-full bg-amber-100/50 blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-orange-100/40 blur-3xl pointer-events-none" />
+    <article className="mirrortrace-scroll-card">
+      <div className="flex items-start justify-between gap-5">
+        <div
+          className={`grid h-11 w-11 shrink-0 place-items-center rounded-2xl ${classes.icon}`}
+        >
+          <Icon className="h-5 w-5" />
+        </div>
 
-          <div className="relative z-10 max-w-3xl mx-auto px-6 sm:px-10 lg:px-14 xl:px-20 py-10 lg:py-16 min-h-full flex flex-col">
-            {/* Brand */}
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-amber-800 text-amber-50 flex items-center justify-center shadow-sm">
-                <span className="font-serif font-bold text-xl">M</span>
+        <span
+          className={`text-[10px] font-bold uppercase tracking-[0.15em] ${classes.chip}`}
+        >
+          {card.eyebrow}
+        </span>
+      </div>
+
+      <h3 className="mt-5 font-serif text-xl font-bold tracking-tight text-stone-950">
+        {card.title}
+      </h3>
+
+      <p className="mt-3 text-sm leading-6 text-stone-600">
+        {card.body}
+      </p>
+
+      <div className="mt-6 flex items-center gap-1 text-[11px] font-semibold text-stone-400">
+        MirrorTrace
+        <ArrowRight className="h-3 w-3" />
+      </div>
+    </article>
+  );
+}
+
+export const AuthView:
+  React.FC<
+    AuthViewProps
+  > = ({
+    onSuccess,
+  }) => {
+    const reducedMotion =
+      useReducedMotion();
+
+    const featureSectionRef =
+      useRef<HTMLElement | null>(
+        null
+      );
+
+    const [
+      loading,
+      setLoading,
+    ] =
+      useState(false);
+
+    const [
+      error,
+      setError,
+    ] =
+      useState<
+        string | null
+      >(null);
+
+    const [
+      mobileOpen,
+      setMobileOpen,
+    ] =
+      useState(false);
+
+    const [
+      reviews,
+      setReviews,
+    ] =
+      useState<
+        ProductReview[]
+      >([]);
+
+    useEffect(() => {
+      void getPublicReviews()
+        .then(
+          setReviews
+        )
+        .catch(
+          () => {
+            setReviews(
+              []
+            );
+          }
+        );
+    }, []);
+
+    /*
+      EXACT VIDEO-STYLE MOTION:
+      The entire Features section is taller than the viewport.
+      Its inner showcase stays sticky while the user scrolls vertically.
+
+      Vertical scrolling drives horizontal movement:
+      - TOP row moves LEFT
+      - BOTTOM row moves RIGHT
+
+      No horizontal user scrolling is required.
+    */
+    const {
+      scrollYProgress:
+        featureProgress,
+    } =
+      useScroll({
+        target:
+          featureSectionRef,
+        offset: [
+          'start start',
+          'end end',
+        ],
+      });
+
+    const smoothFeatureProgress =
+      useSpring(
+        featureProgress,
+        {
+          stiffness:
+            82,
+          damping:
+            22,
+          mass:
+            0.45,
+        }
+      );
+
+    const topX =
+      useTransform(
+        smoothFeatureProgress,
+        [
+          0,
+          1,
+        ],
+        reducedMotion
+          ? [
+              '0vw',
+              '0vw',
+            ]
+          : [
+              '6vw',
+              '-42vw',
+            ]
+      );
+
+    const bottomX =
+      useTransform(
+        smoothFeatureProgress,
+        [
+          0,
+          1,
+        ],
+        reducedMotion
+          ? [
+              '0vw',
+              '0vw',
+            ]
+          : [
+              '-42vw',
+              '6vw',
+            ]
+      );
+
+    const showcaseScale =
+      useTransform(
+        smoothFeatureProgress,
+        [
+          0,
+          0.5,
+          1,
+        ],
+        reducedMotion
+          ? [
+              1,
+              1,
+              1,
+            ]
+          : [
+              0.985,
+              1,
+              0.985,
+            ]
+      );
+
+    const showcaseOpacity =
+      useTransform(
+        smoothFeatureProgress,
+        [
+          0,
+          0.08,
+          0.92,
+          1,
+        ],
+        [
+          0.82,
+          1,
+          1,
+          0.88,
+        ]
+      );
+
+    const headingY =
+      useTransform(
+        smoothFeatureProgress,
+        [
+          0,
+          0.5,
+          1,
+        ],
+        reducedMotion
+          ? [
+              0,
+              0,
+              0,
+            ]
+          : [
+              18,
+              0,
+              -10,
+            ]
+      );
+
+    const reviewLoop =
+      useMemo(
+        () => [
+          ...reviews,
+          ...reviews,
+        ],
+        [
+          reviews,
+        ]
+      );
+
+    const handleSignIn =
+      async () => {
+        try {
+          setLoading(
+            true
+          );
+
+          setError(
+            null
+          );
+
+          await signInWithGoogle();
+
+          onSuccess?.();
+        } catch (
+          err:
+            unknown
+        ) {
+          console.error(
+            'Sign-in error:',
+            err
+          );
+
+          setError(
+            'Unable to complete Google sign-in. Please allow popups and try again.'
+          );
+        } finally {
+          setLoading(
+            false
+          );
+        }
+      };
+
+    const scrollToSection =
+      (
+        id:
+          string
+      ) => {
+        const target =
+          document.getElementById(
+            id
+          );
+
+        if (
+          !target
+        ) {
+          return;
+        }
+
+        setMobileOpen(
+          false
+        );
+
+        if (
+          reducedMotion
+        ) {
+          target.scrollIntoView({
+            behavior:
+              'auto',
+            block:
+              'start',
+          });
+
+          return;
+        }
+
+        const start =
+          window.scrollY;
+
+        const targetY =
+          target
+            .getBoundingClientRect()
+            .top +
+          window.scrollY -
+          20;
+
+        const distance =
+          targetY -
+          start;
+
+        const duration =
+          Math.min(
+            1150,
+            Math.max(
+              700,
+              Math.abs(
+                distance
+              ) *
+                0.5
+            )
+          );
+
+        const startTime =
+          performance.now();
+
+        const step =
+          (
+            now:
+              number
+          ) => {
+            const elapsed =
+              now -
+              startTime;
+
+            const progress =
+              Math.min(
+                elapsed /
+                  duration,
+                1
+              );
+
+            const eased =
+              easeInOutCubic(
+                progress
+              );
+
+            window.scrollTo(
+              0,
+              start +
+                distance *
+                  eased
+            );
+
+            if (
+              progress <
+              1
+            ) {
+              requestAnimationFrame(
+                step
+              );
+            }
+          };
+
+        requestAnimationFrame(
+          step
+        );
+      };
+
+    return (
+      <div className="mirrortrace-auth-page min-h-screen bg-stone-950 text-white">
+
+        {/* ======================================================
+            CINEMATIC HERO
+            ====================================================== */}
+
+        <section
+          id="hero"
+          className="relative min-h-screen overflow-hidden bg-stone-950"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-stone-900 via-stone-950 to-amber-950/30" />
+
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={
+              HERO_POSTER
+            }
+            className="absolute inset-0 h-full w-full object-cover opacity-60"
+          >
+            <source
+              src={
+                HERO_VIDEO
+              }
+              type="video/mp4"
+            />
+          </video>
+
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/90" />
+
+          <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-stone-950 to-transparent" />
+
+          <motion.div
+            className="absolute left-[8%] top-[24%] h-48 w-48 rounded-full bg-amber-300/15 blur-3xl"
+            animate={
+              reducedMotion
+                ? undefined
+                : {
+                    x: [
+                      0,
+                      14,
+                      0,
+                    ],
+                    y: [
+                      0,
+                      -18,
+                      0,
+                    ],
+                    scale: [
+                      1,
+                      1.08,
+                      1,
+                    ],
+                  }
+            }
+            transition={{
+              duration:
+                9,
+              repeat:
+                Infinity,
+              ease:
+                'easeInOut',
+            }}
+          />
+
+          <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
+
+            {/* NAVBAR */}
+
+            <div className="sticky top-0 z-30 pt-4 sm:pt-6">
+              <div className="mirrortrace-liquid-nav mx-auto flex max-w-6xl items-center justify-between rounded-full px-4 py-3 sm:px-6">
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    scrollToSection(
+                      'hero'
+                    )
+                  }
+                  className="flex items-center gap-3"
+                >
+                  <div className="grid h-9 w-9 place-items-center rounded-xl bg-white text-stone-950">
+                    <span className="font-serif text-lg font-bold">
+                      M
+                    </span>
+                  </div>
+
+                  <div className="hidden text-left sm:block">
+                    <div className="font-serif text-lg font-bold">
+                      MirrorTrace
+                    </div>
+
+                    <div className="text-[10px] text-white/50">
+                      Version control for your thinking
+                    </div>
+                  </div>
+                </button>
+
+                <nav className="hidden items-center gap-8 md:flex">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      scrollToSection(
+                        'features'
+                      )
+                    }
+                    className="text-xs font-medium text-white/65 transition-colors hover:text-white"
+                  >
+                    Features
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      scrollToSection(
+                        'security'
+                      )
+                    }
+                    className="text-xs font-medium text-white/65 transition-colors hover:text-white"
+                  >
+                    Security
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      scrollToSection(
+                        'reviews'
+                      )
+                    }
+                    className="text-xs font-medium text-white/65 transition-colors hover:text-white"
+                  >
+                    Reviews
+                  </button>
+                </nav>
+
+                <button
+                  type="button"
+                  onClick={
+                    handleSignIn
+                  }
+                  disabled={
+                    loading
+                  }
+                  className="hidden rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-xs font-semibold text-white backdrop-blur-xl transition-all hover:bg-white/20 disabled:opacity-60 md:block"
+                >
+                  Continue with Google
+                </button>
+
+                <button
+                  type="button"
+                  aria-label="Toggle navigation"
+                  onClick={() =>
+                    setMobileOpen(
+                      (
+                        current
+                      ) =>
+                        !current
+                    )
+                  }
+                  className="grid h-9 w-9 place-items-center rounded-full border border-white/15 bg-white/10 md:hidden"
+                >
+                  {mobileOpen ? (
+                    <X className="h-4 w-4" />
+                  ) : (
+                    <Menu className="h-4 w-4" />
+                  )}
+                </button>
               </div>
 
-              <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="font-serif text-xl font-bold text-stone-950">
-                    MirrorTrace
-                  </h1>
+              {mobileOpen && (
+                <div className="mirrortrace-liquid-panel mx-auto mt-3 max-w-6xl rounded-3xl p-4 md:hidden">
+                  <div className="grid gap-2">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        scrollToSection(
+                          'features'
+                        )
+                      }
+                      className="rounded-xl px-3 py-3 text-left text-sm text-white/80 hover:bg-white/10"
+                    >
+                      Features
+                    </button>
 
-                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-950">
-                    <ShieldCheck className="w-3 h-3" />
-                    Isolated UID
+                    <button
+                      type="button"
+                      onClick={() =>
+                        scrollToSection(
+                          'security'
+                        )
+                      }
+                      className="rounded-xl px-3 py-3 text-left text-sm text-white/80 hover:bg-white/10"
+                    >
+                      Security
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        scrollToSection(
+                          'reviews'
+                        )
+                      }
+                      className="rounded-xl px-3 py-3 text-left text-sm text-white/80 hover:bg-white/10"
+                    >
+                      Reviews
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={
+                        handleSignIn
+                      }
+                      className="mt-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-stone-950"
+                    >
+                      Continue with Google
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* HERO CONTENT */}
+
+            <div className="flex flex-1 items-center py-16 sm:py-24">
+              <motion.div
+                initial={{
+                  opacity:
+                    0,
+                  y:
+                    reducedMotion
+                      ? 0
+                      : 28,
+                }}
+                animate={{
+                  opacity:
+                    1,
+                  y:
+                    0,
+                }}
+                transition={{
+                  duration:
+                    0.85,
+                  ease: [
+                    0.22,
+                    1,
+                    0.36,
+                    1,
+                  ],
+                }}
+                className="max-w-4xl"
+              >
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/75 backdrop-blur-xl">
+                  <GitCompare className="h-3.5 w-3.5 text-amber-300" />
+                  Evidence-first AI reflection
+                </div>
+
+                <h1 className="mt-7 max-w-4xl font-serif text-5xl font-bold leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl xl:text-8xl">
+                  See how your
+                  <span className="block text-amber-200">
+                    thinking evolves.
                   </span>
-                </div>
+                </h1>
 
-                <p className="text-[11px] text-stone-500">
-                  Version control for your thinking
+                <p className="mt-7 max-w-2xl text-base leading-7 text-white/70 sm:text-lg">
+                  MirrorTrace helps you revisit ideas over time without letting AI silently decide what you believe.
                 </p>
-              </div>
+
+                <p className="mt-4 max-w-xl text-sm leading-6 text-white/50">
+                  You decide what becomes reusable memory. Every future comparison remains traceable to the reflections that produced it.
+                </p>
+
+                {error && (
+                  <div className="mt-5 flex max-w-xl items-start gap-2 rounded-2xl border border-red-300/20 bg-red-950/55 p-3 text-xs text-red-100 backdrop-blur-xl">
+                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+
+                    <span>
+                      {error}
+                    </span>
+                  </div>
+                )}
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <motion.button
+                    type="button"
+                    whileHover={
+                      reducedMotion
+                        ? undefined
+                        : {
+                            y:
+                              -3,
+                          }
+                    }
+                    whileTap={{
+                      scale:
+                        0.98,
+                    }}
+                    onClick={
+                      handleSignIn
+                    }
+                    disabled={
+                      loading
+                    }
+                    className="inline-flex items-center gap-3 rounded-full bg-white px-5 py-3 text-sm font-semibold text-stone-950 shadow-2xl disabled:opacity-60"
+                  >
+                    {loading ? (
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-stone-300 border-t-stone-900" />
+                    ) : (
+                      <GoogleIcon />
+                    )}
+
+                    <span>
+                      {loading
+                        ? 'Connecting…'
+                        : 'Continue with Google'}
+                    </span>
+
+                    {!loading && (
+                      <ArrowRight className="h-4 w-4" />
+                    )}
+                  </motion.button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      scrollToSection(
+                        'features'
+                      )
+                    }
+                    className="rounded-full border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur-xl transition-colors hover:bg-white/15"
+                  >
+                    Explore MirrorTrace
+                  </button>
+                </div>
+              </motion.div>
             </div>
 
-            {/* Hero */}
-            <div className="mt-14 lg:mt-20 max-w-2xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-950">
-                <GitCompare className="w-3.5 h-3.5" />
-                Evidence-first AI reflection
-              </span>
-
-              <h2 className="mt-5 font-serif text-4xl sm:text-5xl xl:text-6xl font-bold tracking-tight leading-[1.04] text-stone-950">
-                See how your
-                <span className="block text-amber-900">
-                  thinking evolves.
-                </span>
-              </h2>
-
-              <p className="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-stone-600">
-                MirrorTrace helps you revisit ideas over time without letting
-                AI silently decide what you believe.
-              </p>
-
-              <p className="mt-4 max-w-xl text-sm leading-relaxed text-stone-500">
-                Gemini may propose an interpretation. You decide whether it
-                becomes memory. Any future perspective change remains traceable
-                to the reflections that produced it.
-              </p>
-            </div>
-
-            {/* Value blocks */}
-            <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="rounded-2xl border border-stone-200 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
-                <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center">
-                  <Sparkles className="w-4 h-4" />
-                </div>
-
-                <h3 className="mt-3 font-serif text-sm font-bold text-stone-950">
-                  Consent-bound memory
-                </h3>
-
-                <p className="mt-1.5 text-[11px] leading-relaxed text-stone-600">
-                  AI interpretations become persistent only after you approve
-                  them.
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-stone-200 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
-                <div className="w-9 h-9 rounded-xl bg-stone-100 text-stone-700 flex items-center justify-center">
-                  <GitCompare className="w-4 h-4" />
-                </div>
-
-                <h3 className="mt-3 font-serif text-sm font-bold text-stone-950">
-                  Thought Diffs
-                </h3>
-
-                <p className="mt-1.5 text-[11px] leading-relaxed text-stone-600">
-                  Compare approved positions and see what changed or stayed
-                  consistent.
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-stone-200 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
-                <div className="w-9 h-9 rounded-xl bg-violet-100 text-violet-800 flex items-center justify-center">
-                  <EyeOff className="w-4 h-4" />
-                </div>
-
-                <h3 className="mt-3 font-serif text-sm font-bold text-stone-950">
-                  Private by design
-                </h3>
-
-                <p className="mt-1.5 text-[11px] leading-relaxed text-stone-600">
-                  Private Sessions never enter journal history or future AI
-                  memory.
-                </p>
-              </div>
-            </div>
-
-            {/* Mini diff preview */}
-            <div className="mt-8 rounded-[24px] border border-amber-200 bg-amber-50/60 p-5 shadow-sm">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <GitCompare className="w-4 h-4 text-amber-900" />
-
-                  <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-amber-950">
-                    Thought Diff Preview
-                  </span>
-                </div>
-
-                <span className="rounded-full bg-white border border-amber-200 px-2.5 py-1 text-[9px] font-semibold text-amber-900">
-                  Evidence-backed
-                </span>
-              </div>
-
-              <div className="mt-4 grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] gap-3 items-center">
-                <div className="rounded-xl border border-stone-200 bg-white p-3">
-                  <p className="font-mono text-[9px] uppercase tracking-wider text-stone-500">
-                    Earlier
-                  </p>
-
-                  <p className="mt-2 font-serif text-xs italic leading-relaxed text-stone-700">
-                    “I’m still deciding which path makes sense.”
-                  </p>
-                </div>
-
-                <div className="flex justify-center">
-                  <ArrowRight className="w-4 h-4 rotate-90 sm:rotate-0 text-amber-800" />
-                </div>
-
-                <div className="rounded-xl border border-amber-300 bg-white p-3">
-                  <p className="font-mono text-[9px] uppercase tracking-wider text-amber-900">
-                    Current
-                  </p>
-
-                  <p className="mt-2 font-serif text-xs italic leading-relaxed text-stone-900">
-                    “I now prefer gaining practical experience first.”
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-auto pt-10">
-              <p className="text-[10px] text-stone-400">
-                Built with Google AI Studio, Firebase Authentication, Cloud
-                Firestore, and server-side Gemini.
-              </p>
+            <div className="pb-7 text-center text-[10px] text-white/30">
+              Firebase Authentication • Owner-bound UID isolation • Server-side Gemini
             </div>
           </div>
         </section>
 
-        {/* Right: Sign-in */}
-        <section className="bg-stone-100 flex items-center justify-center px-5 sm:px-8 py-10 lg:py-16">
-          <div className="w-full max-w-md">
-            <div className="bg-white rounded-[26px] border border-stone-200 shadow-sm p-6 sm:p-8">
-              <div>
-                <div className="w-11 h-11 rounded-xl bg-stone-950 text-white flex items-center justify-center">
-                  <Lock className="w-5 h-5" />
-                </div>
+        {/* ======================================================
+            STICKY SCROLL SHOWCASE
+            ====================================================== */}
 
-                <h2 className="mt-5 font-serif text-2xl font-bold text-stone-950">
-                  Your private thinking space
-                </h2>
+        <section
+          id="features"
+          ref={
+            featureSectionRef
+          }
+          className="mirrortrace-showcase-section"
+        >
+          <div className="mirrortrace-showcase-sticky">
 
-                <p className="mt-2 text-sm leading-relaxed text-stone-600">
-                  Sign in securely to access your personal reflection archive,
-                  approved Thought Snapshots, and evidence-backed Thought
-                  Diffs.
-                </p>
+            <motion.div
+              style={{
+                y:
+                  headingY,
+                opacity:
+                  showcaseOpacity,
+              }}
+              className="relative z-20 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8"
+            >
+              <div className="text-xs font-bold uppercase tracking-[0.22em] text-amber-800">
+                Built around your decisions
               </div>
 
-              {error && (
-                <div className="mt-5 p-3 bg-red-50 border border-red-200 rounded-xl flex items-start gap-2 text-xs text-red-700">
-                  <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-                  <span>{error}</span>
-                </div>
-              )}
+              <h2 className="mt-3 font-serif text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+                Reflection that moves with you.
+              </h2>
 
-              <button
-                id="btn-google-signin"
-                type="button"
-                onClick={handleSignIn}
-                disabled={loading}
-                className="mt-6 w-full flex items-center justify-center gap-3 py-3.5 px-4 rounded-xl bg-stone-950 hover:bg-stone-800 text-white text-sm font-semibold transition-all shadow-sm disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-              >
-                {loading ? (
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <svg className="w-5 h-5" viewBox="0 0 24 24">
-                    <path
-                      fill="#EA4335"
-                      d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.2 9 5 12 5z"
-                    />
-                    <path
-                      fill="#4285F4"
-                      d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"
-                    />
-                    <path
-                      fill="#FBBC05"
-                      d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 12s.7 2.3 1.9 4.7l3.7-2.9z"
-                    />
-                    <path
-                      fill="#34A853"
-                      d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.2-6.4-5.2L1.9 16c1.8 3.7 5.6 7 10.1 7z"
-                    />
-                  </svg>
-                )}
-
-                <span>
-                  {loading ? 'Connecting to Google...' : 'Continue with Google'}
-                </span>
-
-                {!loading && (
-                  <ArrowRight className="w-4 h-4 text-stone-400" />
-                )}
-              </button>
-
-              <p className="mt-3 text-center text-[10px] leading-relaxed text-stone-400">
-                Authentication is handled through Firebase Google Sign-In.
-                MirrorTrace does not collect or store your password.
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-stone-600">
+                As your thinking changes, MirrorTrace keeps consent, memory, provenance, and future revisits connected.
               </p>
+            </motion.div>
 
-              {/* Trust list */}
-              <div className="mt-7 border-t border-stone-100 pt-6 space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
-                    <ShieldCheck className="w-4 h-4 text-emerald-700" />
-                  </div>
+            <motion.div
+              style={{
+                scale:
+                  showcaseScale,
+                opacity:
+                  showcaseOpacity,
+              }}
+              className="mirrortrace-showcase-window mt-10"
+            >
+              <div className="mirrortrace-showcase-edge mirrortrace-showcase-edge-left" />
+              <div className="mirrortrace-showcase-edge mirrortrace-showcase-edge-right" />
 
-                  <div>
-                    <p className="text-xs font-bold text-stone-900">
-                      Owner-bound isolation
-                    </p>
+              <motion.div
+                style={{
+                  x:
+                    topX,
+                }}
+                className="mirrortrace-scroll-row mirrortrace-scroll-row-top"
+              >
+                {TOP_ROW.map(
+                  (
+                    card
+                  ) => (
+                    <FeatureCardView
+                      key={
+                        card.id
+                      }
+                      card={
+                        card
+                      }
+                    />
+                  )
+                )}
+              </motion.div>
 
-                    <p className="mt-1 text-[11px] leading-relaxed text-stone-500">
-                      Your journal data is scoped to your authenticated Firebase
-                      UID.
-                    </p>
-                  </div>
+              <motion.div
+                style={{
+                  x:
+                    bottomX,
+                }}
+                className="mirrortrace-scroll-row mirrortrace-scroll-row-bottom mt-5"
+              >
+                {BOTTOM_ROW.map(
+                  (
+                    card
+                  ) => (
+                    <FeatureCardView
+                      key={
+                        card.id
+                      }
+                      card={
+                        card
+                      }
+                    />
+                  )
+                )}
+              </motion.div>
+            </motion.div>
+
+            <div className="relative z-20 mx-auto mt-9 max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="grid gap-3 md:grid-cols-3">
+                <div className="mirrortrace-summary-pill">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-700" />
+                  <span>
+                    Consent-bound memory
+                  </span>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="w-4 h-4 text-amber-800" />
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-bold text-stone-900">
-                      You approve AI memory
-                    </p>
-
-                    <p className="mt-1 text-[11px] leading-relaxed text-stone-500">
-                      Gemini cannot silently turn an interpretation into a
-                      persistent Thought Snapshot.
-                    </p>
-                  </div>
+                <div className="mirrortrace-summary-pill">
+                  <RefreshCcw className="h-4 w-4 text-blue-700" />
+                  <span>
+                    Evidence-backed change
+                  </span>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-stone-100 flex items-center justify-center shrink-0">
-                    <BookOpen className="w-4 h-4 text-stone-700" />
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-bold text-stone-900">
-                      Evidence remains inspectable
-                    </p>
-
-                    <p className="mt-1 text-[11px] leading-relaxed text-stone-500">
-                      Thought Diffs retain provenance back to their source
-                      reflections.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-7 rounded-xl bg-stone-950 p-4">
-                <div className="flex items-start gap-2">
-                  <Sparkles className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
-
-                  <p className="text-[11px] leading-relaxed text-stone-300">
-                    <span className="font-semibold text-white">
-                      MirrorTrace does not profile you.
-                    </span>{' '}
-                    It compares only the reflection interpretations you
-                    explicitly approve.
-                  </p>
+                <div className="mirrortrace-summary-pill">
+                  <ShieldCheck className="h-4 w-4 text-amber-800" />
+                  <span>
+                    Owner-isolated by design
+                  </span>
                 </div>
               </div>
             </div>
+          </div>
+        </section>
 
-            <p className="mt-5 text-center text-[10px] text-stone-400">
-              Evidence-first reflection • User-controlled memory • Secure
-              identity isolation
+        {/* ======================================================
+            SECURITY
+            ====================================================== */}
+
+        <section
+          id="security"
+          className="bg-stone-950 px-4 py-20 text-white sm:px-6 sm:py-24 lg:px-8"
+        >
+          <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+
+            <motion.div
+              initial={{
+                opacity:
+                  0,
+                x:
+                  reducedMotion
+                    ? 0
+                    : -26,
+              }}
+              whileInView={{
+                opacity:
+                  1,
+                x:
+                  0,
+              }}
+              viewport={{
+                once:
+                  true,
+                amount:
+                  0.3,
+              }}
+              transition={{
+                duration:
+                  0.65,
+              }}
+            >
+              <div className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">
+                Security by architecture
+              </div>
+
+              <h2 className="mt-4 max-w-xl font-serif text-4xl font-bold leading-tight sm:text-5xl">
+                Admins operate the system without becoming readers of your private memory.
+              </h2>
+
+              <p className="mt-5 max-w-xl text-sm leading-7 text-white/55">
+                MirrorTrace separates operational administration from journal content, conversations, approved memories, Thought Diffs, and provenance.
+              </p>
+            </motion.div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[
+                {
+                  icon:
+                    ShieldCheck,
+                  title:
+                    'Owner-bound UID isolation',
+                  body:
+                    'Private journal data remains scoped to the authenticated Firebase UID.',
+                },
+                {
+                  icon:
+                    Lock,
+                  title:
+                    'No password collection',
+                  body:
+                    'Authentication is handled through Firebase Google Sign-In.',
+                },
+                {
+                  icon:
+                    CheckCircle2,
+                  title:
+                    'Consent-bound AI memory',
+                  body:
+                    'Unapproved interpretations never become persistent Thought Snapshots.',
+                },
+                {
+                  icon:
+                    GitCompare,
+                  title:
+                    'Inspectable provenance',
+                  body:
+                    'Thought Diffs remain traceable back to the source reflections that produced them.',
+                },
+              ].map(
+                (
+                  item,
+                  index
+                ) => {
+                  const Icon =
+                    item.icon;
+
+                  return (
+                    <motion.div
+                      key={
+                        item.title
+                      }
+                      initial={{
+                        opacity:
+                          0,
+                        y:
+                          reducedMotion
+                            ? 0
+                            : 18,
+                      }}
+                      whileInView={{
+                        opacity:
+                          1,
+                        y:
+                          0,
+                      }}
+                      viewport={{
+                        once:
+                          true,
+                      }}
+                      transition={{
+                        delay:
+                          reducedMotion
+                            ? 0
+                            : index *
+                              0.08,
+                        duration:
+                          0.45,
+                      }}
+                      whileHover={
+                        reducedMotion
+                          ? undefined
+                          : {
+                              y:
+                                -5,
+                            }
+                      }
+                      className="rounded-[26px] border border-white/10 bg-white/5 p-5 backdrop-blur-xl"
+                    >
+                      <Icon className="h-5 w-5 text-amber-200" />
+
+                      <h3 className="mt-4 font-semibold">
+                        {item.title}
+                      </h3>
+
+                      <p className="mt-2 text-xs leading-6 text-white/50">
+                        {item.body}
+                      </p>
+                    </motion.div>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ======================================================
+            PUBLIC REVIEWS
+            ====================================================== */}
+
+        <section
+          id="reviews"
+          className="overflow-hidden bg-[#f5f4fb] py-20 text-stone-950 sm:py-24"
+        >
+          <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+            <div className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-500">
+              Public reviews
+            </div>
+
+            <h2 className="mt-3 font-serif text-4xl font-bold sm:text-5xl">
+              Feedback shared by choice.
+            </h2>
+
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-stone-500">
+              Reviews appear here only when the user explicitly allows public display and an administrator approves the submission.
             </p>
+          </div>
+
+          <div className="mt-12 overflow-hidden">
+            {reviews.length >
+            0 ? (
+              <div className="mirrortrace-review-stage">
+                <div className="mirrortrace-review-track">
+                  {reviewLoop.map(
+                    (
+                      review,
+                      index
+                    ) => (
+                      <article
+                        key={`${review.id}-${index}`}
+                        className="mirrortrace-review-card"
+                      >
+                        <div className="text-xl tracking-wider text-orange-400">
+                          {'★'.repeat(
+                            Math.max(
+                              1,
+                              Math.min(
+                                5,
+                                review.rating
+                              )
+                            )
+                          )}
+                        </div>
+
+                        <p className="mt-5 min-h-[110px] text-base leading-7 text-stone-600">
+                          {review.reviewText}
+                        </p>
+
+                        <div className="mt-6 flex items-center justify-between border-t border-stone-100 pt-4">
+                          <span className="text-xs text-stone-400">
+                            MirrorTrace user
+                          </span>
+
+                          <span className="text-[10px] font-semibold uppercase tracking-wide text-indigo-500">
+                            Approved
+                          </span>
+                        </div>
+                      </article>
+                    )
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="mx-auto max-w-2xl px-4 sm:px-6">
+                <div className="rounded-[28px] border border-dashed border-indigo-200 bg-white/70 p-8 text-center">
+                  <Star className="mx-auto h-5 w-5 text-indigo-400" />
+
+                  <div className="mt-3 text-sm font-semibold text-stone-700">
+                    No public reviews yet.
+                  </div>
+
+                  <p className="mt-2 text-xs leading-6 text-stone-500">
+                    The first review will appear only after explicit public consent and admin approval.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-12 text-center">
+            <button
+              type="button"
+              onClick={
+                handleSignIn
+              }
+              className="inline-flex items-center gap-3 rounded-full bg-stone-950 px-6 py-3 text-sm font-semibold text-white"
+            >
+              <GoogleIcon />
+
+              Start reflecting
+
+              <ArrowRight className="h-4 w-4" />
+            </button>
           </div>
         </section>
       </div>
-    </div>
-  );
-};
+    );
+  };

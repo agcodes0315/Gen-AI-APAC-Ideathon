@@ -1,22 +1,33 @@
-Copy these files into your MirrorTrace project.
+MirrorTrace Sticky Scroll Showcase
 
-ADD:
-- server/supportReviewRoutes.ts
-- src/lib/supportReviews.ts
-- src/components/SupportCenter.tsx
-- src/components/ProductReviews.tsx
-- scripts/setAdminRole.ts
-- scripts/patch-support-review-routes.ps1
+This version matches the uploaded reference video much more closely.
 
-Then run:
-powershell -ExecutionPolicy Bypass -File .\scripts\patch-support-review-routes.ps1
+THE IMPORTANT DIFFERENCE:
+The cards do NOT autoplay on a timer and the user does NOT horizontally scroll.
+
+Instead:
+1. The Features section is ~225vh tall.
+2. Its content becomes sticky for roughly one viewport.
+3. While the user scrolls DOWN vertically:
+   - top row moves LEFT
+   - bottom row moves RIGHT
+4. Scroll back UP and both rows reverse.
+5. When the section finishes, the page naturally continues to Security.
+
+NO HORIZONTAL SCROLLBAR:
+The AuthView wrapper and sticky showcase both clip x-overflow.
+
+REPLACE:
+src/components/AuthView.tsx
+src/mirrortrace-motion.css
+
+KEEP:
+public/hero/mirrortrace-hero.mp4
+public/hero/mirrortrace-poster.jpg
+
+VERIFY:
 npm run lint
 npm run build
 
-To change super-admin email:
-1) Sign into MirrorTrace once using NEW_EMAIL so Firebase creates the account.
-2) Run:
-   npx tsx scripts/setAdminRole.ts NEW_EMAIL@gmail.com super_admin
-3) Sign out/in with NEW_EMAIL and verify Admin Control Room works.
-4) Only then revoke the old account:
-   npx tsx scripts/setAdminRole.ts OLD_EMAIL@gmail.com user
+RESTART:
+$ports = 3000,24678; foreach ($port in $ports) { Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue } }; npm run dev

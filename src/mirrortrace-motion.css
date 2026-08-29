@@ -1,0 +1,623 @@
+/*
+  MirrorTrace cinematic landing motion.
+
+  IMPORTANT:
+  This file intentionally prevents horizontal page scrolling.
+  The feature rows move horizontally only as a VISUAL EFFECT
+  while the user scrolls vertically.
+*/
+
+.mirrortrace-auth-page {
+  width:
+    100%;
+
+  overflow-x:
+    clip;
+}
+
+.mirrortrace-liquid-nav,
+.mirrortrace-liquid-panel {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(
+        255,
+        255,
+        255,
+        0.14
+      ),
+      rgba(
+        255,
+        255,
+        255,
+        0.06
+      )
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.16
+    );
+
+  box-shadow:
+    inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        0.13
+      ),
+    0
+      20px
+      60px
+      rgba(
+        0,
+        0,
+        0,
+        0.2
+      );
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+}
+
+/* ============================================================
+   STICKY, SCROLL-DRIVEN SHOWCASE
+   ============================================================ */
+
+.mirrortrace-showcase-section {
+  position:
+    relative;
+
+  height:
+    225vh;
+
+  min-height:
+    1500px;
+
+  background:
+    #f7f5ef;
+
+  color:
+    #1c1917;
+
+  overflow:
+    clip;
+}
+
+.mirrortrace-showcase-sticky {
+  position:
+    sticky;
+
+  top:
+    0;
+
+  display:
+    flex;
+
+  min-height:
+    100vh;
+
+  width:
+    100%;
+
+  flex-direction:
+    column;
+
+  justify-content:
+    center;
+
+  overflow:
+    hidden;
+
+  padding:
+    72px 0 54px;
+}
+
+.mirrortrace-showcase-window {
+  position:
+    relative;
+
+  width:
+    100%;
+
+  overflow:
+    hidden;
+
+  will-change:
+    transform,
+    opacity;
+}
+
+.mirrortrace-scroll-row {
+  display:
+    flex;
+
+  width:
+    max-content;
+
+  gap:
+    22px;
+
+  will-change:
+    transform;
+
+  transform:
+    translate3d(
+      0,
+      0,
+      0
+    );
+
+  backface-visibility:
+    hidden;
+}
+
+.mirrortrace-scroll-row-top {
+  padding-left:
+    5vw;
+}
+
+.mirrortrace-scroll-row-bottom {
+  padding-left:
+    0;
+}
+
+.mirrortrace-scroll-card {
+  width:
+    min(
+      360px,
+      82vw
+    );
+
+  min-height:
+    276px;
+
+  flex:
+    0
+    0
+    auto;
+
+  border-radius:
+    30px;
+
+  border:
+    1px
+    solid
+    #e7e5e4;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.96
+    );
+
+  padding:
+    26px;
+
+  box-shadow:
+    0
+      10px
+      32px
+      rgba(
+        41,
+        37,
+        36,
+        0.055
+      );
+
+  transition:
+    transform
+      280ms
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      ),
+    box-shadow
+      280ms
+      ease,
+    border-color
+      280ms
+      ease;
+}
+
+.mirrortrace-scroll-card:hover {
+  transform:
+    translateY(-7px)
+    scale(1.012);
+
+  border-color:
+    rgba(
+      180,
+      83,
+      9,
+      0.26
+    );
+
+  box-shadow:
+    0
+      22px
+      60px
+      rgba(
+        41,
+        37,
+        36,
+        0.13
+      );
+}
+
+.mirrortrace-showcase-edge {
+  position:
+    absolute;
+
+  top:
+    0;
+
+  bottom:
+    0;
+
+  z-index:
+    5;
+
+  width:
+    clamp(
+      44px,
+      8vw,
+      150px
+    );
+
+  pointer-events:
+    none;
+}
+
+.mirrortrace-showcase-edge-left {
+  left:
+    0;
+
+  background:
+    linear-gradient(
+      90deg,
+      #f7f5ef
+        10%,
+      rgba(
+        247,
+        245,
+        239,
+        0
+      )
+        100%
+    );
+}
+
+.mirrortrace-showcase-edge-right {
+  right:
+    0;
+
+  background:
+    linear-gradient(
+      270deg,
+      #f7f5ef
+        10%,
+      rgba(
+        247,
+        245,
+        239,
+        0
+      )
+        100%
+    );
+}
+
+.mirrortrace-summary-pill {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+
+  border:
+    1px
+    solid
+    #e7e5e4;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.68
+    );
+
+  padding:
+    12px
+    16px;
+
+  color:
+    #57534e;
+
+  font-size:
+    12px;
+
+  font-weight:
+    600;
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+}
+
+/* ============================================================
+   REVIEWS
+   ============================================================ */
+
+.mirrortrace-review-stage {
+  width:
+    100%;
+
+  overflow:
+    hidden;
+}
+
+.mirrortrace-review-track {
+  display:
+    flex;
+
+  width:
+    max-content;
+
+  gap:
+    20px;
+
+  padding:
+    0
+    20px;
+
+  animation:
+    mirrortrace-review-marquee
+    44s
+    linear
+    infinite;
+
+  will-change:
+    transform;
+
+  transform:
+    translate3d(
+      0,
+      0,
+      0
+    );
+}
+
+.mirrortrace-review-stage:hover
+.mirrortrace-review-track {
+  animation-play-state:
+    paused;
+}
+
+.mirrortrace-review-card {
+  width:
+    min(
+      340px,
+      84vw
+    );
+
+  flex:
+    0
+    0
+    auto;
+
+  border-radius:
+    28px;
+
+  border:
+    1px
+    solid
+    #e0e7ff;
+
+  background:
+    white;
+
+  padding:
+    24px;
+
+  box-shadow:
+    0
+      8px
+      28px
+      rgba(
+        49,
+        46,
+        129,
+        0.06
+      );
+}
+
+@keyframes
+mirrortrace-review-marquee {
+  from {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+  }
+
+  to {
+    transform:
+      translate3d(
+        calc(
+          -50%
+          -
+          10px
+        ),
+        0,
+        0
+      );
+  }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (
+  max-width:
+    900px
+) {
+  .mirrortrace-showcase-section {
+    height:
+      205vh;
+
+    min-height:
+      1350px;
+  }
+
+  .mirrortrace-showcase-sticky {
+    padding-top:
+      64px;
+  }
+
+  .mirrortrace-scroll-row {
+    gap:
+      16px;
+  }
+
+  .mirrortrace-scroll-card {
+    width:
+      min(
+        320px,
+        82vw
+      );
+
+    min-height:
+      260px;
+  }
+}
+
+@media (
+  max-width:
+    640px
+) {
+  .mirrortrace-showcase-section {
+    height:
+      190vh;
+
+    min-height:
+      1220px;
+  }
+
+  .mirrortrace-showcase-sticky {
+    justify-content:
+      flex-start;
+
+    padding-top:
+      70px;
+
+    padding-bottom:
+      38px;
+  }
+
+  .mirrortrace-scroll-card {
+    width:
+      280px;
+
+    min-height:
+      250px;
+
+    padding:
+      22px;
+  }
+
+  .mirrortrace-summary-pill {
+    padding:
+      10px
+      12px;
+
+    font-size:
+      11px;
+  }
+
+  .mirrortrace-review-track {
+    animation-duration:
+      38s;
+  }
+}
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  .mirrortrace-scroll-row {
+    transform:
+      none
+      !important;
+  }
+
+  .mirrortrace-showcase-section {
+    height:
+      auto;
+
+    min-height:
+      0;
+  }
+
+  .mirrortrace-showcase-sticky {
+    position:
+      relative;
+
+    min-height:
+      auto;
+  }
+
+  .mirrortrace-showcase-window {
+    overflow-x:
+      auto;
+  }
+
+  .mirrortrace-scroll-card {
+    transition:
+      none;
+  }
+
+  .mirrortrace-review-track {
+    animation:
+      none
+      !important;
+  }
+
+  .mirrortrace-review-stage {
+    overflow-x:
+      auto;
+  }
+}
