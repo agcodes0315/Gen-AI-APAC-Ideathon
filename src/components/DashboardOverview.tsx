@@ -270,11 +270,20 @@ export const DashboardOverview:
             }}
             className="mirrortrace-photo-panel mirrortrace-user-hero relative overflow-hidden rounded-[32px] bg-stone-950 px-6 py-8 text-white shadow-2xl sm:px-8 lg:px-10 lg:py-10"
           >
+            <img
+              src="/hero/mirrortrace-poster.jpeg"
+              alt=""
+              aria-hidden="true"
+              className="mirrortrace-hero-sharp-photo absolute inset-0 h-full w-full object-cover"
+            />
 
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(245,158,11,0.18),transparent_30%),radial-gradient(circle_at_20%_80%,rgba(16,185,129,0.10),transparent_28%)]" />
+            <div
+              aria-hidden="true"
+              className="mirrortrace-hero-minimal-shade absolute inset-0"
+            />
 
             <motion.div
-              className="absolute right-[12%] top-[18%] h-28 w-28 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl"
+              className="absolute right-[12%] top-[18%] h-28 w-28 rounded-full border border-white/10 bg-black/5"
               animate={
                 reducedMotion
                   ? undefined
@@ -296,7 +305,7 @@ export const DashboardOverview:
               }}
             />
 
-            <div className="relative z-10 grid gap-8">
+            <div className="mirrortrace-hero-content relative z-10 grid gap-8">
 
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/75 backdrop-blur-lg">

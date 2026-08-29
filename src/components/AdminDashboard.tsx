@@ -642,10 +642,19 @@ export default function AdminDashboard(
         }}
         className="mirrortrace-photo-panel mirrortrace-admin-hero relative overflow-hidden rounded-[30px] bg-stone-950 p-6 text-white shadow-2xl sm:p-8"
       >
+        <img
+          src="/hero/mirrortrace-poster.jpeg"
+          alt=""
+          aria-hidden="true"
+          className="mirrortrace-hero-sharp-photo absolute inset-0 h-full w-full object-cover"
+        />
 
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(245,158,11,0.18),transparent_30%),radial-gradient(circle_at_20%_100%,rgba(16,185,129,0.12),transparent_28%)]" />
+        <div
+          aria-hidden="true"
+          className="mirrortrace-hero-minimal-shade absolute inset-0"
+        />
 
-        <div className="relative z-10 flex flex-wrap items-start justify-between gap-5">
+        <div className="mirrortrace-admin-hero-content relative z-10 flex flex-wrap items-start justify-between gap-5">
 
           <div>
             <div className="text-xs font-bold uppercase tracking-[0.16em] text-amber-200">
@@ -1422,6 +1431,7 @@ function ReviewModerationCard(
 
       <div className="mt-4 flex flex-wrap gap-2">
 
+        {/* Once approved, the Approve action is intentionally removed. */}
         {props.review.moderationState !==
           'approved' && (
           <button

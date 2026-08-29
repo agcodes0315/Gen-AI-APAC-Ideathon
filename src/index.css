@@ -2460,3 +2460,477 @@ button[class*="bg-white"] {
       none !important;
   }
 }
+
+/* ============================================================
+   MIRRORTRACE HERO CLARITY v6
+   Purpose:
+   - keep mirrortrace3.jpeg clearly visible in Overview + Admin hero
+   - remove inherited 20px/XL backdrop blur from hero descendants
+   - keep existing layout, colors, motion and component structure
+   - do NOT globally change the rest of the UI
+   ============================================================ */
+
+.mirrortrace-user-hero,
+.mirrortrace-admin-hero {
+  background-image:
+    linear-gradient(
+      102deg,
+      rgba(5, 10, 16, 0.20) 0%,
+      rgba(10, 18, 26, 0.11) 46%,
+      rgba(19, 27, 34, 0.07) 100%
+    ),
+    url("/ui/mirrortrace3.jpeg") !important;
+
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center 46% !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  border: 1px solid rgba(236, 239, 244, 0.19) !important;
+
+  box-shadow:
+    0 22px 54px rgba(3, 8, 13, 0.17),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
+}
+
+/*
+ * Earlier rules intentionally blurred every absolute child in these heroes.
+ * This final override removes that fog so the tree branches remain sharp.
+ */
+.mirrortrace-user-hero .absolute,
+.mirrortrace-admin-hero .absolute,
+.mirrortrace-user-hero [class*="backdrop-blur"],
+.mirrortrace-admin-hero [class*="backdrop-blur"] {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Keep the decorative orb subtle without blurring the photo behind it. */
+.mirrortrace-user-hero > .absolute.rounded-full {
+  background: rgba(117, 132, 103, 0.10) !important;
+  border-color: rgba(226, 234, 239, 0.16) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+/* Overview: bright, crisp typography over the sharper photo. */
+.mirrortrace-user-hero .mirrortrace-hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.mirrortrace-user-hero h1 {
+  color: #F8FAFC !important;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.40);
+}
+
+.mirrortrace-user-hero h1 span {
+  color: #D39445 !important;
+}
+
+.mirrortrace-user-hero .mirrortrace-overview-copy {
+  color: #E8EEF3 !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.34);
+}
+
+/* CTA glass is translucent, but no backdrop blur. */
+.mirrortrace-user-hero button {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.mirrortrace-user-hero button:first-of-type {
+  background: rgba(12, 19, 25, 0.78) !important;
+  color: #F8FAFC !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.mirrortrace-user-hero button:last-of-type {
+  background: rgba(97, 112, 87, 0.44) !important;
+  color: #F7FAF5 !important;
+  border: 1px solid rgba(174, 192, 163, 0.28) !important;
+}
+
+/* Admin hero: same clear-photo treatment and stronger readable text. */
+.mirrortrace-admin-hero .mirrortrace-admin-hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.mirrortrace-admin-hero h1 {
+  color: #FFFFFF !important;
+  text-shadow: 0 3px 20px rgba(0, 0, 0, 0.42);
+}
+
+.mirrortrace-admin-hero p {
+  color: #E3EBF1 !important;
+  text-shadow: 0 2px 11px rgba(0, 0, 0, 0.28);
+}
+
+.mirrortrace-admin-hero .text-amber-200 {
+  color: #D39445 !important;
+}
+
+/* Privacy Boundary: translucent without smearing the photo. */
+.mirrortrace-admin-hero .bg-emerald-300\/10 {
+  background: rgba(26, 60, 50, 0.30) !important;
+  border-color: rgba(140, 211, 177, 0.26) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.mirrortrace-admin-hero .bg-emerald-300\/10 .text-emerald-100,
+.mirrortrace-admin-hero .bg-emerald-300\/10 p {
+  color: #DDF7EA !important;
+}
+
+/* Preserve the slow floating text motion, but keep it subtle. */
+.mirrortrace-float-title {
+  animation: mirrortraceOverviewTitleFloatV6 7.2s ease-in-out infinite !important;
+}
+
+.mirrortrace-float-actions {
+  animation: mirrortraceOverviewActionsFloatV6 7.2s ease-in-out infinite !important;
+  animation-delay: 0.35s !important;
+}
+
+.mirrortrace-admin-title-float {
+  animation: mirrortraceAdminTitleFloatV6 7.4s ease-in-out infinite !important;
+}
+
+.mirrortrace-admin-subtitle-float {
+  animation: mirrortraceAdminSubtitleFloatV6 7.4s ease-in-out infinite !important;
+  animation-delay: 0.4s !important;
+}
+
+@keyframes mirrortraceOverviewTitleFloatV6 {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
+
+@keyframes mirrortraceOverviewActionsFloatV6 {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, 5px, 0); }
+}
+
+@keyframes mirrortraceAdminTitleFloatV6 {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
+
+@keyframes mirrortraceAdminSubtitleFloatV6 {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, 5px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mirrortrace-float-title,
+  .mirrortrace-float-actions,
+  .mirrortrace-admin-title-float,
+  .mirrortrace-admin-subtitle-float {
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   MIRRORTRACE SHARP HERO — FINAL SOURCE OF TRUTH
+   Uses the SAME sharp poster image as the landing page.
+   The photo itself has ZERO blur and ZERO opacity reduction.
+   Only a very light transparent shade sits above it for text.
+   ============================================================ */
+
+.mirrortrace-user-hero,
+.mirrortrace-admin-hero {
+  position: relative !important;
+  isolation: isolate !important;
+
+  background: #0b1116 !important;
+  background-image: none !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  filter: none !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+
+  box-shadow:
+    0 20px 50px rgba(3, 8, 13, 0.18) !important;
+}
+
+/* The actual photo. No blur, no filter, no opacity. */
+.mirrortrace-hero-sharp-photo {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+
+  display: block !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  object-fit: cover !important;
+  object-position: center 42% !important;
+
+  opacity: 1 !important;
+
+  filter: none !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  transform: none !important;
+
+  pointer-events: none !important;
+}
+
+/*
+  Extremely light readability layer.
+  This is intentionally much more transparent than every previous patch.
+*/
+.mirrortrace-hero-minimal-shade {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+
+  pointer-events: none !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 9, 13, 0.20) 0%,
+      rgba(5, 9, 13, 0.10) 42%,
+      rgba(5, 9, 13, 0.04) 72%,
+      rgba(5, 9, 13, 0.08) 100%
+    ) !important;
+
+  opacity: 1 !important;
+
+  filter: none !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Absolutely forbid legacy glass blur inside only these two hero blocks. */
+.mirrortrace-user-hero *,
+.mirrortrace-admin-hero * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Content always sits above the real image and the light shade. */
+.mirrortrace-user-hero .mirrortrace-hero-content,
+.mirrortrace-admin-hero .mirrortrace-admin-hero-content {
+  position: relative !important;
+  z-index: 3 !important;
+}
+
+/* Decorative orb: transparent shape only — no blur. */
+.mirrortrace-user-hero > .absolute.rounded-full {
+  z-index: 2 !important;
+
+  background: rgba(117, 132, 103, 0.06) !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.18) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Crisp typography. */
+.mirrortrace-user-hero h1,
+.mirrortrace-admin-hero h1 {
+  color: #FFFFFF !important;
+
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.52) !important;
+}
+
+.mirrortrace-user-hero h1 span,
+.mirrortrace-admin-hero .text-amber-200 {
+  color: #D39445 !important;
+}
+
+.mirrortrace-user-hero p,
+.mirrortrace-admin-hero p {
+  color: #EEF3F7 !important;
+
+  text-shadow:
+    0 1px 6px rgba(0, 0, 0, 0.50) !important;
+}
+
+/* Overview buttons remain legible but show the photo around them. */
+.mirrortrace-user-hero button:first-of-type {
+  background:
+    rgba(9, 15, 20, 0.76) !important;
+
+  color:
+    #FFFFFF !important;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.16) !important;
+}
+
+.mirrortrace-user-hero button:last-of-type {
+  background:
+    rgba(97, 112, 87, 0.34) !important;
+
+  color:
+    #FFFFFF !important;
+
+  border:
+    1px solid rgba(181, 198, 170, 0.30) !important;
+}
+
+/* Admin header buttons. */
+.mirrortrace-admin-hero button {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Privacy Boundary: transparent enough to still see the branches. */
+.mirrortrace-admin-hero .bg-emerald-300\/10 {
+  background:
+    rgba(16, 44, 37, 0.28) !important;
+
+  border-color:
+    rgba(125, 207, 169, 0.28) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.mirrortrace-admin-hero .bg-emerald-300\/10 .text-emerald-100,
+.mirrortrace-admin-hero .bg-emerald-300\/10 p {
+  color:
+    #E1F8EC !important;
+}
+
+/* Keep the existing motion smooth and subtle. */
+.mirrortrace-float-title {
+  animation:
+    mirrortrace-sharp-title-float
+    7.2s
+    ease-in-out
+    infinite !important;
+}
+
+.mirrortrace-float-actions {
+  animation:
+    mirrortrace-sharp-actions-float
+    7.2s
+    ease-in-out
+    infinite !important;
+
+  animation-delay:
+    0.35s !important;
+}
+
+.mirrortrace-admin-title-float {
+  animation:
+    mirrortrace-sharp-admin-title-float
+    7.4s
+    ease-in-out
+    infinite !important;
+}
+
+.mirrortrace-admin-subtitle-float {
+  animation:
+    mirrortrace-sharp-admin-subtitle-float
+    7.4s
+    ease-in-out
+    infinite !important;
+
+  animation-delay:
+    0.4s !important;
+}
+
+@keyframes mirrortrace-sharp-title-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -7px, 0);
+  }
+}
+
+@keyframes mirrortrace-sharp-actions-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, 4px, 0);
+  }
+}
+
+@keyframes mirrortrace-sharp-admin-title-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -7px, 0);
+  }
+}
+
+@keyframes mirrortrace-sharp-admin-subtitle-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, 4px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mirrortrace-float-title,
+  .mirrortrace-float-actions,
+  .mirrortrace-admin-title-float,
+  .mirrortrace-admin-subtitle-float {
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   MIRRORTRACE VERIFIED SHARP PHOTO FIX
+   IMPORTANT: verified asset is /hero/mirrortrace-poster.jpeg
+   (.jpeg, NOT .jpg).
+   ============================================================ */
+
+.mirrortrace-user-hero,
+.mirrortrace-admin-hero {
+  background-image: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.mirrortrace-hero-sharp-photo {
+  opacity: 1 !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transform: none !important;
+}
+
+.mirrortrace-hero-minimal-shade {
+  background: linear-gradient(
+    90deg,
+    rgba(5, 9, 13, 0.18) 0%,
+    rgba(5, 9, 13, 0.08) 42%,
+    rgba(5, 9, 13, 0.02) 70%,
+    rgba(5, 9, 13, 0.05) 100%
+  ) !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
