@@ -296,7 +296,7 @@ export const DashboardOverview:
               }}
             />
 
-            <div className="relative z-10 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
+            <div className="relative z-10 grid gap-8">
 
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/75 backdrop-blur-lg">
@@ -306,7 +306,7 @@ export const DashboardOverview:
                   Version control for your thinking
                 </div>
 
-                <h1 className="mt-5 max-w-3xl font-serif text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+                <h1 className="mt-5 max-w-3xl font-serif text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl mirrortrace-float-title">
                   Your thinking,
                   <span className="block text-amber-200">
                     versioned.
@@ -317,7 +317,7 @@ export const DashboardOverview:
                   Track how your ideas evolve with consent, evidence, and complete control over AI memory.
                 </p>
 
-                <div className="mt-7 flex flex-wrap gap-3">
+                <div className="mt-7 flex flex-wrap gap-3 mirrortrace-float-actions">
 
                   <motion.button
                     type="button"
@@ -369,65 +369,6 @@ export const DashboardOverview:
                 </div>
               </div>
 
-              <div className="hidden lg:block">
-
-                <motion.div
-                  animate={
-                    reducedMotion
-                      ? undefined
-                      : {
-                          y: [
-                            0,
-                            -8,
-                            0,
-                          ],
-                        }
-                  }
-                  transition={{
-                    duration:
-                      5,
-                    repeat:
-                      Infinity,
-                    ease:
-                      'easeInOut',
-                  }}
-                  className="ml-auto max-w-sm rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur-xl"
-                >
-                  <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/40">
-                    Current reflection state
-                  </div>
-
-                  <div className="mt-4 grid grid-cols-3 gap-3 text-center">
-
-                    <div className="rounded-2xl bg-black/20 p-3">
-                      <div className="font-serif text-2xl font-bold">
-                        {reflectionsCount}
-                      </div>
-                      <div className="mt-1 text-[9px] text-white/45">
-                        reflections
-                      </div>
-                    </div>
-
-                    <div className="rounded-2xl bg-black/20 p-3">
-                      <div className="font-serif text-2xl font-bold">
-                        {approvedSnapshotsCount}
-                      </div>
-                      <div className="mt-1 text-[9px] text-white/45">
-                        memories
-                      </div>
-                    </div>
-
-                    <div className="rounded-2xl bg-black/20 p-3">
-                      <div className="font-serif text-2xl font-bold">
-                        {thoughtDiffsCount}
-                      </div>
-                      <div className="mt-1 text-[9px] text-white/45">
-                        diffs
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
             </div>
           </motion.section>
 
