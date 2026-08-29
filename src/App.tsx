@@ -538,7 +538,7 @@ export default function App() {
      ============================================================ */
 
   return (
-    <div className="min-h-screen bg-stone-100 flex flex-col justify-between">
+    <div className="mirrortrace-app-shell min-h-screen flex flex-col justify-between">
 
       <div className="w-full">
 
@@ -561,7 +561,7 @@ export default function App() {
           }
         />
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="mirrortrace-app-main max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
           {/* ==================================================
               OVERVIEW

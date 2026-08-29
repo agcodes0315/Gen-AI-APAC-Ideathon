@@ -245,7 +245,7 @@ export const DashboardOverview:
 
     return (
       <>
-        <div className="space-y-8">
+        <div className="mirrortrace-dashboard-overview space-y-8">
 
           {/* CINEMATIC DASHBOARD HERO */}
 
@@ -268,7 +268,7 @@ export const DashboardOverview:
               duration:
                 0.65,
             }}
-            className="relative overflow-hidden rounded-[32px] bg-stone-950 px-6 py-8 text-white shadow-2xl sm:px-8 lg:px-10 lg:py-10"
+            className="mirrortrace-photo-panel mirrortrace-user-hero relative overflow-hidden rounded-[32px] bg-stone-950 px-6 py-8 text-white shadow-2xl sm:px-8 lg:px-10 lg:py-10"
           >
 
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(245,158,11,0.18),transparent_30%),radial-gradient(circle_at_20%_80%,rgba(16,185,129,0.10),transparent_28%)]" />

@@ -440,12 +440,12 @@ export const MemoryGovernanceCenter:
     }
 
     return (
-      <div className="animate-fade-in space-y-6">
+      <div className="mirrortrace-memory-governance animate-fade-in space-y-6">
 
         {/* Header */}
         <section className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
 
-          <div className="border-b border-stone-200 bg-stone-950 px-5 py-6 text-white sm:px-7">
+          <div className="mirrortrace-photo-panel mirrortrace-memory-hero border-b border-stone-200 bg-stone-950 px-5 py-6 text-white sm:px-7">
 
             <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 

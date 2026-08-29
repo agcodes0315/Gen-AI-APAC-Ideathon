@@ -17,94 +17,63 @@ type AvailabilityState =
   | 'failed';
 
 export default function AdminPanelLauncher() {
-  const [
-    state,
-    setState,
-  ] =
-    useState<AvailabilityState>(
-      'checking'
-    );
+  const [state, setState] =
+    useState<AvailabilityState>('checking');
 
-  const [
-    open,
-    setOpen,
-  ] =
+  const [open, setOpen] =
     useState(false);
 
   useEffect(() => {
     let active = true;
 
-    const checkAdminAccess =
-      async () => {
-        try {
-          const overview =
-            await getAdminOverview();
+    const checkAdminAccess = async () => {
+      try {
+        const overview =
+          await getAdminOverview();
 
-          if (!active) {
-            return;
+        if (!active) return;
+
+        console.info(
+          '[MirrorTrace Admin] Access verified.',
+          {
+            role: overview.role,
+            generatedAt: overview.generatedAt,
           }
+        );
 
-          console.info(
-            '[MirrorTrace Admin] Access verified.',
+        setState('allowed');
+      } catch (error) {
+        if (!active) return;
+
+        if (error instanceof AdminApiError) {
+          console.error(
+            '[MirrorTrace Admin] Availability check failed.',
             {
-              role:
-                overview.role,
-              generatedAt:
-                overview.generatedAt,
+              status: error.status,
+              code:
+                error.code ??
+                'NO_ERROR_CODE',
+              message: error.message,
             }
           );
-
-          setState(
-            'allowed'
-          );
-        } catch (
-          error
-        ) {
-          if (!active) {
-            return;
-          }
 
           if (
-            error instanceof
-            AdminApiError
+            error.status === 401 ||
+            error.status === 403
           ) {
-            console.error(
-              '[MirrorTrace Admin] Availability check failed.',
-              {
-                status:
-                  error.status,
-                code:
-                  error.code ??
-                  'NO_ERROR_CODE',
-                message:
-                  error.message,
-              }
-            );
-
-            if (
-              error.status ===
-                401 ||
-              error.status ===
-                403
-            ) {
-              setState(
-                'denied'
-              );
-
-              return;
-            }
-          } else {
-            console.error(
-              '[MirrorTrace Admin] Unexpected availability error.',
-              error
-            );
+            setState('denied');
+            return;
           }
-
-          setState(
-            'failed'
+        } else {
+          console.error(
+            '[MirrorTrace Admin] Unexpected availability error.',
+            error
           );
         }
-      };
+
+        setState('failed');
+      }
+    };
 
     void checkAdminAccess();
 
@@ -114,18 +83,13 @@ export default function AdminPanelLauncher() {
   }, []);
 
   if (
-    state ===
-      'checking' ||
-    state ===
-      'denied'
+    state === 'checking' ||
+    state === 'denied'
   ) {
     return null;
   }
 
-  if (
-    state ===
-    'failed'
-  ) {
+  if (state === 'failed') {
     return (
       <button
         type="button"
@@ -134,30 +98,12 @@ export default function AdminPanelLauncher() {
           window.location.reload();
         }}
         className="
-          fixed
-          bottom-5
-          right-5
-          z-[9000]
-
-          rounded-xl
-
-          border
-          border-red-200
-
-          bg-red-50
-
-          px-4
-          py-3
-
-          text-sm
-          font-semibold
-          text-red-800
-
-          shadow-lg
-
-          hover:bg-red-100
-
-          transition-colors
+          fixed bottom-5 right-5 z-[9000]
+          rounded-2xl border border-red-400/30
+          bg-[#2A1E22]/95 px-4 py-3
+          text-sm font-semibold text-[#F1B7B7]
+          shadow-2xl backdrop-blur-xl
+          transition-all hover:-translate-y-0.5 hover:bg-[#342329]
         "
       >
         Admin check failed — retry
@@ -167,34 +113,19 @@ export default function AdminPanelLauncher() {
 
   if (open) {
     return (
-      <div
-        className="
-          fixed
-          inset-0
-          z-[10000]
-
-          overflow-y-auto
-
-          bg-stone-100
-        "
-      >
-        <div
-          className="
-            max-w-7xl
-            mx-auto
-
-            px-4
-            sm:px-6
-            lg:px-8
-
-            py-8
-          "
-        >
+      <div className="
+        mirrortrace-admin-overlay
+        fixed inset-0 z-[10000]
+        overflow-y-auto
+      ">
+        <div className="
+          max-w-[1500px] mx-auto
+          px-4 sm:px-6 lg:px-8
+          py-7 sm:py-9
+        ">
           <AdminDashboard
             onClose={() => {
-              setOpen(
-                false
-              );
+              setOpen(false);
             }}
           />
         </div>
@@ -206,32 +137,19 @@ export default function AdminPanelLauncher() {
     <button
       type="button"
       onClick={() => {
-        setOpen(
-          true
-        );
+        setOpen(true);
       }}
       className="
-        fixed
-        bottom-5
-        right-5
-        z-[9000]
-
-        rounded-xl
-
-        bg-stone-900
-
-        px-4
-        py-3
-
-        text-sm
-        font-semibold
-        text-white
-
-        shadow-xl
-
-        hover:bg-stone-800
-
-        transition-colors
+        mirrortrace-admin-launcher
+        fixed bottom-5 right-5 z-[9000]
+        rounded-2xl
+        border border-white/10
+        bg-[#12161A]/94
+        px-4 py-3
+        text-sm font-semibold text-[#ECEFF4]
+        shadow-2xl backdrop-blur-xl
+        transition-all
+        hover:-translate-y-1 hover:border-[#5E81AC]/50 hover:bg-[#1E252B]
       "
     >
       Admin Control Room

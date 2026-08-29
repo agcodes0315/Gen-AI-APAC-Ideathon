@@ -621,7 +621,7 @@ export default function AdminDashboard(
     ];
 
   return (
-    <section className="space-y-6">
+    <section className="mirrortrace-admin-dashboard space-y-6">
 
       {/* COMMAND HERO */}
 
@@ -640,7 +640,7 @@ export default function AdminDashboard(
           y:
             0,
         }}
-        className="relative overflow-hidden rounded-[30px] bg-stone-950 p-6 text-white shadow-2xl sm:p-8"
+        className="mirrortrace-photo-panel mirrortrace-admin-hero relative overflow-hidden rounded-[30px] bg-stone-950 p-6 text-white shadow-2xl sm:p-8"
       >
 
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(245,158,11,0.18),transparent_30%),radial-gradient(circle_at_20%_100%,rgba(16,185,129,0.12),transparent_28%)]" />
