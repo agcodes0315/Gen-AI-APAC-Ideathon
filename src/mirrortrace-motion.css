@@ -1,145 +1,761 @@
+/*
+  MirrorTrace landing-page motion + performance CSS.
+
+  Goals:
+  - Keep the hero video unchanged.
+  - Keep ONE background image after the hero.
+  - Keep vertical page scrolling 100% native.
+  - Remove large backdrop-filter layers that were causing repaint jank.
+  - Keep the feature rows horizontally browsable.
+  - Keep card motion spring-based and lightweight.
+*/
+
+.mirrortrace-auth-page {
+  position: relative;
+  isolation: isolate;
+
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+
+  overflow-x: clip;
+
+  --landing-bg: #111820;
+  --landing-panel: rgba(20, 30, 38, 0.90);
+  --landing-panel-strong: rgba(17, 26, 34, 0.94);
+  --landing-border: rgba(220, 229, 235, 0.17);
+  --landing-text: #f5f7f8;
+  --landing-muted: #b7c2cb;
+  --landing-faint: #8e9aa5;
+  --landing-blue: #6f93ba;
+  --landing-green: #758467;
+  --landing-amber: #d39445;
+
+  background: #0d141a;
+}
+
+/*
+  One compositor-friendly background layer.
+  This replaces `background-attachment: fixed`, which can stutter badly
+  in Chromium on Windows when translucent/blurred cards are above it.
+*/
+.mirrortrace-auth-page::before {
+  content: '';
+
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+
+  background:
+    linear-gradient(
+      rgba(8, 13, 18, 0.52),
+      rgba(8, 13, 18, 0.64)
+    ),
+    url('/hero/mirrortrace2.jpeg')
+      center center / cover no-repeat;
+
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+
+.mirrortrace-auth-page::after {
+  content: '';
+
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+
+  background:
+    radial-gradient(
+      circle at 12% 22%,
+      rgba(94, 129, 172, 0.10),
+      transparent 34rem
+    ),
+    radial-gradient(
+      circle at 84% 76%,
+      rgba(117, 132, 103, 0.10),
+      transparent 32rem
+    );
+
+  transform: translateZ(0);
+  pointer-events: none;
+}
+
 /* ============================================================
-   MIRRORTRACE — SMOOTH SCROLL + UNIVERSAL GLASS SYSTEM
-   Append this file's import AFTER mirrortrace-clean-glass.css
-   and mirrortrace-authenticated-haze.css in every file that
-   already imports those two, e.g.:
-
-     import '../styles/mirrortrace-clean-glass.css';
-     import '../styles/mirrortrace-authenticated-haze.css';
-     import '../styles/mirrortrace-motion-and-glass.css';
-
-   This file does NOT redefine anything that already exists in
-   your two current stylesheets — it only ADDS the two things
-   that were missing:
-     1. real inertial smooth scrolling (not just anchor-jump)
-     2. a universal glass-card utility so ANY card, current or
-        future, automatically gets the same 40%-hue + dark
-        overlay look as the hero images, without you having to
-        hand-write a new block every time you add a component.
+   HERO + NAVBAR
    ============================================================ */
 
-/* ------------------------------------------------------------
-   1. SMOOTH SCROLL
-   ------------------------------------------------------------ */
+.mirrortrace-auth-page #hero {
+  position: relative;
+  z-index: 2;
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 96px; /* keeps sticky navbar from covering anchors */
+  background: #0c1014 !important;
 }
 
-/* Momentum / rubber-banding feel on trackpads + touch */
-body {
-  overscroll-behavior-y: none;
+.mirrortrace-auth-page .mirrortrace-landing-nav,
+.mirrortrace-auth-page .mirrortrace-liquid-panel {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(17, 23, 29, 0.82),
+      rgba(12, 17, 22, 0.74)
+    ) !important;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.17) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 16px 38px rgba(0, 0, 0, 0.22) !important;
+
+  /* Small navbar blur only. Large blur layers were the expensive part. */
+  backdrop-filter: blur(6px) saturate(108%) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(108%) !important;
 }
 
-/* The horizontally-scrolling feature lanes on the landing page
-   get their own smooth + snap behaviour so dragging/arrow-clicking
-   feels deliberate rather than jumpy. */
+.mirrortrace-auth-page #hero .mirrortrace-landing-nav button {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #f4f7f9 !important;
+  transform: none;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-brand {
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-brand > div:first-child {
+  background: #f7f8f8 !important;
+  color: #162033 !important;
+  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.22) !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-links button {
+  padding: 8px 10px !important;
+  border-radius: 999px !important;
+  color: rgba(238, 244, 248, 0.72) !important;
+  font-weight: 600 !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-links button:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-cta {
+  background: rgba(246, 248, 249, 0.96) !important;
+  color: #141a20 !important;
+  border: 1px solid rgba(255, 255, 255, 0.72) !important;
+  box-shadow: 0 9px 26px rgba(0, 0, 0, 0.22) !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-cta:hover {
+  background: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-menu {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-mobile-nav button {
+  color: #f4f7f9 !important;
+}
+
+/* ============================================================
+   CONTINUOUS SECTIONS
+   ============================================================ */
+
+.mirrortrace-auth-page > .mirrortrace-unified-section,
+.mirrortrace-auth-page #features,
+.mirrortrace-auth-page #security,
+.mirrortrace-auth-page #reviews {
+  position: relative !important;
+  z-index: 1;
+  isolation: isolate !important;
+
+  background: transparent !important;
+  color: var(--landing-text) !important;
+}
+
+.mirrortrace-auth-page > .mirrortrace-unified-section::before,
+.mirrortrace-auth-page #features::before,
+.mirrortrace-auth-page #security::before,
+.mirrortrace-auth-page #reviews::before {
+  content: '' !important;
+
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 13, 18, 0.28),
+      rgba(8, 13, 18, 0.38)
+    ) !important;
+
+  pointer-events: none !important;
+}
+
+.mirrortrace-auth-page #features :where(h1, h2, h3),
+.mirrortrace-auth-page #security :where(h1, h2, h3),
+.mirrortrace-auth-page #reviews :where(h1, h2, h3) {
+  color: #f8fafb !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.34) !important;
+}
+
+.mirrortrace-auth-page #features p,
+.mirrortrace-auth-page #security p,
+.mirrortrace-auth-page #reviews p {
+  color: var(--landing-muted) !important;
+}
+
+/* ============================================================
+   FEATURE SECTION
+   ============================================================ */
+
+.mirrortrace-feature-section {
+  width: 100%;
+  overflow: clip;
+
+  padding:
+    clamp(72px, 8vw, 112px)
+    0;
+}
+
+.mirrortrace-feature-shell {
+  position: relative;
+  width: 100%;
+}
+
+.mirrortrace-lane-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding:
+    0
+    clamp(22px, 5vw, 76px)
+    10px;
+
+  color: #dfe6eb !important;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mirrortrace-browse-hint {
+  color: #93a2ad !important;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.mirrortrace-lane-wrap {
+  position: relative;
+  width: 100%;
+  contain: layout paint;
+}
+
 .mirrortrace-card-lane {
-  scroll-behavior: smooth;
+  position: relative;
+
+  width: 100%;
+  max-width: 100vw;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  /* Proximity is much less sticky than mandatory snapping. */
   scroll-snap-type: x proximity;
+  scroll-padding-inline: clamp(22px, 5vw, 76px);
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-inline: contain;
+
+  /* Never capture the user's vertical page gesture. */
+  touch-action: pan-x pan-y pinch-zoom;
+
+  padding:
+    10px
+    clamp(22px, 5vw, 76px)
+    18px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  cursor: grab;
+}
+
+.mirrortrace-card-lane:active {
+  cursor: grabbing;
+}
+
+.mirrortrace-card-lane::-webkit-scrollbar {
+  display: none;
+}
+
+.mirrortrace-scroll-row {
+  display: flex;
+  width: max-content;
+
+  gap: 20px;
+
+  /* No scroll-linked transform on the entire row. */
+  transform: none !important;
 }
 
 .mirrortrace-arc-card {
-  scroll-snap-align: center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+.mirrortrace-scroll-card {
+  width:
+    min(
+      350px,
+      82vw
+    );
+
+  min-height: 268px;
+
+  flex:
+    0
+    0
+    auto;
+
+  scroll-snap-align: start;
+
+  border:
+    1px solid
+    var(--landing-border) !important;
+
+  border-radius: 28px;
+
+  /*
+    More opaque glass without backdrop-filter.
+    Visually similar, dramatically cheaper while scrolling.
+  */
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18, 28, 36, 0.91),
+      rgba(27, 38, 45, 0.86)
+    ) !important;
+
+  color:
+    var(--landing-text) !important;
+
+  padding: 25px;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 14px 30px rgba(0, 0, 0, 0.20) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.mirrortrace-scroll-card:hover {
+  border-color:
+    rgba(117, 132, 103, 0.68) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(24, 36, 43, 0.94),
+      rgba(45, 56, 57, 0.88)
+    ) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    0 18px 38px rgba(0, 0, 0, 0.24) !important;
+}
+
+.mirrortrace-scroll-card p {
+  color: #bbc7cf !important;
+}
+
+.mirrortrace-lane-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  transform:
+    translateY(-50%);
+
+  border:
+    1px solid
+    rgba(220, 229, 235, 0.17) !important;
+
+  border-radius: 999px;
+
+  background:
+    rgba(17, 26, 34, 0.94) !important;
+
+  color:
+    #f6f8f9 !important;
+
+  box-shadow:
+    0 8px 24px
+    rgba(0, 0, 0, 0.24);
+
+  font-size: 28px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.mirrortrace-lane-arrow:hover {
+  transform:
+    translateY(-50%)
+    scale(1.05) !important;
+
+  border-color:
+    rgba(117, 132, 103, 0.72) !important;
+
+  background:
+    rgba(39, 51, 56, 0.98) !important;
+}
+
+.mirrortrace-lane-arrow-left {
+  left:
+    clamp(8px, 1.2vw, 20px);
+}
+
+.mirrortrace-lane-arrow-right {
+  right:
+    clamp(8px, 1.2vw, 20px);
+}
+
+.mirrortrace-summary-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  min-height: 46px;
+
+  border:
+    1px solid
+    var(--landing-border) !important;
+
+  border-radius: 999px;
+
+  background:
+    rgba(18, 28, 36, 0.88) !important;
+
+  color:
+    #d9e1e6 !important;
+
+  padding:
+    11px
+    16px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ============================================================
+   SECURITY SECTION
+   ============================================================ */
+
+.mirrortrace-auth-page #security article,
+.mirrortrace-auth-page #security .rounded-\[26px\] {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 27, 34, 0.90),
+      rgba(27, 38, 44, 0.84)
+    ) !important;
+
+  border-color:
+    rgba(216, 226, 233, 0.17) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  box-shadow:
+    0 14px 32px
+    rgba(0, 0, 0, 0.19) !important;
+}
+
+.mirrortrace-auth-page #security .text-emerald-300 {
+  color: #8fd0ad !important;
+}
+
+.mirrortrace-auth-page #security .text-amber-200 {
+  color: var(--landing-amber) !important;
+}
+
+/* ============================================================
+   REVIEWS
+   ============================================================ */
+
+.mirrortrace-review-stage {
+  width: 100%;
+  overflow: hidden;
+}
+
+.mirrortrace-review-track {
+  display: flex;
+  width: max-content;
+
+  gap: 20px;
+
+  padding:
+    0
+    20px;
+
+  animation:
+    mirrortrace-review-marquee
+    54s
+    linear
+    infinite;
+
+  transform:
+    translate3d(
+      0,
+      0,
+      0
+    );
+}
+
+.mirrortrace-review-stage:hover
+.mirrortrace-review-track {
+  animation-play-state: paused;
+}
+
+.mirrortrace-review-card {
+  width:
+    min(
+      340px,
+      84vw
+    );
+
+  flex:
+    0
+    0
+    auto;
+
+  border:
+    1px solid
+    rgba(216, 226, 233, 0.17) !important;
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 27, 34, 0.92),
+      rgba(29, 40, 46, 0.86)
+    ) !important;
+
+  color:
+    #f5f7f8 !important;
+
+  padding: 24px;
+
+  box-shadow:
+    0 14px 34px
+    rgba(0, 0, 0, 0.21) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.mirrortrace-auth-page #reviews
+.mirrortrace-review-card p {
+  color: #c0cbd3 !important;
+}
+
+.mirrortrace-auth-page #reviews
+.mirrortrace-review-card span {
+  color: #9faeb9 !important;
+}
+
+.mirrortrace-auth-page #reviews
+.mirrortrace-review-card
+.text-indigo-500 {
+  color: #8fb0d0 !important;
+}
+
+.mirrortrace-auth-page #reviews
+> div:last-child button {
+  background:
+    rgba(117, 132, 103, 0.94) !important;
+
+  border:
+    1px solid
+    rgba(174, 192, 163, 0.44) !important;
+
+  color:
+    #ffffff !important;
+
+  box-shadow:
+    0 9px 24px
+    rgba(0, 0, 0, 0.21) !important;
+}
+
+@keyframes mirrortrace-review-marquee {
+  from {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
+  }
+
+  to {
+    transform:
+      translate3d(
+        calc(
+          -50%
+          -
+          10px
+        ),
+        0,
+        0
+      );
   }
 }
 
-/* ------------------------------------------------------------
-   2. UNIVERSAL GLASS CARD
-   ------------------------------------------------------------
-   Usage: add class="mt-glass" (or mt-glass-warm / mt-glass-cool /
-   mt-glass-brand) to ANY card, anywhere in the app — a KPI tile,
-   a piechart panel, a support ticket, a review, a future feature
-   you build next month. It will automatically render at ~40%
-   opacity in its hue family with the same dark, hazy overlay
-   used behind the hero photo, so you never have to hand-roll this
-   again per component.
-   ------------------------------------------------------------ */
+/* ============================================================
+   MOBILE + PERFORMANCE
+   ============================================================ */
 
-.mt-glass {
-  --mt-glass-hue: 205; /* default: cool slate/blue, matches --mt-sky */
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  border-radius: 26px;
-  border: 1px solid hsl(var(--mt-glass-hue) 30% 88% / 0.18);
-  background: linear-gradient(
-    145deg,
-    hsl(var(--mt-glass-hue) 38% 10% / 0.79),
-    hsl(var(--mt-glass-hue) 22% 18% / 0.68)
-  );
-  color: #f4f7f9;
-  backdrop-filter: blur(6px) saturate(112%);
-  -webkit-backdrop-filter: blur(6px) saturate(112%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 16px 38px rgba(2, 7, 11, 0.22);
-  transition:
-    transform 200ms ease,
-    box-shadow 200ms ease,
-    border-color 200ms ease,
-    background-color 200ms ease;
+@media (max-width: 720px) {
+  .mirrortrace-auth-page::before,
+  .mirrortrace-auth-page::after {
+    position: absolute;
+    min-height: 100%;
+  }
+
+  .mirrortrace-feature-section {
+    padding:
+      64px
+      0;
+  }
+
+  .mirrortrace-scroll-card {
+    width: 286px;
+    min-height: 252px;
+    padding: 22px;
+  }
+
+  .mirrortrace-scroll-row {
+    gap: 14px;
+  }
+
+  .mirrortrace-lane-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+  }
+
+  .mirrortrace-browse-hint {
+    display: none;
+  }
+
+  .mirrortrace-review-track {
+    animation-duration: 60s;
+  }
 }
 
-/* Hue presets so a card can borrow the colour of what it represents
-   (amber = snapshots, blue = diffs/sky, green = watches/cactus)
-   while keeping the same 40%-opacity haze recipe. */
-.mt-glass-warm   { --mt-glass-hue: 32;  }  /* amber / brand */
-.mt-glass-cool   { --mt-glass-hue: 205; }  /* sky / blue */
-.mt-glass-brand  { --mt-glass-hue: 95;  }  /* cactus / green */
-.mt-glass-plain  { --mt-glass-hue: 210; }  /* neutral slate */
-
-.mt-glass :is(h1, h2, h3, strong) {
-  color: #f5f8fa;
-}
-
-.mt-glass p,
-.mt-glass span:not([class*='text-']) {
-  color: #c3ccd4;
-}
-
-/* ------------------------------------------------------------
-   3. HOVER "POP" HIGHLIGHT
-   ------------------------------------------------------------
-   A pure-CSS fallback pop so every card gets the same punchy
-   highlight from the screen recording even if it isn't wrapped
-   in the ScrollArcCard/Framer component (e.g. KPI tiles, ticket
-   cards, review cards). Combine with class="mt-hover-pop".
-   ------------------------------------------------------------ */
-
-.mt-hover-pop {
-  transition:
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 220ms ease,
-    border-color 220ms ease,
-    filter 220ms ease;
-  will-change: transform;
-}
-
-.mt-hover-pop:hover {
-  transform: translateY(-8px) scale(1.035);
-  filter: brightness(1.06) saturate(1.08);
-  box-shadow:
-    0 30px 60px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(255, 255, 255, 0.14) inset;
-  z-index: 5;
-}
-
-.mt-hover-pop:active {
-  transform: translateY(-3px) scale(1.01);
-}
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  .mt-hover-pop,
-  .mt-hover-pop:hover {
-    transform: none !important;
-    filter: none !important;
+  .mirrortrace-auth-page {
+    scroll-behavior: auto;
+  }
+
+  .mirrortrace-card-lane {
+    scroll-behavior: auto;
+  }
+
+  .mirrortrace-scroll-card,
+  .mirrortrace-lane-arrow {
+    transition: none !important;
+  }
+
+  .mirrortrace-review-track {
+    animation: none !important;
+  }
+
+  .mirrortrace-review-stage {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .mirrortrace-review-stage::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+/* ============================================================
+   NATIVE SCROLL GUARANTEE — FINAL
+   ============================================================ */
+
+/*
+  Do not intercept wheel/touch scrolling in JavaScript.
+  Vertical scroll belongs to the browser; the feature lanes only move
+  horizontally when the user explicitly drags/swipes them or uses arrows.
+*/
+.mirrortrace-auth-page,
+.mirrortrace-feature-section,
+.mirrortrace-feature-shell,
+.mirrortrace-lane-wrap {
+  overscroll-behavior-y: auto !important;
+}
+
+.mirrortrace-card-lane {
+  overscroll-behavior-y: auto !important;
+  touch-action: pan-x pan-y pinch-zoom !important;
+}
+
+.mirrortrace-scroll-card {
+  contain: layout paint style;
+}
+
+@media (min-width: 900px) {
+  .mirrortrace-scroll-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 350px 268px;
   }
 }

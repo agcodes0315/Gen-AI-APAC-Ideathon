@@ -1,0 +1,145 @@
+/* ============================================================
+   MIRRORTRACE — SMOOTH SCROLL + UNIVERSAL GLASS SYSTEM
+   Append this file's import AFTER mirrortrace-clean-glass.css
+   and mirrortrace-authenticated-haze.css in every file that
+   already imports those two, e.g.:
+
+     import '../styles/mirrortrace-clean-glass.css';
+     import '../styles/mirrortrace-authenticated-haze.css';
+     import '../styles/mirrortrace-motion-and-glass.css';
+
+   This file does NOT redefine anything that already exists in
+   your two current stylesheets — it only ADDS the two things
+   that were missing:
+     1. real inertial smooth scrolling (not just anchor-jump)
+     2. a universal glass-card utility so ANY card, current or
+        future, automatically gets the same 40%-hue + dark
+        overlay look as the hero images, without you having to
+        hand-write a new block every time you add a component.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. SMOOTH SCROLL
+   ------------------------------------------------------------ */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px; /* keeps sticky navbar from covering anchors */
+}
+
+/* Momentum / rubber-banding feel on trackpads + touch */
+body {
+  overscroll-behavior-y: none;
+}
+
+/* The horizontally-scrolling feature lanes on the landing page
+   get their own smooth + snap behaviour so dragging/arrow-clicking
+   feels deliberate rather than jumpy. */
+.mirrortrace-card-lane {
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mirrortrace-arc-card {
+  scroll-snap-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ------------------------------------------------------------
+   2. UNIVERSAL GLASS CARD
+   ------------------------------------------------------------
+   Usage: add class="mt-glass" (or mt-glass-warm / mt-glass-cool /
+   mt-glass-brand) to ANY card, anywhere in the app — a KPI tile,
+   a piechart panel, a support ticket, a review, a future feature
+   you build next month. It will automatically render at ~40%
+   opacity in its hue family with the same dark, hazy overlay
+   used behind the hero photo, so you never have to hand-roll this
+   again per component.
+   ------------------------------------------------------------ */
+
+.mt-glass {
+  --mt-glass-hue: 205; /* default: cool slate/blue, matches --mt-sky */
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 26px;
+  border: 1px solid hsl(var(--mt-glass-hue) 30% 88% / 0.18);
+  background: linear-gradient(
+    145deg,
+    hsl(var(--mt-glass-hue) 38% 10% / 0.79),
+    hsl(var(--mt-glass-hue) 22% 18% / 0.68)
+  );
+  color: #f4f7f9;
+  backdrop-filter: blur(6px) saturate(112%);
+  -webkit-backdrop-filter: blur(6px) saturate(112%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 16px 38px rgba(2, 7, 11, 0.22);
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+/* Hue presets so a card can borrow the colour of what it represents
+   (amber = snapshots, blue = diffs/sky, green = watches/cactus)
+   while keeping the same 40%-opacity haze recipe. */
+.mt-glass-warm   { --mt-glass-hue: 32;  }  /* amber / brand */
+.mt-glass-cool   { --mt-glass-hue: 205; }  /* sky / blue */
+.mt-glass-brand  { --mt-glass-hue: 95;  }  /* cactus / green */
+.mt-glass-plain  { --mt-glass-hue: 210; }  /* neutral slate */
+
+.mt-glass :is(h1, h2, h3, strong) {
+  color: #f5f8fa;
+}
+
+.mt-glass p,
+.mt-glass span:not([class*='text-']) {
+  color: #c3ccd4;
+}
+
+/* ------------------------------------------------------------
+   3. HOVER "POP" HIGHLIGHT
+   ------------------------------------------------------------
+   A pure-CSS fallback pop so every card gets the same punchy
+   highlight from the screen recording even if it isn't wrapped
+   in the ScrollArcCard/Framer component (e.g. KPI tiles, ticket
+   cards, review cards). Combine with class="mt-hover-pop".
+   ------------------------------------------------------------ */
+
+.mt-hover-pop {
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms ease,
+    border-color 220ms ease,
+    filter 220ms ease;
+  will-change: transform;
+}
+
+.mt-hover-pop:hover {
+  transform: translateY(-8px) scale(1.035);
+  filter: brightness(1.06) saturate(1.08);
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.32),
+    0 0 0 1px rgba(255, 255, 255, 0.14) inset;
+  z-index: 5;
+}
+
+.mt-hover-pop:active {
+  transform: translateY(-3px) scale(1.01);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-hover-pop,
+  .mt-hover-pop:hover {
+    transform: none !important;
+    filter: none !important;
+  }
+}
