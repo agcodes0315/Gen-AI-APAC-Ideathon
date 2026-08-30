@@ -1,11 +1,12 @@
 /*
-  MirrorTrace hybrid landing motion.
+  MirrorTrace landing-page motion + visual system.
+  Scope: sign-in/registration page only.
 
-  Design goal:
-  1. Vertical page scroll gives each feature row a small opposite-direction nudge.
-  2. Each row remains horizontally browsable at all times.
-  3. No visible horizontal scrollbar.
-  4. The section has normal document height, so there is no large dead zone.
+  Intent:
+  - Keep the hero VIDEO unchanged.
+  - Use ONE image, /hero/mirrortrace2.jpeg, from Features through Reviews.
+  - Restore the landing navbar so global dashboard CSS cannot restyle it.
+  - Keep feature rows vertically animated and horizontally browsable.
 */
 
 .mirrortrace-auth-page {
@@ -13,59 +14,152 @@
   max-width: 100%;
   overflow-x: clip;
 
-  --mt-hero-bg: #17120f;
-  --mt-hero-bg-soft: #241b15;
-  --mt-hero-accent: #e7bd78;
-  --mt-hero-text: #fffaf2;
-  --mt-hero-muted: #d6c8bb;
-}
+  --landing-bg: #111820;
+  --landing-panel: rgba(20, 30, 38, 0.78);
+  --landing-panel-strong: rgba(17, 26, 34, 0.86);
+  --landing-border: rgba(220, 229, 235, 0.17);
+  --landing-text: #f5f7f8;
+  --landing-muted: #b7c2cb;
+  --landing-faint: #8e9aa5;
+  --landing-blue: #6f93ba;
+  --landing-green: #758467;
+  --landing-amber: #d39445;
 
-.mirrortrace-liquid-nav,
-.mirrortrace-liquid-panel {
   background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.14),
-      rgba(255, 255, 255, 0.055)
-    );
-
-  border:
-    1px solid rgba(255, 255, 255, 0.16);
-
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.13),
-    0 20px 60px rgba(0, 0, 0, 0.2);
-
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+    linear-gradient(rgba(8, 13, 18, 0.48), rgba(8, 13, 18, 0.58)),
+    url('/hero/mirrortrace2.jpeg') center center / cover fixed no-repeat;
 }
 
 /* ============================================================
-   FEATURE SECTION — NORMAL HEIGHT, NO DEAD SCROLL SPACE
+   HERO + NAVBAR
+   Hero remains video-driven. These rules only protect its navbar
+   from broad rules in index.css.
+   ============================================================ */
+
+.mirrortrace-auth-page #hero {
+  background: #0c1014 !important;
+}
+
+.mirrortrace-auth-page .mirrortrace-landing-nav,
+.mirrortrace-auth-page .mirrortrace-liquid-panel {
+  background: linear-gradient(180deg, rgba(17, 23, 29, 0.78), rgba(12, 17, 22, 0.68)) !important;
+  border: 1px solid rgba(255, 255, 255, 0.17) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 18px 44px rgba(0, 0, 0, 0.24) !important;
+  backdrop-filter: blur(10px) saturate(112%) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(112%) !important;
+}
+
+/* Reset every navbar button first. This specifically defeats the
+   old `section:first-of-type button:first-of-type` patch. */
+.mirrortrace-auth-page #hero .mirrortrace-landing-nav button {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #f4f7f9 !important;
+  transform: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-brand {
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-brand > div:first-child {
+  background: #f7f8f8 !important;
+  color: #162033 !important;
+  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.22) !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-links button {
+  padding: 8px 10px !important;
+  border-radius: 999px !important;
+  color: rgba(238, 244, 248, 0.72) !important;
+  font-weight: 600 !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-links button:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-cta {
+  background: rgba(246, 248, 249, 0.94) !important;
+  color: #141a20 !important;
+  border: 1px solid rgba(255, 255, 255, 0.72) !important;
+  box-shadow: 0 9px 26px rgba(0, 0, 0, 0.22) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-cta:hover {
+  background: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-nav-menu {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.mirrortrace-auth-page #hero .mirrortrace-mobile-nav button {
+  color: #f4f7f9 !important;
+}
+
+/* ============================================================
+   ONE CONTINUOUS IMAGE AFTER HERO
+   ============================================================ */
+
+.mirrortrace-auth-page > .mirrortrace-unified-section,
+.mirrortrace-auth-page #features,
+.mirrortrace-auth-page #security,
+.mirrortrace-auth-page #reviews {
+  position: relative !important;
+  isolation: isolate !important;
+  background: transparent !important;
+  color: var(--landing-text) !important;
+}
+
+/* One subtle overlay recipe repeated transparently so the same fixed
+   image remains visible and continuous underneath every section. */
+.mirrortrace-auth-page > .mirrortrace-unified-section::before,
+.mirrortrace-auth-page #features::before,
+.mirrortrace-auth-page #security::before,
+.mirrortrace-auth-page #reviews::before {
+  content: '' !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  background:
+    linear-gradient(180deg, rgba(8, 13, 18, 0.46), rgba(8, 13, 18, 0.58)) !important;
+}
+
+.mirrortrace-auth-page #features :where(h1,h2,h3),
+.mirrortrace-auth-page #security :where(h1,h2,h3),
+.mirrortrace-auth-page #reviews :where(h1,h2,h3) {
+  color: #f8fafb !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.34) !important;
+}
+
+.mirrortrace-auth-page #features p,
+.mirrortrace-auth-page #security p,
+.mirrortrace-auth-page #reviews p {
+  color: var(--landing-muted) !important;
+}
+
+/* ============================================================
+   FEATURE SECTION
    ============================================================ */
 
 .mirrortrace-feature-section {
-  position: relative;
   width: 100%;
   overflow: clip;
-
-  padding:
-    clamp(72px, 8vw, 112px)
-    0;
-
-  background:
-    radial-gradient(
-      circle at 15% 0%,
-      color-mix(
-        in srgb,
-        var(--mt-accent-soft) 55%,
-        transparent
-      ),
-      transparent 34rem
-    ),
-    var(--mt-page);
-
-  color: var(--mt-text);
+  padding: clamp(72px, 8vw, 112px) 0;
 }
 
 .mirrortrace-feature-shell {
@@ -77,16 +171,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   gap: 16px;
-
-  padding:
-    0
-    clamp(22px, 5vw, 76px)
-    10px;
-
-  color: var(--mt-text-soft);
-
+  padding: 0 clamp(22px, 5vw, 76px) 10px;
+  color: #dfe6eb !important;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -94,15 +181,11 @@
 }
 
 .mirrortrace-browse-hint {
-  color: var(--mt-text-faint);
+  color: #93a2ad !important;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
 }
-
-/* ============================================================
-   EACH ROW IS ITS OWN HORIZONTAL BROWSER
-   ============================================================ */
 
 .mirrortrace-lane-wrap {
   position: relative;
@@ -111,253 +194,121 @@
 
 .mirrortrace-card-lane {
   position: relative;
-
   width: 100%;
   max-width: 100vw;
-
   overflow-x: auto;
   overflow-y: hidden;
-
   scroll-snap-type: x proximity;
   scroll-padding-inline: clamp(22px, 5vw, 76px);
-
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-inline: contain;
-
-  padding:
-    8px
-    clamp(22px, 5vw, 76px)
-    14px;
-
+  padding: 8px clamp(22px, 5vw, 76px) 14px;
   scrollbar-width: none;
   -ms-overflow-style: none;
-
   cursor: grab;
 }
 
-.mirrortrace-card-lane:active {
-  cursor: grabbing;
-}
-
-.mirrortrace-card-lane::-webkit-scrollbar {
-  display: none;
-}
+.mirrortrace-card-lane:active { cursor: grabbing; }
+.mirrortrace-card-lane::-webkit-scrollbar { display: none; }
 
 .mirrortrace-scroll-row {
   display: flex;
   width: max-content;
-
   gap: 20px;
-
   transform: translate3d(0, 0, 0);
-
   will-change: transform;
-
   backface-visibility: hidden;
 }
 
-/* ============================================================
-   FEATURE CARDS
-   ============================================================ */
-
 .mirrortrace-scroll-card {
-  width:
-    min(
-      350px,
-      82vw
-    );
-
+  width: min(350px, 82vw);
   min-height: 268px;
-
-  flex:
-    0
-    0
-    auto;
-
+  flex: 0 0 auto;
   scroll-snap-align: start;
-
-  border:
-    1px solid
-    var(--mt-border);
-
+  border: 1px solid var(--landing-border) !important;
   border-radius: 28px;
-
-  background:
-    var(--mt-surface);
-
-  color:
-    var(--mt-text);
-
+  background: linear-gradient(145deg, rgba(18, 28, 36, 0.82), rgba(27, 38, 45, 0.74)) !important;
+  color: var(--landing-text) !important;
   padding: 25px;
-
   box-shadow:
-    var(--mt-shadow);
-
-  transition:
-    transform
-      260ms
-      cubic-bezier(
-        0.22,
-        1,
-        0.36,
-        1
-      ),
-    box-shadow
-      260ms
-      ease,
-    border-color
-      260ms
-      ease;
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 16px 36px rgba(0, 0, 0, 0.22) !important;
+  backdrop-filter: blur(5px) saturate(110%) !important;
+  -webkit-backdrop-filter: blur(5px) saturate(110%) !important;
+  transition: transform 260ms cubic-bezier(.22,1,.36,1), border-color 220ms ease, background 220ms ease;
 }
 
 .mirrortrace-scroll-card:hover {
-  transform:
-    translateY(-6px)
-    scale(1.008);
-
-  border-color:
-    color-mix(
-      in srgb,
-      var(--mt-accent) 38%,
-      var(--mt-border)
-    );
-
-  box-shadow:
-    0 18px 48px
-    rgba(28, 25, 23, 0.11);
+  transform: translateY(-6px) scale(1.008);
+  border-color: rgba(117, 132, 103, 0.68) !important;
+  background: linear-gradient(145deg, rgba(24, 36, 43, 0.88), rgba(45, 56, 57, 0.78)) !important;
 }
 
-html[data-theme="dark"]
-.mirrortrace-scroll-card:hover {
-  box-shadow:
-    0 20px 52px
-    rgba(0, 0, 0, 0.28);
-}
-
-/* ============================================================
-   MANUAL BROWSE ARROWS
-   ============================================================ */
+.mirrortrace-scroll-card p { color: #bbc7cf !important; }
 
 .mirrortrace-lane-arrow {
   position: absolute;
   top: 50%;
   z-index: 10;
-
   width: 42px;
   height: 42px;
-
   display: grid;
   place-items: center;
-
-  transform:
-    translateY(-50%);
-
-  border:
-    1px solid
-    var(--mt-border);
-
-  border-radius:
-    999px;
-
-  background:
-    color-mix(
-      in srgb,
-      var(--mt-surface) 92%,
-      transparent
-    );
-
-  color:
-    var(--mt-text);
-
-  box-shadow:
-    0 10px 30px
-    rgba(28, 25, 23, 0.12);
-
-  backdrop-filter:
-    blur(14px);
-
-  -webkit-backdrop-filter:
-    blur(14px);
-
+  transform: translateY(-50%);
+  border: 1px solid rgba(220, 229, 235, 0.17) !important;
+  border-radius: 999px;
+  background: rgba(17, 26, 34, 0.88) !important;
+  color: #f6f8f9 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.26);
   font-size: 28px;
   line-height: 1;
-
   cursor: pointer;
-
-  transition:
-    transform 180ms ease,
-    background-color 180ms ease,
-    border-color 180ms ease;
 }
 
 .mirrortrace-lane-arrow:hover {
-  transform:
-    translateY(-50%)
-    scale(1.06);
-
-  border-color:
-    var(--mt-accent);
-
-  background:
-    var(--mt-surface);
+  transform: translateY(-50%) scale(1.06) !important;
+  border-color: rgba(117, 132, 103, 0.72) !important;
+  background: rgba(39, 51, 56, 0.94) !important;
 }
 
-.mirrortrace-lane-arrow-left {
-  left:
-    clamp(8px, 1.2vw, 20px);
-}
-
-.mirrortrace-lane-arrow-right {
-  right:
-    clamp(8px, 1.2vw, 20px);
-}
-
-/* ============================================================
-   SUMMARY PILLS
-   ============================================================ */
+.mirrortrace-lane-arrow-left { left: clamp(8px, 1.2vw, 20px); }
+.mirrortrace-lane-arrow-right { right: clamp(8px, 1.2vw, 20px); }
 
 .mirrortrace-summary-pill {
   display: flex;
   align-items: center;
   justify-content: center;
-
   gap: 8px;
-
   min-height: 46px;
-
-  border:
-    1px solid
-    var(--mt-border);
-
-  border-radius:
-    999px;
-
-  background:
-    color-mix(
-      in srgb,
-      var(--mt-surface) 86%,
-      transparent
-    );
-
-  color:
-    var(--mt-text-soft);
-
-  padding:
-    11px
-    16px;
-
+  border: 1px solid var(--landing-border) !important;
+  border-radius: 999px;
+  background: rgba(18, 28, 36, 0.70) !important;
+  color: #d9e1e6 !important;
+  padding: 11px 16px;
   font-size: 12px;
   font-weight: 700;
-
-  backdrop-filter:
-    blur(12px);
-
-  -webkit-backdrop-filter:
-    blur(12px);
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
 }
 
 /* ============================================================
-   REVIEW CAROUSEL
+   SECURITY SECTION
+   ============================================================ */
+
+.mirrortrace-auth-page #security article,
+.mirrortrace-auth-page #security .rounded-\[26px\] {
+  background: linear-gradient(145deg, rgba(17, 27, 34, 0.78), rgba(27, 38, 44, 0.70)) !important;
+  border-color: rgba(216, 226, 233, 0.17) !important;
+  backdrop-filter: blur(5px) saturate(108%) !important;
+  -webkit-backdrop-filter: blur(5px) saturate(108%) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.20) !important;
+}
+
+.mirrortrace-auth-page #security .text-emerald-300 { color: #8fd0ad !important; }
+.mirrortrace-auth-page #security .text-amber-200 { color: var(--landing-amber) !important; }
+
+/* ============================================================
+   REVIEWS
    ============================================================ */
 
 .mirrortrace-review-stage {
@@ -368,142 +319,333 @@ html[data-theme="dark"]
 .mirrortrace-review-track {
   display: flex;
   width: max-content;
-
   gap: 20px;
-
-  padding:
-    0
-    20px;
-
-  animation:
-    mirrortrace-review-marquee
-    46s
-    linear
-    infinite;
-
+  padding: 0 20px;
+  animation: mirrortrace-review-marquee 46s linear infinite;
   will-change: transform;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0,0,0);
 }
 
-.mirrortrace-review-stage:hover
-.mirrortrace-review-track {
+.mirrortrace-review-stage:hover .mirrortrace-review-track {
   animation-play-state: paused;
 }
 
 .mirrortrace-review-card {
-  width:
-    min(
-      340px,
-      84vw
-    );
-
-  flex:
-    0
-    0
-    auto;
-
-  border:
-    1px solid
-    var(--mt-border);
-
-  border-radius:
-    28px;
-
-  background:
-    var(--mt-surface);
-
-  color:
-    var(--mt-text);
-
+  width: min(340px, 84vw);
+  flex: 0 0 auto;
+  border: 1px solid rgba(216, 226, 233, 0.17) !important;
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(17, 27, 34, 0.82), rgba(29, 40, 46, 0.74)) !important;
+  color: #f5f7f8 !important;
   padding: 24px;
+  box-shadow: 0 16px 38px rgba(0,0,0,.22) !important;
+  backdrop-filter: blur(5px) saturate(108%) !important;
+  -webkit-backdrop-filter: blur(5px) saturate(108%) !important;
+}
 
-  box-shadow:
-    var(--mt-shadow);
+.mirrortrace-auth-page #reviews .mirrortrace-review-card p {
+  color: #c0cbd3 !important;
+}
+
+.mirrortrace-auth-page #reviews .mirrortrace-review-card span {
+  color: #9faeb9 !important;
+}
+
+.mirrortrace-auth-page #reviews .mirrortrace-review-card .text-indigo-500 {
+  color: #8fb0d0 !important;
+}
+
+.mirrortrace-auth-page #reviews > div:last-child button {
+  background: rgba(117, 132, 103, 0.92) !important;
+  border: 1px solid rgba(174, 192, 163, 0.44) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 26px rgba(0,0,0,.22) !important;
 }
 
 @keyframes mirrortrace-review-marquee {
-  from {
-    transform:
-      translate3d(
-        0,
-        0,
-        0
-      );
-  }
-
-  to {
-    transform:
-      translate3d(
-        calc(
-          -50%
-          -
-          10px
-        ),
-        0,
-        0
-      );
-  }
+  from { transform: translate3d(0,0,0); }
+  to { transform: translate3d(calc(-50% - 10px),0,0); }
 }
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
 
 @media (max-width: 720px) {
-  .mirrortrace-feature-section {
-    padding:
-      64px
-      0;
+  .mirrortrace-auth-page {
+    background-attachment: scroll;
+    background-position: center top;
   }
 
-  .mirrortrace-scroll-card {
-    width: 286px;
-    min-height: 252px;
-    padding: 22px;
+  .mirrortrace-feature-section { padding: 64px 0; }
+  .mirrortrace-scroll-card { width: 286px; min-height: 252px; padding: 22px; }
+  .mirrortrace-scroll-row { gap: 14px; }
+  .mirrortrace-lane-arrow { width: 36px; height: 36px; font-size: 24px; }
+  .mirrortrace-browse-hint { display: none; }
+  .mirrortrace-review-track { animation-duration: 40s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mirrortrace-scroll-row { transform: none !important; }
+  .mirrortrace-scroll-card { transition: none; }
+  .mirrortrace-review-track { animation: none !important; }
+  .mirrortrace-review-stage { overflow-x: auto; scrollbar-width: none; }
+  .mirrortrace-review-stage::-webkit-scrollbar { display: none; }
+}
+
+
+/* ============================================================
+   MIRRORTRACE ARC MOTION — SMOOTH SEMICIRCLE CARD ENTRANCE
+   Applies to the landing page immediately and gives the
+   authenticated/admin cards a CSS scroll-driven fallback.
+   ============================================================ */
+
+.mirrortrace-arc-card {
+  will-change:
+    transform,
+    opacity;
+
+  transform:
+    translateZ(0);
+
+  backface-visibility:
+    hidden;
+
+  perspective:
+    1000px;
+}
+
+/*
+  Motion controls transform for landing feature cards.
+  Keep CSS hover from fighting the spring.
+*/
+.mirrortrace-scroll-card.mirrortrace-arc-card:hover {
+  transform: none;
+}
+
+/*
+  Softer horizontal lane behavior.
+  "mandatory" snap feels jerky with a mouse/trackpad,
+  so proximity + larger snap stop makes the movement deliberate.
+*/
+.mirrortrace-card-lane {
+  scroll-behavior:
+    smooth;
+
+  scroll-snap-type:
+    x proximity;
+
+  scroll-snap-stop:
+    normal;
+
+  overscroll-behavior-x:
+    contain;
+}
+
+.mirrortrace-scroll-row {
+  transition:
+    none !important;
+}
+
+/*
+  ADMIN + USER BOARD FALLBACK
+  These classes already exist in MirrorTrace.
+  Chrome supports scroll-driven view timelines, so these cards
+  enter on a shallow arc even before the TSX components are wrapped
+  with ScrollArcCard.
+*/
+@supports (
+  animation-timeline:
+    view()
+) {
+  .mirrortrace-admin-dashboard
+  .mirrortrace-admin-metric,
+
+  .mirrortrace-admin-dashboard
+  .mirrortrace-admin-surface,
+
+  .mirrortrace-dashboard-overview
+  .mirrortrace-stat-card,
+
+  .mirrortrace-dashboard-overview
+  .mirrortrace-action-card {
+    animation-name:
+      mirrortrace-card-arc-enter;
+
+    animation-duration:
+      1ms;
+
+    animation-fill-mode:
+      both;
+
+    animation-timing-function:
+      linear;
+
+    animation-timeline:
+      view();
+
+    animation-range:
+      entry 8%
+      cover 42%;
+
+    will-change:
+      transform,
+      opacity;
   }
 
-  .mirrortrace-scroll-row {
-    gap: 14px;
+  .mirrortrace-admin-dashboard
+  .mirrortrace-admin-metric:nth-child(even),
+
+  .mirrortrace-dashboard-overview
+  .mirrortrace-stat-card:nth-child(even),
+
+  .mirrortrace-dashboard-overview
+  .mirrortrace-action-card:nth-child(even) {
+    --mirrortrace-arc-x:
+      58px;
+
+    --mirrortrace-arc-r:
+      4deg;
   }
 
-  .mirrortrace-lane-arrow {
-    width: 36px;
-    height: 36px;
-    font-size: 24px;
+  .mirrortrace-admin-dashboard
+  .mirrortrace-admin-metric:nth-child(odd),
+
+  .mirrortrace-dashboard-overview
+  .mirrortrace-stat-card:nth-child(odd),
+
+  .mirrortrace-dashboard-overview
+  .mirrortrace-action-card:nth-child(odd) {
+    --mirrortrace-arc-x:
+      -58px;
+
+    --mirrortrace-arc-r:
+      -4deg;
   }
 
-  .mirrortrace-browse-hint {
-    display: none;
-  }
+  @keyframes mirrortrace-card-arc-enter {
+    0% {
+      opacity:
+        0.18;
 
-  .mirrortrace-review-track {
-    animation-duration: 40s;
+      transform:
+        translate3d(
+          var(
+            --mirrortrace-arc-x,
+            -58px
+          ),
+          34px,
+          0
+        )
+        rotate(
+          var(
+            --mirrortrace-arc-r,
+            -4deg
+          )
+        )
+        scale(
+          0.95
+        );
+    }
+
+    52% {
+      opacity:
+        1;
+
+      transform:
+        translate3d(
+          0,
+          -8px,
+          0
+        )
+        rotate(
+          0deg
+        )
+        scale(
+          1
+        );
+    }
+
+    100% {
+      opacity:
+        1;
+
+      transform:
+        translate3d(
+          0,
+          0,
+          0
+        )
+        rotate(
+          0deg
+        )
+        scale(
+          1
+        );
+    }
   }
 }
 
-/* ============================================================
-   REDUCED MOTION
-   ============================================================ */
+/*
+  Hover remains subtle because the scroll animation is already doing
+  most of the visual work.
+*/
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-metric:hover,
 
-@media (prefers-reduced-motion: reduce) {
-  .mirrortrace-scroll-row {
-    transform: none !important;
-  }
+.mirrortrace-dashboard-overview
+.mirrortrace-stat-card:hover,
 
-  .mirrortrace-scroll-card {
-    transition: none;
-  }
+.mirrortrace-dashboard-overview
+.mirrortrace-action-card:hover {
+  transform:
+    translateY(-5px)
+    scale(1.008);
+}
 
-  .mirrortrace-review-track {
-    animation: none !important;
-  }
+/*
+  Prevent expensive blur repaints from making the card motion feel
+  choppy. Keep the existing glass look, but lower blur while moving.
+*/
+.mirrortrace-scroll-card,
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-metric,
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-surface,
+.mirrortrace-dashboard-overview
+.mirrortrace-stat-card,
+.mirrortrace-dashboard-overview
+.mirrortrace-action-card {
+  contain:
+    paint;
 
-  .mirrortrace-review-stage {
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
+  transform:
+    translateZ(0);
 
-  .mirrortrace-review-stage::-webkit-scrollbar {
-    display: none;
+  backface-visibility:
+    hidden;
+}
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  .mirrortrace-arc-card,
+
+  .mirrortrace-admin-dashboard
+  .mirrortrace-admin-metric,
+
+  .mirrortrace-admin-dashboard
+  .mirrortrace-admin-surface,
+
+  .mirrortrace-dashboard-overview
+  .mirrortrace-stat-card,
+
+  .mirrortrace-dashboard-overview
+  .mirrortrace-action-card {
+    animation:
+      none !important;
+
+    transform:
+      none !important;
+
+    opacity:
+      1 !important;
   }
 }

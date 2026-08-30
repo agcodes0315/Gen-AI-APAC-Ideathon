@@ -513,7 +513,7 @@ export const DashboardOverview:
                     onClick={
                       card.onClick
                     }
-                    className="group rounded-[26px] border border-stone-200 bg-white p-5 text-left shadow-sm transition-shadow hover:shadow-xl"
+                    className="mirrortrace-stat-card group rounded-[26px] border border-stone-200 bg-white p-5 text-left shadow-sm transition-all hover:shadow-xl"
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-medium uppercase tracking-wider text-stone-700">

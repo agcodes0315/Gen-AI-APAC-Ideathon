@@ -1547,1281 +1547,1424 @@ html[data-theme="dark"] .mt-demo-provenance {
     inherit;
 }
 
-
 /* ============================================================
-   MIRRORTRACE — MOODY NATURE UNIFIED UI
+   MIRRORTRACE FINAL VISUAL SYSTEM
+   Single source of truth for:
+   - authenticated Overview hero
+   - Admin Security & Operations hero
+   - dashboard glass cards
+   - admin dashboard glass cards
+   - landing feature section
+   - public reviews
    ============================================================ */
 
-body {
-  background:
-    radial-gradient(circle at 85% 0%, rgba(94, 129, 172, 0.08), transparent 32rem),
-    radial-gradient(circle at 0% 42%, rgba(90, 103, 75, 0.06), transparent 36rem),
-    var(--mt-page);
+:root {
+  --mt-cactus: #617057;
+  --mt-cactus-soft: #758467;
+
+  --mt-sky: #5e81ac;
+  --mt-sky-soft: #87a6c4;
+
+  --mt-orange: #d39445;
+
+  --mt-frost: #f4f7f9;
+  --mt-frost-soft: #d8e1e8;
+  --mt-muted-dark: #aab7c2;
+
+  --mt-glass:
+    rgba(
+      18,
+      27,
+      35,
+      0.72
+    );
+
+  --mt-glass-strong:
+    rgba(
+      17,
+      25,
+      32,
+      0.82
+    );
+
+  --mt-glass-border:
+    rgba(
+      219,
+      230,
+      237,
+      0.17
+    );
 }
 
-html[data-theme="dark"] body {
-  background:
-    radial-gradient(circle at 88% 0%, rgba(94, 129, 172, 0.12), transparent 34rem),
-    radial-gradient(circle at 6% 46%, rgba(90, 103, 75, 0.11), transparent 38rem),
-    #12161A;
-}
+/* ============================================================
+   AUTHENTICATED APP BACKGROUND
+   ============================================================ */
 
 .mirrortrace-app-shell {
-  background: var(--mt-page);
-  color: var(--mt-text);
+  position: relative;
+
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      rgba(
+        7,
+        12,
+        17,
+        0.18
+      ),
+      rgba(
+        7,
+        12,
+        17,
+        0.25
+      )
+    ),
+    url("/hero/mirrortrace2.jpeg")
+    center center /
+    cover
+    fixed
+    no-repeat !important;
+
+  color:
+    var(--mt-frost);
 }
 
 .mirrortrace-app-main {
   width: 100%;
-}
 
-/* Photo treatment used only on large hero / overlay surfaces. */
-.mirrortrace-photo-panel {
-  isolation: isolate;
-  background-image:
-    linear-gradient(
-      105deg,
-      rgba(8, 12, 15, 0.95) 0%,
-      rgba(12, 18, 22, 0.88) 46%,
-      rgba(17, 26, 31, 0.72) 100%
-    ),
-    url("/ui/moody-nature.jpeg") !important;
-  background-size: cover !important;
-  background-position: center 43% !important;
-  background-repeat: no-repeat !important;
-}
+  max-width:
+    min(
+      96vw,
+      1680px
+    ) !important;
 
-.mirrortrace-user-hero {
-  min-height: 420px;
-  border: 1px solid rgba(94, 129, 172, 0.22);
-  box-shadow:
-    0 26px 70px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(236, 239, 244, 0.05);
-}
+  margin:
+    0 auto;
 
-.mirrortrace-admin-hero {
-  border: 1px solid rgba(94, 129, 172, 0.20);
-  box-shadow:
-    0 28px 76px rgba(0, 0, 0, 0.30),
-    inset 0 1px 0 rgba(236, 239, 244, 0.05);
-}
+  padding-left:
+    24px !important;
 
-.mirrortrace-memory-hero {
-  background-position: center 32% !important;
-}
+  padding-right:
+    24px !important;
 
-/* Admin full-screen overlay: faint nature texture + dark glass. */
-.mirrortrace-admin-overlay {
   background:
-    linear-gradient(
-      rgba(18, 22, 26, 0.93),
-      rgba(18, 22, 26, 0.96)
-    ),
-    url("/ui/moody-nature.jpeg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+    transparent !important;
 }
 
-.mirrortrace-admin-dashboard {
-  color: var(--mt-text);
-}
-
-/* In the control room, cards read like modular Figma dashboard panels. */
-html[data-theme="dark"] .mirrortrace-admin-dashboard .bg-white,
-html[data-theme="dark"] .mirrortrace-dashboard-overview .bg-white,
-html[data-theme="dark"] .mirrortrace-memory-governance .bg-white {
-  background-color: rgba(30, 37, 43, 0.94) !important;
-  border-color: rgba(136, 146, 176, 0.20) !important;
-  box-shadow:
-    0 16px 36px rgba(0, 0, 0, 0.18) !important;
-}
-
-html[data-theme="dark"] .mirrortrace-admin-dashboard .bg-stone-50,
-html[data-theme="dark"] .mirrortrace-dashboard-overview .bg-stone-50,
-html[data-theme="dark"] .mirrortrace-memory-governance .bg-stone-50 {
-  background-color: #252D34 !important;
-}
-
-html[data-theme="dark"] .mirrortrace-admin-dashboard .text-stone-900,
-html[data-theme="dark"] .mirrortrace-admin-dashboard .text-stone-950,
-html[data-theme="dark"] .mirrortrace-dashboard-overview .text-stone-900,
-html[data-theme="dark"] .mirrortrace-dashboard-overview .text-stone-950,
-html[data-theme="dark"] .mirrortrace-memory-governance .text-stone-900,
-html[data-theme="dark"] .mirrortrace-memory-governance .text-stone-950 {
-  color: #ECEFF4 !important;
-}
-
-html[data-theme="dark"] .mirrortrace-admin-dashboard .text-stone-500,
-html[data-theme="dark"] .mirrortrace-admin-dashboard .text-stone-600,
-html[data-theme="dark"] .mirrortrace-dashboard-overview .text-stone-500,
-html[data-theme="dark"] .mirrortrace-dashboard-overview .text-stone-600,
-html[data-theme="dark"] .mirrortrace-memory-governance .text-stone-500,
-html[data-theme="dark"] .mirrortrace-memory-governance .text-stone-600 {
-  color: #9EA8B5 !important;
-}
-
-/* Replace warm amber as the dominant interaction color.
-   Amber remains only as a small MirrorTrace brand accent. */
-html[data-theme="dark"] .text-amber-200,
-html[data-theme="dark"] .text-amber-300 {
-  color: #C58A45 !important;
-}
-
-html[data-theme="dark"] .text-amber-700,
-html[data-theme="dark"] .text-amber-800,
-html[data-theme="dark"] .text-amber-900,
-html[data-theme="dark"] .text-amber-950 {
-  color: #8FB1D8 !important;
-}
-
-html[data-theme="dark"] .bg-amber-50,
-html[data-theme="dark"] .bg-amber-100 {
-  background-color: rgba(94, 129, 172, 0.15) !important;
-}
-
-html[data-theme="dark"] .border-amber-200,
-html[data-theme="dark"] .border-amber-300 {
-  border-color: rgba(94, 129, 172, 0.38) !important;
-}
-
-/* Moody navbar */
-html[data-theme="dark"] .mirrortrace-navbar {
-  background: rgba(18, 22, 26, 0.90);
-  border-color: rgba(136, 146, 176, 0.18);
-  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.18);
-}
-
-html[data-theme="dark"] .mirrortrace-main-nav {
-  background: rgba(30, 37, 43, 0.76);
-  border-color: rgba(136, 146, 176, 0.18);
-}
-
-html[data-theme="dark"] .mirrortrace-nav-button-active {
-  background: #252D34;
-  border-color: rgba(94, 129, 172, 0.34);
-  box-shadow:
-    inset 0 1px 0 rgba(236, 239, 244, 0.04),
-    0 5px 16px rgba(0, 0, 0, 0.15);
-}
-
-html[data-theme="dark"] .mirrortrace-logo {
-  background:
-    linear-gradient(145deg, #5E81AC, #344E68);
-  border: 1px solid rgba(236, 239, 244, 0.10);
-  color: #ECEFF4;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
-}
-
-html[data-theme="dark"] .mirrortrace-uid-chip {
-  border-color: rgba(111, 175, 143, 0.30);
-  background: rgba(90, 103, 75, 0.22);
-  color: #A9D6BD;
-}
-
-/* Shared hover physics across user + admin cards. */
-.mirrortrace-dashboard-overview button,
-.mirrortrace-admin-dashboard button,
-.mirrortrace-memory-governance button {
-  transition:
-    transform 180ms ease,
-    background-color 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    color 180ms ease;
-}
-
-/* Launcher */
-.mirrortrace-admin-launcher {
-  box-shadow:
-    0 22px 56px rgba(0, 0, 0, 0.32),
-    inset 0 1px 0 rgba(236, 239, 244, 0.05);
-}
-
-/* Stronger focus states for the new dark theme. */
-:where(
-  button,
-  input,
-  textarea,
-  select
-):focus-visible {
-  outline: 2px solid var(--mt-accent);
-  outline-offset: 3px;
-}
-
-/* Keep mobile layout breathable. */
-@media (max-width: 720px) {
-  .mirrortrace-user-hero {
-    min-height: 0;
-  }
-
-  .mirrortrace-photo-panel {
-    background-position: 58% center !important;
-  }
-
-  .mirrortrace-admin-overlay {
-    background-attachment: scroll;
-  }
-}
-
-
-/* ===== MirrorTrace Cactus Glass v2 ===== */
-:root {
-  --cactus-1: #617057;
-  --cactus-2: #758467;
-  --mist-bg: #dfe5ee;
-  --glass-dark: rgba(18, 22, 26, 0.46);
-  --glass-mid: rgba(30, 37, 43, 0.54);
-  --glass-soft: rgba(255,255,255,0.58);
-}
-
-html, body, #root {
-  min-height: 100%;
-}
-
-body {
-  background:
-    radial-gradient(circle at 12% 20%, rgba(117,132,103,0.16), transparent 30rem),
-    radial-gradient(circle at 86% 10%, rgba(97,112,87,0.14), transparent 28rem),
-    #dfe5ee !important;
-}
-
-/* Expand main width */
-.mirrortrace-app-main {
-  max-width: min(96vw, 1680px) !important;
-  padding-left: 24px !important;
-  padding-right: 24px !important;
-}
-
-/* Overview / memory / admin should breathe edge-to-edge */
 .mirrortrace-dashboard-overview,
 .mirrortrace-memory-governance,
 .mirrortrace-admin-dashboard {
   width: 100%;
-}
 
-.mirrortrace-photo-panel {
-  position: relative;
-  overflow: hidden;
-  background-image:
-    linear-gradient(104deg, rgba(8,12,15,0.52) 0%, rgba(14,20,24,0.42) 45%, rgba(18,26,31,0.35) 100%),
-    url("/ui/moody-nature.jpeg") !important;
-  background-size: cover !important;
-  background-position: center center !important;
-  border: 1px solid rgba(255,255,255,0.28) !important;
-  box-shadow: 0 18px 45px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.22) !important;
-}
-
-.mirrortrace-photo-panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
   background:
-    linear-gradient(135deg, rgba(117,132,103,0.10), transparent 42%, rgba(94,129,172,0.10) 100%);
-  pointer-events: none;
+    transparent !important;
 }
-
-.mirrortrace-user-hero,
-.mirrortrace-memory-hero,
-.mirrortrace-admin-hero {
-  min-height: 455px;
-  border-radius: 36px !important;
-}
-
-.mirrortrace-hero-content {
-  padding-top: 0.5rem;
-  max-width: 760px !important;
-}
-
-.mirrortrace-float-text {
-  animation: mirrortraceFloatTitle 5.8s ease-in-out infinite;
-  will-change: transform;
-}
-
-.mirrortrace-float-cta {
-  animation: mirrortraceFloatButtons 5.8s ease-in-out infinite;
-  will-change: transform;
-}
-
-@keyframes mirrortraceFloatTitle {
-  0%,100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
-}
-
-@keyframes mirrortraceFloatButtons {
-  0%,100% { transform: translateY(0px); }
-  50% { transform: translateY(9px); }
-}
-
-/* Global glass cards */
-.bg-white,
-.bg-stone-50,
-.bg-stone-100 {
-  background-color: rgba(255,255,255,0.58) !important;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-}
-
-.rounded-2xl.border,
-.rounded-3xl.border,
-.rounded-xl.border,
-[class*="rounded-"][class*="border"] {
-  border-color: rgba(97,112,87,0.15) !important;
-  box-shadow: 0 10px 28px rgba(42,52,61,0.08);
-}
-
-/* Navbar */
-.mirrortrace-navbar {
-  background: rgba(255,255,255,0.60) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(97,112,87,0.14) !important;
-}
-
-.mirrortrace-main-nav {
-  background: rgba(255,255,255,0.44) !important;
-  border: 1px solid rgba(97,112,87,0.14) !important;
-}
-
-.mirrortrace-nav-button-active {
-  background: rgba(255,255,255,0.72) !important;
-  border: 1px solid rgba(97,112,87,0.24) !important;
-  box-shadow: 0 6px 18px rgba(42,52,61,0.08), inset 0 1px 0 rgba(255,255,255,0.5);
-}
-
-.mirrortrace-logo {
-  background: linear-gradient(145deg, #758467, #617057) !important;
-}
-
-.mirrortrace-uid-chip {
-  color: #617057 !important;
-  border-color: rgba(117,132,103,0.3) !important;
-  background: rgba(117,132,103,0.08) !important;
-}
-
-/* Text color cleanups */
-.text-stone-900, .text-stone-950 { color: #232b34 !important; }
-.text-stone-600, .text-stone-500 { color: #51606f !important; }
-
-/* Accent replacements */
-.text-amber-700, .text-amber-800, .text-amber-900, .text-amber-950 { color: #617057 !important; }
-.bg-amber-50, .bg-amber-100 { background-color: rgba(117,132,103,0.14) !important; }
-.border-amber-200, .border-amber-300 { border-color: rgba(117,132,103,0.32) !important; }
-
-.text-emerald-700, .text-emerald-800, .text-emerald-900 { color: #617057 !important; }
-.bg-emerald-50, .bg-emerald-100 { background-color: rgba(117,132,103,0.14) !important; }
-.border-emerald-200, .border-emerald-300 { border-color: rgba(117,132,103,0.30) !important; }
-
-.text-blue-700, .text-blue-800, .text-blue-900 { color: #5E81AC !important; }
-.bg-blue-50, .bg-blue-100 { background-color: rgba(94,129,172,0.12) !important; }
-.border-blue-200, .border-blue-300 { border-color: rgba(94,129,172,0.22) !important; }
-
-/* Buttons */
-button[class*="bg-stone-900"],
-button[class*="bg-stone-950"] {
-  background: linear-gradient(135deg, rgba(97,112,87,0.96), rgba(117,132,103,0.96)) !important;
-  color: #fff !important;
-  border: 1px solid rgba(255,255,255,0.18);
-}
-
-button[class*="bg-white"] {
-  background: rgba(255,255,255,0.72) !important;
-}
-
-/* Admin overlay */
-.mirrortrace-admin-overlay {
-  background:
-    linear-gradient(rgba(223,229,238,0.82), rgba(223,229,238,0.88)),
-    url("/ui/moody-nature.jpeg") center/cover fixed !important;
-}
-
-/* Make admin/dashboard heroes more like the reference outline */
-.mirrortrace-admin-hero,
-.mirrortrace-user-hero,
-.mirrortrace-memory-hero {
-  position: relative;
-}
-
-.mirrortrace-admin-hero .absolute,
-.mirrortrace-user-hero .absolute,
-.mirrortrace-memory-hero .absolute {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-/* Reduce cramped center panels */
-.max-w-7xl {
-  max-width: min(96vw, 1680px) !important;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .mirrortrace-user-hero,
-  .mirrortrace-memory-hero,
-  .mirrortrace-admin-hero {
-    min-height: 380px;
-  }
-  .mirrortrace-app-main,
-  .max-w-7xl {
-    max-width: 100vw !important;
-    padding-left: 14px !important;
-    padding-right: 14px !important;
-  }
-}
-
 
 /* ============================================================
-   MIRRORTRACE CLEAR GLASS v4
-   Sharper image visibility + brighter text + admin headline motion
+   CRITICAL FIX:
+   REMOVE THE OLD ACTUAL <img> ELEMENT
    ============================================================ */
 
-.mirrortrace-app-shell {
-  position: relative;
-  background:
-    linear-gradient(rgba(13, 18, 23, 0.20), rgba(13, 18, 23, 0.22)),
-    url("/ui/moody-nature.jpeg") center center / cover fixed no-repeat !important;
-  color: #eef3f7;
-}
+/*
+  Your React components still contain the old hero image element.
+  It was visually sitting above the new CSS image.
 
-.mirrortrace-app-main,
-.mirrortrace-memory-governance {
-  background: transparent !important;
-}
+  Hide it completely.
 
-/* Main hero / admin hero image blocks should stay clear, not over-blurred */
-.mirrortrace-photo-panel {
-  background-image:
-    linear-gradient(
-      102deg,
-      rgba(5, 10, 15, 0.30) 0%,
-      rgba(10, 18, 25, 0.22) 45%,
-      rgba(21, 29, 36, 0.18) 100%
-    ),
-    url("/ui/moody-nature.jpeg") !important;
-  background-size: cover !important;
-  background-position: center 44% !important;
-  border: 1px solid rgba(255,255,255,0.16) !important;
-  box-shadow:
-    0 22px 58px rgba(12,18,24,0.18),
-    inset 0 1px 0 rgba(255,255,255,0.14) !important;
-}
+  mirrortrace4.jpeg is now supplied ONLY by ::before below.
+*/
 
-/* Lower blur significantly so branches remain recognizable */
-.mirrortrace-app-shell .bg-white,
-.mirrortrace-app-shell .bg-stone-50,
-.mirrortrace-app-shell .bg-stone-100,
-.mirrortrace-app-shell [class*="bg-white"] {
-  background-color: rgba(22, 33, 44, 0.26) !important;
-  backdrop-filter: blur(3px) saturate(108%) !important;
-  -webkit-backdrop-filter: blur(3px) saturate(108%) !important;
-  border-color: rgba(194, 210, 226, 0.18) !important;
-  box-shadow:
-    0 10px 28px rgba(6, 10, 15, 0.12),
-    inset 0 1px 0 rgba(255,255,255,0.12) !important;
-}
+.mirrortrace-user-hero
+.mirrortrace-hero-sharp-photo,
+.mirrortrace-admin-hero
+.mirrortrace-hero-sharp-photo,
+.mirrortrace-hero-sharp-photo {
+  display:
+    none !important;
 
-.mirrortrace-dashboard-overview .rounded-3xl.border,
-.mirrortrace-dashboard-overview .rounded-2xl.border,
-.mirrortrace-dashboard-overview .rounded-xl.border,
-.mirrortrace-memory-governance .rounded-3xl.border,
-.mirrortrace-memory-governance .rounded-2xl.border,
-.mirrortrace-admin-dashboard .rounded-3xl.border,
-.mirrortrace-admin-dashboard .rounded-2xl.border {
-  background: rgba(20, 30, 40, 0.24) !important;
-  backdrop-filter: blur(3px) saturate(108%) !important;
-  -webkit-backdrop-filter: blur(3px) saturate(108%) !important;
-  border-color: rgba(223, 231, 239, 0.16) !important;
-  box-shadow: 0 12px 28px rgba(3, 7, 12, 0.12) !important;
-}
+  opacity:
+    0 !important;
 
-/* Brighter readable text across dark-glass cards */
-.mirrortrace-app-shell .text-stone-900,
-.mirrortrace-app-shell .text-stone-950,
-.mirrortrace-app-shell .text-stone-800,
-.mirrortrace-admin-dashboard h1,
-.mirrortrace-admin-dashboard h2,
-.mirrortrace-admin-dashboard h3 {
-  color: #f5f8fb !important;
-}
+  visibility:
+    hidden !important;
 
-.mirrortrace-app-shell .text-stone-600,
-.mirrortrace-app-shell .text-stone-500,
-.mirrortrace-app-shell .text-stone-400,
-.mirrortrace-admin-dashboard p,
-.mirrortrace-admin-dashboard span,
-.mirrortrace-memory-governance p {
-  color: #d7e1ea !important;
+  pointer-events:
+    none !important;
 }
-
-/* Cactus accents + stronger contrast */
-.mirrortrace-logo {
-  background: linear-gradient(145deg, #758467, #617057) !important;
-  color: #f4f7f1 !important;
-}
-.mirrortrace-uid-chip {
-  background: rgba(117, 132, 103, 0.18) !important;
-  border-color: rgba(117, 132, 103, 0.28) !important;
-  color: #d9e4d0 !important;
-}
-
-/* Transparent navbar but readable */
-.mirrortrace-navbar {
-  background: rgba(16, 24, 31, 0.46) !important;
-  backdrop-filter: blur(8px) saturate(115%) !important;
-  -webkit-backdrop-filter: blur(8px) saturate(115%) !important;
-  border-bottom: 1px solid rgba(214,225,234,0.10) !important;
-}
-.mirrortrace-main-nav {
-  background: rgba(18, 27, 35, 0.42) !important;
-  border: 1px solid rgba(217,227,236,0.12) !important;
-}
-.mirrortrace-nav-button-active {
-  background: rgba(255,255,255,0.08) !important;
-  border-color: rgba(255,255,255,0.14) !important;
-}
-
-/* Admin overlay should match the stronger, sharper style */
-.mirrortrace-admin-overlay {
-  background:
-    linear-gradient(rgba(7, 11, 16, 0.22), rgba(7, 11, 16, 0.25)),
-    url("/ui/moody-nature.jpeg") center / cover fixed no-repeat !important;
-}
-.mirrortrace-admin-dashboard .bg-white,
-.mirrortrace-admin-dashboard .bg-stone-50 {
-  background: rgba(16, 24, 33, 0.28) !important;
-  color: #eff5fa !important;
-  border-color: rgba(223,231,239,0.14) !important;
-  backdrop-filter: blur(3px) saturate(108%) !important;
-  -webkit-backdrop-filter: blur(3px) saturate(108%) !important;
-}
-
-/* Inputs remain slightly more solid for readability */
-.mirrortrace-app-shell input,
-.mirrortrace-app-shell textarea,
-.mirrortrace-app-shell select {
-  background: rgba(255,255,255,0.14) !important;
-  border-color: rgba(217,227,236,0.18) !important;
-  color: #f2f7fb !important;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
-/* Hero/title floating animations */
-.mirrortrace-float-title,
-.mirrortrace-admin-float-title {
-  animation: mirrortraceFloatUpDown 6.2s ease-in-out infinite;
-  will-change: transform;
-}
-.mirrortrace-float-actions,
-.mirrortrace-admin-float-subtitle {
-  animation: mirrortraceFloatUpDownSmall 6.2s ease-in-out infinite;
-  animation-delay: 0.35s;
-  will-change: transform;
-}
-@keyframes mirrortraceFloatUpDown {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-@keyframes mirrortraceFloatUpDownSmall {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(7px); }
-}
-
-/* Overview buttons should be readable */
-.mirrortrace-photo-panel button {
-  box-shadow: 0 10px 24px rgba(6,10,14,0.16);
-}
-
-/* Small-screen performance */
-@media (max-width: 760px) {
-  .mirrortrace-app-shell,
-  .mirrortrace-admin-overlay,
-  .mirrortrace-photo-panel {
-    background-attachment: scroll !important;
-  }
-}
-
-/* Reduced motion accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .mirrortrace-float-title,
-  .mirrortrace-float-actions,
-  .mirrortrace-admin-float-title,
-  .mirrortrace-admin-float-subtitle {
-    animation: none !important;
-  }
-}
-
 
 /* ============================================================
-   MIRRORTRACE HERO CLARITY + ADMIN MODERATION v5
-   Final override block.
+   USER + ADMIN HERO CONTAINERS
    ============================================================ */
 
-/* New uploaded image for the two hero blocks only. */
 .mirrortrace-user-hero,
 .mirrortrace-admin-hero {
+  position:
+    relative !important;
+
+  isolation:
+    isolate !important;
+
+  overflow:
+    hidden !important;
+
+  min-height:
+    440px;
+
+  border-radius:
+    34px !important;
+
+  /*
+    Absolutely no old background image can survive here.
+  */
+
+  background:
+    #111820 !important;
+
   background-image:
-    linear-gradient(
-      102deg,
-      rgba(5, 10, 16, 0.34) 0%,
-      rgba(10, 18, 26, 0.20) 45%,
-      rgba(19, 27, 34, 0.14) 100%
-    ),
-    url("/ui/mirrortrace3.jpeg") !important;
+    none !important;
 
-  background-size: cover !important;
-  background-position: center 48% !important;
-  background-repeat: no-repeat !important;
+  filter:
+    none !important;
 
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
 
   border:
     1px solid
-    rgba(236, 239, 244, 0.18) !important;
+    rgba(
+      238,
+      244,
+      248,
+      0.16
+    ) !important;
 
   box-shadow:
-    0 22px 56px
-    rgba(3, 8, 13, 0.20) !important;
+    0 24px 60px
+    rgba(
+      3,
+      8,
+      13,
+      0.26
+    ) !important;
 }
 
-/* Avoid foggy overlays inside the two hero blocks. */
+/* ============================================================
+   ACTUAL HERO PHOTO
+   mirrortrace4.jpeg
+   ============================================================ */
+
+.mirrortrace-user-hero::before,
+.mirrortrace-admin-hero::before {
+  content: "";
+
+  position:
+    absolute;
+
+  /*
+    Extended outside the box so blurred image
+    doesn't create faded edges.
+  */
+
+  inset:
+    -12px;
+
+  z-index:
+    -3;
+
+  background:
+    url("/hero/mirrortrace4.jpeg")
+    center 50% /
+    cover
+    no-repeat !important;
+
+  /*
+    "50% blurry" shouldn't literally mean 50px blur.
+
+    3.5px provides the visual softness you showed
+    while preserving lake / trees / clouds.
+  */
+
+  filter:
+    blur(3.5px)
+    saturate(1.07)
+    contrast(1.035)
+    brightness(0.88) !important;
+
+  transform:
+    scale(1.025);
+
+  opacity:
+    1 !important;
+
+  pointer-events:
+    none;
+}
+
+/* ============================================================
+   CINEMATIC SHADE
+   ============================================================ */
+
+.mirrortrace-user-hero::after,
+.mirrortrace-admin-hero::after {
+  content: "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  z-index:
+    -2;
+
+  /*
+    Keep the new lake image clearly visible.
+
+    Darker on the left because that's where
+    the typography lives.
+  */
+
+  background:
+    linear-gradient(
+      90deg,
+
+      rgba(
+        5,
+        10,
+        15,
+        0.57
+      )
+      0%,
+
+      rgba(
+        7,
+        13,
+        18,
+        0.40
+      )
+      33%,
+
+      rgba(
+        8,
+        14,
+        19,
+        0.20
+      )
+      62%,
+
+      rgba(
+        8,
+        13,
+        18,
+        0.12
+      )
+      100%
+    ) !important;
+
+  pointer-events:
+    none;
+}
+
+/* ============================================================
+   HERO FOREGROUND
+   ============================================================ */
+
+.mirrortrace-user-hero > *,
+.mirrortrace-admin-hero > * {
+  position:
+    relative;
+
+  z-index:
+    2;
+}
+
+.mirrortrace-user-hero
+.mirrortrace-hero-content,
+.mirrortrace-admin-hero
+.mirrortrace-admin-hero-content {
+  position:
+    relative !important;
+
+  z-index:
+    3 !important;
+}
+
+/* ============================================================
+   PREVENT OLD BLUR UTILITIES FROM FOGGING THE WHOLE HERO
+   ============================================================ */
+
 .mirrortrace-user-hero
 [class*="backdrop-blur"],
 .mirrortrace-admin-hero
 [class*="backdrop-blur"] {
   backdrop-filter:
-    blur(1.5px) !important;
+    none !important;
 
   -webkit-backdrop-filter:
-    blur(1.5px) !important;
+    none !important;
 }
 
-/* Bright, crisp Overview text. */
+/* Only intentionally named glass controls get blur below. */
+
+/* ============================================================
+   USER HERO TYPOGRAPHY
+   ============================================================ */
+
 .mirrortrace-user-hero h1 {
   color:
-    #F8FAFC !important;
+    #ffffff !important;
 
   text-shadow:
     0 3px 18px
-    rgba(0, 0, 0, 0.34);
+    rgba(
+      0,
+      0,
+      0,
+      0.55
+    ) !important;
 }
 
-.mirrortrace-user-hero h1 span {
+.mirrortrace-user-hero
+.mirrortrace-accent-text,
+.mirrortrace-user-hero
+h1 span {
   color:
-    #C98A43 !important;
-}
-
-.mirrortrace-overview-copy {
-  color:
-    #E2EAF0 !important;
+    var(--mt-orange) !important;
 
   text-shadow:
-    0 2px 12px
-    rgba(0, 0, 0, 0.28);
+    0 3px 16px
+    rgba(
+      0,
+      0,
+      0,
+      0.38
+    ) !important;
 }
 
-/* Crisp Overview CTAs. */
-.mirrortrace-user-hero button {
-  backdrop-filter:
-    blur(1.5px) !important;
-
-  -webkit-backdrop-filter:
-    blur(1.5px) !important;
-
-  box-shadow:
-    0 10px 24px
-    rgba(6, 10, 14, 0.16);
-}
-
-.mirrortrace-user-hero button:first-of-type {
-  background:
-    rgba(12, 19, 25, 0.84) !important;
-
+.mirrortrace-user-hero p,
+.mirrortrace-overview-copy {
   color:
-    #F8FAFC !important;
+    #eef3f6 !important;
 
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.15) !important;
+  text-shadow:
+    0 2px 10px
+    rgba(
+      0,
+      0,
+      0,
+      0.48
+    ) !important;
 }
 
-.mirrortrace-user-hero button:last-of-type {
-  background:
-    rgba(97, 112, 87, 0.50) !important;
+/* ============================================================
+   ADMIN HERO TYPOGRAPHY
+   ============================================================ */
 
-  color:
-    #F4F7F1 !important;
-
-  border:
-    1px solid
-    rgba(163, 181, 151, 0.30) !important;
-}
-
-/* Security & Operations readability. */
 .mirrortrace-admin-hero {
   color:
-    #F7FAFC !important;
+    #f7fafc !important;
 }
 
 .mirrortrace-admin-hero h1 {
   color:
-    #FFFFFF !important;
+    #ffffff !important;
 
   text-shadow:
-    0 3px 20px
-    rgba(0, 0, 0, 0.40);
-}
-
-.mirrortrace-admin-hero .text-amber-200 {
-  color:
-    #D8A25A !important;
+    0 3px 18px
+    rgba(
+      0,
+      0,
+      0,
+      0.56
+    ) !important;
 }
 
 .mirrortrace-admin-hero p {
   color:
-    #DDE6EE !important;
+    #edf3f6 !important;
+
+  text-shadow:
+    0 2px 10px
+    rgba(
+      0,
+      0,
+      0,
+      0.44
+    ) !important;
 }
 
-/* Privacy boundary still readable without hiding the trees. */
+.mirrortrace-admin-hero
+.text-amber-200,
+.mirrortrace-admin-hero
+.mirrortrace-accent-text {
+  color:
+    var(--mt-orange) !important;
+}
+
+/* ============================================================
+   HERO TOP PILL
+   ============================================================ */
+
+.mirrortrace-user-hero
+.mirrortrace-chip,
+.mirrortrace-admin-hero
+.mirrortrace-chip,
+.mirrortrace-admin-chip,
+.mirrortrace-trust-chip {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+
+  background:
+    rgba(
+      13,
+      21,
+      28,
+      0.64
+    ) !important;
+
+  color:
+    #f0f5f7 !important;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.17
+    ) !important;
+
+  backdrop-filter:
+    blur(5px)
+    saturate(112%) !important;
+
+  -webkit-backdrop-filter:
+    blur(5px)
+    saturate(112%) !important;
+
+  box-shadow:
+    0 8px 24px
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    ) !important;
+}
+
+/* ============================================================
+   USER HERO BUTTONS
+   ============================================================ */
+
+.mirrortrace-user-hero button,
+.mirrortrace-user-hero
+.mirrortrace-primary-btn,
+.mirrortrace-user-hero
+.mirrortrace-secondary-btn {
+  transition:
+    transform
+    180ms
+    ease,
+    background-color
+    180ms
+    ease,
+    border-color
+    180ms
+    ease,
+    box-shadow
+    180ms
+    ease !important;
+}
+
+.mirrortrace-user-hero
+.mirrortrace-primary-btn {
+  background:
+    rgba(
+      12,
+      21,
+      28,
+      0.88
+    ) !important;
+
+  color:
+    #ffffff !important;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.16
+    ) !important;
+
+  backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
+
+  -webkit-backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
+
+  box-shadow:
+    0 10px 28px
+    rgba(
+      0,
+      0,
+      0,
+      0.23
+    ) !important;
+}
+
+.mirrortrace-user-hero
+.mirrortrace-secondary-btn {
+  background:
+    rgba(
+      97,
+      112,
+      87,
+      0.68
+    ) !important;
+
+  color:
+    #ffffff !important;
+
+  border:
+    1px solid
+    rgba(
+      196,
+      213,
+      185,
+      0.28
+    ) !important;
+
+  backdrop-filter:
+    blur(5px)
+    saturate(112%) !important;
+
+  -webkit-backdrop-filter:
+    blur(5px)
+    saturate(112%) !important;
+
+  box-shadow:
+    0 10px 28px
+    rgba(
+      0,
+      0,
+      0,
+      0.22
+    ) !important;
+}
+
+.mirrortrace-user-hero
+.mirrortrace-primary-btn:hover,
+.mirrortrace-user-hero
+.mirrortrace-secondary-btn:hover {
+  transform:
+    translateY(-2px);
+}
+
+.mirrortrace-user-hero
+.mirrortrace-primary-btn:hover {
+  background:
+    rgba(
+      18,
+      30,
+      39,
+      0.97
+    ) !important;
+}
+
+.mirrortrace-user-hero
+.mirrortrace-secondary-btn:hover {
+  background:
+    rgba(
+      117,
+      132,
+      103,
+      0.88
+    ) !important;
+}
+
+/* ============================================================
+   ADMIN HERO BUTTONS
+   ============================================================ */
+
+.mirrortrace-admin-hero button {
+  backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
+
+  -webkit-backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
+}
+
+.mirrortrace-admin-hero
+.mirrortrace-primary-btn {
+  background:
+    rgba(
+      13,
+      22,
+      29,
+      0.90
+    ) !important;
+
+  color:
+    #ffffff !important;
+}
+
+.mirrortrace-admin-hero
+.mirrortrace-secondary-btn {
+  background:
+    rgba(
+      97,
+      112,
+      87,
+      0.70
+    ) !important;
+
+  color:
+    #ffffff !important;
+}
+
+/* ============================================================
+   ADMIN PRIVACY BOUNDARY
+   ============================================================ */
+
+.mirrortrace-admin-boundary,
 .mirrortrace-admin-hero
 .bg-emerald-300\/10 {
   background:
-    rgba(23, 55, 46, 0.34) !important;
+    rgba(
+      17,
+      28,
+      35,
+      0.58
+    ) !important;
+
+  border:
+    1px solid
+    rgba(
+      220,
+      232,
+      237,
+      0.18
+    ) !important;
+
+  border-radius:
+    24px !important;
+
+  backdrop-filter:
+    blur(6px)
+    saturate(112%) !important;
+
+  -webkit-backdrop-filter:
+    blur(6px)
+    saturate(112%) !important;
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(
+      255,
+      255,
+      255,
+      0.05
+    ),
+    0 14px 38px
+    rgba(
+      0,
+      0,
+      0,
+      0.19
+    ) !important;
+}
+
+.mirrortrace-admin-boundary h2,
+.mirrortrace-admin-boundary h3,
+.mirrortrace-admin-boundary strong {
+  color:
+    #c9efdc !important;
+}
+
+.mirrortrace-admin-boundary p {
+  color:
+    #e8f3ed !important;
+}
+
+/* ============================================================
+   HERO DECORATIVE ORB
+   ============================================================ */
+
+.mirrortrace-user-hero
+> .absolute.rounded-full,
+.mirrortrace-hero-orb {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.035
+    ) !important;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.24
+    ) !important;
+
+  backdrop-filter:
+    blur(5px) !important;
+
+  -webkit-backdrop-filter:
+    blur(5px) !important;
+
+  box-shadow:
+    inset
+    0
+    0
+    30px
+    rgba(
+      255,
+      255,
+      255,
+      0.025
+    ) !important;
+}
+
+/* ============================================================
+   OVERVIEW DASHBOARD GLASS CARDS
+   ============================================================ */
+
+.mirrortrace-dashboard-overview
+.mirrortrace-stat-card,
+.mirrortrace-dashboard-overview
+.mirrortrace-action-card,
+.mirrortrace-dashboard-overview
+.mirrortrace-diff-feature {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        17,
+        27,
+        35,
+        0.79
+      ),
+      rgba(
+        30,
+        40,
+        47,
+        0.70
+      )
+    ) !important;
+
+  color:
+    #f4f7f9 !important;
+
+  border:
+    1px solid
+    var(
+      --mt-glass-border
+    ) !important;
+
+  backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
+
+  -webkit-backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(
+      255,
+      255,
+      255,
+      0.05
+    ),
+    0 16px 36px
+    rgba(
+      2,
+      7,
+      11,
+      0.20
+    ) !important;
+}
+
+.mirrortrace-dashboard-overview
+.mirrortrace-stat-card:hover,
+.mirrortrace-dashboard-overview
+.mirrortrace-action-card:hover {
+  transform:
+    translateY(-4px);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        25,
+        37,
+        45,
+        0.88
+      ),
+      rgba(
+        45,
+        56,
+        59,
+        0.78
+      )
+    ) !important;
 
   border-color:
-    rgba(125, 207, 169, 0.24) !important;
-
-  backdrop-filter:
-    blur(1.5px) !important;
-
-  -webkit-backdrop-filter:
-    blur(1.5px) !important;
+    rgba(
+      117,
+      132,
+      103,
+      0.56
+    ) !important;
 }
 
-/* Slow up/down motion on Security & Operations. */
-.mirrortrace-admin-title-float {
-  animation:
-    mirrortraceAdminTitleFloat
-    6.8s
-    ease-in-out
-    infinite;
-
-  will-change:
-    transform;
-}
-
-.mirrortrace-admin-subtitle-float {
-  animation:
-    mirrortraceAdminSubtitleFloat
-    6.8s
-    ease-in-out
-    infinite;
-
-  animation-delay:
-    0.35s;
-
-  will-change:
-    transform;
-}
-
-@keyframes mirrortraceAdminTitleFloat {
-  0%,
-  100% {
-    transform:
-      translate3d(
-        0,
-        0,
-        0
-      );
-  }
-
-  50% {
-    transform:
-      translate3d(
-        0,
-        -10px,
-        0
-      );
-  }
-}
-
-@keyframes mirrortraceAdminSubtitleFloat {
-  0%,
-  100% {
-    transform:
-      translate3d(
-        0,
-        0,
-        0
-      );
-  }
-
-  50% {
-    transform:
-      translate3d(
-        0,
-        7px,
-        0
-      );
-  }
-}
-
-/* Keep existing Overview floating motion. */
-.mirrortrace-float-title {
-  animation:
-    mirrortraceOverviewTitleFloat
-    6.4s
-    ease-in-out
-    infinite;
-}
-
-.mirrortrace-float-actions {
-  animation:
-    mirrortraceOverviewActionsFloat
-    6.4s
-    ease-in-out
-    infinite;
-
-  animation-delay:
-    0.30s;
-}
-
-@keyframes mirrortraceOverviewTitleFloat {
-  0%,
-  100% {
-    transform:
-      translate3d(
-        0,
-        0,
-        0
-      );
-  }
-
-  50% {
-    transform:
-      translate3d(
-        0,
-        -10px,
-        0
-      );
-  }
-}
-
-@keyframes mirrortraceOverviewActionsFloat {
-  0%,
-  100% {
-    transform:
-      translate3d(
-        0,
-        0,
-        0
-      );
-  }
-
-  50% {
-    transform:
-      translate3d(
-        0,
-        7px,
-        0
-      );
-  }
-}
-
-/* Lower blur on dashboard/admin cards so branches remain recognizable. */
 .mirrortrace-dashboard-overview
-.rounded-3xl.border,
-.mirrortrace-dashboard-overview
-.rounded-2xl.border,
-.mirrortrace-admin-dashboard
-.rounded-3xl.border,
-.mirrortrace-admin-dashboard
-.rounded-2xl.border {
-  backdrop-filter:
-    blur(2px)
-    saturate(108%) !important;
-
-  -webkit-backdrop-filter:
-    blur(2px)
-    saturate(108%) !important;
-}
-
-/* Accessibility. */
-@media (
-  prefers-reduced-motion:
-    reduce
+:where(
+  h1,
+  h2,
+  h3,
+  strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800
 ) {
-  .mirrortrace-admin-title-float,
-  .mirrortrace-admin-subtitle-float,
-  .mirrortrace-float-title,
-  .mirrortrace-float-actions {
-    animation:
-      none !important;
-  }
+  color:
+    #f5f8fa !important;
+}
+
+.mirrortrace-dashboard-overview
+:where(
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+) {
+  color:
+    #b6c1ca !important;
 }
 
 /* ============================================================
-   MIRRORTRACE HERO CLARITY v6
-   Purpose:
-   - keep mirrortrace3.jpeg clearly visible in Overview + Admin hero
-   - remove inherited 20px/XL backdrop blur from hero descendants
-   - keep existing layout, colors, motion and component structure
-   - do NOT globally change the rest of the UI
+   ADMIN OVERLAY
    ============================================================ */
 
-.mirrortrace-user-hero,
-.mirrortrace-admin-hero {
-  background-image:
+.mirrortrace-admin-overlay {
+  background:
     linear-gradient(
-      102deg,
-      rgba(5, 10, 16, 0.20) 0%,
-      rgba(10, 18, 26, 0.11) 46%,
-      rgba(19, 27, 34, 0.07) 100%
+      rgba(
+        7,
+        12,
+        17,
+        0.17
+      ),
+      rgba(
+        7,
+        12,
+        17,
+        0.24
+      )
     ),
-    url("/ui/mirrortrace3.jpeg") !important;
-
-  background-size: cover !important;
-  background-repeat: no-repeat !important;
-  background-position: center 46% !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-
-  border: 1px solid rgba(236, 239, 244, 0.19) !important;
-
-  box-shadow:
-    0 22px 54px rgba(3, 8, 13, 0.17),
-    inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
-}
-
-/*
- * Earlier rules intentionally blurred every absolute child in these heroes.
- * This final override removes that fog so the tree branches remain sharp.
- */
-.mirrortrace-user-hero .absolute,
-.mirrortrace-admin-hero .absolute,
-.mirrortrace-user-hero [class*="backdrop-blur"],
-.mirrortrace-admin-hero [class*="backdrop-blur"] {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* Keep the decorative orb subtle without blurring the photo behind it. */
-.mirrortrace-user-hero > .absolute.rounded-full {
-  background: rgba(117, 132, 103, 0.10) !important;
-  border-color: rgba(226, 234, 239, 0.16) !important;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
-}
-
-/* Overview: bright, crisp typography over the sharper photo. */
-.mirrortrace-user-hero .mirrortrace-hero-content {
-  position: relative;
-  z-index: 2;
-}
-
-.mirrortrace-user-hero h1 {
-  color: #F8FAFC !important;
-  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.40);
-}
-
-.mirrortrace-user-hero h1 span {
-  color: #D39445 !important;
-}
-
-.mirrortrace-user-hero .mirrortrace-overview-copy {
-  color: #E8EEF3 !important;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.34);
-}
-
-/* CTA glass is translucent, but no backdrop blur. */
-.mirrortrace-user-hero button {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-.mirrortrace-user-hero button:first-of-type {
-  background: rgba(12, 19, 25, 0.78) !important;
-  color: #F8FAFC !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-}
-
-.mirrortrace-user-hero button:last-of-type {
-  background: rgba(97, 112, 87, 0.44) !important;
-  color: #F7FAF5 !important;
-  border: 1px solid rgba(174, 192, 163, 0.28) !important;
-}
-
-/* Admin hero: same clear-photo treatment and stronger readable text. */
-.mirrortrace-admin-hero .mirrortrace-admin-hero-content {
-  position: relative;
-  z-index: 2;
-}
-
-.mirrortrace-admin-hero h1 {
-  color: #FFFFFF !important;
-  text-shadow: 0 3px 20px rgba(0, 0, 0, 0.42);
-}
-
-.mirrortrace-admin-hero p {
-  color: #E3EBF1 !important;
-  text-shadow: 0 2px 11px rgba(0, 0, 0, 0.28);
-}
-
-.mirrortrace-admin-hero .text-amber-200 {
-  color: #D39445 !important;
-}
-
-/* Privacy Boundary: translucent without smearing the photo. */
-.mirrortrace-admin-hero .bg-emerald-300\/10 {
-  background: rgba(26, 60, 50, 0.30) !important;
-  border-color: rgba(140, 211, 177, 0.26) !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-.mirrortrace-admin-hero .bg-emerald-300\/10 .text-emerald-100,
-.mirrortrace-admin-hero .bg-emerald-300\/10 p {
-  color: #DDF7EA !important;
-}
-
-/* Preserve the slow floating text motion, but keep it subtle. */
-.mirrortrace-float-title {
-  animation: mirrortraceOverviewTitleFloatV6 7.2s ease-in-out infinite !important;
-}
-
-.mirrortrace-float-actions {
-  animation: mirrortraceOverviewActionsFloatV6 7.2s ease-in-out infinite !important;
-  animation-delay: 0.35s !important;
-}
-
-.mirrortrace-admin-title-float {
-  animation: mirrortraceAdminTitleFloatV6 7.4s ease-in-out infinite !important;
-}
-
-.mirrortrace-admin-subtitle-float {
-  animation: mirrortraceAdminSubtitleFloatV6 7.4s ease-in-out infinite !important;
-  animation-delay: 0.4s !important;
-}
-
-@keyframes mirrortraceOverviewTitleFloatV6 {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -8px, 0); }
-}
-
-@keyframes mirrortraceOverviewActionsFloatV6 {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, 5px, 0); }
-}
-
-@keyframes mirrortraceAdminTitleFloatV6 {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -8px, 0); }
-}
-
-@keyframes mirrortraceAdminSubtitleFloatV6 {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, 5px, 0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mirrortrace-float-title,
-  .mirrortrace-float-actions,
-  .mirrortrace-admin-title-float,
-  .mirrortrace-admin-subtitle-float {
-    animation: none !important;
-  }
+    url("/hero/mirrortrace2.jpeg")
+    center center /
+    cover
+    fixed
+    no-repeat !important;
 }
 
 /* ============================================================
-   MIRRORTRACE SHARP HERO — FINAL SOURCE OF TRUTH
-   Uses the SAME sharp poster image as the landing page.
-   The photo itself has ZERO blur and ZERO opacity reduction.
-   Only a very light transparent shade sits above it for text.
+   ADMIN DASHBOARD CARDS
    ============================================================ */
 
-.mirrortrace-user-hero,
-.mirrortrace-admin-hero {
-  position: relative !important;
-  isolation: isolate !important;
+.mirrortrace-admin-dashboard {
+  --admin-chart-snapshots:
+    #d39445;
 
-  background: #0b1116 !important;
-  background-image: none !important;
+  --admin-chart-diffs:
+    #7297c1;
 
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  --admin-chart-watches:
+    #758467;
 
-  filter: none !important;
+  --admin-chart-push:
+    #9ca9b3;
 
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color:
+    #f0f5f7 !important;
+}
+
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-surface,
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-metric {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        17,
+        27,
+        35,
+        0.81
+      ),
+      rgba(
+        29,
+        40,
+        47,
+        0.73
+      )
+    ) !important;
+
+  border:
+    1px solid
+    rgba(
+      211,
+      223,
+      230,
+      0.18
+    ) !important;
+
+  backdrop-filter:
+    blur(6px)
+    saturate(112%) !important;
+
+  -webkit-backdrop-filter:
+    blur(6px)
+    saturate(112%) !important;
 
   box-shadow:
-    0 20px 50px rgba(3, 8, 13, 0.18) !important;
+    inset 0 1px 0
+    rgba(
+      255,
+      255,
+      255,
+      0.05
+    ),
+    0 18px 42px
+    rgba(
+      2,
+      7,
+      11,
+      0.21
+    ) !important;
 }
 
-/* The actual photo. No blur, no filter, no opacity. */
-.mirrortrace-hero-sharp-photo {
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 0 !important;
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-metric:hover {
+  transform:
+    translateY(-4px)
+    scale(1.006);
 
-  display: block !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        27,
+        40,
+        47,
+        0.90
+      ),
+      rgba(
+        49,
+        61,
+        61,
+        0.81
+      )
+    ) !important;
 
-  width: 100% !important;
-  height: 100% !important;
-
-  object-fit: cover !important;
-  object-position: center 42% !important;
-
-  opacity: 1 !important;
-
-  filter: none !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-
-  transform: none !important;
-
-  pointer-events: none !important;
+  border-color:
+    rgba(
+      117,
+      132,
+      103,
+      0.60
+    ) !important;
 }
 
-/*
-  Extremely light readability layer.
-  This is intentionally much more transparent than every previous patch.
-*/
-.mirrortrace-hero-minimal-shade {
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 1 !important;
+.mirrortrace-admin-dashboard
+:where(
+  h1,
+  h2,
+  h3,
+  strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800
+) {
+  color:
+    #f4f7f9 !important;
+}
 
-  pointer-events: none !important;
+.mirrortrace-admin-dashboard
+:where(
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+) {
+  color:
+    #acb8c2 !important;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+
+.mirrortrace-navbar {
+  background:
+    rgba(
+      16,
+      24,
+      31,
+      0.72
+    ) !important;
+
+  border-bottom:
+    1px solid
+    rgba(
+      216,
+      227,
+      234,
+      0.13
+    ) !important;
+
+  backdrop-filter:
+    blur(9px)
+    saturate(112%) !important;
+
+  -webkit-backdrop-filter:
+    blur(9px)
+    saturate(112%) !important;
+
+  box-shadow:
+    0 10px 30px
+    rgba(
+      0,
+      0,
+      0,
+      0.14
+    );
+}
+
+.mirrortrace-main-nav {
+  background:
+    rgba(
+      17,
+      26,
+      34,
+      0.57
+    ) !important;
+
+  border:
+    1px solid
+    rgba(
+      220,
+      230,
+      237,
+      0.14
+    ) !important;
+}
+
+.mirrortrace-nav-button-active {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    ) !important;
+
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.16
+    ) !important;
+}
+
+.mirrortrace-logo {
+  background:
+    linear-gradient(
+      145deg,
+      #758467,
+      #617057
+    ) !important;
+
+  color:
+    #ffffff !important;
+}
+
+/* ============================================================
+   LANDING — FEATURES
+   ============================================================ */
+
+.mirrortrace-feature-section {
+  position:
+    relative !important;
+
+  isolation:
+    isolate !important;
+
+  background:
+    linear-gradient(
+      rgba(
+        7,
+        12,
+        17,
+        0.69
+      ),
+      rgba(
+        9,
+        15,
+        20,
+        0.76
+      )
+    ),
+    url("/hero/mirrortrace-poster.jpeg")
+    center 45% /
+    cover
+    no-repeat !important;
+
+  color:
+    #f4f7f9 !important;
+}
+
+.mirrortrace-feature-section
+.mirrortrace-scroll-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        17,
+        27,
+        35,
+        0.84
+      ),
+      rgba(
+        30,
+        40,
+        47,
+        0.75
+      )
+    ) !important;
+
+  color:
+    #f4f7f9 !important;
+
+  border-color:
+    rgba(
+      214,
+      225,
+      232,
+      0.18
+    ) !important;
+
+  backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
+
+  -webkit-backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
+}
+
+.mirrortrace-feature-section
+.mirrortrace-scroll-card p {
+  color:
+    #bdc8d0 !important;
+}
+
+/* ============================================================
+   LANDING — SECURITY
+   ============================================================ */
+
+#security {
+  position:
+    relative !important;
+
+  isolation:
+    isolate !important;
+
+  overflow:
+    hidden !important;
 
   background:
     linear-gradient(
       90deg,
-      rgba(5, 9, 13, 0.20) 0%,
-      rgba(5, 9, 13, 0.10) 42%,
-      rgba(5, 9, 13, 0.04) 72%,
-      rgba(5, 9, 13, 0.08) 100%
+
+      rgba(
+        5,
+        10,
+        14,
+        0.82
+      ),
+
+      rgba(
+        8,
+        14,
+        19,
+        0.69
+      )
+    ),
+    url("/hero/mirrortrace3.jpeg")
+    center 42% /
+    cover
+    no-repeat !important;
+
+  color:
+    #f7fafb !important;
+}
+
+#security article,
+#security
+.mirrortrace-security-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        16,
+        24,
+        31,
+        0.81
+      ),
+      rgba(
+        29,
+        39,
+        45,
+        0.70
+      )
     ) !important;
 
-  opacity: 1 !important;
-
-  filter: none !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* Absolutely forbid legacy glass blur inside only these two hero blocks. */
-.mirrortrace-user-hero *,
-.mirrortrace-admin-hero * {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* Content always sits above the real image and the light shade. */
-.mirrortrace-user-hero .mirrortrace-hero-content,
-.mirrortrace-admin-hero .mirrortrace-admin-hero-content {
-  position: relative !important;
-  z-index: 3 !important;
-}
-
-/* Decorative orb: transparent shape only — no blur. */
-.mirrortrace-user-hero > .absolute.rounded-full {
-  z-index: 2 !important;
-
-  background: rgba(117, 132, 103, 0.06) !important;
-
   border-color:
-    rgba(255, 255, 255, 0.18) !important;
+    rgba(
+      216,
+      226,
+      233,
+      0.16
+    ) !important;
 
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
+
+  -webkit-backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
 }
 
-/* Crisp typography. */
-.mirrortrace-user-hero h1,
-.mirrortrace-admin-hero h1 {
-  color: #FFFFFF !important;
+/* ============================================================
+   LANDING — REVIEWS
+   ============================================================ */
 
-  text-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.52) !important;
-}
+#reviews {
+  position:
+    relative !important;
 
-.mirrortrace-user-hero h1 span,
-.mirrortrace-admin-hero .text-amber-200 {
-  color: #D39445 !important;
-}
+  isolation:
+    isolate !important;
 
-.mirrortrace-user-hero p,
-.mirrortrace-admin-hero p {
-  color: #EEF3F7 !important;
+  overflow:
+    hidden !important;
 
-  text-shadow:
-    0 1px 6px rgba(0, 0, 0, 0.50) !important;
-}
-
-/* Overview buttons remain legible but show the photo around them. */
-.mirrortrace-user-hero button:first-of-type {
   background:
-    rgba(9, 15, 20, 0.76) !important;
+    linear-gradient(
+      rgba(
+        7,
+        12,
+        17,
+        0.64
+      ),
+      rgba(
+        9,
+        15,
+        20,
+        0.76
+      )
+    ),
+    url("/hero/mirrortrace2.jpeg")
+    center 48% /
+    cover
+    no-repeat !important;
 
   color:
-    #FFFFFF !important;
+    #f5f8f9 !important;
+}
+
+#reviews
+.mirrortrace-review-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        17,
+        26,
+        33,
+        0.83
+      ),
+      rgba(
+        30,
+        40,
+        46,
+        0.73
+      )
+    ) !important;
+
+  color:
+    #f5f8f9 !important;
 
   border:
-    1px solid rgba(255, 255, 255, 0.16) !important;
+    1px solid
+    rgba(
+      215,
+      226,
+      233,
+      0.18
+    ) !important;
+
+  backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
+
+  -webkit-backdrop-filter:
+    blur(5px)
+    saturate(110%) !important;
 }
 
-.mirrortrace-user-hero button:last-of-type {
-  background:
-    rgba(97, 112, 87, 0.34) !important;
+/* ============================================================
+   FLOATING MOTION
+   ============================================================ */
 
-  color:
-    #FFFFFF !important;
-
-  border:
-    1px solid rgba(181, 198, 170, 0.30) !important;
-}
-
-/* Admin header buttons. */
-.mirrortrace-admin-hero button {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* Privacy Boundary: transparent enough to still see the branches. */
-.mirrortrace-admin-hero .bg-emerald-300\/10 {
-  background:
-    rgba(16, 44, 37, 0.28) !important;
-
-  border-color:
-    rgba(125, 207, 169, 0.28) !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-.mirrortrace-admin-hero .bg-emerald-300\/10 .text-emerald-100,
-.mirrortrace-admin-hero .bg-emerald-300\/10 p {
-  color:
-    #E1F8EC !important;
-}
-
-/* Keep the existing motion smooth and subtle. */
-.mirrortrace-float-title {
+.mirrortrace-float-title,
+.mirrortrace-admin-title-float {
   animation:
-    mirrortrace-sharp-title-float
-    7.2s
+    mirrortraceFinalFloatUp
+    7.4s
     ease-in-out
     infinite !important;
 }
 
-.mirrortrace-float-actions {
+.mirrortrace-float-actions,
+.mirrortrace-admin-subtitle-float {
   animation:
-    mirrortrace-sharp-actions-float
-    7.2s
+    mirrortraceFinalFloatDown
+    7.4s
     ease-in-out
     infinite !important;
 
@@ -2829,108 +2972,105 @@ button[class*="bg-white"] {
     0.35s !important;
 }
 
-.mirrortrace-admin-title-float {
-  animation:
-    mirrortrace-sharp-admin-title-float
-    7.4s
-    ease-in-out
-    infinite !important;
-}
-
-.mirrortrace-admin-subtitle-float {
-  animation:
-    mirrortrace-sharp-admin-subtitle-float
-    7.4s
-    ease-in-out
-    infinite !important;
-
-  animation-delay:
-    0.4s !important;
-}
-
-@keyframes mirrortrace-sharp-title-float {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
+@keyframes mirrortraceFinalFloatUp {
+  0%,
+  100% {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
   }
 
   50% {
-    transform: translate3d(0, -7px, 0);
+    transform:
+      translate3d(
+        0,
+        -6px,
+        0
+      );
   }
 }
 
-@keyframes mirrortrace-sharp-actions-float {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
+@keyframes mirrortraceFinalFloatDown {
+  0%,
+  100% {
+    transform:
+      translate3d(
+        0,
+        0,
+        0
+      );
   }
 
   50% {
-    transform: translate3d(0, 4px, 0);
-  }
-}
-
-@keyframes mirrortrace-sharp-admin-title-float {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(0, -7px, 0);
-  }
-}
-
-@keyframes mirrortrace-sharp-admin-subtitle-float {
-  0%, 100% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(0, 4px, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mirrortrace-float-title,
-  .mirrortrace-float-actions,
-  .mirrortrace-admin-title-float,
-  .mirrortrace-admin-subtitle-float {
-    animation: none !important;
+    transform:
+      translate3d(
+        0,
+        4px,
+        0
+      );
   }
 }
 
 /* ============================================================
-   MIRRORTRACE VERIFIED SHARP PHOTO FIX
-   IMPORTANT: verified asset is /hero/mirrortrace-poster.jpeg
-   (.jpeg, NOT .jpg).
+   RESPONSIVE
    ============================================================ */
 
-.mirrortrace-user-hero,
-.mirrortrace-admin-hero {
-  background-image: none !important;
-  filter: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+@media (
+  max-width:
+    900px
+) {
+  .mirrortrace-app-main {
+    max-width:
+      100vw !important;
+
+    padding-left:
+      14px !important;
+
+    padding-right:
+      14px !important;
+  }
+
+  .mirrortrace-user-hero,
+  .mirrortrace-admin-hero {
+    min-height:
+      380px;
+  }
+
+  .mirrortrace-user-hero::before,
+  .mirrortrace-admin-hero::before {
+    background-position:
+      center center !important;
+
+    filter:
+      blur(3px)
+      saturate(1.05)
+      contrast(1.02)
+      brightness(0.87) !important;
+  }
+
+  .mirrortrace-app-shell,
+  .mirrortrace-admin-overlay {
+    background-attachment:
+      scroll !important;
+  }
 }
 
-.mirrortrace-hero-sharp-photo {
-  opacity: 1 !important;
-  filter: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  object-fit: cover !important;
-  object-position: center center !important;
-  transform: none !important;
-}
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
 
-.mirrortrace-hero-minimal-shade {
-  background: linear-gradient(
-    90deg,
-    rgba(5, 9, 13, 0.18) 0%,
-    rgba(5, 9, 13, 0.08) 42%,
-    rgba(5, 9, 13, 0.02) 70%,
-    rgba(5, 9, 13, 0.05) 100%
-  ) !important;
-  filter: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  .mirrortrace-float-title,
+  .mirrortrace-float-actions,
+  .mirrortrace-admin-title-float,
+  .mirrortrace-admin-subtitle-float {
+    animation:
+      none !important;
+  }
 }
-

@@ -33,6 +33,8 @@ import {
   useTransform,
 } from 'motion/react';
 
+import ScrollArcCard from './ScrollArcCard.tsx';
+
 import {
   signInWithGoogle,
 } from '../lib/firebase.ts';
@@ -69,7 +71,7 @@ const HERO_VIDEO =
   '/hero/mirrortrace-hero.mp4';
 
 const HERO_POSTER =
-  '/hero/mirrortrace-poster.jpg';
+  '/hero/mirrortrace-poster.jpeg';
 
 const TOP_ROW: FeatureCard[] = [
   {
@@ -243,8 +245,12 @@ function getAccentClasses(
 
 function FeatureCardView({
   card,
+  index,
+  direction,
 }: {
   card: FeatureCard;
+  index: number;
+  direction: 'left' | 'right';
 }) {
   const Icon =
     card.icon;
@@ -255,7 +261,11 @@ function FeatureCardView({
     );
 
   return (
-    <article className="mirrortrace-scroll-card">
+    <ScrollArcCard
+      className="mirrortrace-scroll-card"
+      direction={direction}
+      index={index}
+    >
       <div className="flex items-start justify-between gap-5">
         <div
           className={`grid h-11 w-11 shrink-0 place-items-center rounded-2xl ${classes.icon}`}
@@ -282,7 +292,7 @@ function FeatureCardView({
         MirrorTrace
         <ArrowRight className="h-3 w-3" />
       </div>
-    </article>
+    </ScrollArcCard>
   );
 }
 
@@ -402,23 +412,23 @@ export const AuthView:
         featureProgress,
         {
           stiffness:
-            46,
+            30,
           damping:
-            24,
+            22,
           mass:
-            0.95,
+            1.15,
           restDelta:
-            0.0005,
+            0.0002,
         }
       );
 
     const nudgeDistance =
       Math.max(
-        120,
+        44,
         Math.min(
           viewportWidth *
-            0.14,
-          230
+            0.05,
+          90
         )
       );
 
@@ -582,7 +592,7 @@ export const AuthView:
           <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
 
             <div className="sticky top-0 z-30 pt-4 sm:pt-6">
-              <div className="mirrortrace-liquid-nav mx-auto flex max-w-6xl items-center justify-between rounded-full px-4 py-3 sm:px-6">
+              <div className="mirrortrace-liquid-nav mirrortrace-landing-nav mx-auto flex max-w-6xl items-center justify-between rounded-full px-4 py-3 sm:px-6">
 
                 <button
                   type="button"
@@ -591,7 +601,7 @@ export const AuthView:
                       'hero'
                     )
                   }
-                  className="flex items-center gap-3"
+                  className="mirrortrace-nav-brand flex items-center gap-3"
                 >
                   <div className="grid h-9 w-9 place-items-center rounded-xl bg-white text-stone-950">
                     <span className="font-serif text-lg font-bold">
@@ -610,7 +620,7 @@ export const AuthView:
                   </div>
                 </button>
 
-                <nav className="hidden items-center gap-8 md:flex">
+                <nav className="mirrortrace-nav-links hidden items-center gap-8 md:flex">
                   <button
                     type="button"
                     onClick={() =>
@@ -656,7 +666,7 @@ export const AuthView:
                   disabled={
                     loading
                   }
-                  className="hidden rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-xs font-semibold text-white backdrop-blur-xl transition-all hover:bg-white/20 disabled:opacity-60 md:block"
+                  className="mirrortrace-nav-cta hidden rounded-full px-5 py-2.5 text-xs font-semibold md:block"
                 >
                   Continue with Google
                 </button>
@@ -672,7 +682,7 @@ export const AuthView:
                         !current
                     )
                   }
-                  className="grid h-9 w-9 place-items-center rounded-full border border-white/15 bg-white/10 md:hidden"
+                  className="mirrortrace-nav-menu grid h-9 w-9 place-items-center rounded-full md:hidden"
                 >
                   {mobileOpen ? (
                     <X className="h-4 w-4" />
@@ -683,7 +693,7 @@ export const AuthView:
               </div>
 
               {mobileOpen && (
-                <div className="mirrortrace-liquid-panel mx-auto mt-3 max-w-6xl rounded-3xl p-4 md:hidden">
+                <div className="mirrortrace-liquid-panel mirrortrace-mobile-nav mx-auto mt-3 max-w-6xl rounded-3xl p-4 md:hidden">
                   <div className="grid gap-2">
                     <button
                       type="button"
@@ -863,7 +873,7 @@ export const AuthView:
           ref={
             featureSectionRef
           }
-          className="mirrortrace-feature-section"
+          className="mirrortrace-feature-section mirrortrace-unified-section"
         >
           <motion.div
             style={{
@@ -973,6 +983,14 @@ export const AuthView:
                         card={
                           card
                         }
+                        index={
+                          TOP_ROW.findIndex(
+                            (item) =>
+                              item.id ===
+                              card.id
+                          )
+                        }
+                        direction="left"
                       />
                     )
                   )}
@@ -1064,6 +1082,14 @@ export const AuthView:
                         card={
                           card
                         }
+                        index={
+                          BOTTOM_ROW.findIndex(
+                            (item) =>
+                              item.id ===
+                              card.id
+                          )
+                        }
+                        direction="right"
                       />
                     )
                   )}
@@ -1127,7 +1153,7 @@ export const AuthView:
 
         <section
           id="security"
-          className="bg-stone-950 px-4 py-20 text-white sm:px-6 sm:py-24 lg:px-8"
+          className="mirrortrace-unified-section px-4 py-20 text-white sm:px-6 sm:py-24 lg:px-8"
         >
           <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
 
@@ -1273,7 +1299,7 @@ export const AuthView:
 
         <section
           id="reviews"
-          className="overflow-hidden bg-[#f5f4fb] py-20 text-stone-950 sm:py-24"
+          className="mirrortrace-unified-section overflow-hidden py-20 text-white sm:py-24"
         >
           <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
             <div className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-500">

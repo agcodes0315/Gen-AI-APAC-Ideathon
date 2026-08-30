@@ -185,9 +185,9 @@ function DonutChart(
     total === 0
       ? '#e7e5e4'
       : `conic-gradient(
-          #a16207 0% ${snapshotPercent}%,
-          #2563eb ${snapshotPercent}% ${secondStop}%,
-          #0f766e ${secondStop}% 100%
+          #d39445 0% ${snapshotPercent}%,
+          #6f93ba ${snapshotPercent}% ${secondStop}%,
+          #758467 ${secondStop}% 100%
         )`;
 
   const donutStyle:
@@ -783,7 +783,7 @@ export default function AdminDashboard(
                     card.target
                   )
                 }
-                className="group rounded-[24px] border border-stone-200 bg-white p-5 text-left shadow-sm transition-shadow hover:shadow-xl"
+                className="mirrortrace-admin-metric group rounded-[24px] border border-stone-200 bg-white p-5 text-left shadow-sm transition-all hover:shadow-xl"
               >
                 <div className="flex items-center justify-between">
                   <div className="text-xs font-semibold uppercase tracking-[0.12em] text-stone-500">
@@ -829,7 +829,7 @@ export default function AdminDashboard(
         }
         className="grid scroll-mt-6 gap-6 xl:grid-cols-[1.5fr_0.8fr]"
       >
-        <article className="rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm">
+        <article className="mirrortrace-admin-surface rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm">
 
           <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-400">
             System
@@ -857,7 +857,7 @@ export default function AdminDashboard(
 
         <article
           id="admin-activity"
-          className="scroll-mt-6 rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm"
+          className="mirrortrace-admin-surface scroll-mt-6 rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm"
         >
           <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-400">
             Aggregate activity
@@ -900,7 +900,7 @@ export default function AdminDashboard(
               }
             : undefined
         }
-        className="scroll-mt-6 rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm"
+        className="mirrortrace-admin-surface scroll-mt-6 rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm"
       >
         <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-400">
           Account operations
@@ -984,7 +984,7 @@ export default function AdminDashboard(
 
       <motion.article
         id="admin-support"
-        className="scroll-mt-6 rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm"
+        className="mirrortrace-admin-surface scroll-mt-6 rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm"
       >
         <div className="flex items-center justify-between gap-4">
 
@@ -1037,7 +1037,7 @@ export default function AdminDashboard(
 
       <motion.article
         id="admin-reviews"
-        className="scroll-mt-6 rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm"
+        className="mirrortrace-admin-surface scroll-mt-6 rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm"
       >
         <div className="flex items-center justify-between gap-4">
 
@@ -1090,7 +1090,7 @@ export default function AdminDashboard(
 
       <article
         id="admin-audit"
-        className="scroll-mt-6 rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm"
+        className="mirrortrace-admin-surface scroll-mt-6 rounded-[28px] border border-stone-200 bg-white p-5 shadow-sm"
       >
         <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-400">
           Security
