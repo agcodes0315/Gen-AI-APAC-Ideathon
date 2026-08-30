@@ -1,4 +1,5 @@
 import '../styles/mirrortrace-clean-glass.css';
+import '../styles/mirrortrace-authenticated-haze.css';
 
 import {
   useCallback,
