@@ -1,3 +1,5 @@
+import '../styles/mirrortrace-clean-glass.css';
+
 import {
   useCallback,
   useEffect,
@@ -41,6 +43,7 @@ import {
   type SupportStatus,
   type SupportTicket,
 } from '../lib/supportReviews.ts';
+
 
 interface AdminDashboardProps {
   onClose?: () => void;
@@ -640,21 +643,9 @@ export default function AdminDashboard(
           y:
             0,
         }}
-        className="mirrortrace-photo-panel mirrortrace-admin-hero relative overflow-hidden rounded-[30px] bg-stone-950 p-6 text-white shadow-2xl sm:p-8"
+        className="mirrortrace-admin-hero mirrortrace-clean-glass-hero relative overflow-hidden rounded-[30px] p-6 text-white sm:p-8"
       >
-        <img
-          src="/hero/mirrortrace-poster.jpeg"
-          alt=""
-          aria-hidden="true"
-          className="mirrortrace-hero-sharp-photo absolute inset-0 h-full w-full object-cover"
-        />
-
-        <div
-          aria-hidden="true"
-          className="mirrortrace-hero-minimal-shade absolute inset-0"
-        />
-
-        <div className="mirrortrace-admin-hero-content relative z-10 flex flex-wrap items-start justify-between gap-5">
+<div className="mirrortrace-admin-hero-content relative z-10 flex flex-wrap items-start justify-between gap-5">
 
           <div>
             <div className="text-xs font-bold uppercase tracking-[0.16em] text-amber-200">

@@ -1,25 +1,25 @@
-MirrorTrace Hero + Review Moderation Fix v5
+MIRRORTRACE CLEAN GLASS UPDATE
 
-REPLACE COMPLETELY:
-- src/components/AdminDashboard.tsx
+Replace these files exactly:
+- src/components/AuthView.tsx
 - src/components/DashboardOverview.tsx
-- src/index.css
+- src/components/AdminDashboard.tsx
 
-ADD:
-- public/ui/mirrortrace3.jpeg
+Add:
+- src/styles/mirrortrace-clean-glass.css
 
-FIXES:
-- Approved reviews no longer show Approve again.
-- Hide and Reject remain available.
-- mirrortrace3.jpeg is used for Overview and Admin hero blocks.
-- Hero blur reduced to almost zero.
-- Security & Operations title/subtitle float slowly.
-- Overview title/CTA motion remains.
-- Text contrast improved.
+Important:
+- The ParticleOrb component is no longer imported or rendered.
+- You may leave src/components/ParticleOrb.tsx in the repository; it is unused.
+- Do NOT add any new spin/globe/orb code.
+- No separate image is used by Overview hero or Security & Operations hero.
+- #security and #reviews no longer own separate background images.
+- The shared branch background shows through translucent panels.
 
-VERIFY:
+Then run:
 npm run lint
 npm run build
+npm run dev
 
-PUSH:
-git add .; git commit -m "Fix review moderation and sharpen MirrorTrace hero backgrounds"; git push origin main
+If Vite is already running and shows stale visuals, stop it and start it again,
+then hard refresh the browser with Ctrl+Shift+R.

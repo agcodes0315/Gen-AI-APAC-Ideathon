@@ -1,3 +1,5 @@
+import '../styles/mirrortrace-clean-glass.css';
+
 import React, {
   useEffect,
   useMemo,
@@ -28,9 +30,6 @@ import {
 import {
   motion,
   useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
 } from 'motion/react';
 
 import ScrollArcCard from './ScrollArcCard.tsx';
@@ -305,22 +304,6 @@ export const AuthView:
     const reducedMotion =
       useReducedMotion();
 
-    const featureSectionRef =
-      useRef<HTMLElement | null>(
-        null
-      );
-
-    const [
-      viewportWidth,
-      setViewportWidth,
-    ] =
-      useState(
-        typeof window !==
-          'undefined'
-          ? window.innerWidth
-          : 1440
-      );
-
     const [
       loading,
       setLoading,
@@ -349,25 +332,6 @@ export const AuthView:
         ProductReview[]
       >([]);
 
-    useEffect(() => {
-      const handleResize =
-        () => {
-          setViewportWidth(
-            window.innerWidth
-          );
-        };
-
-      window.addEventListener(
-        'resize',
-        handleResize
-      );
-
-      return () =>
-        window.removeEventListener(
-          'resize',
-          handleResize
-        );
-    }, []);
 
     useEffect(() => {
       void getPublicReviews()
@@ -382,114 +346,6 @@ export const AuthView:
           }
         );
     }, []);
-
-    const {
-      scrollYProgress:
-        featureProgress,
-    } =
-      useScroll({
-        target:
-          featureSectionRef,
-        offset: [
-          'start end',
-          'end start',
-        ],
-      });
-
-    /*
-      HYBRID FEATURE MOTION
-
-      Vertical page scrolling gives the two rows a small decorative nudge:
-      - top row moves left
-      - bottom row moves right
-
-      The rows themselves stay horizontally browsable at all times, so
-      users can pause anywhere and swipe/trackpad/Shift+wheel through every
-      card without fighting the vertical-scroll animation.
-    */
-    const smoothFeatureProgress =
-      useSpring(
-        featureProgress,
-        {
-          stiffness:
-            30,
-          damping:
-            22,
-          mass:
-            1.15,
-          restDelta:
-            0.0002,
-        }
-      );
-
-    const nudgeDistance =
-      Math.max(
-        44,
-        Math.min(
-          viewportWidth *
-            0.05,
-          90
-        )
-      );
-
-    const topX =
-      useTransform(
-        smoothFeatureProgress,
-        [
-          0,
-          1,
-        ],
-        reducedMotion
-          ? [
-              0,
-              0,
-            ]
-          : [
-              nudgeDistance *
-                0.55,
-              -nudgeDistance,
-            ]
-      );
-
-    const bottomX =
-      useTransform(
-        smoothFeatureProgress,
-        [
-          0,
-          1,
-        ],
-        reducedMotion
-          ? [
-              0,
-              0,
-            ]
-          : [
-              -nudgeDistance,
-              nudgeDistance *
-                0.55,
-            ]
-      );
-
-    const featureHeadingY =
-      useTransform(
-        smoothFeatureProgress,
-        [
-          0,
-          0.5,
-          1,
-        ],
-        reducedMotion
-          ? [
-              0,
-              0,
-              0,
-            ]
-          : [
-              10,
-              0,
-              -6,
-            ]
-      );
 
     const reviewLoop =
       useMemo(
@@ -559,7 +415,7 @@ export const AuthView:
       };
 
     return (
-      <div className="mirrortrace-auth-page min-h-screen bg-stone-950 text-white">
+      <div className="mirrortrace-auth-page mirrortrace-single-background min-h-screen text-white">
 
         <section
           id="hero"
@@ -870,16 +726,9 @@ export const AuthView:
 
         <section
           id="features"
-          ref={
-            featureSectionRef
-          }
-          className="mirrortrace-feature-section mirrortrace-unified-section"
+          className="mirrortrace-feature-section mirrortrace-unified-section mirrortrace-section-glass"
         >
           <motion.div
-            style={{
-              y:
-                featureHeadingY,
-            }}
             className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8"
           >
             <motion.div
@@ -917,9 +766,7 @@ export const AuthView:
               </h2>
 
               <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[var(--mt-text-muted)]">
-                Scroll down to see the rows gently move in opposite directions.
-                Pause anywhere and browse every card horizontally with a
-                trackpad, swipe, Shift + mouse wheel, or the arrow controls.
+                Scroll naturally through the page. Each card enters with a soft curved motion, while every row remains freely browsable left or right with a trackpad, swipe, or the arrow controls.
               </p>
             </motion.div>
           </motion.div>
@@ -965,13 +812,7 @@ export const AuthView:
               </button>
 
               <div className="mirrortrace-card-lane">
-                <motion.div
-                  style={{
-                    x:
-                      topX,
-                  }}
-                  className="mirrortrace-scroll-row"
-                >
+                <div className="mirrortrace-scroll-row">
                   {TOP_ROW.map(
                     (
                       card
@@ -994,7 +835,7 @@ export const AuthView:
                       />
                     )
                   )}
-                </motion.div>
+                </div>
               </div>
 
               <button
@@ -1064,13 +905,7 @@ export const AuthView:
               </button>
 
               <div className="mirrortrace-card-lane">
-                <motion.div
-                  style={{
-                    x:
-                      bottomX,
-                  }}
-                  className="mirrortrace-scroll-row"
-                >
+                <div className="mirrortrace-scroll-row">
                   {BOTTOM_ROW.map(
                     (
                       card
@@ -1093,7 +928,7 @@ export const AuthView:
                       />
                     )
                   )}
-                </motion.div>
+                </div>
               </div>
 
               <button
@@ -1153,7 +988,7 @@ export const AuthView:
 
         <section
           id="security"
-          className="mirrortrace-unified-section px-4 py-20 text-white sm:px-6 sm:py-24 lg:px-8"
+          className="mirrortrace-unified-section mirrortrace-security-clean px-4 py-20 text-white sm:px-6 sm:py-24 lg:px-8"
         >
           <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
 
@@ -1299,7 +1134,7 @@ export const AuthView:
 
         <section
           id="reviews"
-          className="mirrortrace-unified-section overflow-hidden py-20 text-white sm:py-24"
+          className="mirrortrace-unified-section overflow-hidden py-20 text-white sm:py-24 mirrortrace-reviews-clean"
         >
           <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
             <div className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-500">

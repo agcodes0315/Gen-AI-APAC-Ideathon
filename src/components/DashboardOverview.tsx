@@ -1,3 +1,5 @@
+import '../styles/mirrortrace-clean-glass.css';
+
 import React, {
   useState,
 } from 'react';
@@ -39,6 +41,7 @@ import {
 import {
   GuidedDemoModal,
 } from './GuidedDemoModal.tsx';
+
 
 export interface DashboardNavigationOptions {
   privateSession?: boolean;
@@ -268,44 +271,9 @@ export const DashboardOverview:
               duration:
                 0.65,
             }}
-            className="mirrortrace-photo-panel mirrortrace-user-hero relative overflow-hidden rounded-[32px] bg-stone-950 px-6 py-8 text-white shadow-2xl sm:px-8 lg:px-10 lg:py-10"
+            className="mirrortrace-user-hero mirrortrace-clean-glass-hero relative overflow-hidden rounded-[32px] px-6 py-8 text-white sm:px-8 lg:px-10 lg:py-10"
           >
-            <img
-              src="/hero/mirrortrace-poster.jpeg"
-              alt=""
-              aria-hidden="true"
-              className="mirrortrace-hero-sharp-photo absolute inset-0 h-full w-full object-cover"
-            />
-
-            <div
-              aria-hidden="true"
-              className="mirrortrace-hero-minimal-shade absolute inset-0"
-            />
-
-            <motion.div
-              className="absolute right-[12%] top-[18%] h-28 w-28 rounded-full border border-white/10 bg-black/5"
-              animate={
-                reducedMotion
-                  ? undefined
-                  : {
-                      y: [
-                        0,
-                        -8,
-                        0,
-                      ],
-                    }
-              }
-              transition={{
-                duration:
-                  5,
-                repeat:
-                  Infinity,
-                ease:
-                  'easeInOut',
-              }}
-            />
-
-            <div className="mirrortrace-hero-content relative z-10 grid gap-8">
+<div className="mirrortrace-hero-content relative z-10 grid gap-8">
 
               <div>
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white/75 backdrop-blur-lg">
