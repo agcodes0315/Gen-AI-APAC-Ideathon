@@ -1,0 +1,1033 @@
+/* ============================================================
+   MIRRORTRACE — SINGLE VISUAL THEME
+   ============================================================
+
+   One source of truth for:
+   - shared photograph
+   - black/30 smoky panels
+   - dashboard glass
+   - admin glass
+   - landing sections
+   - scroll performance
+   - admin launcher
+
+   IMPORT THIS FILE LAST.
+   ============================================================ */
+
+:root {
+  --mt-bg: #05090d;
+
+  --mt-text: #f5f7f8;
+  --mt-muted: #c6cfd6;
+
+  --mt-amber: #d39445;
+  --mt-cactus: #617057;
+
+  --mt-border:
+    rgba(255, 255, 255, 0.13);
+
+  --mt-soft-border:
+    rgba(255, 255, 255, 0.09);
+
+  --mt-card:
+    rgba(0, 0, 0, 0.30);
+
+  --mt-card-hover:
+    rgba(0, 0, 0, 0.38);
+}
+
+
+/* ============================================================
+   DOCUMENT
+   ============================================================ */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+
+  overflow-x: hidden;
+
+  background: var(--mt-bg);
+
+  overscroll-behavior-y: auto;
+}
+
+
+/* ============================================================
+   ONE SHARED BACKGROUND
+   ============================================================ */
+
+.mirrortrace-app-shell,
+.mirrortrace-single-background,
+.mirrortrace-admin-overlay,
+.mirrortrace-admin-page {
+  position: relative;
+
+  min-height: 100vh;
+
+  background-color:
+    var(--mt-bg) !important;
+
+  background-image:
+    linear-gradient(
+      rgba(0, 0, 0, 0.17),
+      rgba(0, 0, 0, 0.25)
+    ),
+    url("/hero/mirrortrace-poster.jpeg") !important;
+
+  background-repeat:
+    no-repeat !important;
+
+  background-size:
+    cover !important;
+
+  background-position:
+    center top !important;
+
+  /*
+   * Never use fixed here.
+   * Fixed backgrounds + translucent cards cause expensive
+   * repaints while scrolling.
+   */
+  background-attachment:
+    scroll !important;
+
+  color:
+    var(--mt-text);
+}
+
+
+/* ============================================================
+   TRANSPARENT PAGE CONTAINERS
+   ============================================================ */
+
+.mirrortrace-app-main,
+.mirrortrace-dashboard-overview,
+.mirrortrace-admin-dashboard,
+.mirrortrace-memory-governance {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   YOUR THINKING, VERSIONED
+   EXACT SAME EFFECT AS bg-black/30
+   ============================================================ */
+
+.mirrortrace-user-hero,
+.mirrortrace-clean-glass-hero {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+
+  overflow:
+    hidden;
+
+  /*
+   * THIS IS CSS EQUIVALENT OF TAILWIND bg-black/30.
+   */
+  background:
+    rgba(0, 0, 0, 0.30) !important;
+
+  background-image:
+    none !important;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.13) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255, 255, 255, 0.04),
+
+    0 18px 44px
+      rgba(0, 0, 0, 0.17) !important;
+
+  /*
+   * Tiny blur only.
+   * Keep the branches recognizable.
+   */
+  backdrop-filter:
+    blur(1px)
+    saturate(102%) !important;
+
+  -webkit-backdrop-filter:
+    blur(1px)
+    saturate(102%) !important;
+}
+
+
+/*
+ * Previous stylesheets used ::before and ::after to create
+ * extra dark haze. Kill them completely.
+ */
+
+.mirrortrace-user-hero::before,
+.mirrortrace-user-hero::after,
+.mirrortrace-clean-glass-hero::before,
+.mirrortrace-clean-glass-hero::after {
+  content:
+    none !important;
+
+  display:
+    none !important;
+}
+
+
+/* Ensure text is above the glass. */
+
+.mirrortrace-user-hero > *,
+.mirrortrace-clean-glass-hero > * {
+  position:
+    relative;
+
+  z-index:
+    2;
+}
+
+
+/* ============================================================
+   USER HERO TEXT
+   ============================================================ */
+
+.mirrortrace-user-hero h1 {
+  color:
+    #ffffff !important;
+
+  text-shadow:
+    0 3px 14px
+      rgba(0, 0, 0, 0.42);
+}
+
+
+.mirrortrace-user-hero h1 span {
+  color:
+    var(--mt-amber) !important;
+}
+
+
+.mirrortrace-user-hero p {
+  color:
+    #e6ecef !important;
+
+  text-shadow:
+    0 2px 8px
+      rgba(0, 0, 0, 0.30);
+}
+
+
+/* ============================================================
+   USER HERO CHIP
+   ============================================================ */
+
+.mirrortrace-user-hero
+.mirrortrace-chip {
+  background:
+    rgba(0, 0, 0, 0.24) !important;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.15);
+
+  color:
+    #f4f7f9;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+
+/* ============================================================
+   USER HERO BUTTONS
+   ============================================================ */
+
+.mirrortrace-user-hero
+.mirrortrace-primary-btn {
+  background:
+    rgba(0, 0, 0, 0.48) !important;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.15) !important;
+
+  color:
+    #ffffff !important;
+
+  box-shadow:
+    0 9px 22px
+      rgba(0, 0, 0, 0.17);
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+
+.mirrortrace-user-hero
+.mirrortrace-primary-btn:hover {
+  background:
+    rgba(0, 0, 0, 0.62) !important;
+}
+
+
+.mirrortrace-user-hero
+.mirrortrace-secondary-btn {
+  background:
+    rgba(97, 112, 87, 0.50) !important;
+
+  border:
+    1px solid
+    rgba(192, 207, 182, 0.24) !important;
+
+  color:
+    #ffffff !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+
+.mirrortrace-user-hero
+.mirrortrace-secondary-btn:hover {
+  background:
+    rgba(97, 112, 87, 0.68) !important;
+}
+
+
+/* ============================================================
+   SECURITY & OPERATIONS HERO
+   EXACT SAME bg-black/30 EFFECT
+   ============================================================ */
+
+.mirrortrace-admin-hero {
+  position:
+    relative;
+
+  isolation:
+    isolate;
+
+  overflow:
+    hidden;
+
+  /*
+   * EXACTLY black at 30% opacity.
+   */
+  background:
+    rgba(0, 0, 0, 0.30) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.30) !important;
+
+  background-image:
+    none !important;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.13) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,0.04),
+
+    0 18px 44px
+      rgba(0,0,0,0.17) !important;
+
+  backdrop-filter:
+    blur(1px)
+    saturate(102%) !important;
+
+  -webkit-backdrop-filter:
+    blur(1px)
+    saturate(102%) !important;
+}
+
+
+/*
+ * Remove old amber/green radial hero decorations.
+ */
+
+.mirrortrace-admin-hero::before,
+.mirrortrace-admin-hero::after {
+  content:
+    none !important;
+
+  display:
+    none !important;
+}
+
+
+.mirrortrace-admin-hero > * {
+  position:
+    relative;
+
+  z-index:
+    2;
+}
+
+
+.mirrortrace-admin-hero h1 {
+  color:
+    #ffffff !important;
+
+  text-shadow:
+    0 3px 14px
+      rgba(0, 0, 0, 0.42);
+}
+
+
+.mirrortrace-admin-hero p {
+  color:
+    #e6ecef !important;
+}
+
+
+/* ============================================================
+   ADMIN PRIVACY PANEL
+   ============================================================ */
+
+.mirrortrace-admin-boundary,
+.mirrortrace-admin-hero
+.bg-emerald-300\/10 {
+  background:
+    rgba(0, 0, 0, 0.30) !important;
+
+  border:
+    1px solid
+    rgba(135, 200, 157, 0.23) !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+
+/* ============================================================
+   MAIN DASHBOARD CARDS
+   ============================================================ */
+
+.mirrortrace-dashboard-overview
+:where(
+  .mirrortrace-stat-card,
+  .mirrortrace-action-card,
+  .mirrortrace-diff-feature,
+  .mt-glass
+) {
+  position:
+    relative;
+
+  background:
+    rgba(0, 0, 0, 0.30) !important;
+
+  border:
+    1px solid
+    var(--mt-border) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255, 255, 255, 0.035),
+
+    0 13px 30px
+      rgba(0, 0, 0, 0.14) !important;
+
+  backdrop-filter:
+    blur(1px)
+    saturate(102%) !important;
+
+  -webkit-backdrop-filter:
+    blur(1px)
+    saturate(102%) !important;
+}
+
+
+.mirrortrace-dashboard-overview
+:where(
+  .mirrortrace-stat-card,
+  .mirrortrace-action-card,
+  .mirrortrace-diff-feature,
+  .mt-glass
+):hover {
+  background:
+    rgba(0, 0, 0, 0.38) !important;
+}
+
+
+/* ============================================================
+   ADMIN DASHBOARD CARDS
+   ============================================================ */
+
+.mirrortrace-admin-dashboard
+:where(
+  .mirrortrace-admin-metric,
+  .mirrortrace-admin-surface,
+  .mirrortrace-service-card,
+  .mirrortrace-support-card,
+  .mirrortrace-review-admin-card,
+  .mirrortrace-audit-card
+) {
+  position:
+    relative;
+
+  background:
+    rgba(0, 0, 0, 0.30) !important;
+
+  border:
+    1px solid
+    var(--mt-border) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,0.035),
+
+    0 13px 30px
+      rgba(0,0,0,0.14) !important;
+
+  backdrop-filter:
+    blur(1px)
+    saturate(102%) !important;
+
+  -webkit-backdrop-filter:
+    blur(1px)
+    saturate(102%) !important;
+}
+
+
+/* ============================================================
+   TAILWIND WHITE BACKGROUND OVERRIDES
+   ============================================================ */
+
+/*
+ * Your older components contain bg-white / bg-stone-50.
+ * Inside MirrorTrace dashboards, convert those to black glass.
+ */
+
+.mirrortrace-dashboard-overview
+:where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100
+),
+
+.mirrortrace-admin-dashboard
+:where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100
+) {
+  background-color:
+    rgba(0, 0, 0, 0.30) !important;
+}
+
+
+/* ============================================================
+   DASHBOARD TEXT
+   ============================================================ */
+
+.mirrortrace-dashboard-overview
+:where(
+  h1,
+  h2,
+  h3,
+  h4,
+  strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800,
+  .text-stone-700
+),
+
+.mirrortrace-admin-dashboard
+:where(
+  h1,
+  h2,
+  h3,
+  h4,
+  strong,
+  td,
+  th,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800,
+  .text-stone-700
+) {
+  color:
+    var(--mt-text) !important;
+}
+
+
+.mirrortrace-dashboard-overview
+:where(
+  p,
+  span,
+  label,
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+),
+
+.mirrortrace-admin-dashboard
+:where(
+  p,
+  span,
+  label,
+  td,
+  th,
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+) {
+  color:
+    var(--mt-muted) !important;
+}
+
+
+/* ============================================================
+   RESTORE ACCENT COLORS
+   ============================================================ */
+
+.mirrortrace-dashboard-overview
+.text-amber-200,
+
+.mirrortrace-dashboard-overview
+.text-amber-300,
+
+.mirrortrace-admin-dashboard
+.text-amber-200,
+
+.mirrortrace-admin-dashboard
+.text-amber-300 {
+  color:
+    #efc46f !important;
+}
+
+
+.mirrortrace-dashboard-overview
+.text-emerald-300,
+
+.mirrortrace-admin-dashboard
+.text-emerald-300 {
+  color:
+    #7fd6aa !important;
+}
+
+
+/* ============================================================
+   FORM ELEMENTS
+   ============================================================ */
+
+.mirrortrace-admin-dashboard
+:where(
+  input,
+  textarea,
+  select
+),
+
+.mirrortrace-dashboard-overview
+:where(
+  input,
+  textarea,
+  select
+) {
+  background:
+    rgba(0, 0, 0, 0.38) !important;
+
+  border-color:
+    rgba(255,255,255,0.15) !important;
+
+  color:
+    #f4f7f9 !important;
+}
+
+
+/* ============================================================
+   REVIEWS
+   ============================================================ */
+
+#reviews,
+.mirrortrace-reviews-clean {
+  background:
+    rgba(0, 0, 0, 0.18) !important;
+
+  background-image:
+    none !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+
+#reviews
+.mirrortrace-review-card {
+  background:
+    rgba(0, 0, 0, 0.30) !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,0.13) !important;
+}
+
+
+/* ============================================================
+   SECURITY LANDING SECTION
+   ============================================================ */
+
+#security,
+.mirrortrace-security-clean {
+  background:
+    rgba(0, 0, 0, 0.18) !important;
+
+  background-image:
+    none !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+
+#security article,
+#security .rounded-2xl,
+#security .rounded-3xl {
+  background:
+    rgba(0, 0, 0, 0.30) !important;
+
+  border-color:
+    rgba(255,255,255,0.13) !important;
+}
+
+
+/* ============================================================
+   FEATURE SECTION
+   ============================================================ */
+
+.mirrortrace-feature-section,
+.mirrortrace-section-glass {
+  background:
+    rgba(0, 0, 0, 0.18) !important;
+
+  background-image:
+    none !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+
+.mirrortrace-scroll-card {
+  background:
+    rgba(0, 0, 0, 0.30) !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,0.13) !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+
+/* ============================================================
+   HORIZONTAL SCROLL
+   ============================================================ */
+
+.mirrortrace-card-lane {
+  overflow-x:
+    auto !important;
+
+  overflow-y:
+    visible !important;
+
+  scroll-behavior:
+    smooth;
+
+  scroll-snap-type:
+    x proximity;
+
+  overscroll-behavior-x:
+    contain;
+
+  overscroll-behavior-y:
+    auto;
+
+  touch-action:
+    pan-x pan-y;
+
+  -webkit-overflow-scrolling:
+    touch;
+}
+
+
+.mirrortrace-arc-card {
+  scroll-snap-align:
+    center;
+}
+
+
+/* ============================================================
+   SCROLL PERFORMANCE
+   ============================================================ */
+
+.mirrortrace-app-shell,
+.mirrortrace-single-background,
+.mirrortrace-dashboard-overview,
+.mirrortrace-admin-dashboard,
+.mirrortrace-auth-page {
+  transform:
+    none !important;
+
+  will-change:
+    auto !important;
+}
+
+
+.mirrortrace-stat-card,
+.mirrortrace-action-card,
+.mirrortrace-admin-metric,
+.mirrortrace-admin-surface,
+.mirrortrace-scroll-card,
+.mirrortrace-review-card {
+  contain:
+    paint;
+}
+
+
+.mirrortrace-review-track {
+  transform:
+    translate3d(0, 0, 0);
+
+  will-change:
+    transform;
+}
+
+
+.mirrortrace-feature-section,
+#security,
+#reviews {
+  content-visibility:
+    auto;
+
+  contain-intrinsic-size:
+    850px;
+}
+
+
+/* ============================================================
+   ADMIN FLOATING BUTTON
+   ============================================================ */
+
+.mirrortrace-admin-launcher {
+  position:
+    fixed !important;
+
+  right:
+    22px !important;
+
+  bottom:
+    22px !important;
+
+  top:
+    auto !important;
+
+  left:
+    auto !important;
+
+  z-index:
+    9000 !important;
+
+  width:
+    auto !important;
+
+  display:
+    inline-flex !important;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+
+  min-height:
+    46px;
+
+  padding:
+    0 18px !important;
+
+  border-radius:
+    999px !important;
+
+  border:
+    1px solid
+    rgba(255,255,255,0.15) !important;
+
+  background:
+    rgba(0,0,0,0.68) !important;
+
+  color:
+    #ffffff !important;
+
+  font-size:
+    13px;
+
+  font-weight:
+    650;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 14px 34px
+      rgba(0,0,0,0.30);
+
+  backdrop-filter:
+    blur(5px);
+
+  -webkit-backdrop-filter:
+    blur(5px);
+
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+
+.mirrortrace-admin-launcher:hover {
+  transform:
+    translateY(-3px);
+
+  background:
+    rgba(0,0,0,0.84) !important;
+
+  border-color:
+    rgba(211,148,69,0.38) !important;
+}
+
+
+/* ============================================================
+   ADMIN PAGE
+   ============================================================ */
+
+.mirrortrace-admin-page {
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    10000;
+
+  overflow-x:
+    hidden;
+
+  overflow-y:
+    auto;
+
+  scroll-behavior:
+    smooth;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 800px) {
+
+  .mirrortrace-user-hero,
+  .mirrortrace-admin-hero,
+  .mirrortrace-stat-card,
+  .mirrortrace-action-card,
+  .mirrortrace-admin-metric,
+  .mirrortrace-admin-surface {
+    /*
+     * On phones, transparency remains,
+     * but costly backdrop blur is removed.
+     */
+    backdrop-filter:
+      none !important;
+
+    -webkit-backdrop-filter:
+      none !important;
+  }
+
+
+  .mirrortrace-admin-launcher {
+    right:
+      14px !important;
+
+    bottom:
+      14px !important;
+
+    min-height:
+      43px;
+
+    padding:
+      0 15px !important;
+  }
+
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html,
+  .mirrortrace-card-lane,
+  .mirrortrace-admin-page {
+    scroll-behavior:
+      auto !important;
+  }
+
+
+  .mirrortrace-review-track {
+    will-change:
+      auto;
+  }
+
+}
