@@ -1,0 +1,630 @@
+/* ============================================================
+   MIRRORTRACE — AUTHENTICATED BLACK GLASS FINAL
+   FULL REPLACEMENT FILE
+   File: src/styles/mirrortrace-authenticated-black-final.css
+
+   SCOPE
+   -----
+   Authenticated application only:
+   - Overview
+   - Reflect & Chat
+   - Journal History
+   - Memory
+   - Support
+   - Feedback
+
+   Intentionally NOT targeted:
+   - AuthView / signed-out landing page
+   - landing hero/video/features/security/reviews styling
+   - application layout / routing / functionality
+
+   GOAL
+   ----
+   Remove the remaining opaque/navy/blue card fills and replace
+   them with translucent black so the existing tree background
+   remains visible.
+
+   IMPORTANT
+   ---------
+   Keep this file imported from App.tsx:
+     import './styles/mirrortrace-authenticated-black-final.css';
+
+   Do not import any other authenticated "final override" CSS file
+   after this one.
+   ============================================================ */
+
+:root {
+  --mt-auth-outer: rgba(0, 0, 0, 0.60);
+  --mt-auth-outer-strong: rgba(0, 0, 0, 0.68);
+  --mt-auth-inner: rgba(0, 0, 0, 0.44);
+  --mt-auth-inner-soft: rgba(255, 255, 255, 0.07);
+  --mt-auth-input: rgba(0, 0, 0, 0.50);
+
+  --mt-auth-border: rgba(238, 244, 248, 0.16);
+  --mt-auth-border-soft: rgba(238, 244, 248, 0.10);
+
+  --mt-auth-text: #ffffff;
+  --mt-auth-copy: rgba(239, 244, 248, 0.82);
+  --mt-auth-muted: rgba(220, 229, 236, 0.62);
+}
+
+/* ============================================================
+   1. AUTHENTICATED APP ONLY
+   ============================================================ */
+
+html body #root .mirrortrace-app-shell {
+  color: var(--mt-auth-text) !important;
+}
+
+html body #root .mirrortrace-app-shell .mirrortrace-authenticated-main,
+html body #root .mirrortrace-app-shell .mirrortrace-overview-page,
+html body #root .mirrortrace-app-shell .mirrortrace-reflect-page,
+html body #root .mirrortrace-app-shell .mirrortrace-history-page,
+html body #root .mirrortrace-app-shell .mirrortrace-memory-page,
+html body #root .mirrortrace-app-shell .mirrortrace-support-page,
+html body #root .mirrortrace-app-shell .mirrortrace-feedback-page {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Authenticated experience stays dark-only. */
+html body #root .mirrortrace-app-shell .mirrortrace-theme-toggle {
+  display: none !important;
+}
+
+/* ============================================================
+   2. COMMON CARD RECIPE
+   ============================================================ */
+
+/*
+   The components currently use Tailwind utilities such as:
+   bg-white / bg-stone-50 / bg-stone-100
+   plus rounded-xl/rounded-2xl + border.
+
+   These selectors override those surfaces only inside the
+   authenticated tabs.
+*/
+
+html body #root .mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+)
+:is(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-200,
+  .bg-slate-800,
+  .bg-slate-900,
+  .bg-slate-950,
+  .bg-gray-800,
+  .bg-gray-900,
+  .bg-blue-800,
+  .bg-blue-900,
+  .bg-indigo-800,
+  .bg-indigo-900,
+  .rounded-xl.border,
+  .rounded-2xl.border,
+  .rounded-3xl.border,
+  article.border,
+  section.border
+) {
+  background: var(--mt-auth-outer) !important;
+  background-color: var(--mt-auth-outer) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  color: var(--mt-auth-text) !important;
+
+  backdrop-filter: blur(2px) saturate(103%) !important;
+  -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 16px 34px rgba(0, 0, 0, 0.22) !important;
+}
+
+/* ============================================================
+   3. REFLECT & CHAT
+   Compose Reflection + Brainstorm Companion
+   ============================================================ */
+
+/* The two main component roots. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-compose-column
+> div:first-child,
+
+html body #root .mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+> div:first-child {
+  background: var(--mt-auth-outer-strong) !important;
+  background-color: var(--mt-auth-outer-strong) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(2px) saturate(103%) !important;
+  -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    0 18px 38px rgba(0, 0, 0, 0.24) !important;
+}
+
+/* JournalEditor top card has bg-white directly. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-compose-column
+.bg-white.rounded-xl.border {
+  background: var(--mt-auth-outer-strong) !important;
+  background-color: var(--mt-auth-outer-strong) !important;
+  background-image: none !important;
+}
+
+/* BrainstormChat top card has bg-white directly. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.bg-white.rounded-xl.border {
+  background: var(--mt-auth-outer-strong) !important;
+  background-color: var(--mt-auth-outer-strong) !important;
+  background-image: none !important;
+}
+
+/* Brainstorm header: remove the remaining navy/grey strip. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.bg-white.rounded-xl.border
+> div:first-child {
+  background: var(--mt-auth-inner) !important;
+  background-color: var(--mt-auth-inner) !important;
+  background-image: none !important;
+  border-color: var(--mt-auth-border-soft) !important;
+}
+
+/* Main chat body stays translucent. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.bg-white.rounded-xl.border
+> div:nth-child(2) {
+  background: rgba(0, 0, 0, 0.28) !important;
+  background-color: rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Chat footer. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.bg-white.rounded-xl.border
+> div:last-child {
+  background: var(--mt-auth-inner) !important;
+  background-color: var(--mt-auth-inner) !important;
+  background-image: none !important;
+  border-color: var(--mt-auth-border-soft) !important;
+}
+
+/* All Reflect inputs: translucent black, never blue. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-reflect-page
+:is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select
+) {
+  background: var(--mt-auth-input) !important;
+  background-color: var(--mt-auth-input) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(1px) !important;
+  -webkit-backdrop-filter: blur(1px) !important;
+}
+
+html body #root .mirrortrace-app-shell
+.mirrortrace-reflect-page
+:is(input, textarea)::placeholder {
+  color: var(--mt-auth-muted) !important;
+}
+
+/* ============================================================
+   4. JOURNAL HISTORY
+   ============================================================ */
+
+html body #root .mirrortrace-app-shell
+.mirrortrace-history-page
+:is(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .rounded-xl.border,
+  .rounded-2xl.border,
+  .rounded-3xl.border,
+  article.border
+) {
+  background: var(--mt-auth-outer) !important;
+  background-color: var(--mt-auth-outer) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+}
+
+/* Search field and any future history fields. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-history-page
+:is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select
+) {
+  background: var(--mt-auth-input) !important;
+  background-color: var(--mt-auth-input) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+  border-color: var(--mt-auth-border) !important;
+}
+
+/* ============================================================
+   5. MEMORY GOVERNANCE
+   EVERYTHING TRANSLUCENT
+   ============================================================ */
+
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-page,
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* MemoryGovernanceCenter component root. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance
+> div {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Top Memory Governance shell. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance
+> div
+> section:first-of-type {
+  background: var(--mt-auth-outer-strong) !important;
+  background-color: var(--mt-auth-outer-strong) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(2px) saturate(103%) !important;
+  -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
+}
+
+/* Top heading area. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance
+> div
+> section:first-of-type
+> div:first-child {
+  background: var(--mt-auth-outer-strong) !important;
+  background-color: var(--mt-auth-outer-strong) !important;
+  background-image: none !important;
+}
+
+/*
+   KPI STRIP
+   Exact JSX:
+   <div className="grid grid-cols-2 gap-px bg-stone-200 sm:grid-cols-4">
+       <div className="bg-white ..."> ...
+*/
+
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance
+.grid.grid-cols-2.gap-px.bg-stone-200 {
+  background: rgba(255, 255, 255, 0.10) !important;
+  background-color: rgba(255, 255, 255, 0.10) !important;
+  background-image: none !important;
+}
+
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance
+.grid.grid-cols-2.gap-px.bg-stone-200
+> .bg-white {
+  background: var(--mt-auth-outer) !important;
+  background-color: var(--mt-auth-outer) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+
+  box-shadow: none !important;
+
+  backdrop-filter: blur(1.5px) saturate(102%) !important;
+  -webkit-backdrop-filter: blur(1.5px) saturate(102%) !important;
+}
+
+/*
+   Reminder Delivery comes from PushNotificationSettings.
+   Any bordered rounded top-level block inside the Memory page
+   gets the same translucent black family.
+*/
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  .rounded-xl.border,
+  .rounded-2xl.border,
+  .rounded-3xl.border,
+  section.border,
+  article.border
+) {
+  background: var(--mt-auth-outer) !important;
+  background-color: var(--mt-auth-outer) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(2px) saturate(103%) !important;
+  -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
+}
+
+/* Ordinary nested Memory rows are slightly softer than outer cards. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100
+) {
+  background: var(--mt-auth-inner) !important;
+  background-color: var(--mt-auth-inner) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border-soft) !important;
+}
+
+/* But outer Memory sections must stay darker than nested rows. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance
+> div
+> section.bg-white,
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance
+> div
+> section.rounded-2xl.border {
+  background: var(--mt-auth-outer) !important;
+  background-color: var(--mt-auth-outer) !important;
+}
+
+/* Principle cards. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance
+.grid.lg\:grid-cols-3
+> div {
+  background: var(--mt-auth-outer) !important;
+  background-color: var(--mt-auth-outer) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+}
+
+/* Inputs if any are added inside memory controls. */
+html body #root .mirrortrace-app-shell
+.mirrortrace-memory-governance
+:is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select
+) {
+  background: var(--mt-auth-input) !important;
+  background-color: var(--mt-auth-input) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+  border-color: var(--mt-auth-border) !important;
+}
+
+/* ============================================================
+   6. SUPPORT
+   ============================================================ */
+
+html body #root .mirrortrace-app-shell
+.mirrortrace-support-page
+:is(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .rounded-xl.border,
+  .rounded-2xl.border,
+  .rounded-3xl.border,
+  article.border,
+  section.border
+) {
+  background: var(--mt-auth-outer) !important;
+  background-color: var(--mt-auth-outer) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+}
+
+html body #root .mirrortrace-app-shell
+.mirrortrace-support-page
+:is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select
+) {
+  background: var(--mt-auth-input) !important;
+  background-color: var(--mt-auth-input) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+  border-color: var(--mt-auth-border) !important;
+}
+
+/* ============================================================
+   7. FEEDBACK
+   ============================================================ */
+
+html body #root .mirrortrace-app-shell
+.mirrortrace-feedback-page
+:is(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .rounded-xl.border,
+  .rounded-2xl.border,
+  .rounded-3xl.border,
+  article.border,
+  section.border
+) {
+  background: var(--mt-auth-outer) !important;
+  background-color: var(--mt-auth-outer) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+}
+
+html body #root .mirrortrace-app-shell
+.mirrortrace-feedback-page
+:is(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select
+) {
+  background: var(--mt-auth-input) !important;
+  background-color: var(--mt-auth-input) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+  border-color: var(--mt-auth-border) !important;
+}
+
+/* ============================================================
+   8. AUTHENTICATED TYPOGRAPHY
+   ============================================================ */
+
+html body #root .mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+)
+:is(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800,
+  .text-stone-700
+) {
+  color: var(--mt-auth-text) !important;
+}
+
+html body #root .mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+)
+:is(
+  p,
+  label,
+  td,
+  th,
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+) {
+  color: var(--mt-auth-copy) !important;
+}
+
+/* ============================================================
+   9. BUTTONS
+   Keep semantic button colors; only neutralize white buttons.
+   ============================================================ */
+
+html body #root .mirrortrace-app-shell
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+)
+button[class*="bg-white"] {
+  background: rgba(255, 255, 255, 0.09) !important;
+  background-color: rgba(255, 255, 255, 0.09) !important;
+  color: #ffffff !important;
+  border-color: var(--mt-auth-border) !important;
+}
+
+/* ============================================================
+   10. DIVIDERS
+   ============================================================ */
+
+html body #root .mirrortrace-app-shell
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+)
+:is(
+  .border-stone-100,
+  .border-stone-200,
+  .border-stone-300
+) {
+  border-color: var(--mt-auth-border-soft) !important;
+}
+
+/* ============================================================
+   11. MOBILE / PERFORMANCE
+   ============================================================ */
+
+@media (max-width: 800px) {
+  html body #root .mirrortrace-app-shell
+  :is(
+    .mirrortrace-reflect-page,
+    .mirrortrace-history-page,
+    .mirrortrace-memory-page,
+    .mirrortrace-support-page,
+    .mirrortrace-feedback-page
+  )
+  :where(
+    .rounded-xl.border,
+    .rounded-2xl.border,
+    .rounded-3xl.border
+  ) {
+    backdrop-filter: blur(1px) !important;
+    -webkit-backdrop-filter: blur(1px) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body #root .mirrortrace-app-shell * {
+    scroll-behavior: auto !important;
+  }
+}

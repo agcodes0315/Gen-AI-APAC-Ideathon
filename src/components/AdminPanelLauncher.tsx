@@ -14,6 +14,12 @@ import {
   getAdminOverview,
 } from '../lib/admin.ts';
 
+/*
+ * FINAL ADMIN VISUAL AUTHORITY.
+ * Imported here so it loads after AdminDashboard's legacy visual imports.
+ */
+import '../styles/mirrortrace-admin-translucent-black.css';
+
 
 type AvailabilityState =
   | 'checking'
@@ -161,9 +167,6 @@ export default function AdminPanelLauncher() {
 
   /*
      Treat #/admin like a small client-side page.
-
-     This avoids needing React Router and also avoids direct
-     /admin reload problems on static deployments.
   */
 
   useEffect(() => {
@@ -207,6 +210,38 @@ export default function AdminPanelLauncher() {
     };
 
   }, []);
+
+
+  /*
+     Lock the underlying application while the Admin Control Room
+     is open. The admin page itself remains independently scrollable.
+  */
+
+  useEffect(() => {
+
+    if (!adminPageOpen) {
+      return;
+    }
+
+
+    const previousOverflow =
+      document.body.style.overflow;
+
+
+    document.body.style.overflow =
+      'hidden';
+
+
+    return () => {
+
+      document.body.style.overflow =
+        previousOverflow;
+
+    };
+
+  }, [
+    adminPageOpen,
+  ]);
 
 
   /*
@@ -279,9 +314,6 @@ export default function AdminPanelLauncher() {
 
   /*
      ADMIN PAGE
-
-     This deliberately renders as a full application page,
-     not as the old footer-like block.
   */
 
   if (
@@ -293,6 +325,13 @@ export default function AdminPanelLauncher() {
         className="
           mirrortrace-admin-page
           mirrortrace-admin-overlay
+
+          fixed
+          inset-0
+          z-[10000]
+
+          overflow-x-hidden
+          overflow-y-auto
         "
       >
 
@@ -315,11 +354,6 @@ export default function AdminPanelLauncher() {
           <AdminDashboard
             onClose={() => {
 
-              /*
-                 Return to overview without refreshing
-                 the whole React application.
-              */
-
               window.location.hash =
                 '#/overview';
 
@@ -335,7 +369,6 @@ export default function AdminPanelLauncher() {
 
   /*
      FLOATING BUTTON
-
      Only administrators see this.
   */
 
@@ -346,12 +379,17 @@ export default function AdminPanelLauncher() {
       onClick={() => {
 
         window.location.hash =
-          '/admin';
+          ADMIN_HASH;
 
       }}
 
       className="
         mirrortrace-admin-launcher
+
+        fixed
+        bottom-5
+        right-5
+        z-[9000]
       "
 
       aria-label="

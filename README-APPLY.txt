@@ -1,45 +1,28 @@
-MIRRORTRACE DARK-ONLY BLACK GLASS FIX
+MirrorTrace Admin KPI black fix
 
-FILES
------
-src/styles/mirrortrace-dark-only-final.css
-src/lib/forceDarkMode.ts
+REPLACE ONLY:
+src/styles/mirrortrace-admin-translucent-black.css
 
-APPLY
------
-1. Copy both files into the matching project folders.
+Do NOT replace:
+- AdminDashboard.tsx
+- AdminPanelLauncher.tsx
+- App.tsx
+- any other CSS
 
-2. In your application entry file (normally src/main.tsx), add:
+This update specifically makes these five cards darker black translucent:
+- Registered Users
+- Thought Snapshots
+- Thought Diffs
+- Active Watches
+- Push Devices
 
-   import './lib/forceDarkMode.ts';
+The cards now use rgba(0,0,0,0.64), so even over the bright sky portion
+of the background they remain visibly black while the branches still show through.
 
-3. Import the CSS ONCE, LAST, after every other MirrorTrace stylesheet.
-   Best place: src/main.tsx after your existing index.css import:
+Nothing else is structurally changed.
 
-   import './styles/mirrortrace-dark-only-final.css';
+Then run:
+npm run dev
 
-   If your project imports component styles from App.tsx instead,
-   importing it there as the LAST stylesheet is also fine.
-
-4. IMPORTANT:
-   Do not import this CSS into AuthView.tsx.
-   The selectors are scoped to .mirrortrace-app-shell so the
-   public sign-in page remains visually unchanged.
-
-5. Restart:
-   npm run dev
-
-6. Hard refresh:
-   Ctrl + Shift + R
-
-WHAT THIS FIXES
----------------
-- grey Memory KPI cells -> translucent black
-- Reminder Delivery -> translucent black
-- Compose Reflection -> translucent black
-- Reflective Brainstorm Companion -> translucent black
-- input/textarea blue-grey surfaces -> darker black inset surfaces
-- History / Support / Feedback / Admin surfaces -> black glass
-- removes authenticated light mode by locking data-theme="dark"
-- hides authenticated theme toggle
-- shared branch background remains partially visible
+Hard refresh:
+Ctrl + Shift + R
