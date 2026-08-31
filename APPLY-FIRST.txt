@@ -1,37 +1,43 @@
-MIRRORTRACE ACTUAL SHARP FIX
+MIRRORTRACE UI RECOVERY PACKAGE
 
-ROOT CAUSE FOUND:
-Your code was requesting:
-  /hero/mirrortrace-poster.jpg
+Why Vite failed:
+AdminDashboard.tsx imports ../styles/mirrortrace-clean-glass.css and
+../styles/mirrortrace-authenticated-haze.css, but those files were missing.
+AuthView.tsx also imports several related style files.
 
-But the verified sharp tree photo is:
-  mirrortrace-poster.jpeg
+This package restores every referenced stylesheet and replaces the old stack
+of conflicting visual patches with ONE visual authority:
 
-That filename/extension mismatch meant the intended sharp image was not the
-asset being rendered, allowing the old/fallback hero imagery to remain visible.
+  src/styles/mirrortrace-final-visual-fix.css
 
-REPLACE THESE FILES:
-  src/components/DashboardOverview.tsx
-  src/components/AdminDashboard.tsx
-  src/index.css
+Do this:
+1. Copy the entire src/ folder from this package over your project's src/ folder.
+2. Allow Windows/VS Code to replace files with the same names.
+3. Do NOT edit AuthView.tsx, AdminDashboard.tsx, DashboardOverview.tsx,
+   App.tsx, Navbar.tsx, index.css, your videos, or your images for this fix.
+4. Stop the dev server (Ctrl+C).
+5. Run:
+      npm run lint
+      npm run build
+      npm run dev
+6. Hard refresh Chrome with Ctrl+Shift+R.
 
-COPY THIS EXACT IMAGE:
-  public/hero/mirrortrace-poster.jpeg
+Expected result:
+- Landing hero video remains intact.
+- /hero/mirrortrace-poster.jpeg remains the shared branch background.
+- Your Thinking, Versioned = transparent bg-black/30 over branches.
+- Security & Operations = transparent bg-black/30 over branches.
+- KPI cards, Perspective Evolution, Quick Actions, admin metrics,
+  Service Health, Reflection Infrastructure, Users, Support, Reviews,
+  Audit, feature cards, security cards and public-review cards all use
+  the same subtle bg-black/30 surface.
+- Vertical scrolling remains native and easy.
+- Feature rows still browse horizontally with smooth scroll.
+- No old 18px/20px backdrop-filter stacks remain in these replacement files.
 
 IMPORTANT:
-Delete or rename any old public/hero/mirrortrace-poster.jpg so there is no confusion.
+The branch image must exist at:
+  public/hero/mirrortrace-poster.jpeg
 
-THEN RUN:
-  npm run lint
-  npm run build
-  npm run dev
-
-OPEN THIS DIRECTLY IN CHROME TO VERIFY THE ASSET FIRST:
-  http://localhost:3000/hero/mirrortrace-poster.jpeg
-
-You MUST see the sharp branches photo by itself.
-Then hard refresh the app:
-  Ctrl + Shift + R
-
-The 403 /api/admin/overview message is unrelated to the hero blur. It means
-the currently signed-in Firebase token does not have an admin role.
+Your screenshot already showed that file in public/hero, so no asset rename is
+required.

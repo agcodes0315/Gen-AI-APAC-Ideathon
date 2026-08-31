@@ -1,0 +1,163 @@
+/* ============================================================
+   MIRRORTRACE — FINAL 30% BLACK HERO OVERRIDE
+   Purpose:
+   - make "Your thinking, versioned." exactly 30% black
+   - keep the shared branch background visible through the block
+   - remove older solid-blue/opaque hero overrides
+   - do not change layout, text, buttons, motion, or other pages
+
+   IMPORTANT:
+   Import this file LAST, after every other MirrorTrace stylesheet.
+   ============================================================ */
+
+:root {
+  --mirrortrace-hero-black-30: rgba(0, 0, 0, 0.30);
+  --mirrortrace-hero-border: rgba(255, 255, 255, 0.14);
+}
+
+/* ------------------------------------------------------------
+   USER HERO — THE ACTUAL FIX
+   ------------------------------------------------------------ */
+
+.mirrortrace-user-hero,
+.mirrortrace-dashboard-overview .mirrortrace-user-hero,
+.mirrortrace-clean-glass-hero.mirrortrace-user-hero,
+.mirrortrace-photo-panel.mirrortrace-user-hero {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+
+  /*
+   * Exactly 30% black.
+   * No dark-blue solid background.
+   * No hero-owned image.
+   * The page background beneath remains visible.
+   */
+  background: rgba(0, 0, 0, 0.30) !important;
+  background-color: rgba(0, 0, 0, 0.30) !important;
+  background-image: none !important;
+
+  /* Keep haze subtle, not foggy. */
+  backdrop-filter: blur(2px) saturate(103%) !important;
+  -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
+
+  filter: none !important;
+
+  border: 1px solid var(--mirrortrace-hero-border) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 42px rgba(0, 0, 0, 0.18) !important;
+}
+
+/* ------------------------------------------------------------
+   REMOVE OLD HERO IMAGE / DARK OVERLAY PSEUDO ELEMENTS
+   ------------------------------------------------------------ */
+
+.mirrortrace-user-hero::before,
+.mirrortrace-user-hero::after,
+.mirrortrace-dashboard-overview .mirrortrace-user-hero::before,
+.mirrortrace-dashboard-overview .mirrortrace-user-hero::after,
+.mirrortrace-clean-glass-hero.mirrortrace-user-hero::before,
+.mirrortrace-clean-glass-hero.mirrortrace-user-hero::after,
+.mirrortrace-photo-panel.mirrortrace-user-hero::before,
+.mirrortrace-photo-panel.mirrortrace-user-hero::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ------------------------------------------------------------
+   REMOVE OLD ABSOLUTE BLUR / SHADE LAYERS INSIDE HERO
+   Only neutralizes decorative full-surface layers.
+   It does NOT hide actual content.
+   ------------------------------------------------------------ */
+
+.mirrortrace-user-hero > .mirrortrace-hero-sharp-photo,
+.mirrortrace-user-hero > .mirrortrace-hero-minimal-shade,
+.mirrortrace-user-hero > .mirrortrace-hero-background,
+.mirrortrace-user-hero > .mirrortrace-hero-overlay,
+.mirrortrace-user-hero > [aria-hidden="true"].absolute.inset-0 {
+  display: none !important;
+}
+
+/* ------------------------------------------------------------
+   CONTENT MUST STAY ABOVE THE TRANSLUCENT SURFACE
+   ------------------------------------------------------------ */
+
+.mirrortrace-user-hero > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* ------------------------------------------------------------
+   KEEP TEXT CRISP
+   ------------------------------------------------------------ */
+
+.mirrortrace-user-hero h1,
+.mirrortrace-user-hero h2,
+.mirrortrace-user-hero h3,
+.mirrortrace-user-hero p,
+.mirrortrace-user-hero span,
+.mirrortrace-user-hero button {
+  filter: none !important;
+}
+
+.mirrortrace-user-hero h1 {
+  color: #ffffff !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.34) !important;
+}
+
+.mirrortrace-user-hero h1 span,
+.mirrortrace-user-hero .mirrortrace-accent-text {
+  color: #d39445 !important;
+}
+
+.mirrortrace-user-hero p,
+.mirrortrace-user-hero .mirrortrace-overview-copy {
+  color: #eef3f6 !important;
+  text-shadow: 0 1px 7px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* ------------------------------------------------------------
+   BUTTONS — LEAVE EXISTING DESIGN, ONLY PREVENT HEAVY BLUR
+   ------------------------------------------------------------ */
+
+.mirrortrace-user-hero button {
+  backdrop-filter: blur(1.5px) !important;
+  -webkit-backdrop-filter: blur(1.5px) !important;
+}
+
+/* ------------------------------------------------------------
+   MOBILE
+   ------------------------------------------------------------ */
+
+@media (max-width: 800px) {
+  .mirrortrace-user-hero,
+  .mirrortrace-dashboard-overview .mirrortrace-user-hero,
+  .mirrortrace-clean-glass-hero.mirrortrace-user-hero,
+  .mirrortrace-photo-panel.mirrortrace-user-hero {
+    background: rgba(0, 0, 0, 0.30) !important;
+    background-color: rgba(0, 0, 0, 0.30) !important;
+    background-image: none !important;
+
+    backdrop-filter: blur(1.5px) saturate(102%) !important;
+    -webkit-backdrop-filter: blur(1.5px) saturate(102%) !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+   ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .mirrortrace-user-hero,
+  .mirrortrace-user-hero * {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -13,6 +13,12 @@ interface ScrollArcCardProps {
   total?: number;
 }
 
+/**
+ * Smooth card entrance without scroll-linked transforms.
+ * This deliberately avoids useScroll/useTransform because dozens of
+ * scroll-linked MotionValues plus translucent cards can make vertical
+ * page scrolling feel sticky on Windows/Chrome.
+ */
 export default function ScrollArcCard({
   children,
   className = '',
@@ -28,8 +34,8 @@ export default function ScrollArcCard({
   const distanceFromCenter =
     Math.abs(normalizedPosition - 0.5);
 
-  const restingY = distanceFromCenter * 12;
-  const entryX = direction === 'left' ? -20 : 20;
+  const restingY = distanceFromCenter * 10;
+  const entryX = direction === 'left' ? -18 : 18;
 
   return (
     <motion.div
@@ -39,7 +45,7 @@ export default function ScrollArcCard({
           : {
               opacity: 0,
               x: entryX,
-              y: restingY + 14,
+              y: restingY + 12,
             }
       }
       whileInView={
@@ -53,8 +59,8 @@ export default function ScrollArcCard({
       }
       viewport={{
         once: true,
-        amount: 0.12,
-        margin: '90px',
+        amount: 0.10,
+        margin: '80px',
       }}
       whileHover={
         reducedMotion
@@ -66,10 +72,10 @@ export default function ScrollArcCard({
       }
       whileTap={{ scale: 0.99 }}
       transition={{
-        duration: 0.42,
+        duration: 0.40,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className={`mirrortrace-arc-card mt-glass relative shrink-0 rounded-[26px] p-6 ${className}`}
+      className={`mirrortrace-arc-card mt-glass mt-hover-pop relative shrink-0 rounded-[26px] p-6 ${className}`}
     >
       {children}
     </motion.div>

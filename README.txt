@@ -1,15 +1,22 @@
-MIRRORTRACE BLACK SHADOW ALL-BLOCKS UPDATE
+MirrorTrace 30% Black Hero Fix
 
-Replace these files:
-1. src/components/DashboardOverview.tsx
-2. src/components/AdminDashboard.tsx
-3. src/styles/mirrortrace-authenticated-haze.css
+1. Copy:
+   src/styles/mirrortrace-final-black30.css
+   into your project's src/styles folder.
 
-This update keeps the public/sign-in page untouched and adds the approved dark cinematic shadow to authenticated blocks including Perspective Evolution, Reflection stats, Quick Actions, Memory, History, Support, Feedback and Admin surfaces.
+2. Import it LAST, after every other MirrorTrace CSS import.
 
-Run:
-npm run lint
-npm run build
-npm run dev
+   Example in the component or main stylesheet that already loads your visual CSS:
 
-Hard refresh: Ctrl + Shift + R
+   import '../styles/mirrortrace-final-black30.css';
+
+3. Restart Vite completely:
+   Ctrl+C
+   npm run dev
+
+4. Hard refresh browser:
+   Ctrl+Shift+R
+
+This file only changes the authenticated "Your thinking, versioned." hero surface.
+It forces the hero to rgba(0,0,0,0.30), removes old hero-owned images/pseudo overlays,
+and keeps only a 2px haze so the shared page background remains visible.
