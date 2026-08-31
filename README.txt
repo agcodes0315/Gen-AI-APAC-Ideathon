@@ -1,17 +1,22 @@
-MirrorTrace Black50 PowerShell Fix
-==================================
+MIRRORTRACE BLACK-50 HARD FIX
+============================
 
-The previous PowerShell file was corrupted by an encoding issue.
-This replacement script is ASCII-only, so PowerShell on Windows will parse it correctly.
+This version does NOT create another stylesheet import.
 
-From the MirrorTrace project root run:
+It directly appends the final override to src/index.css, which your project
+already loads. This avoids the import-order problem that kept the navy cards.
+
+1. Extract this ZIP into your MirrorTrace project root.
+2. Run:
 
 powershell -ExecutionPolicy Bypass -File .\scripts\apply-black50-to-index.ps1
 
-Then:
+3. Run:
 
 npm run dev
 
-Finally hard refresh Chrome:
+4. Hard refresh browser:
 
 Ctrl + Shift + R
+
+The sign-in/public page is not targeted.

@@ -1,0 +1,284 @@
+/* ============================================================
+   MIRRORTRACE — MEMORY GOVERNANCE BLACK HUE FINAL AUTHORITY
+   PURPOSE:
+   - Memory page only
+   - Remove grey / blue surfaces from the header KPI strip
+   - Apply the same darker black translucent hue to Reminder Delivery
+   - Keep the shared tree/branch background visible
+   - Do not affect sign-in, Overview, Admin, Support, Feedback, etc.
+   ============================================================ */
+
+:root {
+  --mt-memory-black-50: rgba(0, 0, 0, 0.50);
+  --mt-memory-black-58: rgba(0, 0, 0, 0.58);
+  --mt-memory-black-64: rgba(0, 0, 0, 0.64);
+  --mt-memory-border: rgba(235, 241, 245, 0.16);
+  --mt-memory-border-soft: rgba(235, 241, 245, 0.11);
+  --mt-memory-text: #f7f9fb;
+  --mt-memory-text-soft: rgba(239, 244, 247, 0.78);
+}
+
+/* The page itself remains transparent so the branch background shows. */
+.mirrortrace-memory-governance {
+  background: transparent !important;
+  color: var(--mt-memory-text) !important;
+}
+
+/* ============================================================
+   TOP MEMORY GOVERNANCE CARD
+   ============================================================ */
+
+.mirrortrace-memory-governance > section:first-of-type {
+  background: var(--mt-memory-black-58) !important;
+  background-color: var(--mt-memory-black-58) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-memory-border) !important;
+
+  backdrop-filter: blur(2.5px) saturate(104%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(104%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 42px rgba(0, 0, 0, 0.24) !important;
+}
+
+/* Header portion: same black hue, not a separate blue/grey panel. */
+.mirrortrace-memory-governance
+> section:first-of-type
+> .mirrortrace-memory-hero,
+.mirrortrace-memory-governance
+> section:first-of-type
+> .mirrortrace-photo-panel {
+  background: var(--mt-memory-black-58) !important;
+  background-color: var(--mt-memory-black-58) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-memory-border-soft) !important;
+
+  backdrop-filter: blur(2px) saturate(103%) !important;
+  -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
+}
+
+/* ============================================================
+   KPI STRIP
+   Approved Memories / Expiring Memories / Active Watches / Due Now
+
+   Current JSX uses:
+   grid ... bg-stone-200
+   and four children with bg-white.
+   These selectors intentionally override those utility classes.
+   ============================================================ */
+
+.mirrortrace-memory-governance
+> section:first-of-type
+> .grid.grid-cols-2.gap-px.bg-stone-200 {
+  background: rgba(255, 255, 255, 0.12) !important;
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  background-image: none !important;
+
+  border-top: 1px solid var(--mt-memory-border-soft) !important;
+}
+
+/* The four statistic cells. */
+.mirrortrace-memory-governance
+> section:first-of-type
+> .grid.grid-cols-2.gap-px.bg-stone-200
+> .bg-white {
+  background: var(--mt-memory-black-50) !important;
+  background-color: var(--mt-memory-black-50) !important;
+  background-image: none !important;
+
+  color: var(--mt-memory-text) !important;
+
+  backdrop-filter: blur(2px) saturate(103%) !important;
+  -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
+
+  box-shadow: none !important;
+}
+
+/* KPI labels and numbers. */
+.mirrortrace-memory-governance
+> section:first-of-type
+> .grid.grid-cols-2.gap-px.bg-stone-200
+> .bg-white
+.text-stone-500 {
+  color: rgba(226, 233, 238, 0.70) !important;
+}
+
+.mirrortrace-memory-governance
+> section:first-of-type
+> .grid.grid-cols-2.gap-px.bg-stone-200
+> .bg-white
+.text-stone-950 {
+  color: #ffffff !important;
+}
+
+.mirrortrace-memory-governance
+> section:first-of-type
+> .grid.grid-cols-2.gap-px.bg-stone-200
+> .bg-white
+.text-amber-900 {
+  color: #e5b676 !important;
+}
+
+/* ============================================================
+   REMINDER DELIVERY
+   PushNotificationSettings currently renders a rounded bg-white section.
+   Make the OUTER section the same black translucent hue.
+   ============================================================ */
+
+.mirrortrace-memory-governance
+> section.rounded-2xl.border.bg-white,
+.mirrortrace-memory-governance
+> .rounded-2xl.border.bg-white {
+  background: var(--mt-memory-black-58) !important;
+  background-color: var(--mt-memory-black-58) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-memory-border) !important;
+
+  backdrop-filter: blur(2.5px) saturate(104%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(104%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 42px rgba(0, 0, 0, 0.22) !important;
+}
+
+/* PushNotificationSettings may be nested directly inside the page.
+   Catch its top-level section as well. */
+.mirrortrace-memory-governance
+> section:not(:first-of-type) {
+  background: var(--mt-memory-black-58) !important;
+  background-color: var(--mt-memory-black-58) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-memory-border) !important;
+
+  backdrop-filter: blur(2.5px) saturate(104%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(104%) !important;
+}
+
+/* Inner reminder rows stay slightly lighter than the outer shell,
+   but remain black rather than dark blue. */
+.mirrortrace-memory-governance
+> section:not(:first-of-type)
+.bg-white,
+.mirrortrace-memory-governance
+> section:not(:first-of-type)
+.bg-stone-50,
+.mirrortrace-memory-governance
+> section:not(:first-of-type)
+.bg-stone-100 {
+  background: rgba(8, 8, 8, 0.36) !important;
+  background-color: rgba(8, 8, 8, 0.36) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-memory-border-soft) !important;
+}
+
+/* Divider lines. */
+.mirrortrace-memory-governance
+.border-stone-200,
+.mirrortrace-memory-governance
+.divide-stone-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(235, 241, 245, 0.12) !important;
+}
+
+/* ============================================================
+   GOVERNANCE PRINCIPLE CARDS + MEMORY/WATCH LIST CARDS
+   ============================================================ */
+
+.mirrortrace-memory-governance
+:where(
+  .rounded-2xl.border,
+  .rounded-xl.border
+):not(.bg-red-50):not(.bg-amber-50):not(.bg-emerald-50) {
+  background: var(--mt-memory-black-50) !important;
+  background-color: var(--mt-memory-black-50) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-memory-border-soft) !important;
+
+  backdrop-filter: blur(2px) saturate(103%) !important;
+  -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
+}
+
+/* Keep semantic error/success/feedback states recognizable. */
+.mirrortrace-memory-governance .bg-red-50 {
+  background: rgba(92, 28, 28, 0.58) !important;
+  background-color: rgba(92, 28, 28, 0.58) !important;
+}
+
+.mirrortrace-memory-governance .bg-amber-50 {
+  background: rgba(91, 61, 25, 0.52) !important;
+  background-color: rgba(91, 61, 25, 0.52) !important;
+}
+
+.mirrortrace-memory-governance .bg-emerald-50 {
+  background: rgba(22, 67, 50, 0.52) !important;
+  background-color: rgba(22, 67, 50, 0.52) !important;
+}
+
+/* ============================================================
+   TEXT
+   ============================================================ */
+
+.mirrortrace-memory-governance
+:where(
+  h1,
+  h2,
+  h3,
+  h4,
+  strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800
+) {
+  color: var(--mt-memory-text) !important;
+}
+
+.mirrortrace-memory-governance
+:where(
+  p,
+  label,
+  .text-stone-700,
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+) {
+  color: var(--mt-memory-text-soft) !important;
+}
+
+/* Keep inputs/buttons readable. */
+.mirrortrace-memory-governance
+:where(
+  input,
+  textarea,
+  select
+) {
+  background: rgba(0, 0, 0, 0.48) !important;
+  background-color: rgba(0, 0, 0, 0.48) !important;
+  color: #ffffff !important;
+  border-color: rgba(235, 241, 245, 0.16) !important;
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 800px) {
+  .mirrortrace-memory-governance
+  > section:first-of-type,
+  .mirrortrace-memory-governance
+  > section:not(:first-of-type),
+  .mirrortrace-memory-governance
+  :where(
+    .rounded-2xl.border,
+    .rounded-xl.border
+  ) {
+    backdrop-filter: blur(1.5px) saturate(102%) !important;
+    -webkit-backdrop-filter: blur(1.5px) saturate(102%) !important;
+  }
+}

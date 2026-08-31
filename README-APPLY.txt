@@ -1,50 +1,45 @@
-MIRRORTRACE BLACK-HUE FINAL FIX
+MIRRORTRACE DARK-ONLY BLACK GLASS FIX
 
-FILES TO REPLACE / ADD
-----------------------
-1. Replace:
-   src/App.tsx
+FILES
+-----
+src/styles/mirrortrace-dark-only-final.css
+src/lib/forceDarkMode.ts
 
-2. Add:
-   src/styles/mirrortrace-authenticated-black.css
+APPLY
+-----
+1. Copy both files into the matching project folders.
 
-IMPORTANT
----------
-Do NOT run any PowerShell patch script.
+2. In your application entry file (normally src/main.tsx), add:
 
-The previous issue happened because the authenticated app did not actually have
-the CSS scope classes that the override stylesheet was targeting.
+   import './lib/forceDarkMode.ts';
 
-This App.tsx now explicitly adds:
-- mirrortrace-app-shell
-- mirrortrace-page-skin
-- mirrortrace-overview-page
-- mirrortrace-reflect-page
-- mirrortrace-history-page
-- mirrortrace-memory-page
-- mirrortrace-support-page
-- mirrortrace-feedback-page
+3. Import the CSS ONCE, LAST, after every other MirrorTrace stylesheet.
+   Best place: src/main.tsx after your existing index.css import:
 
-The stylesheet is imported directly by App.tsx, so there is no extra script
-and no fragile manual CSS append step.
+   import './styles/mirrortrace-dark-only-final.css';
 
-This does NOT target AuthView, so the signed-out / sign-in page remains untouched.
+   If your project imports component styles from App.tsx instead,
+   importing it there as the LAST stylesheet is also fine.
 
-AFTER COPYING
--------------
-npm run lint
-npm run build
-npm run dev
+4. IMPORTANT:
+   Do not import this CSS into AuthView.tsx.
+   The selectors are scoped to .mirrortrace-app-shell so the
+   public sign-in page remains visually unchanged.
 
-Then:
-Ctrl + Shift + R
+5. Restart:
+   npm run dev
 
-EXPECTED RESULT
+6. Hard refresh:
+   Ctrl + Shift + R
+
+WHAT THIS FIXES
 ---------------
-- no opaque navy #202940 cards in signed-in pages
-- outer cards are black at about 54% opacity
-- branch background remains visible through them
-- nested inputs are lighter glass
-- Security & Operations hero is black transparent instead of navy
-- Privacy Boundary is slightly darker
-- sign-in page stays unchanged
+- grey Memory KPI cells -> translucent black
+- Reminder Delivery -> translucent black
+- Compose Reflection -> translucent black
+- Reflective Brainstorm Companion -> translucent black
+- input/textarea blue-grey surfaces -> darker black inset surfaces
+- History / Support / Feedback / Admin surfaces -> black glass
+- removes authenticated light mode by locking data-theme="dark"
+- hides authenticated theme toggle
+- shared branch background remains partially visible

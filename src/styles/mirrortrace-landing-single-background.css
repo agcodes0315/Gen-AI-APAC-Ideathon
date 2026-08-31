@@ -1,0 +1,182 @@
+/* ============================================================
+   MIRRORTRACE LANDING — ONE BACKGROUND FROM FEATURES TO END
+   Import this stylesheet LAST in AuthView.tsx.
+
+   Purpose:
+   - keep the existing hero/video section unchanged
+   - use ONE image for:
+       Reflection that moves with you
+       Security
+       Reviews / final landing sections
+   - remove per-section image switching
+   - preserve existing cards, text, spacing and animation
+   ============================================================ */
+
+:root {
+  --mt-landing-shared-image:
+    url("/hero/mirrortrace-poster.jpeg");
+}
+
+/* ============================================================
+   FEATURE SECTION
+   ============================================================ */
+
+.mirrortrace-feature-section {
+  background-image:
+    linear-gradient(
+      rgba(7, 12, 17, 0.62),
+      rgba(7, 12, 17, 0.72)
+    ),
+    var(--mt-landing-shared-image) !important;
+
+  background-size:
+    cover !important;
+
+  background-position:
+    center center !important;
+
+  background-repeat:
+    no-repeat !important;
+
+  background-attachment:
+    fixed !important;
+}
+
+/* ============================================================
+   SECURITY SECTION
+   ============================================================ */
+
+#security,
+.mirrortrace-security-clean {
+  background-image:
+    linear-gradient(
+      rgba(7, 12, 17, 0.62),
+      rgba(7, 12, 17, 0.72)
+    ),
+    var(--mt-landing-shared-image) !important;
+
+  background-size:
+    cover !important;
+
+  background-position:
+    center center !important;
+
+  background-repeat:
+    no-repeat !important;
+
+  background-attachment:
+    fixed !important;
+}
+
+/* ============================================================
+   REVIEWS SECTION
+   ============================================================ */
+
+#reviews,
+.mirrortrace-reviews-clean {
+  background-image:
+    linear-gradient(
+      rgba(7, 12, 17, 0.62),
+      rgba(7, 12, 17, 0.72)
+    ),
+    var(--mt-landing-shared-image) !important;
+
+  background-size:
+    cover !important;
+
+  background-position:
+    center center !important;
+
+  background-repeat:
+    no-repeat !important;
+
+  background-attachment:
+    fixed !important;
+}
+
+/* ============================================================
+   ANY FINAL LANDING SECTION AFTER REVIEWS
+   ============================================================ */
+
+.mirrortrace-auth-page
+.mirrortrace-section-glass {
+  background-image:
+    linear-gradient(
+      rgba(7, 12, 17, 0.62),
+      rgba(7, 12, 17, 0.72)
+    ),
+    var(--mt-landing-shared-image) !important;
+
+  background-size:
+    cover !important;
+
+  background-position:
+    center center !important;
+
+  background-repeat:
+    no-repeat !important;
+
+  background-attachment:
+    fixed !important;
+}
+
+/* ============================================================
+   REMOVE OLD SECTION-SPECIFIC PSEUDO IMAGE LAYERS
+   ============================================================ */
+
+.mirrortrace-feature-section::before,
+.mirrortrace-feature-section::after,
+#security::before,
+#security::after,
+#reviews::before,
+#reviews::after {
+  background-image:
+    none !important;
+}
+
+/* ============================================================
+   KEEP CARDS TRANSLUCENT SO THE SAME IMAGE SHOWS THROUGH
+   ============================================================ */
+
+.mirrortrace-feature-section
+.mirrortrace-scroll-card,
+#security
+article,
+#security
+.mirrortrace-security-card,
+#reviews
+.mirrortrace-review-card {
+  background:
+    rgba(8, 14, 20, 0.58) !important;
+
+  border-color:
+    rgba(224, 234, 240, 0.14) !important;
+
+  backdrop-filter:
+    blur(3px)
+    saturate(105%) !important;
+
+  -webkit-backdrop-filter:
+    blur(3px)
+    saturate(105%) !important;
+}
+
+/* ============================================================
+   MOBILE / PERFORMANCE
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .mirrortrace-feature-section,
+  #security,
+  .mirrortrace-security-clean,
+  #reviews,
+  .mirrortrace-reviews-clean,
+  .mirrortrace-auth-page
+  .mirrortrace-section-glass {
+    background-attachment:
+      scroll !important;
+
+    background-position:
+      center center !important;
+  }
+}
