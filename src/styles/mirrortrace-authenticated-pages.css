@@ -1,8 +1,6 @@
 /* ============================================================
-   MIRRORTRACE — AUTHENTICATED SECONDARY PAGES
-   FULL FILE
-
-   Scope:
+   MIRRORTRACE AUTHENTICATED SECONDARY PAGES
+   FULL VISUAL AUTHORITY FOR:
    - Reflective Space
    - Compose Reflection / Private Session
    - Reflective Brainstorm Companion
@@ -11,551 +9,380 @@
    - Support
    - Feedback
 
-   IMPORTANT:
-   - Dashboard Overview is deliberately NOT targeted.
-   - Admin Dashboard is deliberately NOT targeted.
-   - Signed-out landing page is deliberately NOT targeted.
-
-   Visual target:
-   - same nature-backed authenticated shell as Overview
-   - black 30% / cinematic glass card treatment
-   - white headings/text
-   - subtle border and haze
+   INTENTIONALLY DOES NOT TARGET:
+   - .mirrortrace-dashboard-overview
+   - .mirrortrace-admin-dashboard
+   - signed-out AuthView / landing page
    ============================================================ */
 
 :root {
-  --mt-secondary-page-black:
-    rgba(0, 0, 0, 0.30);
-
-  --mt-secondary-card-black:
-    rgba(7, 13, 19, 0.68);
-
-  --mt-secondary-card-black-soft:
-    rgba(8, 15, 21, 0.56);
-
-  --mt-secondary-inner:
-    rgba(255, 255, 255, 0.065);
-
-  --mt-secondary-border:
-    rgba(225, 234, 240, 0.15);
-
-  --mt-secondary-border-strong:
-    rgba(225, 234, 240, 0.22);
-
-  --mt-secondary-text:
-    #ffffff;
-
-  --mt-secondary-copy:
-    #d7e0e7;
-
-  --mt-secondary-muted:
-    #aebbc5;
-
-  --mt-secondary-accent:
-    #d39445;
-
-  --mt-secondary-cactus:
-    #758467;
+  --mt-secondary-outer: rgba(0, 0, 0, 0.30);
+  --mt-secondary-card: rgba(7, 13, 19, 0.46);
+  --mt-secondary-card-hover: rgba(7, 13, 19, 0.58);
+  --mt-secondary-inner: rgba(255, 255, 255, 0.075);
+  --mt-secondary-inner-strong: rgba(255, 255, 255, 0.11);
+  --mt-secondary-input: rgba(255, 255, 255, 0.085);
+  --mt-secondary-border: rgba(226, 235, 241, 0.16);
+  --mt-secondary-border-soft: rgba(226, 235, 241, 0.10);
+  --mt-secondary-text: #f6f8fa;
+  --mt-secondary-muted: #c4ced6;
+  --mt-secondary-faint: #9caab5;
+  --mt-secondary-amber: #d39445;
+  --mt-secondary-green: #9fc6ad;
 }
 
-/* ============================================================
-   AUTHENTICATED BACKGROUND
-   ============================================================ */
+/* ------------------------------------------------------------
+   PAGE SHELL
+   The branch image continues to come from the existing app shell.
+   This file only makes secondary pages transparent over it.
+   ------------------------------------------------------------ */
 
-/*
- * Use the same authenticated shell/background that Overview already
- * sits on. This does not target the Overview component itself.
- */
-
-.mirrortrace-app-shell {
-  min-height: 100vh;
-  color: var(--mt-secondary-text);
-}
-
-/* ============================================================
-   PAGE ROOTS
-   ============================================================ */
-
-.mirrortrace-themed-page {
+.mirrortrace-secondary-page {
   position: relative;
   color: var(--mt-secondary-text);
+  background: transparent !important;
 }
 
-.mirrortrace-themed-page,
-.mirrortrace-themed-page * {
-  box-sizing: border-box;
+.mirrortrace-secondary-page-header {
+  border-color: var(--mt-secondary-border-soft) !important;
 }
 
-/* Main page heading area */
-.mirrortrace-themed-page .mirrortrace-page-heading {
-  border-color:
-    var(--mt-secondary-border) !important;
+.mirrortrace-secondary-page-header h1,
+.mirrortrace-secondary-page h1,
+.mirrortrace-secondary-page h2,
+.mirrortrace-secondary-page h3,
+.mirrortrace-secondary-page h4,
+.mirrortrace-secondary-page strong,
+.mirrortrace-secondary-page .text-stone-950,
+.mirrortrace-secondary-page .text-stone-900,
+.mirrortrace-secondary-page .text-stone-800,
+.mirrortrace-secondary-page .text-stone-700 {
+  color: var(--mt-secondary-text) !important;
 }
 
-.mirrortrace-themed-page
-.mirrortrace-page-heading
-:is(h1, h2, h3, strong) {
-  color:
-    var(--mt-secondary-text) !important;
+.mirrortrace-secondary-page p,
+.mirrortrace-secondary-page label,
+.mirrortrace-secondary-page .text-stone-600,
+.mirrortrace-secondary-page .text-stone-500,
+.mirrortrace-secondary-page .text-stone-400 {
+  color: var(--mt-secondary-muted) !important;
 }
 
-.mirrortrace-themed-page
-.mirrortrace-page-heading
-p {
-  color:
-    var(--mt-secondary-copy) !important;
-}
+/* ------------------------------------------------------------
+   OUTER CARDS / MAJOR BLOCKS
+   bg-black/30 family, matching the desired Overview atmosphere.
+   ------------------------------------------------------------ */
 
-.mirrortrace-theme-chip {
-  color:
-    #e8efe4 !important;
-
-  background:
-    rgba(117, 132, 103, 0.20) !important;
-
-  border-color:
-    rgba(173, 194, 158, 0.28) !important;
-}
-
-/* ============================================================
-   TOP-LEVEL CARDS
-   ============================================================ */
-
-/*
- * This catches the cards currently used by JournalEditor,
- * BrainstormChat, JournalList, MemoryGovernanceCenter,
- * SupportCenter and ProductReviews without changing those
- * components' logic or markup.
- */
-
-.mirrortrace-themed-page
-:where(
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100,
-  .bg-stone-900,
-  .bg-stone-950
-),
-.mirrortrace-themed-page
-:where(
-  [class*="rounded-xl"][class*="border"],
-  [class*="rounded-2xl"][class*="border"],
-  [class*="rounded-3xl"][class*="border"]
+.mirrortrace-secondary-page :where(
+  .rounded-3xl.border,
+  .rounded-2xl.border,
+  .rounded-\[28px\].border,
+  .rounded-\[26px\].border,
+  .rounded-\[24px\].border,
+  article.border,
+  section.border
 ) {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(6, 12, 18, 0.73),
-      rgba(11, 19, 25, 0.64)
-    ) !important;
+  background: var(--mt-secondary-card) !important;
+  background-color: var(--mt-secondary-card) !important;
+  background-image: none !important;
+  border-color: var(--mt-secondary-border) !important;
+  color: var(--mt-secondary-text) !important;
 
-  background-color:
-    var(--mt-secondary-card-black) !important;
-
-  border-color:
-    var(--mt-secondary-border) !important;
-
-  color:
-    var(--mt-secondary-text) !important;
+  /* Light haze only; significantly cheaper than the old stacked 18–20px blur. */
+  backdrop-filter: blur(3px) saturate(106%) !important;
+  -webkit-backdrop-filter: blur(3px) saturate(106%) !important;
 
   box-shadow:
-    inset 0 1px 0
-      rgba(255, 255, 255, 0.045),
-    0 16px 36px
-      rgba(0, 0, 0, 0.20) !important;
-
-  backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
-
-  -webkit-backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 14px 34px rgba(0, 0, 0, 0.20) !important;
 }
 
-/* ============================================================
-   INNER PANELS
-   ============================================================ */
+/* The two side-by-side Reflective Space component roots are allowed to
+   use their own existing rounded containers, but force the outermost
+   visible surfaces to the same cinematic black family. */
+.mirrortrace-secondary-journal .mirrortrace-secondary-column > :first-child,
+.mirrortrace-secondary-content > :first-child,
+.mirrortrace-secondary-memory > :first-child {
+  color: var(--mt-secondary-text);
+}
 
-/*
- * Inner sections are intentionally lighter than their outer card.
- * This gives the same hierarchy as Overview: dark outer block,
- * lighter translucent sub-sections.
- */
+/* ------------------------------------------------------------
+   COMMON TAILWIND SURFACES INSIDE SECONDARY PAGES
+   This is the key rule that makes the existing components visibly change
+   without rewriting JournalEditor, BrainstormChat, JournalList, Memory,
+   SupportCenter or ProductReviews.
+   ------------------------------------------------------------ */
 
-.mirrortrace-themed-page
-:where(
+.mirrortrace-secondary-page :where(.bg-white, .bg-stone-50, .bg-stone-100) {
+  background-color: var(--mt-secondary-card) !important;
+  background-image: none !important;
+  color: var(--mt-secondary-text) !important;
+  border-color: var(--mt-secondary-border) !important;
+}
+
+/* Inner sections should be lighter, subtly blurred glass. */
+.mirrortrace-secondary-page :where(
   .bg-amber-50,
   .bg-amber-100,
-  .bg-blue-50,
-  .bg-blue-100,
   .bg-emerald-50,
   .bg-emerald-100,
+  .bg-blue-50,
+  .bg-blue-100,
   .bg-purple-50,
-  .bg-purple-100
+  .bg-purple-100,
+  .bg-violet-50,
+  .bg-violet-100
 ) {
-  background:
-    var(--mt-secondary-inner) !important;
-
-  border-color:
-    var(--mt-secondary-border) !important;
-
-  color:
-    var(--mt-secondary-text) !important;
-
-  backdrop-filter:
-    blur(2px) !important;
-
-  -webkit-backdrop-filter:
-    blur(2px) !important;
+  background-color: var(--mt-secondary-inner) !important;
+  background-image: none !important;
+  border-color: var(--mt-secondary-border-soft) !important;
+  backdrop-filter: blur(3px) saturate(105%) !important;
+  -webkit-backdrop-filter: blur(3px) saturate(105%) !important;
 }
 
-/* ============================================================
-   TYPOGRAPHY — WHITE
-   ============================================================ */
-
-.mirrortrace-themed-page
-:where(
-  .text-stone-950,
-  .text-stone-900,
-  .text-stone-800,
-  .text-stone-700
+/* Nested cards should be lighter than the outer card, matching the requested
+   dark outer / soft hazy inner hierarchy. */
+.mirrortrace-secondary-page :where(
+  .rounded-3xl.border,
+  .rounded-2xl.border,
+  article.border,
+  section.border
+) :where(
+  .rounded-xl.border,
+  .rounded-lg.border,
+  .rounded-xl.bg-stone-50,
+  .rounded-lg.bg-stone-50,
+  .rounded-xl.bg-white,
+  .rounded-lg.bg-white
 ) {
-  color:
-    var(--mt-secondary-text) !important;
+  background: var(--mt-secondary-inner) !important;
+  background-color: var(--mt-secondary-inner) !important;
+  border-color: var(--mt-secondary-border-soft) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035) !important;
+  backdrop-filter: blur(2px) !important;
+  -webkit-backdrop-filter: blur(2px) !important;
 }
 
-.mirrortrace-themed-page
-:where(
-  .text-stone-600,
-  .text-stone-500,
-  .text-stone-400
-) {
-  color:
-    var(--mt-secondary-copy) !important;
+/* ------------------------------------------------------------
+   INPUTS / TEXTAREAS / SELECTS
+   ------------------------------------------------------------ */
+
+.mirrortrace-secondary-page :where(input, textarea, select) {
+  background: var(--mt-secondary-input) !important;
+  background-color: var(--mt-secondary-input) !important;
+  color: var(--mt-secondary-text) !important;
+  border-color: var(--mt-secondary-border) !important;
+  caret-color: #ffffff;
+  backdrop-filter: blur(2px) !important;
+  -webkit-backdrop-filter: blur(2px) !important;
 }
 
-.mirrortrace-themed-page
-:where(
-  h1,
-  h2,
-  h3,
-  h4,
-  strong
-) {
-  color:
-    var(--mt-secondary-text);
+.mirrortrace-secondary-page :where(input, textarea)::placeholder {
+  color: rgba(214, 224, 232, 0.55) !important;
 }
 
-.mirrortrace-themed-page p {
-  color:
-    var(--mt-secondary-copy);
+.mirrortrace-secondary-page select option {
+  background: #101820;
+  color: #f6f8fa;
 }
 
-/* Keep semantic accent states readable. */
+/* ------------------------------------------------------------
+   BUTTONS
+   Preserve semantic button colors while removing opaque white blocks.
+   ------------------------------------------------------------ */
 
-.mirrortrace-themed-page
-:where(
+.mirrortrace-secondary-page button.bg-white,
+.mirrortrace-secondary-page button[class*='bg-white'] {
+  background: rgba(255, 255, 255, 0.10) !important;
+  color: #f7fafc !important;
+  border-color: var(--mt-secondary-border) !important;
+}
+
+.mirrortrace-secondary-page button.bg-stone-900,
+.mirrortrace-secondary-page button.bg-stone-950,
+.mirrortrace-secondary-page button[class*='bg-stone-900'],
+.mirrortrace-secondary-page button[class*='bg-stone-950'] {
+  background: rgba(12, 20, 27, 0.82) !important;
+  color: #ffffff !important;
+  border: 1px solid var(--mt-secondary-border) !important;
+}
+
+.mirrortrace-secondary-page button:hover {
+  border-color: rgba(211, 148, 69, 0.34) !important;
+}
+
+/* ------------------------------------------------------------
+   ACCENT TEXT
+   ------------------------------------------------------------ */
+
+.mirrortrace-secondary-page :where(
   .text-amber-950,
   .text-amber-900,
   .text-amber-800,
-  .text-amber-700,
-  .text-amber-600
+  .text-amber-700
 ) {
-  color:
-    #e7b36f !important;
+  color: #e1aa65 !important;
 }
 
-.mirrortrace-themed-page
-:where(
+.mirrortrace-secondary-page :where(
   .text-emerald-950,
   .text-emerald-900,
   .text-emerald-800,
   .text-emerald-700
 ) {
-  color:
-    #bfe6d3 !important;
+  color: #a9d6bd !important;
 }
 
-.mirrortrace-themed-page
-:where(
-  .text-blue-950,
+.mirrortrace-secondary-page :where(
   .text-blue-900,
   .text-blue-800,
   .text-blue-700
 ) {
-  color:
-    #bad0e8 !important;
+  color: #9bbbe0 !important;
 }
 
-.mirrortrace-themed-page
-:where(
-  .text-purple-950,
+.mirrortrace-secondary-page :where(
   .text-purple-900,
   .text-purple-800,
-  .text-purple-700
+  .text-purple-700,
+  .text-violet-900,
+  .text-violet-800,
+  .text-violet-700
 ) {
-  color:
-    #d8c7ec !important;
+  color: #cdb7e8 !important;
 }
 
-/* ============================================================
-   INPUTS / TEXTAREAS / SELECTS
-   ============================================================ */
+/* ------------------------------------------------------------
+   DIVIDERS / TABLES / CHIPS
+   ------------------------------------------------------------ */
 
-.mirrortrace-themed-page
-:where(
-  input,
-  textarea,
-  select
-) {
-  background:
-    rgba(0, 0, 0, 0.24) !important;
-
-  color:
-    #ffffff !important;
-
-  border-color:
-    rgba(224, 234, 240, 0.18) !important;
-
-  box-shadow:
-    inset 0 1px 0
-      rgba(255, 255, 255, 0.035);
-
-  backdrop-filter:
-    blur(2px);
-
-  -webkit-backdrop-filter:
-    blur(2px);
-}
-
-.mirrortrace-themed-page
-:where(
-  input,
-  textarea
-)::placeholder {
-  color:
-    #9eabb6 !important;
-}
-
-/* ============================================================
-   BUTTONS
-   ============================================================ */
-
-.mirrortrace-themed-page button {
-  transition:
-    transform 180ms ease,
-    background-color 180ms ease,
-    border-color 180ms ease,
-    color 180ms ease,
-    box-shadow 180ms ease;
-}
-
-/* Dark neutral buttons */
-.mirrortrace-themed-page
-button[class*="bg-stone-900"],
-.mirrortrace-themed-page
-button[class*="bg-stone-950"] {
-  background:
-    rgba(7, 13, 19, 0.84) !important;
-
-  color:
-    #ffffff !important;
-
-  border-color:
-    rgba(226, 235, 241, 0.16) !important;
-}
-
-/* White/light buttons become glass rather than bright white blocks. */
-.mirrortrace-themed-page
-button[class*="bg-white"],
-.mirrortrace-themed-page
-button[class*="bg-stone-50"] {
-  background:
-    rgba(255, 255, 255, 0.08) !important;
-
-  color:
-    #ffffff !important;
-
-  border-color:
-    rgba(226, 235, 241, 0.17) !important;
-}
-
-.mirrortrace-themed-page button:hover {
-  transform:
-    translateY(-1px);
-}
-
-/* ============================================================
-   DIVIDERS
-   ============================================================ */
-
-.mirrortrace-themed-page
-:where(
+.mirrortrace-secondary-page :where(
   .border-stone-100,
   .border-stone-200,
   .border-stone-300
 ) {
-  border-color:
-    var(--mt-secondary-border) !important;
+  border-color: var(--mt-secondary-border-soft) !important;
 }
 
-/* ============================================================
-   REFLECTIVE SPACE
-   Compose Reflection / Private Session / Brainstorm Companion
-   ============================================================ */
-
-.mirrortrace-reflect-page
-.mirrortrace-themed-column
-> * {
-  color:
-    var(--mt-secondary-text);
+.mirrortrace-secondary-page table {
+  color: var(--mt-secondary-text);
 }
 
-/*
- * The two main Reflect cards should read as the same family as
- * Overview's dark cards.
- */
-.mirrortrace-reflect-page
-.mirrortrace-themed-column
-> :first-child {
-  background-color:
-    var(--mt-secondary-card-black) !important;
+.mirrortrace-secondary-page thead,
+.mirrortrace-secondary-page th {
+  color: var(--mt-secondary-muted) !important;
 }
 
-/* Word counters / tiny metadata stay visible */
-.mirrortrace-reflect-page
-:where(
-  [class*="text-xs"],
-  [class*="text-[10px]"]
+.mirrortrace-secondary-page tbody tr {
+  border-color: var(--mt-secondary-border-soft) !important;
+}
+
+/* ------------------------------------------------------------
+   HISTORY / THOUGHT DIFF SPECIFIC
+   ------------------------------------------------------------ */
+
+.mirrortrace-secondary-history :where(
+  .mt-diff-shell,
+  .mt-diff-earlier,
+  .mt-diff-current,
+  .mt-diff-changed,
+  .mt-diff-stable,
+  .mt-diff-modal,
+  .mt-diff-source-earlier,
+  .mt-diff-source-later
 ) {
-  color:
-    var(--mt-secondary-muted) !important;
+  background: var(--mt-secondary-card) !important;
+  color: var(--mt-secondary-text) !important;
+  border-color: var(--mt-secondary-border) !important;
 }
 
-/* ============================================================
-   JOURNAL HISTORY
-   ============================================================ */
+.mirrortrace-secondary-history .mt-diff-header,
+.mirrortrace-secondary-history .mt-diff-modal-header {
+  background: rgba(0, 0, 0, 0.24) !important;
+  border-color: var(--mt-secondary-border-soft) !important;
+}
 
-.mirrortrace-history-page
-.mirrortrace-themed-column
-:where(
-  article,
-  section
+/* ------------------------------------------------------------
+   MEMORY PAGE
+   MemoryGovernanceCenter already has its own class in current builds;
+   keep everything in that subtree under this theme only when the Memory tab
+   wrapper is active.
+   ------------------------------------------------------------ */
+
+.mirrortrace-secondary-memory .mirrortrace-memory-governance {
+  background: transparent !important;
+  color: var(--mt-secondary-text) !important;
+}
+
+.mirrortrace-secondary-memory .mirrortrace-memory-governance :where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .rounded-3xl.border,
+  .rounded-2xl.border
 ) {
-  border-color:
-    var(--mt-secondary-border);
+  background: var(--mt-secondary-card) !important;
+  border-color: var(--mt-secondary-border) !important;
+  color: var(--mt-secondary-text) !important;
 }
 
-.mirrortrace-history-page
-table {
-  color:
-    var(--mt-secondary-text);
+/* ------------------------------------------------------------
+   SUPPORT / FEEDBACK
+   ------------------------------------------------------------ */
+
+.mirrortrace-secondary-support :where(form, article),
+.mirrortrace-secondary-feedback :where(form, article) {
+  color: var(--mt-secondary-text);
 }
 
-.mirrortrace-history-page
-:where(
-  th,
-  td
+/* ------------------------------------------------------------
+   MOTION / PERFORMANCE
+   Keep vertical scrolling native. No scroll-linked transforms here.
+   ------------------------------------------------------------ */
+
+.mirrortrace-secondary-page :where(
+  button,
+  .rounded-3xl.border,
+  .rounded-2xl.border,
+  article.border
 ) {
-  border-color:
-    var(--mt-secondary-border) !important;
+  transition:
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease !important;
 }
 
-/* ============================================================
-   MEMORY
-   ============================================================ */
-
-.mirrortrace-memory-page {
-  color:
-    var(--mt-secondary-text);
+.mirrortrace-secondary-page :where(
+  button,
+  article.border
+):hover {
+  transform: translateY(-2px);
 }
 
-.mirrortrace-memory-page
-:where(
-  h1,
-  h2,
-  h3,
-  p,
-  span
-) {
-  text-shadow:
-    none;
+/* Do not animate text fields or large editor containers upward on hover. */
+.mirrortrace-secondary-page :where(input, textarea, select):hover {
+  transform: none !important;
 }
 
-/* ============================================================
-   SUPPORT
-   ============================================================ */
-
-.mirrortrace-support-page
-.mirrortrace-themed-column {
-  color:
-    var(--mt-secondary-text);
-}
-
-/* ============================================================
-   FEEDBACK
-   ============================================================ */
-
-.mirrortrace-feedback-page
-.mirrortrace-themed-column {
-  color:
-    var(--mt-secondary-text);
-}
-
-/* Review stars keep a warm brand accent. */
-.mirrortrace-feedback-page
-.text-amber-600 {
-  color:
-    #f2ad4f !important;
-}
-
-/* ============================================================
-   SCROLL / PERFORMANCE
-   ============================================================ */
-
-/*
- * Avoid expensive large-surface blur.
- * Only the cards themselves use a tiny 3px haze.
- */
-.mirrortrace-themed-page {
-  backdrop-filter:
-    none !important;
-
-  -webkit-backdrop-filter:
-    none !important;
-}
-
-.mirrortrace-themed-page
-:where(
-  .rounded-xl,
-  .rounded-2xl,
-  .rounded-3xl
-) {
-  backface-visibility:
-    hidden;
-}
-
-/* ============================================================
-   MOBILE
-   ============================================================ */
-
-@media (max-width: 760px) {
-  .mirrortrace-themed-page
-  :where(
-    .bg-white,
-    .bg-stone-50,
-    .bg-stone-100,
-    [class*="rounded-xl"][class*="border"],
-    [class*="rounded-2xl"][class*="border"],
-    [class*="rounded-3xl"][class*="border"]
+@media (max-width: 800px) {
+  .mirrortrace-secondary-page :where(
+    .rounded-3xl.border,
+    .rounded-2xl.border,
+    article.border,
+    section.border
   ) {
-    backdrop-filter:
-      blur(2px)
-      saturate(104%) !important;
+    backdrop-filter: blur(2px) !important;
+    -webkit-backdrop-filter: blur(2px) !important;
+  }
+}
 
-    -webkit-backdrop-filter:
-      blur(2px)
-      saturate(104%) !important;
+@media (prefers-reduced-motion: reduce) {
+  .mirrortrace-secondary-page *,
+  .mirrortrace-secondary-page *::before,
+  .mirrortrace-secondary-page *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
