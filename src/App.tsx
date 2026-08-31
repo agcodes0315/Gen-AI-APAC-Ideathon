@@ -1,4 +1,4 @@
-import './styles/mirrortrace-final-visual-fix.css';
+import './styles/mirrortrace-authenticated-pages.css';
 
 import {
   useEffect,
@@ -90,139 +90,282 @@ const scrollPageToTop = () => {
 };
 
 export default function App() {
-  const [user, setUser] = useState<UserProfile | null>(null);
-  const [authLoading, setAuthLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<MainTab>('overview');
-  const [historySubTab, setHistorySubTab] = useState<HistorySubTab>('reflections');
-  const [filterApprovedSnapshots, setFilterApprovedSnapshots] = useState(false);
-  const [highlightDiffId, setHighlightDiffId] = useState<string | null>(null);
-  const [privateSessionMode, setPrivateSessionMode] = useState(false);
-  const [externalTags, setExternalTags] = useState<string[]>([]);
-  const [refreshCounter, setRefreshCounter] = useState(0);
-  const [entries, setEntries] = useState<JournalEntry[]>([]);
-  const [snapshots, setSnapshots] = useState<ThoughtSnapshot[]>([]);
-  const [diffs, setDiffs] = useState<ThoughtDiff[]>([]);
-  const [dataLoading, setDataLoading] = useState(true);
+  const [user, setUser] =
+    useState<UserProfile | null>(null);
+
+  const [authLoading, setAuthLoading] =
+    useState(true);
+
+  const [activeTab, setActiveTab] =
+    useState<MainTab>('overview');
+
+  const [historySubTab, setHistorySubTab] =
+    useState<HistorySubTab>('reflections');
+
+  const [
+    filterApprovedSnapshots,
+    setFilterApprovedSnapshots,
+  ] = useState(false);
+
+  const [highlightDiffId, setHighlightDiffId] =
+    useState<string | null>(null);
+
+  const [privateSessionMode, setPrivateSessionMode] =
+    useState(false);
+
+  const [externalTags, setExternalTags] =
+    useState<string[]>([]);
+
+  const [refreshCounter, setRefreshCounter] =
+    useState(0);
+
+  const [entries, setEntries] =
+    useState<JournalEntry[]>([]);
+
+  const [snapshots, setSnapshots] =
+    useState<ThoughtSnapshot[]>([]);
+
+  const [diffs, setDiffs] =
+    useState<ThoughtDiff[]>([]);
+
+  const [dataLoading, setDataLoading] =
+    useState(true);
+
+  /* ============================================================
+     AUTH
+     ============================================================ */
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
-        setUser({
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          displayName: firebaseUser.displayName,
-          photoURL: firebaseUser.photoURL,
-        });
-      } else {
-        setUser(null);
-      }
+    const unsubscribe =
+      onAuthStateChanged(
+        auth,
+        (firebaseUser) => {
+          if (firebaseUser) {
+            setUser({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              displayName: firebaseUser.displayName,
+              photoURL: firebaseUser.photoURL,
+            });
+          } else {
+            setUser(null);
+          }
 
-      setAuthLoading(false);
-    });
+          setAuthLoading(false);
+        }
+      );
 
     return () => unsubscribe();
   }, []);
 
+  /* ============================================================
+     PAGE SCROLL
+     ============================================================ */
+
   useLayoutEffect(() => {
     scrollPageToTop();
-  }, [activeTab, historySubTab, user?.uid]);
+  }, [
+    activeTab,
+    historySubTab,
+    user?.uid,
+  ]);
 
-  const loadData = async () => {
-    if (!user) {
-      return;
-    }
+  /* ============================================================
+     USER DATA
+     ============================================================ */
 
-    try {
-      setDataLoading(true);
+  const loadData =
+    async () => {
+      if (!user) {
+        return;
+      }
 
-      const [journalData, snapshotData, diffData] = await Promise.all([
-        fetchJournalEntries().catch(() => []),
-        fetchThoughtSnapshots().catch(() => []),
-        fetchThoughtDiffs().catch(() => []),
-      ]);
+      try {
+        setDataLoading(true);
 
-      setEntries(journalData);
-      setSnapshots(snapshotData);
-      setDiffs(diffData);
-    } catch (err) {
-      console.error('Failed to load user data:', err);
-    } finally {
-      setDataLoading(false);
-    }
-  };
+        const [
+          journalData,
+          snapshotData,
+          diffData,
+        ] =
+          await Promise.all([
+            fetchJournalEntries()
+              .catch(() => []),
+
+            fetchThoughtSnapshots()
+              .catch(() => []),
+
+            fetchThoughtDiffs()
+              .catch(() => []),
+          ]);
+
+        setEntries(journalData);
+        setSnapshots(snapshotData);
+        setDiffs(diffData);
+      } catch (err) {
+        console.error(
+          'Failed to load user data:',
+          err
+        );
+      } finally {
+        setDataLoading(false);
+      }
+    };
 
   useEffect(() => {
     if (user) {
       void loadData();
     }
-  }, [user, refreshCounter]);
+  }, [
+    user,
+    refreshCounter,
+  ]);
 
-  const handleSignOut = async () => {
-    try {
-      await logOut();
+  /* ============================================================
+     SIGN OUT
+     ============================================================ */
 
-      setUser(null);
-      setEntries([]);
-      setSnapshots([]);
-      setDiffs([]);
-      setActiveTab('overview');
-      setHistorySubTab('reflections');
-      setFilterApprovedSnapshots(false);
-      setHighlightDiffId(null);
-      setPrivateSessionMode(false);
-      setExternalTags([]);
+  const handleSignOut =
+    async () => {
+      try {
+        await logOut();
 
-      requestAnimationFrame(() => {
-        scrollPageToTop();
-      });
-    } catch (err) {
-      console.error('Logout error:', err);
-    }
-  };
+        setUser(null);
+        setEntries([]);
+        setSnapshots([]);
+        setDiffs([]);
 
-  const handleEntrySaved = (_entry: JournalEntry) => {
-    setRefreshCounter((previous) => previous + 1);
-  };
+        setActiveTab('overview');
+        setHistorySubTab('reflections');
 
-  const handleSuggestedTagClick = (tag: string) => {
-    setExternalTags((previous) =>
-      previous.includes(tag) ? previous : [...previous, tag]
-    );
-  };
+        setFilterApprovedSnapshots(false);
+        setHighlightDiffId(null);
+        setPrivateSessionMode(false);
+        setExternalTags([]);
 
-  const handleNavigate = (
-    tab: MainTab,
-    options?: {
-      privateSession?: boolean;
-      subTab?: HistorySubTab;
-      filterApprovedSnapshots?: boolean;
-      highlightDiffId?: string;
-    }
-  ) => {
-    if (options?.privateSession) {
-      setPrivateSessionMode(true);
-    } else if (tab === 'journal') {
-      setPrivateSessionMode(false);
-    }
+        requestAnimationFrame(
+          () => {
+            scrollPageToTop();
+          }
+        );
+      } catch (err) {
+        console.error(
+          'Logout error:',
+          err
+        );
+      }
+    };
 
-    if (options?.subTab) {
-      setHistorySubTab(options.subTab);
-    }
+  /* ============================================================
+     JOURNAL EVENTS
+     ============================================================ */
 
-    setFilterApprovedSnapshots(Boolean(options?.filterApprovedSnapshots));
-    setHighlightDiffId(options?.highlightDiffId ?? null);
-    setActiveTab(tab);
+  const handleEntrySaved =
+    (
+      _entry:
+        JournalEntry
+    ) => {
+      setRefreshCounter(
+        (previous) =>
+          previous + 1
+      );
+    };
 
-    requestAnimationFrame(() => {
-      scrollPageToTop();
-    });
-  };
+  const handleSuggestedTagClick =
+    (
+      tag:
+        string
+    ) => {
+      setExternalTags(
+        (previous) =>
+          previous.includes(tag)
+            ? previous
+            : [
+                ...previous,
+                tag,
+              ]
+      );
+    };
 
-  if (authLoading) {
+  /* ============================================================
+     NAVIGATION
+     ============================================================ */
+
+  const handleNavigate =
+    (
+      tab:
+        MainTab,
+
+      options?: {
+        privateSession?:
+          boolean;
+
+        subTab?:
+          HistorySubTab;
+
+        filterApprovedSnapshots?:
+          boolean;
+
+        highlightDiffId?:
+          string;
+      }
+    ) => {
+      if (
+        options
+          ?.privateSession
+      ) {
+        setPrivateSessionMode(true);
+      } else if (
+        tab ===
+        'journal'
+      ) {
+        setPrivateSessionMode(false);
+      }
+
+      if (
+        options?.subTab
+      ) {
+        setHistorySubTab(
+          options.subTab
+        );
+      }
+
+      setFilterApprovedSnapshots(
+        Boolean(
+          options
+            ?.filterApprovedSnapshots
+        )
+      );
+
+      setHighlightDiffId(
+        options
+          ?.highlightDiffId ??
+          null
+      );
+
+      setActiveTab(tab);
+
+      requestAnimationFrame(
+        () => {
+          scrollPageToTop();
+        }
+      );
+    };
+
+  /* ============================================================
+     LOADING
+     ============================================================ */
+
+  if (
+    authLoading
+  ) {
     return (
       <div className="min-h-screen bg-stone-100 flex flex-col items-center justify-center space-y-3">
+
         <div className="w-10 h-10 rounded-xl bg-amber-800 flex items-center justify-center text-amber-50 shadow-xs">
-          <span className="font-serif font-bold text-lg">M</span>
+          <span className="font-serif font-bold text-lg">
+            M
+          </span>
         </div>
 
         <div className="w-6 h-6 border-2 border-stone-300 border-t-amber-800 rounded-full animate-spin" />
@@ -234,33 +377,57 @@ export default function App() {
     );
   }
 
+  /* ============================================================
+     SIGNED OUT
+     ============================================================ */
+
   if (!user) {
     return (
       <AuthView
         onSuccess={() => {
           setActiveTab('overview');
-          setRefreshCounter((previous) => previous + 1);
 
-          requestAnimationFrame(() => {
-            scrollPageToTop();
-          });
+          setRefreshCounter(
+            (previous) =>
+              previous + 1
+          );
+
+          requestAnimationFrame(
+            () => {
+              scrollPageToTop();
+            }
+          );
         }}
       />
     );
   }
 
+  /* ============================================================
+     APPLICATION
+     ============================================================ */
+
   return (
     <div className="mirrortrace-app-shell min-h-screen flex flex-col justify-between">
+
       <div className="w-full">
+
         <Navbar
           user={user}
           activeTab={activeTab}
-          onTabChange={(tab) => handleNavigate(tab)}
+          onTabChange={(tab) =>
+            handleNavigate(tab)
+          }
           onSignOut={handleSignOut}
         />
 
-        <main className="mirrortrace-app-main max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {activeTab === 'overview' && (
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+          {/* ==================================================
+              OVERVIEW — UNCHANGED
+              ================================================== */}
+
+          {activeTab ===
+            'overview' && (
             <DashboardOverview
               entries={entries}
               snapshots={snapshots}
@@ -270,105 +437,175 @@ export default function App() {
             />
           )}
 
-          {activeTab === 'journal' && (
-            <div className="space-y-6 animate-fade-in">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
+          {/* ==================================================
+              REFLECT & CHAT
+              ================================================== */}
+
+          {activeTab ===
+            'journal' && (
+            <div className="mirrortrace-themed-page mirrortrace-reflect-page space-y-6 animate-fade-in">
+
+              <div className="mirrortrace-page-heading flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-4">
+
                 <div>
-                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
+                  <h1 className="text-xl sm:text-2xl font-serif font-bold">
                     Reflective Space
                   </h1>
-                  <p className="text-xs text-stone-500 font-sans">
-                    Articulate thoughts with the brainstorm companion, or write down your reflection directly.
+
+                  <p className="text-xs font-sans">
+                    Articulate thoughts with the brainstorm
+                    companion, or write down your reflection
+                    directly.
                   </p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                <div className="lg:col-span-6 space-y-6">
+
+                <div className="mirrortrace-themed-column lg:col-span-6 space-y-6">
+
                   <JournalEditor
                     onEntrySaved={handleEntrySaved}
                     externalTags={externalTags}
-                    onClearExternalTags={() => setExternalTags([])}
-                    initialPrivateSession={privateSessionMode}
+                    onClearExternalTags={() =>
+                      setExternalTags([])
+                    }
+                    initialPrivateSession={
+                      privateSessionMode
+                    }
                   />
                 </div>
 
-                <div className="lg:col-span-6">
-                  <BrainstormChat onSuggestedTagClick={handleSuggestedTagClick} />
+                <div className="mirrortrace-themed-column lg:col-span-6">
+
+                  <BrainstormChat
+                    onSuggestedTagClick={
+                      handleSuggestedTagClick
+                    }
+                  />
                 </div>
               </div>
             </div>
           )}
 
-          {activeTab === 'history' && (
-            <div className="space-y-6 animate-fade-in">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
+          {/* ==================================================
+              JOURNAL HISTORY
+              ================================================== */}
+
+          {activeTab ===
+            'history' && (
+            <div className="mirrortrace-themed-page mirrortrace-history-page space-y-6 animate-fade-in">
+
+              <div className="mirrortrace-page-heading flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-4">
+
                 <div>
-                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
+                  <h1 className="text-xl sm:text-2xl font-serif font-bold">
                     Journal History
                   </h1>
-                  <p className="text-xs text-stone-500 font-sans">
-                    All reflections saved securely under your verified Firebase UID.
+
+                  <p className="text-xs font-sans">
+                    All reflections saved securely under your
+                    verified Firebase UID.
                   </p>
                 </div>
               </div>
 
-              <JournalList
-                onRefreshTrigger={refreshCounter}
-                initialSubTab={historySubTab}
-                filterApprovedSnapshots={filterApprovedSnapshots}
-                highlightDiffId={highlightDiffId}
-              />
+              <div className="mirrortrace-themed-column">
+                <JournalList
+                  onRefreshTrigger={refreshCounter}
+                  initialSubTab={historySubTab}
+                  filterApprovedSnapshots={
+                    filterApprovedSnapshots
+                  }
+                  highlightDiffId={highlightDiffId}
+                />
+              </div>
             </div>
           )}
 
-          {activeTab === 'memory' && (
-            <MemoryGovernanceCenter
-              onMemoryChanged={() => {
-                setRefreshCounter((previous) => previous + 1);
-              }}
-            />
+          {/* ==================================================
+              MEMORY GOVERNANCE
+              ================================================== */}
+
+          {activeTab ===
+            'memory' && (
+            <div className="mirrortrace-themed-page mirrortrace-memory-page animate-fade-in">
+              <div className="mirrortrace-themed-column">
+                <MemoryGovernanceCenter
+                  onMemoryChanged={() => {
+                    setRefreshCounter(
+                      (previous) =>
+                        previous + 1
+                    );
+                  }}
+                />
+              </div>
+            </div>
           )}
 
-          {activeTab === 'support' && (
-            <div className="space-y-6 animate-fade-in">
-              <div className="border-b border-stone-200 pb-4">
+          {/* ==================================================
+              SUPPORT
+              ================================================== */}
+
+          {activeTab ===
+            'support' && (
+            <div className="mirrortrace-themed-page mirrortrace-support-page space-y-6 animate-fade-in">
+
+              <div className="mirrortrace-page-heading border-b pb-4">
+
                 <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
+
+                  <h1 className="text-xl sm:text-2xl font-serif font-bold">
                     Customer Support
                   </h1>
-                  <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700">
+
+                  <span className="mirrortrace-theme-chip rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide">
                     Privacy-aware
                   </span>
                 </div>
 
-                <p className="mt-1 text-xs text-stone-500">
-                  Ask for help without exposing your private reflection history.
+                <p className="mt-1 text-xs">
+                  Ask for help without exposing your private
+                  reflection history.
                 </p>
               </div>
 
-              <SupportCenter />
+              <div className="mirrortrace-themed-column">
+                <SupportCenter />
+              </div>
             </div>
           )}
 
-          {activeTab === 'feedback' && (
-            <div className="space-y-6 animate-fade-in">
-              <div className="border-b border-stone-200 pb-4">
+          {/* ==================================================
+              FEEDBACK
+              ================================================== */}
+
+          {activeTab ===
+            'feedback' && (
+            <div className="mirrortrace-themed-page mirrortrace-feedback-page space-y-6 animate-fade-in">
+
+              <div className="mirrortrace-page-heading border-b pb-4">
+
                 <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
+
+                  <h1 className="text-xl sm:text-2xl font-serif font-bold">
                     Feedback
                   </h1>
-                  <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-800">
+
+                  <span className="mirrortrace-theme-chip rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide">
                     Consent controlled
                   </span>
                 </div>
 
-                <p className="mt-1 text-xs text-stone-500">
-                  Share product feedback and decide whether your review may be considered for public display.
+                <p className="mt-1 text-xs">
+                  Share product feedback and decide whether your
+                  review may be considered for public display.
                 </p>
               </div>
 
-              <ProductReviews />
+              <div className="mirrortrace-themed-column">
+                <ProductReviews />
+              </div>
             </div>
           )}
 

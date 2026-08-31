@@ -1,27 +1,40 @@
-MirrorTrace Feature Card Fix
-============================
+MirrorTrace Authenticated Secondary Pages Theme
+=================================================
 
-Replace exactly these two files:
+Replace:
+- src/App.tsx
 
-1. src/components/ScrollArcCard.tsx
-2. src/styles/mirrortrace-motion-and-glass.css
+Add:
+- src/styles/mirrortrace-authenticated-pages.css
 
-No other file is changed.
+This update intentionally does NOT change:
+- Dashboard Overview
+- Admin Dashboard
+- Signed-out landing page
+- business logic
+- API calls
+- authentication
+- journal persistence
 
-What this fixes:
-- feature card text is white
-- cards are square instead of full-width horizontal bars
-- cards remain in two horizontal rows
-- direction="left" cards move left as the page scrolls
-- direction="right" cards move right as the page scrolls
-- each card follows a shallow semicircular arc
-- spring smoothing removes the harsh / laggy feel
-- horizontal manual browsing still works
-- no global UI/background/auth/admin logic is touched
+It themes only:
+- Reflective Space
+- Compose Reflection / Private Session
+- Reflective Brainstorm Companion
+- Journal History
+- Memory
+- Support
+- Feedback
 
-After replacing:
+Visual treatment:
+- white text
+- black/cinematic 30% glass look
+- subtle branch-background haze through cards
+- lighter translucent inner panels
+- consistent borders/shadows with the Overview visual family
+
+After copying:
 npm run lint
 npm run build
 npm run dev
 
-Then hard-refresh Chrome with Ctrl+Shift+R.
+Then Ctrl + Shift + R in Chrome.
