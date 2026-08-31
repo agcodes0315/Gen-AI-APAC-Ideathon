@@ -1,0 +1,386 @@
+/* ============================================================
+   MIRRORTRACE — SIGN-IN / LANDING REFLECTION CARDS
+   SEMICIRCLE / 3D CAROUSEL ANIMATION
+
+   Visual reference:
+   - center card is largest/flattest
+   - cards approaching from either side sit lower and rotate inward
+   - side cards have slightly less opacity and depth
+   - motion follows a shallow semicircular path
+   - existing card content is preserved
+   - no change to page copy, buttons, or data
+
+   Works with the existing classes:
+     .mirrortrace-feature-section
+     .mirrortrace-card-lane
+     .mirrortrace-scroll-row
+     .mirrortrace-arc-card
+     .mirrortrace-scroll-card
+     .mirrortrace-lane-arrow
+   ============================================================ */
+
+:root {
+  --mt-feature-card-size: clamp(285px, 24vw, 350px);
+  --mt-feature-gap: clamp(18px, 2vw, 28px);
+  --mt-arc-height: 86px;
+  --mt-feature-black-30: rgba(0, 0, 0, 0.30);
+  --mt-feature-border: rgba(231, 238, 243, 0.16);
+  --mt-feature-text: #ffffff;
+  --mt-feature-copy: #d4dde4;
+  --mt-feature-amber: #d39445;
+}
+
+/* ============================================================
+   SECTION / LANE
+   ============================================================ */
+
+.mirrortrace-feature-section,
+.mirrortrace-feature-section * {
+  box-sizing: border-box;
+}
+
+.mirrortrace-feature-section {
+  position: relative;
+  perspective: 1400px;
+  perspective-origin: 50% 48%;
+}
+
+.mirrortrace-feature-section h1,
+.mirrortrace-feature-section h2,
+.mirrortrace-feature-section h3,
+.mirrortrace-feature-section h4,
+.mirrortrace-feature-section strong,
+.mirrortrace-feature-section .mirrortrace-lane-heading,
+.mirrortrace-feature-section .mirrortrace-browse-hint {
+  color: var(--mt-feature-text) !important;
+}
+
+.mirrortrace-feature-section p {
+  color: var(--mt-feature-copy) !important;
+}
+
+.mirrortrace-lane-wrap {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.mirrortrace-card-lane {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: clamp(24px, 5vw, 76px);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+  touch-action: pan-x pan-y;
+  padding: calc(var(--mt-arc-height) + 28px) clamp(24px, 5vw, 76px) 58px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.mirrortrace-card-lane::-webkit-scrollbar {
+  display: none;
+}
+
+/* The row itself remains stable; the cards carry the arc motion. */
+.mirrortrace-scroll-row {
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  width: max-content;
+  min-width: max-content;
+  gap: var(--mt-feature-gap);
+  transform: none !important;
+  transform-style: preserve-3d;
+  perspective: 1400px;
+}
+
+/* ============================================================
+   CARD SURFACE
+   ============================================================ */
+
+.mirrortrace-arc-card,
+.mirrortrace-feature-section .mirrortrace-scroll-card {
+  position: relative;
+  width: var(--mt-feature-card-size) !important;
+  min-width: var(--mt-feature-card-size) !important;
+  max-width: var(--mt-feature-card-size) !important;
+  height: var(--mt-feature-card-size) !important;
+  min-height: var(--mt-feature-card-size) !important;
+  flex: 0 0 var(--mt-feature-card-size) !important;
+  display: flex;
+  flex-direction: column;
+  padding: 28px !important;
+
+  border: 1px solid var(--mt-feature-border) !important;
+  border-radius: 28px !important;
+
+  background: var(--mt-feature-black-30) !important;
+  background-color: var(--mt-feature-black-30) !important;
+  background-image: none !important;
+
+  color: var(--mt-feature-text) !important;
+
+  backdrop-filter: blur(2px) !important;
+  -webkit-backdrop-filter: blur(2px) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 18px 42px rgba(0, 0, 0, 0.24) !important;
+
+  scroll-snap-align: center;
+  transform-origin: 50% 100%;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  will-change: transform, opacity, filter;
+
+  /* Start on the center part of the arc. */
+  transform: translate3d(0, 0, 0) rotateZ(0deg) rotateY(0deg) scale(1);
+  opacity: 1;
+
+  animation-name: mt-reflection-card-arc;
+  animation-duration: 7.8s;
+  animation-timing-function: cubic-bezier(.45, 0, .25, 1);
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+/* Staggered phase offsets create a flowing carousel instead of a synchronized jump. */
+.mirrortrace-arc-card:nth-child(1),
+.mirrortrace-scroll-card:nth-child(1) {
+  animation-delay: -5.85s;
+}
+
+.mirrortrace-arc-card:nth-child(2),
+.mirrortrace-scroll-card:nth-child(2) {
+  animation-delay: -3.90s;
+}
+
+.mirrortrace-arc-card:nth-child(3),
+.mirrortrace-scroll-card:nth-child(3) {
+  animation-delay: -1.95s;
+}
+
+.mirrortrace-arc-card:nth-child(4),
+.mirrortrace-scroll-card:nth-child(4) {
+  animation-delay: 0s;
+}
+
+.mirrortrace-arc-card:nth-child(5),
+.mirrortrace-scroll-card:nth-child(5) {
+  animation-delay: -6.825s;
+}
+
+.mirrortrace-arc-card:nth-child(6),
+.mirrortrace-scroll-card:nth-child(6) {
+  animation-delay: -4.875s;
+}
+
+/* ============================================================
+   SEMICIRCULAR PATH
+
+   The card rises into the center of the arc, then descends toward
+   the opposite side. Rotation and depth reinforce the 3D motion
+   visible in the supplied reference video.
+   ============================================================ */
+
+@keyframes mt-reflection-card-arc {
+  0% {
+    transform:
+      translate3d(-92px, 58px, -130px)
+      rotateZ(-6deg)
+      rotateY(15deg)
+      scale(.91);
+    opacity: .68;
+    filter: brightness(.84) saturate(.94);
+  }
+
+  12% {
+    transform:
+      translate3d(-72px, 42px, -92px)
+      rotateZ(-5deg)
+      rotateY(12deg)
+      scale(.94);
+    opacity: .76;
+    filter: brightness(.90) saturate(.97);
+  }
+
+  25% {
+    transform:
+      translate3d(-42px, 22px, -42px)
+      rotateZ(-3deg)
+      rotateY(7deg)
+      scale(.97);
+    opacity: .88;
+    filter: brightness(.96) saturate(1);
+  }
+
+  38% {
+    transform:
+      translate3d(-15px, 7px, -10px)
+      rotateZ(-1deg)
+      rotateY(3deg)
+      scale(.995);
+    opacity: .97;
+    filter: brightness(.99) saturate(1);
+  }
+
+  50% {
+    transform:
+      translate3d(0, 0, 0)
+      rotateZ(0deg)
+      rotateY(0deg)
+      scale(1);
+    opacity: 1;
+    filter: brightness(1) saturate(1.02);
+  }
+
+  62% {
+    transform:
+      translate3d(15px, 7px, -10px)
+      rotateZ(1deg)
+      rotateY(-3deg)
+      scale(.995);
+    opacity: .97;
+    filter: brightness(.99) saturate(1);
+  }
+
+  75% {
+    transform:
+      translate3d(42px, 22px, -42px)
+      rotateZ(3deg)
+      rotateY(-7deg)
+      scale(.97);
+    opacity: .88;
+    filter: brightness(.96) saturate(1);
+  }
+
+  88% {
+    transform:
+      translate3d(72px, 42px, -92px)
+      rotateZ(5deg)
+      rotateY(-12deg)
+      scale(.94);
+    opacity: .76;
+    filter: brightness(.90) saturate(.97);
+  }
+
+  100% {
+    transform:
+      translate3d(92px, 58px, -130px)
+      rotateZ(6deg)
+      rotateY(-15deg)
+      scale(.91);
+    opacity: .68;
+    filter: brightness(.84) saturate(.94);
+  }
+}
+
+/* Keep the interaction responsive without destroying the arc. */
+.mirrortrace-arc-card:hover,
+.mirrortrace-feature-section .mirrortrace-scroll-card:hover {
+  border-color: rgba(211, 148, 69, .40) !important;
+  box-shadow:
+    0 28px 58px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+
+/* ============================================================
+   MANUAL ARROWS
+   ============================================================ */
+
+.mirrortrace-lane-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 30;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 1px solid rgba(231,238,243,.15);
+  border-radius: 999px;
+  background: rgba(0,0,0,.62);
+  color: #ffffff;
+  box-shadow: 0 10px 26px rgba(0,0,0,.24);
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.mirrortrace-lane-arrow:hover {
+  transform: translateY(-50%) scale(1.06);
+  background: rgba(0,0,0,.78);
+  border-color: rgba(211,148,69,.42);
+}
+
+.mirrortrace-lane-arrow-left {
+  left: clamp(8px, 1.2vw, 20px);
+}
+
+.mirrortrace-lane-arrow-right {
+  right: clamp(8px, 1.2vw, 20px);
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 760px) {
+  :root {
+    --mt-feature-card-size: min(82vw, 310px);
+    --mt-arc-height: 54px;
+  }
+
+  .mirrortrace-card-lane {
+    padding:
+      calc(var(--mt-arc-height) + 22px)
+      18px
+      42px;
+  }
+
+  .mirrortrace-scroll-row {
+    gap: 16px;
+  }
+
+  .mirrortrace-arc-card,
+  .mirrortrace-feature-section .mirrortrace-scroll-card {
+    padding: 23px !important;
+    border-radius: 24px !important;
+    animation-duration: 7.2s;
+  }
+
+  .mirrortrace-browse-hint {
+    display: none;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .mirrortrace-arc-card,
+  .mirrortrace-feature-section .mirrortrace-scroll-card,
+  .mirrortrace-lane-arrow,
+  .mirrortrace-lane-arrow:hover {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+}

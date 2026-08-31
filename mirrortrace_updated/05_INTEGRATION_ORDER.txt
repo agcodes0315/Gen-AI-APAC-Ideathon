@@ -1,0 +1,32 @@
+MIRRORTRACE UPDATED UI — INTEGRATION ORDER
+
+1. Keep your existing Overview stylesheet exactly as-is.
+   Do NOT replace it with 03_OVERVIEW_UNCHANGED_DO_NOT_REPLACE.css.
+   That file is included only as a backup/reference copy.
+
+2. Load 02_SHARED_AUTHENTICATED_BACKGROUND_AND_ADMIN_UPDATED.css
+   where your current shared authenticated background/admin stylesheet is loaded.
+
+3. Load 01_AUTHENTICATED_SECONDARY_PAGES_UPDATED.css LAST among the
+   secondary-page theme styles so its !important overrides win.
+
+4. Replace the current reflection-card / motion stylesheet with:
+   04_REFLECTION_CARDS_SEMICIRCLE_ANIMATION.css
+
+5. The reflection-card animation uses the existing classes:
+   .mirrortrace-feature-section
+   .mirrortrace-card-lane
+   .mirrortrace-scroll-row
+   .mirrortrace-arc-card
+   .mirrortrace-scroll-card
+
+6. No React/JS changes are required for the automatic semicircle animation.
+   Existing arrow buttons and manual horizontal scrolling can continue to work.
+
+7. If your app has an even more specific component class for the chat body,
+   the generic .overflow-y-auto / .overflow-auto rules in the Reflect & Chat
+   section are intended to catch it without changing the component markup.
+
+8. The Overview page is intentionally excluded from the new secondary-page
+   rules. Its existing content, layout, cards, hero, Perspective Evolution,
+   Thought Diffs and Quick Actions are not restyled by these new files.

@@ -1,0 +1,480 @@
+/* MIRRORTRACE — SECONDARY PAGES SHARED THEME
+   Replace the secondary-pages stylesheet with this file.
+   Overview is intentionally not targeted.
+*/
+
+:root {
+  --mt-outer-black-30: rgba(0, 0, 0, 0.30);
+  --mt-smoky-black: rgba(0, 0, 0, 0.38);
+  --mt-smoky-black-deep: rgba(0, 0, 0, 0.52);
+  --mt-inner-black: rgba(0, 0, 0, 0.24);
+  --mt-border: rgba(226, 235, 241, 0.16);
+  --mt-border-soft: rgba(226, 235, 241, 0.11);
+  --mt-white: #f8fafc;
+  --mt-copy: #d7e0e7;
+  --mt-muted: #aebbc5;
+  --mt-amber: #d39445;
+  --mt-cactus: #617057;
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) {
+  color: var(--mt-white);
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+),
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) * {
+  box-sizing: border-box;
+}
+
+/* Page headers remain transparent so the shared branch photograph shows. */
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) .mirrortrace-page-heading {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: var(--mt-border) !important;
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) .mirrortrace-page-heading :is(h1,h2,h3,h4,strong) {
+  color: #fff !important;
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) .mirrortrace-page-heading p {
+  color: var(--mt-copy) !important;
+}
+
+/* Universal outer card: exactly the requested 30% black treatment. */
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(
+  .mirrortrace-themed-column > *,
+  .mirrortrace-panel,
+  .mirrortrace-surface,
+  .mirrortrace-card,
+  .mirrortrace-section-card,
+  .mirrortrace-content-card
+) {
+  background: var(--mt-outer-black-30) !important;
+  background-color: var(--mt-outer-black-30) !important;
+  background-image: none !important;
+  border-color: var(--mt-border) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 18px 42px rgba(0,0,0,0.17) !important;
+}
+
+/* Generic Tailwind card surfaces inside these pages become glass. */
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(
+  [class*="rounded-xl"][class*="border"],
+  [class*="rounded-2xl"][class*="border"],
+  [class*="rounded-3xl"][class*="border"],
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-900,
+  .bg-stone-950
+) {
+  background: var(--mt-outer-black-30) !important;
+  background-color: var(--mt-outer-black-30) !important;
+  background-image: none !important;
+  border-color: var(--mt-border) !important;
+  color: #fff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Inner sections: dark smoky black, not solid navy.
+   The background photograph remains visible behind them. */
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(
+  .mirrortrace-inner-panel,
+  .mirrortrace-inner-card,
+  .mirrortrace-content-panel,
+  .mirrortrace-detail-panel,
+  .mirrortrace-empty-state,
+  .mirrortrace-list-panel,
+  .mirrortrace-form-panel,
+  .mirrortrace-help-panel,
+  .mirrortrace-review-panel,
+  .mirrortrace-memory-panel,
+  .mirrortrace-watch-panel,
+  .mirrortrace-chat-body,
+  .mirrortrace-chat-panel
+) {
+  background: var(--mt-smoky-black) !important;
+  background-color: var(--mt-smoky-black) !important;
+  background-image: none !important;
+  border-color: var(--mt-border-soft) !important;
+  backdrop-filter: blur(3px) saturate(104%) !important;
+  -webkit-backdrop-filter: blur(3px) saturate(104%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.025),
+    0 12px 30px rgba(0,0,0,0.14) !important;
+}
+
+/* Existing light semantic panels are converted to the same smoky treatment. */
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(
+  .bg-amber-50,
+  .bg-amber-100,
+  .bg-blue-50,
+  .bg-blue-100,
+  .bg-emerald-50,
+  .bg-emerald-100,
+  .bg-purple-50,
+  .bg-purple-100
+) {
+  background: var(--mt-smoky-black) !important;
+  background-color: var(--mt-smoky-black) !important;
+  background-image: none !important;
+  border-color: var(--mt-border-soft) !important;
+  color: #fff !important;
+}
+
+/* Text */
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(h1,h2,h3,h4,h5,h6,strong,b) {
+  color: #fff !important;
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(p,label,li,td,th) {
+  color: var(--mt-copy);
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(
+  .text-stone-950,.text-stone-900,.text-stone-800,.text-stone-700,
+  .text-gray-900,.text-gray-800,.text-gray-700
+) {
+  color: #fff !important;
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(
+  .text-stone-600,.text-stone-500,.text-stone-400,
+  .text-gray-600,.text-gray-500,.text-gray-400
+) {
+  color: var(--mt-copy) !important;
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(
+  .text-amber-950,.text-amber-900,.text-amber-800,.text-amber-700,.text-amber-600
+) {
+  color: #e7b36f !important;
+}
+
+/* Inputs */
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(input,textarea,select) {
+  background: rgba(0,0,0,0.36) !important;
+  background-color: rgba(0,0,0,0.36) !important;
+  background-image: none !important;
+  color: #fff !important;
+  border-color: var(--mt-border) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.025) !important;
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(input,textarea)::placeholder {
+  color: #9eabb6 !important;
+}
+
+/* Buttons */
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) button {
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(
+  button[class*="bg-white"],
+  button[class*="bg-stone-50"]
+) {
+  background: rgba(255,255,255,0.075) !important;
+  color: #fff !important;
+  border-color: var(--mt-border) !important;
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(
+  button[class*="bg-stone-900"],
+  button[class*="bg-stone-950"]
+) {
+  background: rgba(0,0,0,0.56) !important;
+  color: #fff !important;
+  border-color: var(--mt-border) !important;
+}
+
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) button:hover {
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   REFLECT & CHAT
+   ============================================================ */
+
+.mirrortrace-reflect-page .mirrortrace-themed-column {
+  color: #fff;
+}
+
+/* Compose Reflection outer box */
+.mirrortrace-reflect-page .mirrortrace-themed-column > :first-child {
+  background: var(--mt-outer-black-30) !important;
+  background-color: var(--mt-outer-black-30) !important;
+  background-image: none !important;
+  border-color: var(--mt-border) !important;
+}
+
+/* Reflective Brainstorm Companion outer + inner conversation area */
+.mirrortrace-reflect-page :where(
+  .mirrortrace-brainstorm,
+  .mirrortrace-brainstorm-companion,
+  .mirrortrace-chat,
+  .mirrortrace-chat-container
+) {
+  background: var(--mt-outer-black-30) !important;
+  background-color: var(--mt-outer-black-30) !important;
+  background-image: none !important;
+  border-color: var(--mt-border) !important;
+}
+
+.mirrortrace-reflect-page :where(
+  .mirrortrace-chat-body,
+  .mirrortrace-chat-panel,
+  .mirrortrace-content-panel
+) {
+  background: rgba(0,0,0,0.38) !important;
+  background-color: rgba(0,0,0,0.38) !important;
+  background-image: none !important;
+  backdrop-filter: blur(3px) saturate(104%) !important;
+  -webkit-backdrop-filter: blur(3px) saturate(104%) !important;
+}
+
+/* ============================================================
+   JOURNAL HISTORY
+   ============================================================ */
+
+.mirrortrace-history-page :where(article,section) {
+  border-color: var(--mt-border) !important;
+}
+
+.mirrortrace-history-page table {
+  background: rgba(0,0,0,0.30) !important;
+  background-color: rgba(0,0,0,0.30) !important;
+  color: #fff !important;
+  border-color: var(--mt-border) !important;
+}
+
+.mirrortrace-history-page :where(th,td) {
+  border-color: var(--mt-border-soft) !important;
+  color: var(--mt-copy) !important;
+}
+
+/* ============================================================
+   MEMORY GOVERNANCE
+   ============================================================ */
+
+.mirrortrace-memory-page {
+  color: #fff;
+}
+
+/* Deep black governance surface, while still translucent. */
+.mirrortrace-memory-page :where(
+  .mirrortrace-memory-governance,
+  .mirrortrace-memory-center,
+  .mirrortrace-memory-panel
+) {
+  background: rgba(0,0,0,0.48) !important;
+  background-color: rgba(0,0,0,0.48) !important;
+  background-image: none !important;
+  border-color: var(--mt-border) !important;
+  backdrop-filter: blur(2px) !important;
+  -webkit-backdrop-filter: blur(2px) !important;
+}
+
+.mirrortrace-memory-page :where(
+  .mirrortrace-memory-governance,
+  .mirrortrace-memory-center,
+  .mirrortrace-memory-panel
+) :where(
+  .rounded-xl.border,
+  .rounded-2xl.border,
+  .rounded-3xl.border
+) {
+  background: rgba(0,0,0,0.30) !important;
+  background-color: rgba(0,0,0,0.30) !important;
+  background-image: none !important;
+  border-color: var(--mt-border-soft) !important;
+}
+
+/* ============================================================
+   SUPPORT
+   ============================================================ */
+
+.mirrortrace-support-page .mirrortrace-themed-column {
+  color: #fff;
+}
+
+.mirrortrace-support-page :where(
+  .mirrortrace-support-card,
+  .mirrortrace-help-panel,
+  article,
+  section
+) {
+  border-color: var(--mt-border) !important;
+}
+
+/* ============================================================
+   FEEDBACK
+   ============================================================ */
+
+.mirrortrace-feedback-page .mirrortrace-themed-column {
+  color: #fff;
+}
+
+.mirrortrace-feedback-page :where(
+  .mirrortrace-feedback-card,
+  .mirrortrace-review-card,
+  article,
+  section
+) {
+  border-color: var(--mt-border) !important;
+}
+
+.mirrortrace-feedback-page .text-amber-600 {
+  color: #f2ad4f !important;
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  :is(
+    .mirrortrace-reflect-page,
+    .mirrortrace-history-page,
+    .mirrortrace-memory-page,
+    .mirrortrace-support-page,
+    .mirrortrace-feedback-page
+  ) * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
