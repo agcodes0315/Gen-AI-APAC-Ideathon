@@ -1,0 +1,650 @@
+/* ============================================================
+   MIRRORTRACE — AUTHENTICATED BLACK 50% THEME
+   FINAL OVERRIDE
+   ------------------------------------------------------------
+   Scope:
+   ✓ Authenticated user Overview
+   ✓ Reflect & Chat
+   ✓ Journal History
+   ✓ Memory
+   ✓ Support
+   ✓ Feedback
+   ✓ Admin Security & Operations
+   ✓ Admin cards / tables / metrics / moderation
+   ✗ DOES NOT TARGET THE SIGN-IN / PUBLIC LANDING PAGE
+
+   Design target:
+   - remove dark-blue block surfaces
+   - use black / near-black with ~50% transparency
+   - keep the existing branch/nature background visible
+   - small haze only where useful
+   - preserve current layout, spacing, functionality and motion
+   ============================================================ */
+
+:root {
+  --mt-auth-black-50: rgba(0, 0, 0, 0.50);
+  --mt-auth-black-55: rgba(0, 0, 0, 0.55);
+  --mt-auth-black-62: rgba(0, 0, 0, 0.62);
+  --mt-auth-black-38: rgba(0, 0, 0, 0.38);
+  --mt-auth-inner-light: rgba(255, 255, 255, 0.075);
+
+  --mt-auth-border: rgba(235, 241, 245, 0.16);
+  --mt-auth-border-strong: rgba(235, 241, 245, 0.24);
+
+  --mt-auth-text: #ffffff;
+  --mt-auth-copy: #dbe3e9;
+  --mt-auth-muted: #aeb9c3;
+
+  --mt-auth-amber: #d99a4c;
+  --mt-auth-cactus: #758467;
+}
+
+/* ============================================================
+   1. AUTHENTICATED PAGE ROOTS ONLY
+   ============================================================ */
+
+/*
+ * These selectors exist only after login / in the admin control room.
+ * The signed-out AuthView / landing page is therefore untouched.
+ */
+
+.mirrortrace-app-shell,
+.mirrortrace-admin-page,
+.mirrortrace-admin-overlay {
+  color: var(--mt-auth-text);
+}
+
+/* Keep the authenticated nature/branch background visible. */
+.mirrortrace-app-main,
+.mirrortrace-dashboard-overview,
+.mirrortrace-themed-page,
+.mirrortrace-history-page,
+.mirrortrace-reflect-page,
+.mirrortrace-memory-page,
+.mirrortrace-support-page,
+.mirrortrace-feedback-page,
+.mirrortrace-memory-governance,
+.mirrortrace-admin-dashboard {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* ============================================================
+   2. USER OVERVIEW — HERO / "YOUR THINKING, VERSIONED."
+   ============================================================ */
+
+.mirrortrace-app-shell .mirrortrace-user-hero {
+  background: var(--mt-auth-black-50) !important;
+  background-color: var(--mt-auth-black-50) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(2.5px) saturate(104%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(104%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 20px 46px rgba(0, 0, 0, 0.20) !important;
+}
+
+/* Remove old hero image/overlay pseudo layers if any legacy CSS is still loaded. */
+.mirrortrace-app-shell .mirrortrace-user-hero::before,
+.mirrortrace-app-shell .mirrortrace-user-hero::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+.mirrortrace-app-shell .mirrortrace-user-hero h1 {
+  color: #ffffff !important;
+}
+
+.mirrortrace-app-shell .mirrortrace-user-hero h1 span,
+.mirrortrace-app-shell .mirrortrace-user-hero .mirrortrace-accent-text {
+  color: var(--mt-auth-amber) !important;
+}
+
+.mirrortrace-app-shell .mirrortrace-user-hero p {
+  color: var(--mt-auth-copy) !important;
+}
+
+/* ============================================================
+   3. ADMIN — SECURITY & OPERATIONS HERO
+   ============================================================ */
+
+.mirrortrace-app-shell .mirrortrace-admin-hero,
+.mirrortrace-admin-page .mirrortrace-admin-hero {
+  background: var(--mt-auth-black-50) !important;
+  background-color: var(--mt-auth-black-50) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(2.5px) saturate(104%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(104%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 20px 46px rgba(0, 0, 0, 0.20) !important;
+}
+
+.mirrortrace-app-shell .mirrortrace-admin-hero::before,
+.mirrortrace-app-shell .mirrortrace-admin-hero::after,
+.mirrortrace-admin-page .mirrortrace-admin-hero::before,
+.mirrortrace-admin-page .mirrortrace-admin-hero::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+.mirrortrace-admin-hero :is(h1, h2, h3, strong) {
+  color: #ffffff !important;
+}
+
+.mirrortrace-admin-hero p {
+  color: var(--mt-auth-copy) !important;
+}
+
+/* Privacy Boundary = inner section, lighter glass than the outer hero. */
+.mirrortrace-admin-hero .mirrortrace-admin-boundary,
+.mirrortrace-admin-hero .bg-emerald-300\/10 {
+  background: var(--mt-auth-inner-light) !important;
+  background-color: var(--mt-auth-inner-light) !important;
+
+  border-color: var(--mt-auth-border-strong) !important;
+
+  backdrop-filter: blur(3px) saturate(105%) !important;
+  -webkit-backdrop-filter: blur(3px) saturate(105%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.045),
+    0 10px 26px rgba(0,0,0,0.12) !important;
+}
+
+/* ============================================================
+   4. UNIVERSAL AUTHENTICATED CARD RECIPE
+   ============================================================ */
+
+/*
+ * Main cards are black 50%.
+ * This replaces dark-blue Tailwind/legacy card backgrounds.
+ */
+
+.mirrortrace-app-shell
+:where(
+  .mirrortrace-stat-card,
+  .mirrortrace-action-card,
+  .mirrortrace-diff-feature,
+  .mirrortrace-admin-metric,
+  .mirrortrace-admin-surface,
+  .mt-glass
+),
+.mirrortrace-admin-page
+:where(
+  .mirrortrace-admin-metric,
+  .mirrortrace-admin-surface,
+  .mt-glass
+) {
+  background: var(--mt-auth-black-50) !important;
+  background-color: var(--mt-auth-black-50) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(2.5px) saturate(104%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(104%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 14px 32px rgba(0,0,0,0.18) !important;
+
+  color: var(--mt-auth-text) !important;
+}
+
+/* ============================================================
+   5. CATCH LEGACY / TAILWIND CARD SURFACES INSIDE AUTH PAGES
+   ============================================================ */
+
+/*
+ * This is intentionally scoped only to known authenticated page roots.
+ * It catches the existing .bg-white / .bg-stone-* card classes that
+ * were producing navy/dark-blue blocks.
+ */
+
+.mirrortrace-dashboard-overview
+:where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-900,
+  .bg-stone-950
+),
+.mirrortrace-themed-page
+:where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-900,
+  .bg-stone-950
+),
+.mirrortrace-memory-governance
+:where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-900,
+  .bg-stone-950
+),
+.mirrortrace-admin-dashboard
+:where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-900,
+  .bg-stone-950
+) {
+  background: var(--mt-auth-black-50) !important;
+  background-color: var(--mt-auth-black-50) !important;
+  background-image: none !important;
+
+  color: var(--mt-auth-text) !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(2.5px) saturate(104%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(104%) !important;
+}
+
+/* Rounded bordered blocks are also cards in many of the components. */
+.mirrortrace-dashboard-overview
+:where(
+  [class*="rounded-xl"][class*="border"],
+  [class*="rounded-2xl"][class*="border"],
+  [class*="rounded-3xl"][class*="border"]
+),
+.mirrortrace-themed-page
+:where(
+  [class*="rounded-xl"][class*="border"],
+  [class*="rounded-2xl"][class*="border"],
+  [class*="rounded-3xl"][class*="border"]
+),
+.mirrortrace-memory-governance
+:where(
+  [class*="rounded-xl"][class*="border"],
+  [class*="rounded-2xl"][class*="border"],
+  [class*="rounded-3xl"][class*="border"]
+),
+.mirrortrace-admin-dashboard
+:where(
+  [class*="rounded-xl"][class*="border"],
+  [class*="rounded-2xl"][class*="border"],
+  [class*="rounded-3xl"][class*="border"]
+) {
+  background: var(--mt-auth-black-50) !important;
+  background-color: var(--mt-auth-black-50) !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  color: var(--mt-auth-text) !important;
+
+  backdrop-filter: blur(2.5px) saturate(104%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(104%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 14px 30px rgba(0,0,0,0.16) !important;
+}
+
+/* ============================================================
+   6. INNER SECTIONS — LIGHTER GLASS
+   ============================================================ */
+
+/*
+ * Inner content areas are intentionally lighter/translucent so there
+ * is a visible hierarchy between outer card and nested section.
+ */
+
+.mirrortrace-app-shell
+:where(
+  .bg-amber-50,
+  .bg-amber-100,
+  .bg-blue-50,
+  .bg-blue-100,
+  .bg-emerald-50,
+  .bg-emerald-100,
+  .bg-purple-50,
+  .bg-purple-100
+),
+.mirrortrace-admin-page
+:where(
+  .bg-amber-50,
+  .bg-amber-100,
+  .bg-blue-50,
+  .bg-blue-100,
+  .bg-emerald-50,
+  .bg-emerald-100,
+  .bg-purple-50,
+  .bg-purple-100
+) {
+  background: var(--mt-auth-inner-light) !important;
+  background-color: var(--mt-auth-inner-light) !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  color: var(--mt-auth-text) !important;
+
+  backdrop-filter: blur(2px) saturate(104%) !important;
+  -webkit-backdrop-filter: blur(2px) saturate(104%) !important;
+}
+
+/* ============================================================
+   7. REFLECT & CHAT
+   ============================================================ */
+
+.mirrortrace-reflect-page {
+  color: var(--mt-auth-text) !important;
+}
+
+.mirrortrace-reflect-page
+:where(
+  article,
+  section,
+  form
+) {
+  border-color: var(--mt-auth-border);
+}
+
+/* Compose Reflection + Brainstorm cards */
+.mirrortrace-reflect-page
+> .grid
+> div
+> * {
+  color: var(--mt-auth-text);
+}
+
+/* ============================================================
+   8. JOURNAL HISTORY
+   ============================================================ */
+
+.mirrortrace-history-page {
+  color: var(--mt-auth-text);
+}
+
+.mirrortrace-history-page
+:where(
+  article,
+  section,
+  table,
+  thead,
+  tbody,
+  tr,
+  th,
+  td
+) {
+  border-color: var(--mt-auth-border) !important;
+}
+
+/* ============================================================
+   9. MEMORY
+   ============================================================ */
+
+.mirrortrace-memory-page,
+.mirrortrace-memory-governance {
+  color: var(--mt-auth-text) !important;
+}
+
+/* ============================================================
+   10. SUPPORT
+   ============================================================ */
+
+.mirrortrace-support-page {
+  color: var(--mt-auth-text) !important;
+}
+
+/* ============================================================
+   11. FEEDBACK / REVIEWS / MODERATION
+   ============================================================ */
+
+.mirrortrace-feedback-page {
+  color: var(--mt-auth-text) !important;
+}
+
+/* ============================================================
+   12. TEXT — REMOVE DARK/NAVY TEXT ON AUTHENTICATED PAGES
+   ============================================================ */
+
+.mirrortrace-dashboard-overview
+:where(
+  h1,h2,h3,h4,strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800,
+  .text-stone-700
+),
+.mirrortrace-themed-page
+:where(
+  h1,h2,h3,h4,strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800,
+  .text-stone-700
+),
+.mirrortrace-memory-governance
+:where(
+  h1,h2,h3,h4,strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800,
+  .text-stone-700
+),
+.mirrortrace-admin-dashboard
+:where(
+  h1,h2,h3,h4,strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800,
+  .text-stone-700
+) {
+  color: var(--mt-auth-text) !important;
+}
+
+.mirrortrace-dashboard-overview
+:where(
+  p,
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+),
+.mirrortrace-themed-page
+:where(
+  p,
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+),
+.mirrortrace-memory-governance
+:where(
+  p,
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+),
+.mirrortrace-admin-dashboard
+:where(
+  p,
+  td,
+  th,
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+) {
+  color: var(--mt-auth-copy) !important;
+}
+
+/* ============================================================
+   13. INPUTS
+   ============================================================ */
+
+.mirrortrace-themed-page
+:where(input, textarea, select),
+.mirrortrace-memory-governance
+:where(input, textarea, select),
+.mirrortrace-admin-dashboard
+:where(input, textarea, select) {
+  background:
+    rgba(0, 0, 0, 0.42) !important;
+
+  color:
+    #ffffff !important;
+
+  border-color:
+    var(--mt-auth-border) !important;
+
+  backdrop-filter:
+    blur(2px);
+
+  -webkit-backdrop-filter:
+    blur(2px);
+}
+
+.mirrortrace-themed-page
+:where(input, textarea)::placeholder,
+.mirrortrace-memory-governance
+:where(input, textarea)::placeholder,
+.mirrortrace-admin-dashboard
+:where(input, textarea)::placeholder {
+  color:
+    #9faab4 !important;
+}
+
+/* ============================================================
+   14. BUTTONS
+   ============================================================ */
+
+/* Dark primary buttons */
+.mirrortrace-app-shell
+button[class*="bg-stone-900"],
+.mirrortrace-app-shell
+button[class*="bg-stone-950"],
+.mirrortrace-admin-page
+button[class*="bg-stone-900"],
+.mirrortrace-admin-page
+button[class*="bg-stone-950"] {
+  background:
+    rgba(0, 0, 0, 0.72) !important;
+
+  color:
+    #ffffff !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+}
+
+/* Light buttons become translucent instead of white/navy bricks */
+.mirrortrace-themed-page
+button[class*="bg-white"],
+.mirrortrace-memory-governance
+button[class*="bg-white"],
+.mirrortrace-admin-dashboard
+button[class*="bg-white"] {
+  background:
+    rgba(255,255,255,0.08) !important;
+
+  color:
+    #ffffff !important;
+
+  border-color:
+    rgba(255,255,255,0.16) !important;
+}
+
+/* ============================================================
+   15. HOVER
+   ============================================================ */
+
+.mirrortrace-dashboard-overview
+:where(
+  .mirrortrace-stat-card,
+  .mirrortrace-action-card
+),
+.mirrortrace-themed-page
+:where(
+  [class*="rounded-xl"][class*="border"],
+  [class*="rounded-2xl"][class*="border"],
+  [class*="rounded-3xl"][class*="border"]
+),
+.mirrortrace-admin-dashboard
+:where(
+  .mirrortrace-admin-metric,
+  .mirrortrace-admin-surface
+) {
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.mirrortrace-dashboard-overview
+:where(
+  .mirrortrace-stat-card,
+  .mirrortrace-action-card
+):hover,
+.mirrortrace-admin-dashboard
+:where(
+  .mirrortrace-admin-metric,
+  .mirrortrace-admin-surface
+):hover {
+  background:
+    rgba(0, 0, 0, 0.58) !important;
+
+  border-color:
+    rgba(173, 194, 158, 0.34) !important;
+}
+
+/* ============================================================
+   16. PERFORMANCE
+   ============================================================ */
+
+.mirrortrace-app-shell,
+.mirrortrace-admin-page,
+.mirrortrace-admin-overlay {
+  background-attachment:
+    scroll !important;
+}
+
+/* ============================================================
+   17. MOBILE
+   ============================================================ */
+
+@media (max-width: 760px) {
+  .mirrortrace-app-shell .mirrortrace-user-hero,
+  .mirrortrace-app-shell .mirrortrace-admin-hero,
+  .mirrortrace-admin-page .mirrortrace-admin-hero,
+  .mirrortrace-dashboard-overview
+  :where(
+    .mirrortrace-stat-card,
+    .mirrortrace-action-card
+  ),
+  .mirrortrace-themed-page
+  :where(
+    [class*="rounded-xl"][class*="border"],
+    [class*="rounded-2xl"][class*="border"],
+    [class*="rounded-3xl"][class*="border"]
+  ),
+  .mirrortrace-admin-dashboard
+  :where(
+    .mirrortrace-admin-metric,
+    .mirrortrace-admin-surface
+  ) {
+    backdrop-filter:
+      blur(2px)
+      saturate(103%) !important;
+
+    -webkit-backdrop-filter:
+      blur(2px)
+      saturate(103%) !important;
+  }
+}

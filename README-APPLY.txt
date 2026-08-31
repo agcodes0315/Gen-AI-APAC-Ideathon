@@ -1,53 +1,64 @@
-MIRRORTRACE SECONDARY PAGE THEME — APPLY THIS EXACTLY
-=====================================================
+MIRRORTRACE — AUTHENTICATED BLACK 50% THEME
+================================================
 
-This package changes ONLY the authenticated secondary pages:
-- Reflective Space
-- Compose Reflection / Private Session
-- Reflective Brainstorm Companion
-- Journal History
-- Memory
-- Support
-- Feedback
+This package intentionally changes ONLY authenticated UI surfaces.
 
-It intentionally does NOT change:
-- Dashboard Overview
-- Admin Dashboard
-- Signed-out landing page
-- authentication
-- API calls
-- journal / memory / support business logic
+CHANGES:
+- User Overview outer hero -> black 50% translucent surface
+- Overview cards -> black 50% translucent surfaces
+- Reflect & Chat -> black 50% card surfaces
+- Journal History -> black 50% card surfaces
+- Memory -> black 50% card surfaces
+- Support -> black 50% card surfaces
+- Feedback -> black 50% card surfaces
+- Admin Security & Operations hero -> black 50%
+- Admin metrics/cards/tables -> black 50%
+- Privacy Boundary / nested panels -> lighter glass so hierarchy remains visible
 
-FILES TO REPLACE / ADD
-----------------------
-1. Replace:
-   src/App.tsx
+NOT CHANGED:
+- Sign-in / public landing page
+- Authentication
+- APIs
+- Firebase
+- journal logic
+- Gemini logic
+- notifications
+- layout
+- motion
 
-2. Add:
-   src/styles/mirrortrace-authenticated-pages.css
+HOW TO APPLY
+------------
 
-WHY THE PREVIOUS ATTEMPT LOOKED UNCHANGED
------------------------------------------
-The styles need a guaranteed import and a reliable wrapper around each target page.
-This App.tsx imports the stylesheet directly and adds scoped wrapper classes, so the
-CSS can override the existing Tailwind bg-white/bg-stone-* surfaces inside those
-pages without touching Overview/Admin/AuthView.
+1. Copy:
+   src/styles/mirrortrace-authenticated-black-50.css
 
-AFTER COPYING
--------------
-Stop Vite completely, then run:
+2. Import it LAST among your authenticated CSS imports.
 
-npm run lint
-npm run build
-npm run dev
+Recommended:
+   in src/App.tsx, put this CSS import at the very top:
 
-Then hard refresh Chrome:
-Ctrl + Shift + R
+   import './styles/mirrortrace-authenticated-black-50.css';
 
-EXPECTED LOOK
--------------
-- outer cards: cinematic dark / black translucent surface
-- inner panels: lighter hazy glass
-- text: white / soft gray
-- branch background remains visible through cards
-- no changes to Overview or Admin Dashboard
+If other stylesheet imports exist in App.tsx, this one MUST be after them.
+
+3. If AdminDashboard.tsx imports old visual CSS files directly, REMOVE those visual CSS imports from AdminDashboard.tsx.
+   Do not remove JS/TS imports.
+
+4. Run:
+   npm run lint
+   npm run build
+   npm run dev
+
+5. Hard refresh:
+   Ctrl + Shift + R
+
+IMPORTANT:
+This stylesheet is deliberately scoped to:
+- .mirrortrace-app-shell
+- .mirrortrace-dashboard-overview
+- .mirrortrace-themed-page
+- .mirrortrace-memory-governance
+- .mirrortrace-admin-dashboard
+- .mirrortrace-admin-page
+
+It does NOT target .mirrortrace-auth-page, so the sign-in page is unchanged.

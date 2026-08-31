@@ -1,40 +1,22 @@
-MirrorTrace Authenticated Secondary Pages Theme
-=================================================
+MIRRORTRACE BLACK-50 HARD FIX
+============================
 
-Replace:
-- src/App.tsx
+This version does NOT create another stylesheet import.
 
-Add:
-- src/styles/mirrortrace-authenticated-pages.css
+It directly appends the final override to src/index.css, which your project
+already loads. This avoids the import-order problem that kept the navy cards.
 
-This update intentionally does NOT change:
-- Dashboard Overview
-- Admin Dashboard
-- Signed-out landing page
-- business logic
-- API calls
-- authentication
-- journal persistence
+1. Extract this ZIP into your MirrorTrace project root.
+2. Run:
 
-It themes only:
-- Reflective Space
-- Compose Reflection / Private Session
-- Reflective Brainstorm Companion
-- Journal History
-- Memory
-- Support
-- Feedback
+powershell -ExecutionPolicy Bypass -File .\scripts\apply-black50-to-index.ps1
 
-Visual treatment:
-- white text
-- black/cinematic 30% glass look
-- subtle branch-background haze through cards
-- lighter translucent inner panels
-- consistent borders/shadows with the Overview visual family
+3. Run:
 
-After copying:
-npm run lint
-npm run build
 npm run dev
 
-Then Ctrl + Shift + R in Chrome.
+4. Hard refresh browser:
+
+Ctrl + Shift + R
+
+The sign-in/public page is not targeted.
