@@ -1,0 +1,406 @@
+/* ============================================================
+   MIRRORTRACE — PUBLIC LANDING + FEATURE MOTION
+   File: src/styles/mirrortrace-public.css
+
+   KEEP THIS AS THE ONLY PUBLIC/LANDING VISUAL OVERRIDE FILE.
+
+   Scope:
+   - signed-out AuthView / landing page only
+   - one shared image from Features -> Security -> Reviews
+   - feature-card two-row horizontal layout
+   - smooth arc-card motion support
+   - hero/video section is not restyled here
+
+   Performance:
+   - NO background-attachment: fixed
+   - NO page-wide backdrop blur
+   - native vertical scrolling
+   ============================================================ */
+
+:root {
+  --mt-landing-shared-image: url("/hero/mirrortrace-poster.jpeg");
+
+  --mt-feature-card-size: clamp(285px, 24vw, 350px);
+
+  --mt-feature-card-bg:
+    linear-gradient(
+      145deg,
+      rgba(6, 12, 18, 0.76),
+      rgba(11, 19, 25, 0.68)
+    );
+
+  --mt-feature-card-border: rgba(231, 238, 243, 0.16);
+  --mt-feature-card-text: #ffffff;
+  --mt-feature-card-copy: #d4dde4;
+}
+
+/* ============================================================
+   NORMAL PAGE SCROLL
+   ============================================================ */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  overscroll-behavior-y: auto;
+}
+
+/* ============================================================
+   ONE BACKGROUND FROM FEATURES TO END
+   ============================================================ */
+
+.mirrortrace-feature-section,
+#security,
+.mirrortrace-security-clean,
+#reviews,
+.mirrortrace-reviews-clean,
+.mirrortrace-auth-page .mirrortrace-section-glass {
+  background-image:
+    linear-gradient(
+      rgba(7, 12, 17, 0.62),
+      rgba(7, 12, 17, 0.72)
+    ),
+    var(--mt-landing-shared-image) !important;
+
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+
+  /*
+   * IMPORTANT:
+   * fixed backgrounds were one of the causes of heavy scrolling.
+   */
+  background-attachment: scroll !important;
+}
+
+/* Remove section-specific old pseudo-image layers. */
+.mirrortrace-feature-section::before,
+.mirrortrace-feature-section::after,
+#security::before,
+#security::after,
+#reviews::before,
+#reviews::after {
+  background-image: none !important;
+}
+
+/* ============================================================
+   LANDING CARDS
+   ============================================================ */
+
+.mirrortrace-feature-section .mirrortrace-scroll-card,
+#security article,
+#security .mirrortrace-security-card,
+#reviews .mirrortrace-review-card {
+  background: rgba(8, 14, 20, 0.58) !important;
+
+  border-color: rgba(224, 234, 240, 0.14) !important;
+
+  /*
+   * Small card-local haze only.
+   */
+  backdrop-filter: blur(3px) saturate(105%) !important;
+  -webkit-backdrop-filter: blur(3px) saturate(105%) !important;
+}
+
+/* ============================================================
+   FEATURE SECTION TYPOGRAPHY
+   ============================================================ */
+
+.mirrortrace-feature-section,
+.mirrortrace-feature-section * {
+  box-sizing: border-box;
+}
+
+.mirrortrace-feature-section h1,
+.mirrortrace-feature-section h2,
+.mirrortrace-feature-section h3,
+.mirrortrace-feature-section h4,
+.mirrortrace-feature-section strong,
+.mirrortrace-feature-section .mirrortrace-lane-heading,
+.mirrortrace-feature-section .mirrortrace-browse-hint {
+  color: #ffffff !important;
+}
+
+.mirrortrace-feature-section p {
+  color: var(--mt-feature-card-copy) !important;
+}
+
+.mirrortrace-feature-section .mirrortrace-lane-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  padding:
+    0
+    clamp(24px, 5vw, 76px)
+    12px;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   HORIZONTAL FEATURE ROWS
+   ============================================================ */
+
+.mirrortrace-lane-wrap {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.mirrortrace-card-lane {
+  position: relative;
+
+  width: 100%;
+  max-width: 100%;
+
+  overflow-x: auto;
+  overflow-y: visible;
+
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: clamp(24px, 5vw, 76px);
+
+  -webkit-overflow-scrolling: touch;
+
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+
+  touch-action: pan-x pan-y;
+
+  padding:
+    34px
+    clamp(24px, 5vw, 76px)
+    42px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.mirrortrace-card-lane::-webkit-scrollbar {
+  display: none;
+}
+
+.mirrortrace-scroll-row {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  width: max-content;
+  min-width: max-content;
+
+  gap: clamp(18px, 2vw, 28px);
+
+  /*
+   * ScrollArcCard owns the transform animation.
+   * Do not animate the entire row.
+   */
+  transform: none !important;
+}
+
+/* ============================================================
+   SQUARE FEATURE CARDS
+   ============================================================ */
+
+.mirrortrace-arc-card,
+.mirrortrace-feature-section .mirrortrace-scroll-card {
+  position: relative;
+
+  width: var(--mt-feature-card-size) !important;
+  min-width: var(--mt-feature-card-size) !important;
+  max-width: var(--mt-feature-card-size) !important;
+
+  height: var(--mt-feature-card-size) !important;
+  min-height: var(--mt-feature-card-size) !important;
+
+  flex: 0 0 var(--mt-feature-card-size) !important;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 28px !important;
+
+  border: 1px solid var(--mt-feature-card-border) !important;
+  border-radius: 28px !important;
+
+  background: var(--mt-feature-card-bg) !important;
+  background-color: rgba(7, 13, 19, 0.72) !important;
+
+  color: var(--mt-feature-card-text) !important;
+
+  /*
+   * No blur on moving cards: transform animation stays much smoother.
+   */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 18px 42px rgba(0, 0, 0, 0.24) !important;
+
+  scroll-snap-align: center;
+
+  transform-origin: center center;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+
+  will-change: transform;
+}
+
+.mirrortrace-arc-card h1,
+.mirrortrace-arc-card h2,
+.mirrortrace-arc-card h3,
+.mirrortrace-arc-card h4,
+.mirrortrace-arc-card strong,
+.mirrortrace-feature-section .mirrortrace-scroll-card h1,
+.mirrortrace-feature-section .mirrortrace-scroll-card h2,
+.mirrortrace-feature-section .mirrortrace-scroll-card h3,
+.mirrortrace-feature-section .mirrortrace-scroll-card h4,
+.mirrortrace-feature-section .mirrortrace-scroll-card strong {
+  color: #ffffff !important;
+}
+
+.mirrortrace-arc-card p,
+.mirrortrace-feature-section .mirrortrace-scroll-card p {
+  color: var(--mt-feature-card-copy) !important;
+}
+
+.mirrortrace-arc-card span:not([class*="text-"]),
+.mirrortrace-feature-section
+.mirrortrace-scroll-card
+span:not([class*="text-"]) {
+  color: #e7edf2;
+}
+
+.mirrortrace-arc-card > :first-child,
+.mirrortrace-feature-section
+.mirrortrace-scroll-card
+> :first-child {
+  margin-top: 0;
+}
+
+.mirrortrace-arc-card > :last-child,
+.mirrortrace-feature-section
+.mirrortrace-scroll-card
+> :last-child {
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+/* ============================================================
+   FEATURE CARD HOVER
+   ============================================================ */
+
+.mt-hover-pop {
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background-color 220ms ease;
+}
+
+.mt-hover-pop:hover {
+  border-color: rgba(211, 148, 69, 0.40) !important;
+
+  box-shadow:
+    0 28px 58px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ============================================================
+   MANUAL ROW ARROWS
+   ============================================================ */
+
+.mirrortrace-lane-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 30;
+
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  transform: translateY(-50%);
+
+  border: 1px solid rgba(231, 238, 243, 0.15);
+  border-radius: 999px;
+
+  background: rgba(7, 13, 19, 0.84);
+  color: #ffffff;
+
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.24);
+
+  cursor: pointer;
+
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.mirrortrace-lane-arrow:hover {
+  transform: translateY(-50%) scale(1.06);
+  background: rgba(12, 21, 28, 0.96);
+  border-color: rgba(211, 148, 69, 0.42);
+}
+
+.mirrortrace-lane-arrow-left {
+  left: clamp(8px, 1.2vw, 20px);
+}
+
+.mirrortrace-lane-arrow-right {
+  right: clamp(8px, 1.2vw, 20px);
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 760px) {
+  :root {
+    --mt-feature-card-size: min(82vw, 310px);
+  }
+
+  .mirrortrace-card-lane {
+    padding: 26px 18px 34px;
+  }
+
+  .mirrortrace-scroll-row {
+    gap: 16px;
+  }
+
+  .mirrortrace-arc-card,
+  .mirrortrace-feature-section .mirrortrace-scroll-card {
+    padding: 23px !important;
+    border-radius: 24px !important;
+  }
+
+  .mirrortrace-browse-hint {
+    display: none;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .mirrortrace-arc-card,
+  .mt-hover-pop,
+  .mt-hover-pop:hover {
+    transform: none !important;
+    transition: none !important;
+  }
+}
