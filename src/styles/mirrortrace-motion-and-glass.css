@@ -1,145 +1,253 @@
 /* ============================================================
-   MIRRORTRACE — SMOOTH SCROLL + UNIVERSAL GLASS SYSTEM
-   Append this file's import AFTER mirrortrace-clean-glass.css
-   and mirrortrace-authenticated-haze.css in every file that
-   already imports those two, e.g.:
+   MIRRORTRACE — MOTION + BLACK GLASS
+   FULL REPLACEMENT
 
-     import '../styles/mirrortrace-clean-glass.css';
-     import '../styles/mirrortrace-authenticated-haze.css';
-     import '../styles/mirrortrace-motion-and-glass.css';
-
-   This file does NOT redefine anything that already exists in
-   your two current stylesheets — it only ADDS the two things
-   that were missing:
-     1. real inertial smooth scrolling (not just anchor-jump)
-     2. a universal glass-card utility so ANY card, current or
-        future, automatically gets the same 40%-hue + dark
-        overlay look as the hero images, without you having to
-        hand-write a new block every time you add a component.
+   Goals:
+   - subtle black cinematic hue on cards
+   - background remains visible through cards
+   - no expensive large-area blur
+   - smooth hover motion
+   - native vertical scrolling remains untouched
    ============================================================ */
 
+:root {
+  --mt-black-glass: rgba(7, 13, 19, 0.69);
+  --mt-black-glass-soft: rgba(10, 18, 25, 0.61);
+  --mt-black-glass-hover: rgba(12, 21, 28, 0.76);
+  --mt-black-glass-border: rgba(231, 238, 243, 0.14);
+  --mt-black-glass-border-hover: rgba(133, 151, 119, 0.44);
+  --mt-black-glass-text: #f4f7f9;
+  --mt-black-glass-muted: #c1ccd4;
+}
+
 /* ------------------------------------------------------------
-   1. SMOOTH SCROLL
+   PAGE / ANCHOR SCROLL
    ------------------------------------------------------------ */
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 96px; /* keeps sticky navbar from covering anchors */
+  scroll-padding-top: 88px;
 }
 
-/* Momentum / rubber-banding feel on trackpads + touch */
 body {
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: auto;
 }
 
-/* The horizontally-scrolling feature lanes on the landing page
-   get their own smooth + snap behaviour so dragging/arrow-clicking
-   feels deliberate rather than jumpy. */
+/* ------------------------------------------------------------
+   HORIZONTAL FEATURE LANES
+   ------------------------------------------------------------ */
+
 .mirrortrace-card-lane {
+  position: relative;
+  width: 100%;
+  max-width: 100vw;
+
+  overflow-x: auto;
+  overflow-y: visible;
+
   scroll-behavior: smooth;
   scroll-snap-type: x proximity;
+  scroll-padding-inline: clamp(22px, 5vw, 76px);
+
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+  touch-action: pan-x pan-y;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  padding:
+    18px
+    clamp(22px, 5vw, 76px)
+    24px;
+}
+
+.mirrortrace-card-lane::-webkit-scrollbar {
+  display: none;
+}
+
+.mirrortrace-scroll-row {
+  display: flex;
+  width: max-content;
+  gap: 20px;
+  align-items: center;
 }
 
 .mirrortrace-arc-card {
   scroll-snap-align: center;
+  transform-origin: 50% 50%;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* ------------------------------------------------------------
+   UNIVERSAL BLACK GLASS
+   ------------------------------------------------------------ */
+
+.mt-glass {
+  --mt-glass-hue: 210;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  border: 1px solid var(--mt-black-glass-border);
+  border-radius: 26px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(6, 12, 18, 0.73),
+      rgba(11, 19, 25, 0.64)
+    );
+
+  color: var(--mt-black-glass-text);
+
+  /* Deliberately no backdrop-filter here.
+     A translucent black surface gives the same visual depth without
+     forcing the browser to re-blur the branch image every scroll frame. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 16px 36px rgba(0, 0, 0, 0.22);
+}
+
+.mt-glass-warm {
+  --mt-glass-hue: 32;
+}
+
+.mt-glass-cool {
+  --mt-glass-hue: 205;
+}
+
+.mt-glass-brand {
+  --mt-glass-hue: 95;
+}
+
+.mt-glass-plain {
+  --mt-glass-hue: 210;
+}
+
+.mt-glass :is(h1, h2, h3, h4, strong) {
+  color: #f6f8fa;
+}
+
+.mt-glass p,
+.mt-glass span:not([class*='text-']) {
+  color: var(--mt-black-glass-muted);
+}
+
+/* ------------------------------------------------------------
+   SUBTLE HUE TINTS
+   These are intentionally extremely light; the dominant surface is
+   still black, as requested.
+   ------------------------------------------------------------ */
+
+.mt-glass-warm::before,
+.mt-glass-cool::before,
+.mt-glass-brand::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.14;
+}
+
+.mt-glass-warm::before {
+  background: radial-gradient(circle at 100% 0%, rgba(211, 148, 69, 0.28), transparent 46%);
+}
+
+.mt-glass-cool::before {
+  background: radial-gradient(circle at 100% 0%, rgba(94, 129, 172, 0.25), transparent 46%);
+}
+
+.mt-glass-brand::before {
+  background: radial-gradient(circle at 100% 0%, rgba(117, 132, 103, 0.28), transparent 46%);
+}
+
+/* ------------------------------------------------------------
+   HOVER MOTION
+   ------------------------------------------------------------ */
+
+.mt-hover-pop {
+  transition:
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 240ms ease,
+    border-color 240ms ease,
+    background-color 240ms ease;
+}
+
+.mt-hover-pop:hover {
+  transform: translateY(-5px) scale(1.018);
+  border-color: var(--mt-black-glass-border-hover);
+  box-shadow:
+    0 24px 52px rgba(0, 0, 0, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  z-index: 5;
+}
+
+.mt-hover-pop:active {
+  transform: translateY(-2px) scale(0.995);
+}
+
+/* ------------------------------------------------------------
+   LANDING PAGE — KEEP LARGE SECTIONS CHEAP TO PAINT
+   ------------------------------------------------------------ */
+
+.mirrortrace-feature-section,
+.mirrortrace-security-clean,
+.mirrortrace-reviews-clean {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.mirrortrace-feature-section .mirrortrace-scroll-card,
+#security .mt-glass,
+#reviews .mirrortrace-review-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(6, 12, 18, 0.74),
+      rgba(11, 19, 25, 0.65)
+    ) !important;
+
+  border-color: var(--mt-black-glass-border) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.045),
+    0 16px 36px rgba(0,0,0,0.22) !important;
+}
+
+/* ------------------------------------------------------------
+   REVIEW MARQUEE
+   ------------------------------------------------------------ */
+
+.mirrortrace-review-track {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* ------------------------------------------------------------
+   ACCESSIBILITY
+   ------------------------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-}
 
-/* ------------------------------------------------------------
-   2. UNIVERSAL GLASS CARD
-   ------------------------------------------------------------
-   Usage: add class="mt-glass" (or mt-glass-warm / mt-glass-cool /
-   mt-glass-brand) to ANY card, anywhere in the app — a KPI tile,
-   a piechart panel, a support ticket, a review, a future feature
-   you build next month. It will automatically render at ~40%
-   opacity in its hue family with the same dark, hazy overlay
-   used behind the hero photo, so you never have to hand-roll this
-   again per component.
-   ------------------------------------------------------------ */
-
-.mt-glass {
-  --mt-glass-hue: 205; /* default: cool slate/blue, matches --mt-sky */
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  border-radius: 26px;
-  border: 1px solid hsl(var(--mt-glass-hue) 30% 88% / 0.18);
-  background: linear-gradient(
-    145deg,
-    hsl(var(--mt-glass-hue) 38% 10% / 0.79),
-    hsl(var(--mt-glass-hue) 22% 18% / 0.68)
-  );
-  color: #f4f7f9;
-  backdrop-filter: blur(6px) saturate(112%);
-  -webkit-backdrop-filter: blur(6px) saturate(112%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 16px 38px rgba(2, 7, 11, 0.22);
-  transition:
-    transform 200ms ease,
-    box-shadow 200ms ease,
-    border-color 200ms ease,
-    background-color 200ms ease;
-}
-
-/* Hue presets so a card can borrow the colour of what it represents
-   (amber = snapshots, blue = diffs/sky, green = watches/cactus)
-   while keeping the same 40%-opacity haze recipe. */
-.mt-glass-warm   { --mt-glass-hue: 32;  }  /* amber / brand */
-.mt-glass-cool   { --mt-glass-hue: 205; }  /* sky / blue */
-.mt-glass-brand  { --mt-glass-hue: 95;  }  /* cactus / green */
-.mt-glass-plain  { --mt-glass-hue: 210; }  /* neutral slate */
-
-.mt-glass :is(h1, h2, h3, strong) {
-  color: #f5f8fa;
-}
-
-.mt-glass p,
-.mt-glass span:not([class*='text-']) {
-  color: #c3ccd4;
-}
-
-/* ------------------------------------------------------------
-   3. HOVER "POP" HIGHLIGHT
-   ------------------------------------------------------------
-   A pure-CSS fallback pop so every card gets the same punchy
-   highlight from the screen recording even if it isn't wrapped
-   in the ScrollArcCard/Framer component (e.g. KPI tiles, ticket
-   cards, review cards). Combine with class="mt-hover-pop".
-   ------------------------------------------------------------ */
-
-.mt-hover-pop {
-  transition:
-    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 220ms ease,
-    border-color 220ms ease,
-    filter 220ms ease;
-  will-change: transform;
-}
-
-.mt-hover-pop:hover {
-  transform: translateY(-8px) scale(1.035);
-  filter: brightness(1.06) saturate(1.08);
-  box-shadow:
-    0 30px 60px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(255, 255, 255, 0.14) inset;
-  z-index: 5;
-}
-
-.mt-hover-pop:active {
-  transform: translateY(-3px) scale(1.01);
-}
-
-@media (prefers-reduced-motion: reduce) {
   .mt-hover-pop,
-  .mt-hover-pop:hover {
+  .mt-hover-pop:hover,
+  .mirrortrace-arc-card {
     transform: none !important;
-    filter: none !important;
+    transition: none !important;
   }
 }

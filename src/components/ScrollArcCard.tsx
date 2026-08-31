@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-
 import {
   motion,
   useReducedMotion,
@@ -12,23 +11,9 @@ interface ScrollArcCardProps {
   className?: string;
   index: number;
   direction: 'left' | 'right';
-  /** Total cards in this row — used to place this card along the arc. */
   total?: number;
 }
 
-/**
- * Arranges a row of cards along a semicircle as the page scrolls.
- *
- * direction="left"  -> the row's arc opens upward-left (top feature row):
- *                       the leftmost cards sit highest, the row bows
- *                       downward toward the right edge.
- * direction="right" -> mirrored (bottom feature row): the arc opens
- *                       upward-right, bowing downward toward the left.
- *
- * Each card also gets a spring "pop" on hover — scale up, flatten its
- * rotation, lift with a heavier shadow — matching the highlight seen
- * in the reference recording.
- */
 export default function ScrollArcCard({
   children,
   className = '',
@@ -41,40 +26,33 @@ export default function ScrollArcCard({
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start end', 'end start'],
+    offset: ['start 95%', 'end 5%'],
   });
 
-  // Normalize this card's position within its row to -1 (first) .. 1 (last).
   const t = total > 1 ? (index / (total - 1)) * 2 - 1 : 0;
 
-  // Semicircle shape: cards near the row's center sit higher (closer to
-  // the top of the arc); cards near the edges drop lower.
-  const archLift = (1 - t * t) * 34; // px — peak lift at the row's center
-  const edgeDrop = t * t * 18; // px — extra drop at the edges
-
+  const archLift = (1 - t * t) * 16;
+  const edgeDrop = t * t * 8;
   const baseY =
     direction === 'left' ? -archLift + edgeDrop : archLift - edgeDrop;
-
-  const baseRotate = direction === 'left' ? t * -6 : t * 6;
+  const baseRotate = direction === 'left' ? t * -2.5 : t * 2.5;
 
   const y = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    reducedMotion ? [0, 0, 0] : [baseY + 46, baseY, baseY - 10]
+    reducedMotion ? [0, 0, 0] : [baseY + 14, baseY, baseY - 4]
   );
 
   const rotate = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    reducedMotion
-      ? [0, 0, 0]
-      : [baseRotate * 1.6, baseRotate, baseRotate * 0.6]
+    reducedMotion ? [0, 0, 0] : [baseRotate * 1.1, baseRotate, baseRotate * 0.7]
   );
 
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.28, 0.5],
-    [0, 1, 1]
+    [0, 0.18, 0.4],
+    [0.92, 1, 1]
   );
 
   return (
@@ -93,23 +71,21 @@ export default function ScrollArcCard({
         reducedMotion
           ? undefined
           : {
-              scale: 1.06,
-              y: baseY - 14,
+              scale: 1.025,
+              y: baseY - 6,
               rotate: 0,
-              zIndex: 20,
               boxShadow:
-                '0 30px 64px rgba(0,0,0,0.38), 0 0 0 1px rgba(255,255,255,0.12) inset',
+                '0 20px 44px rgba(0,0,0,0.22), 0 0 0 1px rgba(255,255,255,0.10) inset',
             }
       }
-      whileTap={{
-        scale: 0.98,
-      }}
+      whileTap={{ scale: 0.99 }}
       transition={{
         type: 'spring',
-        stiffness: 220,
-        damping: 22,
+        stiffness: 160,
+        damping: 24,
+        mass: 0.9,
       }}
-      className={`mirrortrace-arc-card mt-glass mt-glass-plain relative shrink-0 rounded-[26px] p-6 ${className}`}
+      className={`mirrortrace-arc-card mt-glass relative shrink-0 rounded-[26px] p-6 ${className}`}
     >
       {children}
     </motion.div>

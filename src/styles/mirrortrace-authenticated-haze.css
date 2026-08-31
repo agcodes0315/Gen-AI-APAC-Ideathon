@@ -1,970 +1,307 @@
 /* ============================================================
-   MIRRORTRACE — AUTHENTICATED HAZE MATCH
-   PURPOSE:
-   - DO NOT change the sign-in / public landing page.
-   - Apply the same transparent dark haze seen in the reference hero
-     to authenticated user pages + Admin Control Room.
-   - Keep the shared branch background visibly recognizable.
-   - Avoid the previous foggy/heavy glass look.
+   MIRRORTRACE — AUTHENTICATED HAZE FIX
+   Fixes:
+   1. background image missing
+   2. hero/admin blocks need black hazy overlay
+   3. cards need same dark glass treatment
+   4. scrolling should stay smooth
    ============================================================ */
 
-:root {
-  --mt-auth-haze: rgba(10, 18, 25, 0.56);
-  --mt-auth-haze-soft: rgba(13, 22, 29, 0.50);
-  --mt-auth-haze-strong: rgba(9, 16, 22, 0.64);
-
-  --mt-auth-border: rgba(226, 235, 241, 0.15);
-  --mt-auth-border-hover: rgba(117, 132, 103, 0.48);
-
-  --mt-auth-text: #F3F6F8;
-  --mt-auth-text-soft: #C7D1D8;
-
-  --mt-auth-cactus: #617057;
-  --mt-auth-cactus-2: #758467;
-  --mt-auth-amber: #D39445;
-
-  --mt-auth-blur: 3px;
-}
-
-/* ============================================================
-   AUTHENTICATED PAGE BACKGROUND
-   ============================================================ */
-
-/*
- * IMPORTANT:
- * This selector does not target .mirrortrace-auth-page,
- * so your sign-in / public landing page is left alone.
- */
-.mirrortrace-app-shell {
+/* -----------------------------
+   PAGE BACKGROUND
+   ----------------------------- */
+.mirrortrace-app-shell,
+.mirrortrace-single-background,
+.mirrortrace-admin-overlay {
   position: relative;
+  min-height: 100vh;
   isolation: isolate;
-
-  background:
-    linear-gradient(
-      rgba(5, 10, 15, 0.14),
-      rgba(5, 10, 15, 0.20)
-    ),
-    url("/hero/mirrortrace-poster.jpeg")
-      center top / cover fixed no-repeat !important;
-
-  color: var(--mt-auth-text);
+  background-color: #08111a !important;
+  background-image:
+    linear-gradient(rgba(3, 7, 11, 0.22), rgba(3, 7, 11, 0.30)),
+    url("/hero/mirrortrace-poster.jpeg") !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center top !important;
+  background-attachment: scroll !important;
+  color: #f4f7f9 !important;
 }
 
-/* If the project uses the .jpg file instead, this stays harmless.
-   The .jpeg path is the one used by your current authenticated build. */
+/* if your file is actually .jpg, change ONLY the line above to:
+   url("/hero/mirrortrace-poster.jpg")
+*/
 
 .mirrortrace-app-main,
 .mirrortrace-dashboard-overview,
-.mirrortrace-memory-governance {
+.mirrortrace-memory-governance,
+.mirrortrace-admin-dashboard {
   background: transparent !important;
 }
 
-/* ============================================================
-   ONE EXACT HAZE FOR ALL PRIMARY AUTHENTICATED BLOCKS
-   ============================================================ */
-
-.mirrortrace-app-shell
-:where(
-  .mirrortrace-user-hero,
-  .mirrortrace-stat-card,
-  .mirrortrace-action-card,
-  .mirrortrace-diff-feature,
-  .mt-diff-shell,
-  .mt-demo-shell,
-  .rounded-3xl.border,
-  .rounded-2xl.border,
-  .rounded-xl.border,
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100
-) {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(10, 18, 25, 0.59),
-      rgba(14, 23, 30, 0.51)
-    ) !important;
-
-  border-color:
-    var(--mt-auth-border) !important;
-
-  backdrop-filter:
-    blur(var(--mt-auth-blur))
-    saturate(106%) !important;
-
-  -webkit-backdrop-filter:
-    blur(var(--mt-auth-blur))
-    saturate(106%) !important;
-
+/* -----------------------------
+   HERO BLOCKS
+   ----------------------------- */
+.mirrortrace-user-hero,
+.mirrortrace-admin-hero,
+.mirrortrace-clean-glass-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px !important;
+  border: 1px solid rgba(223, 232, 238, 0.14) !important;
+  background: rgba(8, 15, 22, 0.42) !important;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.045),
-    0 14px 34px rgba(0,0,0,0.16) !important;
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 18px 42px rgba(0,0,0,0.20) !important;
+  backdrop-filter: blur(4px) saturate(92%) !important;
+  -webkit-backdrop-filter: blur(4px) saturate(92%) !important;
 }
 
-/* Hero should look like the exact reference:
-   transparent enough to reveal the branches,
-   but still dark enough for white copy. */
-.mirrortrace-app-shell
-.mirrortrace-user-hero {
+/* THIS is the black haze layer you asked for */
+.mirrortrace-user-hero::before,
+.mirrortrace-admin-hero::before,
+.mirrortrace-clean-glass-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
   background:
     linear-gradient(
-      110deg,
-      rgba(8, 15, 21, 0.57) 0%,
-      rgba(10, 18, 25, 0.51) 48%,
-      rgba(12, 21, 28, 0.45) 100%
+      115deg,
+      rgba(4, 8, 12, 0.62) 0%,
+      rgba(7, 12, 17, 0.56) 35%,
+      rgba(10, 16, 22, 0.48) 65%,
+      rgba(12, 18, 24, 0.42) 100%
     ) !important;
-
-  background-image:
-    none !important;
-
-  backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
-
-  -webkit-backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
+  z-index: 0;
 }
 
-/* Kill any old hero pseudo-backgrounds. */
-.mirrortrace-app-shell
-.mirrortrace-user-hero::before,
-.mirrortrace-app-shell
-.mirrortrace-user-hero::after {
+.mirrortrace-user-hero > *,
+.mirrortrace-admin-hero > *,
+.mirrortrace-clean-glass-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.mirrortrace-user-hero::after,
+.mirrortrace-admin-hero::after {
   content: none !important;
   display: none !important;
 }
 
-/* ============================================================
-   GENERIC AUTHENTICATED SECTIONS
-   Memory / Support / Feedback / History / Reflect
-   ============================================================ */
-
-/*
- * This makes the common Tailwind surfaces used by your other pages
- * use the same haze without needing to rewrite those components.
- */
-.mirrortrace-app-shell
-main
-:where(
-  section,
-  article
-)
-:where(
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100
-) {
-  background:
-    rgba(11, 19, 26, 0.54) !important;
-
-  border-color:
-    var(--mt-auth-border) !important;
-
-  backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
-
-  -webkit-backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
+/* -----------------------------
+   HERO TYPOGRAPHY
+   ----------------------------- */
+.mirrortrace-user-hero h1,
+.mirrortrace-admin-hero h1 {
+  color: #ffffff !important;
+  text-shadow: 0 3px 14px rgba(0,0,0,0.45) !important;
 }
 
-/* Inputs need a touch more opacity for actual readability. */
-.mirrortrace-app-shell
-:where(
-  input,
-  textarea,
-  select
-) {
-  background:
-    rgba(10, 18, 25, 0.66) !important;
-
-  color:
-    #F6F8FA !important;
-
-  border-color:
-    rgba(224, 233, 239, 0.17) !important;
-
-  backdrop-filter:
-    blur(2px) !important;
-
-  -webkit-backdrop-filter:
-    blur(2px) !important;
+.mirrortrace-user-hero h1 span,
+.mirrortrace-user-hero .mirrortrace-accent-text,
+.mirrortrace-admin-hero h1 span,
+.mirrortrace-admin-hero .mirrortrace-accent-text {
+  color: #d39445 !important;
+  text-shadow: 0 3px 14px rgba(0,0,0,0.38) !important;
 }
 
-.mirrortrace-app-shell
-:where(
-  input,
-  textarea
-)::placeholder {
-  color:
-    rgba(199, 209, 216, 0.70) !important;
+.mirrortrace-user-hero p,
+.mirrortrace-admin-hero p {
+  color: #e2e9ed !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.30) !important;
 }
 
-/* ============================================================
-   TEXT — BRIGHT LIKE THE REFERENCE
-   ============================================================ */
-
-.mirrortrace-app-shell
-:where(
-  h1,
-  h2,
-  h3,
-  h4,
-  strong,
-  .text-stone-950,
-  .text-stone-900,
-  .text-stone-800
-) {
-  color:
-    var(--mt-auth-text) !important;
+/* -----------------------------
+   HERO BUTTONS
+   ----------------------------- */
+.mirrortrace-user-hero button:first-of-type,
+.mirrortrace-user-hero .mirrortrace-primary-btn {
+  background: rgba(8, 15, 21, 0.82) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: #fff !important;
 }
 
-.mirrortrace-app-shell
-:where(
-  p,
-  span,
-  label,
-  td,
-  th,
-  .text-stone-700,
-  .text-stone-600,
-  .text-stone-500,
-  .text-stone-400
-) {
-  color:
-    var(--mt-auth-text-soft) !important;
+.mirrortrace-user-hero button:last-of-type,
+.mirrortrace-user-hero .mirrortrace-secondary-btn {
+  background: rgba(97, 112, 87, 0.54) !important;
+  border: 1px solid rgba(186, 203, 175, 0.22) !important;
+  color: #fff !important;
 }
 
-.mirrortrace-app-shell
-.text-amber-700,
-.mirrortrace-app-shell
-.text-amber-800,
-.mirrortrace-app-shell
-.text-amber-900,
-.mirrortrace-app-shell
-.text-amber-950 {
-  color:
-    var(--mt-auth-amber) !important;
-}
-
-/* ============================================================
-   USER DASHBOARD CARDS — SAME HAZE ON EVERY CARD
-   ============================================================ */
-
-.mirrortrace-dashboard-overview
-:where(
+/* -----------------------------
+   UNIVERSAL AUTHENTICATED CARDS
+   ----------------------------- */
+.mirrortrace-dashboard-overview :where(
   .mirrortrace-stat-card,
   .mirrortrace-action-card,
-  .mirrortrace-diff-feature
-) {
-  background:
-    rgba(11, 19, 26, 0.56) !important;
-
-  border:
-    1px solid
-    var(--mt-auth-border) !important;
-
-  backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
-
-  -webkit-backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
-}
-
-.mirrortrace-dashboard-overview
-:where(
-  .mirrortrace-stat-card,
-  .mirrortrace-action-card
-):hover {
-  transform:
-    translateY(-3px);
-
-  background:
-    rgba(15, 25, 32, 0.61) !important;
-
-  border-color:
-    var(--mt-auth-border-hover) !important;
-}
-
-/* ============================================================
-   MEMORY GOVERNANCE — MATCH USER DASHBOARD
-   ============================================================ */
-
-.mirrortrace-memory-governance
-:where(
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100,
+  .mirrortrace-diff-feature,
   .rounded-3xl.border,
   .rounded-2xl.border,
   .rounded-xl.border
-) {
-  background:
-    rgba(11, 19, 26, 0.56) !important;
-
-  border-color:
-    var(--mt-auth-border) !important;
-
-  backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
-
-  -webkit-backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
-}
-
-/* ============================================================
-   ADMIN CONTROL ROOM — EXACT SAME HAZE
-   ============================================================ */
-
-.mirrortrace-admin-overlay {
-  background:
-    linear-gradient(
-      rgba(5, 10, 15, 0.15),
-      rgba(5, 10, 15, 0.20)
-    ),
-    url("/hero/mirrortrace-poster.jpeg")
-      center top / cover fixed no-repeat !important;
-}
-
-.mirrortrace-admin-dashboard {
-  background:
-    transparent !important;
-
-  color:
-    var(--mt-auth-text) !important;
-}
-
-.mirrortrace-admin-dashboard
-:where(
-  .mirrortrace-admin-hero,
-  .mirrortrace-admin-surface,
+),
+.mirrortrace-admin-dashboard :where(
   .mirrortrace-admin-metric,
+  .mirrortrace-admin-surface,
   .rounded-3xl.border,
   .rounded-2xl.border,
-  .rounded-xl.border,
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100
-) {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(10, 18, 25, 0.59),
-      rgba(14, 23, 30, 0.51)
-    ) !important;
-
-  background-image:
-    none !important;
-
-  border-color:
-    var(--mt-auth-border) !important;
-
-  backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
-
-  -webkit-backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.045),
-    0 14px 34px rgba(0,0,0,0.16) !important;
-}
-
-/* Security & Operations block gets the same hero haze. */
-.mirrortrace-admin-dashboard
-.mirrortrace-admin-hero {
-  background:
-    linear-gradient(
-      110deg,
-      rgba(8, 15, 21, 0.57) 0%,
-      rgba(10, 18, 25, 0.51) 48%,
-      rgba(12, 21, 28, 0.45) 100%
-    ) !important;
-
-  background-image:
-    none !important;
-}
-
-.mirrortrace-admin-dashboard
-.mirrortrace-admin-hero::before,
-.mirrortrace-admin-dashboard
-.mirrortrace-admin-hero::after {
-  content:
-    none !important;
-
-  display:
-    none !important;
-}
-
-/* Admin privacy boundary:
-   slightly greener, but same transparency/blur level. */
-.mirrortrace-admin-dashboard
-:where(
-  .mirrortrace-admin-boundary,
-  .bg-emerald-300\/10
-) {
-  background:
-    rgba(41, 67, 55, 0.45) !important;
-
-  border-color:
-    rgba(152, 196, 165, 0.22) !important;
-
-  backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
-
-  -webkit-backdrop-filter:
-    blur(3px)
-    saturate(106%) !important;
-}
-
-/* Metric hover stays subtle. */
-.mirrortrace-admin-dashboard
-.mirrortrace-admin-metric:hover {
-  transform:
-    translateY(-3px);
-
-  background:
-    rgba(15, 25, 32, 0.61) !important;
-
-  border-color:
-    var(--mt-auth-border-hover) !important;
-}
-
-/* ============================================================
-   KEEP STATUS COLORS MEANINGFUL
-   ============================================================ */
-
-.mirrortrace-app-shell
-:where(
-  .bg-emerald-50,
-  .bg-emerald-100
+  .rounded-xl.border
 ),
-.mirrortrace-admin-dashboard
-:where(
-  .bg-emerald-50,
-  .bg-emerald-100
-) {
-  background:
-    rgba(44, 81, 65, 0.46) !important;
-}
-
-.mirrortrace-app-shell
-:where(
-  .bg-red-50,
-  .bg-red-100
-),
-.mirrortrace-admin-dashboard
-:where(
-  .bg-red-50,
-  .bg-red-100
-) {
-  background:
-    rgba(92, 42, 42, 0.48) !important;
-}
-
-.mirrortrace-app-shell
-:where(
-  .bg-amber-50,
-  .bg-amber-100
-),
-.mirrortrace-admin-dashboard
-:where(
-  .bg-amber-50,
-  .bg-amber-100
-) {
-  background:
-    rgba(91, 71, 43, 0.48) !important;
-}
-
-/* ============================================================
-   NAVBAR — SAME FAMILY, A LITTLE MORE SOLID
-   ============================================================ */
-
-.mirrortrace-app-shell
-.mirrortrace-navbar {
-  background:
-    rgba(9, 16, 22, 0.70) !important;
-
-  border-bottom:
-    1px solid
-    rgba(226, 235, 241, 0.12) !important;
-
-  backdrop-filter:
-    blur(5px)
-    saturate(106%) !important;
-
-  -webkit-backdrop-filter:
-    blur(5px)
-    saturate(106%) !important;
-}
-
-/* ============================================================
-   MOBILE
-   ============================================================ */
-
-@media (max-width: 800px) {
-  .mirrortrace-app-shell,
-  .mirrortrace-admin-overlay {
-    background-attachment:
-      scroll !important;
-  }
-
-  .mirrortrace-app-shell
-  :where(
-    .mirrortrace-user-hero,
-    .mirrortrace-stat-card,
-    .mirrortrace-action-card,
-    .rounded-3xl.border,
-    .rounded-2xl.border
-  ),
-  .mirrortrace-admin-dashboard
-  :where(
-    .mirrortrace-admin-hero,
-    .mirrortrace-admin-surface,
-    .mirrortrace-admin-metric,
-    .rounded-3xl.border,
-    .rounded-2xl.border
-  ) {
-    backdrop-filter:
-      blur(2px)
-      saturate(104%) !important;
-
-    -webkit-backdrop-filter:
-      blur(2px)
-      saturate(104%) !important;
-  }
-}
-
-
-/* ============================================================
-   MIRRORTRACE — BLACK SHADOW SURFACE V2
-   Requested visual target:
-   - same dark cinematic shadow as the approved hero reference
-   - visible branch background through every authenticated block
-   - no heavy/foggy glass
-   - applies to Overview, Perspective Evolution, Quick Actions,
-     Memory, Reflect, History, Support, Feedback and Admin
-   ============================================================ */
-
-:root {
-  --mt-shadow-panel: rgba(7, 13, 19, 0.68);
-  --mt-shadow-panel-soft: rgba(9, 16, 22, 0.62);
-  --mt-shadow-panel-hover: rgba(11, 20, 27, 0.73);
-  --mt-shadow-border: rgba(230, 237, 242, 0.14);
-  --mt-shadow-border-cactus: rgba(117, 132, 103, 0.44);
-}
-
-/* ------------------------------------------------------------
-   PRIMARY OVERVIEW CARDS
-   ------------------------------------------------------------ */
-
-.mirrortrace-dashboard-overview
-:where(
-  .mirrortrace-stat-card,
-  .mirrortrace-action-card,
-  .mirrortrace-diff-feature
-) {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(7, 13, 19, 0.72),
-      rgba(11, 19, 25, 0.64)
-    ) !important;
-
-  border-color: var(--mt-shadow-border) !important;
-
-  backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
-  -webkit-backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.045),
-    0 16px 38px rgba(0,0,0,0.24) !important;
-}
-
-.mirrortrace-dashboard-overview
-:where(
-  .mirrortrace-stat-card,
-  .mirrortrace-action-card
-):hover {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(9, 17, 23, 0.77),
-      rgba(14, 24, 31, 0.69)
-    ) !important;
-
-  border-color: var(--mt-shadow-border-cactus) !important;
-}
-
-/* ------------------------------------------------------------
-   PERSPECTIVE EVOLUTION
-   Catches the large diff card + all nested earlier/current/change
-   panels in both populated and empty states.
-   ------------------------------------------------------------ */
-
-.mirrortrace-dashboard-overview
-section
-:where(
-  .rounded-\[28px\],
+.mirrortrace-memory-governance :where(
+  .rounded-3xl,
   .rounded-2xl,
   .rounded-xl
 ) {
   background:
-    rgba(7, 13, 19, 0.66) !important;
-
-  border-color:
-    rgba(230, 237, 242, 0.13) !important;
-
-  backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
-  -webkit-backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.035),
-    0 12px 28px rgba(0,0,0,0.18) !important;
-}
-
-/* The main Perspective Evolution shell should feel deeper than the
-   smaller inner comparison cells. */
-.mirrortrace-dashboard-overview
-section
-> .rounded-\[28px\] {
-  background:
     linear-gradient(
       145deg,
-      rgba(6, 12, 18, 0.74),
-      rgba(10, 18, 24, 0.67)
+      rgba(8, 15, 21, 0.58),
+      rgba(13, 21, 28, 0.50)
     ) !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.045),
-    0 18px 42px rgba(0,0,0,0.24) !important;
-}
-
-/* Amber/stone utility backgrounds inside Perspective Evolution should
-   not suddenly become pale opaque boxes. */
-.mirrortrace-dashboard-overview
-section
-:where(
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100,
-  .bg-amber-50,
-  .bg-amber-100
-) {
-  background:
-    rgba(9, 16, 22, 0.64) !important;
-}
-
-/* ------------------------------------------------------------
-   QUICK ACTIONS
-   ------------------------------------------------------------ */
-
-.mirrortrace-dashboard-overview
-section
-.grid
-> button {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(7, 13, 19, 0.71),
-      rgba(11, 19, 25, 0.64)
-    ) !important;
-
-  border-color:
-    var(--mt-shadow-border) !important;
-
-  backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
-  -webkit-backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
+  border: 1px solid rgba(223,232,238,0.14) !important;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.04),
-    0 15px 34px rgba(0,0,0,0.22) !important;
+    0 14px 32px rgba(0,0,0,0.18) !important;
+  backdrop-filter: blur(4px) saturate(94%) !important;
+  -webkit-backdrop-filter: blur(4px) saturate(94%) !important;
 }
 
-.mirrortrace-dashboard-overview
-section
-.grid
-> button:hover {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(10, 18, 25, 0.77),
-      rgba(16, 26, 33, 0.70)
-    ) !important;
-
-  border-color:
-    var(--mt-shadow-border-cactus) !important;
-}
-
-/* ------------------------------------------------------------
-   OTHER AUTHENTICATED PAGES
-   Reflect, History, Memory, Support, Feedback
-   ------------------------------------------------------------ */
-
-.mirrortrace-app-shell
-main
-:where(
-  section,
-  article,
-  div
-)
-:where(
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100,
+/* black hue over every card */
+.mirrortrace-dashboard-overview :where(
+  .mirrortrace-stat-card,
+  .mirrortrace-action-card,
+  .mirrortrace-diff-feature,
   .rounded-3xl.border,
   .rounded-2xl.border,
   .rounded-xl.border
-) {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(7, 13, 19, 0.69),
-      rgba(11, 19, 25, 0.62)
-    ) !important;
-
-  border-color:
-    var(--mt-shadow-border) !important;
-
-  backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
-  -webkit-backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.04),
-    0 14px 32px rgba(0,0,0,0.20) !important;
-}
-
-/* Memory governance often nests light blocks inside larger cards. Keep
-   the hierarchy, but preserve the same cinematic black family. */
-.mirrortrace-memory-governance
-:where(
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100,
-  .rounded-3xl.border,
-  .rounded-2xl.border,
-  .rounded-xl.border
-) {
-  background:
-    rgba(7, 13, 19, 0.67) !important;
-
-  border-color:
-    var(--mt-shadow-border) !important;
-
-  backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
-  -webkit-backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-}
-
-/* ------------------------------------------------------------
-   ADMIN CONTROL ROOM — SAME BLACK SHADOW LANGUAGE
-   ------------------------------------------------------------ */
-
-.mirrortrace-admin-dashboard
-:where(
-  .mirrortrace-admin-surface,
+)::before,
+.mirrortrace-admin-dashboard :where(
   .mirrortrace-admin-metric,
+  .mirrortrace-admin-surface,
   .rounded-3xl.border,
   .rounded-2xl.border,
-  .rounded-xl.border,
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100
-) {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(7, 13, 19, 0.71),
-      rgba(11, 19, 25, 0.64)
-    ) !important;
-
-  background-image:
-    none !important;
-
-  border-color:
-    var(--mt-shadow-border) !important;
-
-  backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
-  -webkit-backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.04),
-    0 16px 38px rgba(0,0,0,0.23) !important;
+  .rounded-xl.border
+)::before,
+.mirrortrace-memory-governance :where(
+  .rounded-3xl,
+  .rounded-2xl,
+  .rounded-xl
+)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(5, 10, 14, 0.28),
+    rgba(5, 10, 14, 0.18)
+  ) !important;
 }
 
-.mirrortrace-admin-dashboard
-.mirrortrace-admin-metric:hover {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(10, 18, 25, 0.77),
-      rgba(16, 26, 33, 0.70)
-    ) !important;
-
-  border-color:
-    var(--mt-shadow-border-cactus) !important;
+/* important so pseudo-layer positions correctly */
+.mirrortrace-stat-card,
+.mirrortrace-action-card,
+.mirrortrace-diff-feature,
+.mirrortrace-admin-metric,
+.mirrortrace-admin-surface,
+.rounded-3xl.border,
+.rounded-2xl.border,
+.rounded-xl.border {
+  position: relative;
+  overflow: hidden;
 }
 
-/* Security & Operations remains a little larger/deeper, matching the
-   approved hero reference. */
-.mirrortrace-admin-dashboard
-.mirrortrace-admin-hero {
-  background:
-    linear-gradient(
-      110deg,
-      rgba(6, 12, 18, 0.72) 0%,
-      rgba(9, 16, 22, 0.65) 52%,
-      rgba(12, 20, 27, 0.57) 100%
-    ) !important;
-
-  border-color:
-    rgba(230, 237, 242, 0.15) !important;
-
-  backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
-
-  -webkit-backdrop-filter:
-    blur(2.5px)
-    saturate(104%) !important;
+/* -----------------------------
+   ADMIN PRIVACY BOUNDARY
+   ----------------------------- */
+.mirrortrace-admin-boundary,
+.mirrortrace-admin-hero .bg-emerald-300\/10 {
+  position: relative;
+  overflow: hidden;
+  background: rgba(10, 26, 24, 0.42) !important;
+  border: 1px solid rgba(143, 192, 158, 0.20) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
 }
 
-/* Privacy Boundary stays green-tinted, but receives the same black
-   undertone instead of looking like a separate gray card. */
-.mirrortrace-admin-dashboard
-:where(
-  .mirrortrace-admin-boundary,
-  .bg-emerald-300\/10
-) {
-  background:
-    linear-gradient(
-      145deg,
-      rgba(18, 42, 34, 0.64),
-      rgba(8, 17, 21, 0.62)
-    ) !important;
-
-  border-color:
-    rgba(144, 197, 164, 0.22) !important;
+.mirrortrace-admin-boundary::before,
+.mirrortrace-admin-hero .bg-emerald-300\/10::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(5, 12, 11, 0.30),
+    rgba(5, 12, 11, 0.16)
+  ) !important;
+  pointer-events: none;
+  border-radius: inherit;
 }
 
-/* ------------------------------------------------------------
-   BRIGHTER TEXT ON THE DARKER SHADOW PANELS
-   ------------------------------------------------------------ */
-
-.mirrortrace-app-shell
-:where(
-  h1,h2,h3,h4,strong,
-  .text-stone-950,
-  .text-stone-900,
-  .text-stone-800,
-  .text-stone-700
+/* -----------------------------
+   TYPOGRAPHY
+   ----------------------------- */
+.mirrortrace-dashboard-overview :where(
+  h1,h2,h3,h4,strong,.text-stone-950,.text-stone-900,.text-stone-800
 ),
-.mirrortrace-admin-dashboard
-:where(
-  h1,h2,h3,h4,strong,
-  .text-stone-950,
-  .text-stone-900,
-  .text-stone-800,
-  .text-stone-700
-) {
-  color:
-    #F5F7F8 !important;
-}
-
-.mirrortrace-app-shell
-:where(
-  p,span,label,td,th,
-  .text-stone-600,
-  .text-stone-500,
-  .text-stone-400
+.mirrortrace-admin-dashboard :where(
+  h1,h2,h3,h4,strong,.text-stone-950,.text-stone-900,.text-stone-800
 ),
-.mirrortrace-admin-dashboard
-:where(
-  p,span,label,td,th,
-  .text-stone-600,
-  .text-stone-500,
-  .text-stone-400
+.mirrortrace-memory-governance :where(
+  h1,h2,h3,h4,strong,.text-stone-950,.text-stone-900,.text-stone-800
 ) {
-  color:
-    #C4CED6 !important;
+  color: #f5f8fa !important;
 }
 
-/* Keep tiny icons/pills readable without changing the overall theme. */
-.mirrortrace-dashboard-overview
-:where(.bg-stone-100,.bg-amber-100),
-.mirrortrace-admin-dashboard
-:where(.bg-stone-100,.bg-amber-100) {
-  background:
-    rgba(16, 25, 32, 0.73) !important;
+.mirrortrace-dashboard-overview :where(
+  p,span,.text-stone-600,.text-stone-500,.text-stone-400
+),
+.mirrortrace-admin-dashboard :where(
+  p,span,td,th,.text-stone-600,.text-stone-500,.text-stone-400
+),
+.mirrortrace-memory-governance :where(
+  p,span,.text-stone-600,.text-stone-500,.text-stone-400
+) {
+  color: #c5cfd7 !important;
 }
 
-/* ------------------------------------------------------------
-   MOBILE — slightly lighter GPU cost
-   ------------------------------------------------------------ */
+/* -----------------------------
+   PERFORMANCE / SMOOTHNESS
+   ----------------------------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
 
-@media (max-width: 800px) {
-  .mirrortrace-dashboard-overview
-  :where(
-    .mirrortrace-stat-card,
-    .mirrortrace-action-card,
-    .mirrortrace-diff-feature,
-    .rounded-\[28px\],
-    .rounded-2xl,
-    .rounded-xl
-  ),
-  .mirrortrace-admin-dashboard
-  :where(
-    .mirrortrace-admin-surface,
-    .mirrortrace-admin-metric,
-    .mirrortrace-admin-hero,
-    .rounded-3xl.border,
-    .rounded-2xl.border,
-    .rounded-xl.border
-  ) {
-    backdrop-filter:
-      blur(2px)
-      saturate(103%) !important;
+body {
+  overscroll-behavior-y: auto;
+}
 
-    -webkit-backdrop-filter:
-      blur(2px)
-      saturate(103%) !important;
+.mirrortrace-card-lane {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+}
+
+.mirrortrace-arc-card {
+  scroll-snap-align: center;
+  transform: translateZ(0);
+}
+
+.mt-glass,
+.mirrortrace-user-hero,
+.mirrortrace-admin-hero,
+.mirrortrace-stat-card,
+.mirrortrace-action-card,
+.mirrortrace-admin-metric,
+.mirrortrace-admin-surface {
+  transform: translateZ(0);
+}
+
+/* avoid overusing contain everywhere; that was part of the weird feel */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }

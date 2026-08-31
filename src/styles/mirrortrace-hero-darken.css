@@ -1,0 +1,35 @@
+/* ============================================================
+   HERO DARKENING PATCH
+   Your screenshot still shows the tree photo too bright/sharp
+   compared to the "Journal History" card reference (which is
+   the correct hazy look). This raises the hero to match that
+   same darkness + haze recipe. Append this AFTER
+   mirrortrace-motion-and-glass.css.
+   ============================================================ */
+
+.mirrortrace-user-hero::before,
+.mirrortrace-admin-hero::before {
+  filter:
+    blur(5.5px)
+    saturate(0.94)
+    contrast(1.02)
+    brightness(0.62) !important;
+}
+
+.mirrortrace-user-hero::after,
+.mirrortrace-admin-hero::after {
+  background: linear-gradient(
+    120deg,
+    rgba(5, 8, 12, 0.82) 0%,
+    rgba(6, 10, 14, 0.7) 40%,
+    rgba(7, 11, 15, 0.55) 68%,
+    rgba(8, 12, 16, 0.42) 100%
+  ) !important;
+}
+
+/* Give the hero the exact same border/glass edge as the cards so
+   it reads as one consistent family instead of a separate photo. */
+.mirrortrace-user-hero,
+.mirrortrace-admin-hero {
+  border: 1px solid hsl(205 30% 88% / 0.16) !important;
+}

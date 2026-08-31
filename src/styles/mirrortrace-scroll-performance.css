@@ -1,0 +1,98 @@
+/* ============================================================
+   MIRRORTRACE — SCROLL PERFORMANCE
+   FULL REPLACEMENT
+
+   Import this LAST on AuthView.
+   This file is intentionally mostly performance overrides.
+   ============================================================ */
+
+/* The main source of the harsh scroll was a fixed background combined
+   with many translucent blur layers. Fixed backgrounds force frequent
+   repainting while the page moves. */
+.mirrortrace-single-background,
+.mirrortrace-app-shell,
+.mirrortrace-admin-overlay {
+  background-attachment: scroll !important;
+}
+
+/* Do not promote the entire page into one gigantic compositor layer. */
+.mirrortrace-app-shell,
+.mirrortrace-single-background {
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Large sections should not blur everything behind them. Their dark
+   translucent fill already provides the requested haze. */
+.mirrortrace-feature-section,
+.mirrortrace-security-clean,
+.mirrortrace-reviews-clean,
+#security,
+#reviews {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Cards are isolated for paint containment but NOT layout containment.
+   layout containment can cause awkward sizing/scroll behavior in flexible
+   horizontal rows. */
+.mirrortrace-arc-card,
+.mirrortrace-scroll-card,
+.mirrortrace-stat-card,
+.mirrortrace-action-card,
+.mirrortrace-admin-metric,
+.mirrortrace-admin-surface,
+.mirrortrace-review-card {
+  contain: paint;
+}
+
+/* Native vertical wheel motion should always pass through feature lanes.
+   The user can still browse horizontally with trackpad horizontal motion,
+   swipe, Shift+wheel (browser-dependent), or the arrow buttons. */
+.mirrortrace-card-lane {
+  overscroll-behavior-y: auto !important;
+  overscroll-behavior-x: contain !important;
+  touch-action: pan-x pan-y !important;
+}
+
+/* Avoid forcing a permanent GPU layer for every card. Framer Motion will
+   promote a card only while it is actually animating. */
+.mt-glass,
+.mirrortrace-arc-card,
+.mirrortrace-scroll-card,
+.mirrortrace-stat-card,
+.mirrortrace-action-card,
+.mirrortrace-admin-metric,
+.mirrortrace-admin-surface {
+  will-change: auto !important;
+}
+
+/* The continuously moving review strip is the one place where a stable
+   compositor layer is useful. */
+.mirrortrace-review-track {
+  will-change: transform !important;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Render long off-screen landing sections lazily. This is safe because the
+   intrinsic fallback reserves space and avoids layout jumps. */
+.mirrortrace-feature-section,
+#security,
+#reviews {
+  content-visibility: auto;
+  contain-intrinsic-size: 900px;
+}
+
+@media (max-width: 800px) {
+  .mirrortrace-single-background,
+  .mirrortrace-app-shell,
+  .mirrortrace-admin-overlay {
+    background-attachment: scroll !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mirrortrace-review-track {
+    will-change: auto !important;
+  }
+}
