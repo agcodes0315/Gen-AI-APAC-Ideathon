@@ -1,184 +1,108 @@
-
 /* ============================================================
-   MIRRORTRACE — AUTHENTICATED BLACK 50 HARD FIX
-   IMPORTANT: KEEP THIS AT THE ABSOLUTE END OF src/index.css
+   MIRRORTRACE AUTHENTICATED BLACK 50 HARD FIX
+   KEEP THIS AT THE ABSOLUTE END OF src/index.css
    ============================================================ */
 
 :root {
   --mt-auth-black50: rgba(0, 0, 0, 0.50);
-  --mt-auth-black58: rgba(0, 0, 0, 0.58);
   --mt-auth-inner: rgba(255, 255, 255, 0.07);
   --mt-auth-border: rgba(235, 241, 245, 0.16);
   --mt-auth-text: #ffffff;
   --mt-auth-copy: #d9e1e7;
-  --mt-auth-muted: #aeb8c2;
 }
 
-/*
-  SIGN-IN / PUBLIC PAGE IS NOT TARGETED.
-  Everything below is scoped to authenticated/admin roots.
-*/
-
-/* ---------- MAIN AUTHENTICATED CARD SURFACES ---------- */
-
+/* Authenticated overview / reflect / history / memory / support / feedback */
 html body #root .mirrortrace-app-shell
 :is(
+  .mirrortrace-dashboard-overview,
   .mirrortrace-reflect-page,
   .mirrortrace-history-page,
   .mirrortrace-memory-page,
   .mirrortrace-memory-governance,
   .mirrortrace-support-page,
   .mirrortrace-feedback-page,
-  .mirrortrace-dashboard-overview,
   .mirrortrace-themed-page
 )
 :is(
   article,
   form,
-  section,
+  section[class*="rounded"],
+  div[class*="rounded"][class*="border"],
+  div[class*="rounded"][class*="shadow"],
   .mirrortrace-stat-card,
   .mirrortrace-action-card,
   .mirrortrace-diff-feature,
-  .mt-glass,
-  [class*="rounded-xl"],
-  [class*="rounded-2xl"],
-  [class*="rounded-3xl"],
-  [class*="rounded-[2"]
-),
-html body #root .mirrortrace-admin-page
-:is(
-  .mirrortrace-admin-dashboard,
-  .mirrortrace-admin-hero
-)
-:is(
-  article,
-  form,
-  section,
-  .mirrortrace-admin-metric,
-  .mirrortrace-admin-surface,
-  .mt-glass,
-  [class*="rounded-xl"],
-  [class*="rounded-2xl"],
-  [class*="rounded-3xl"],
-  [class*="rounded-[2"]
+  .mt-glass
 ) {
   background: var(--mt-auth-black50) !important;
   background-color: var(--mt-auth-black50) !important;
   background-image: none !important;
-
   border-color: var(--mt-auth-border) !important;
-
   color: var(--mt-auth-text) !important;
-
   backdrop-filter: blur(2px) saturate(103%) !important;
   -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
-
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.035),
     0 14px 30px rgba(0,0,0,0.18) !important;
 }
 
-/* ---------- FORCE COMMON NAVY TAILWIND BACKGROUNDS TO BLACK ---------- */
-
-html body #root .mirrortrace-app-shell
+/* Explicitly catch the large Reflective Space columns */
+html body #root .mirrortrace-app-shell .mirrortrace-reflect-page
 :is(
-  .mirrortrace-reflect-page,
-  .mirrortrace-history-page,
-  .mirrortrace-memory-page,
-  .mirrortrace-memory-governance,
-  .mirrortrace-support-page,
-  .mirrortrace-feedback-page,
-  .mirrortrace-dashboard-overview,
-  .mirrortrace-themed-page
-)
-[class*="bg-"],
-html body #root .mirrortrace-admin-page
-:is(
-  .mirrortrace-admin-dashboard,
-  .mirrortrace-admin-hero
-)
-[class*="bg-"] {
-  --tw-bg-opacity: 1 !important;
-}
-
-/*
-  These are the actual card-like elements visible in your screenshots.
-  We explicitly overwrite every Tailwind background utility used on them.
-*/
-html body #root .mirrortrace-app-shell
-:is(
-  .mirrortrace-reflect-page,
-  .mirrortrace-history-page,
-  .mirrortrace-memory-page,
-  .mirrortrace-memory-governance,
-  .mirrortrace-support-page,
-  .mirrortrace-feedback-page,
-  .mirrortrace-dashboard-overview,
-  .mirrortrace-themed-page
-)
-:is(
-  div[class*="rounded"][class*="border"],
-  div[class*="rounded"][class*="shadow"],
-  article[class*="rounded"],
-  section[class*="rounded"],
-  form[class*="rounded"]
-),
-html body #root .mirrortrace-admin-page
-:is(
-  .mirrortrace-admin-dashboard,
-  .mirrortrace-admin-hero
-)
-:is(
-  div[class*="rounded"][class*="border"],
-  div[class*="rounded"][class*="shadow"],
-  article[class*="rounded"],
-  section[class*="rounded"],
-  form[class*="rounded"]
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-slate-700,
+  .bg-slate-800,
+  .bg-slate-900,
+  .bg-slate-950,
+  .bg-blue-800,
+  .bg-blue-900,
+  .bg-blue-950,
+  .bg-indigo-800,
+  .bg-indigo-900,
+  .bg-indigo-950,
+  div[class*="bg-[#"]
 ) {
   background: var(--mt-auth-black50) !important;
   background-color: var(--mt-auth-black50) !important;
   background-image: none !important;
 }
 
-/* ---------- REFLECTIVE SPACE: EXACT SCREENSHOT TARGETS ---------- */
-
-html body #root .mirrortrace-app-shell .mirrortrace-reflect-page
+/* Inputs and textareas remain a lighter inner glass */
+html body #root .mirrortrace-app-shell
 :is(
-  textarea,
-  input,
-  select
-) {
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-memory-governance,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-themed-page
+)
+:is(input, textarea, select) {
   background: var(--mt-auth-inner) !important;
   background-color: var(--mt-auth-inner) !important;
   background-image: none !important;
   color: #ffffff !important;
-  border-color: rgba(235,241,245,0.18) !important;
+  border-color: rgba(235,241,245,0.20) !important;
 }
 
-html body #root .mirrortrace-app-shell .mirrortrace-reflect-page
+html body #root .mirrortrace-app-shell
 :is(
-  textarea,
-  input
-)::placeholder {
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-memory-governance,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-themed-page
+)
+:is(input, textarea)::placeholder {
   color: #aeb8c2 !important;
 }
 
-/* ---------- JOURNAL HISTORY ---------- */
-
-html body #root .mirrortrace-app-shell .mirrortrace-history-page
-:is(
-  input,
-  textarea,
-  select
-) {
-  background: var(--mt-auth-inner) !important;
-  background-color: var(--mt-auth-inner) !important;
-  color: #ffffff !important;
-  border-color: rgba(235,241,245,0.18) !important;
-}
-
-/* ---------- MEMORY ---------- */
-
+/* Memory Governance */
 html body #root .mirrortrace-app-shell .mirrortrace-memory-governance
 :is(
   header,
@@ -191,53 +115,33 @@ html body #root .mirrortrace-app-shell .mirrortrace-memory-governance
   background-image: none !important;
 }
 
-/* ---------- SUPPORT ---------- */
-
-html body #root .mirrortrace-app-shell .mirrortrace-support-page
+/* Admin */
+html body #root .mirrortrace-admin-page
 :is(
-  input,
-  textarea,
-  select
-) {
-  background: var(--mt-auth-inner) !important;
-  background-color: var(--mt-auth-inner) !important;
-  color: #ffffff !important;
-  border-color: rgba(235,241,245,0.18) !important;
-}
-
-/* ---------- FEEDBACK ---------- */
-
-html body #root .mirrortrace-app-shell .mirrortrace-feedback-page
+  .mirrortrace-admin-hero,
+  .mirrortrace-admin-dashboard
+)
 :is(
-  input,
-  textarea,
-  select
-) {
-  background: var(--mt-auth-inner) !important;
-  background-color: var(--mt-auth-inner) !important;
-  color: #ffffff !important;
-  border-color: rgba(235,241,245,0.18) !important;
-}
-
-/* ---------- ADMIN: SECURITY + OPERATIONS / METRICS / USERS ---------- */
-
-html body #root .mirrortrace-admin-page .mirrortrace-admin-hero,
-html body #root .mirrortrace-admin-page .mirrortrace-admin-dashboard
-:is(
-  .mirrortrace-admin-metric,
-  .mirrortrace-admin-surface,
   article,
+  form,
   section,
   div[class*="rounded"][class*="border"],
-  div[class*="rounded"][class*="shadow"]
-) {
+  div[class*="rounded"][class*="shadow"],
+  .mirrortrace-admin-metric,
+  .mirrortrace-admin-surface,
+  .mt-glass
+),
+html body #root .mirrortrace-admin-page .mirrortrace-admin-hero {
   background: var(--mt-auth-black50) !important;
   background-color: var(--mt-auth-black50) !important;
   background-image: none !important;
   border-color: var(--mt-auth-border) !important;
+  color: var(--mt-auth-text) !important;
+  backdrop-filter: blur(2px) saturate(103%) !important;
+  -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
 }
 
-/* privacy boundary = lighter inner glass */
+/* Privacy boundary stays lighter */
 html body #root .mirrortrace-admin-page .mirrortrace-admin-hero
 :is(
   .mirrortrace-admin-boundary,
@@ -248,22 +152,17 @@ html body #root .mirrortrace-admin-page .mirrortrace-admin-hero
   border-color: rgba(235,241,245,0.20) !important;
 }
 
-/* ---------- TEXT ---------- */
-
-html body #root .mirrortrace-app-shell
+/* Text */
+html body #root
 :is(
+  .mirrortrace-dashboard-overview,
   .mirrortrace-reflect-page,
   .mirrortrace-history-page,
   .mirrortrace-memory-page,
   .mirrortrace-memory-governance,
   .mirrortrace-support-page,
   .mirrortrace-feedback-page,
-  .mirrortrace-dashboard-overview,
-  .mirrortrace-themed-page
-)
-:is(h1,h2,h3,h4,h5,strong),
-html body #root .mirrortrace-admin-page
-:is(
+  .mirrortrace-themed-page,
   .mirrortrace-admin-dashboard,
   .mirrortrace-admin-hero
 )
@@ -271,20 +170,16 @@ html body #root .mirrortrace-admin-page
   color: #ffffff !important;
 }
 
-html body #root .mirrortrace-app-shell
+html body #root
 :is(
+  .mirrortrace-dashboard-overview,
   .mirrortrace-reflect-page,
   .mirrortrace-history-page,
   .mirrortrace-memory-page,
   .mirrortrace-memory-governance,
   .mirrortrace-support-page,
   .mirrortrace-feedback-page,
-  .mirrortrace-dashboard-overview,
-  .mirrortrace-themed-page
-)
-:is(p,label,td,th),
-html body #root .mirrortrace-admin-page
-:is(
+  .mirrortrace-themed-page,
   .mirrortrace-admin-dashboard,
   .mirrortrace-admin-hero
 )
@@ -292,9 +187,7 @@ html body #root .mirrortrace-admin-page
   color: var(--mt-auth-copy) !important;
 }
 
-/* ---------- PERFORMANCE ---------- */
-
-html body #root .mirrortrace-app-shell,
-html body #root .mirrortrace-admin-page {
-  background-attachment: scroll !important;
+/* Keep sign-in page untouched */
+html body #root .mirrortrace-auth-page {
+  /* intentionally not overridden */
 }

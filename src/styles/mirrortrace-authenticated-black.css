@@ -1,0 +1,362 @@
+/* ============================================================
+   MIRRORTRACE AUTHENTICATED BLACK HUE FINAL
+   This file intentionally affects ONLY the signed-in application
+   and the admin control room.
+   The signed-out AuthView / landing page is untouched.
+   ============================================================ */
+
+:root {
+  --mt-auth-card-black: rgba(0, 0, 0, 0.54);
+  --mt-auth-card-black-strong: rgba(0, 0, 0, 0.62);
+  --mt-auth-inner-glass: rgba(255, 255, 255, 0.075);
+  --mt-auth-border: rgba(229, 237, 242, 0.16);
+  --mt-auth-border-soft: rgba(229, 237, 242, 0.11);
+  --mt-auth-white: #ffffff;
+  --mt-auth-copy: #d8e0e6;
+  --mt-auth-muted: #aeb8c1;
+}
+
+/* ============================================================
+   AUTHENTICATED APP ONLY
+   ============================================================ */
+
+.mirrortrace-app-shell {
+  color: var(--mt-auth-white);
+}
+
+/* Keep the shared branch background visible. */
+.mirrortrace-app-shell,
+.mirrortrace-app-main,
+.mirrortrace-page-skin {
+  background-color: transparent !important;
+}
+
+/* ============================================================
+   REMOVE THE OLD NAVY COLOR
+   These utility classes are what your old dark-mode translation
+   turns into #202940 / #252e46.
+   ============================================================ */
+
+.mirrortrace-page-skin .bg-white,
+.mirrortrace-page-skin .bg-stone-50,
+.mirrortrace-page-skin .bg-stone-100,
+.mirrortrace-page-skin [class*="bg-white"] {
+  background: var(--mt-auth-card-black) !important;
+  background-color: var(--mt-auth-card-black) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(2.5px) saturate(102%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(102%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.035),
+    0 14px 34px rgba(0,0,0,0.20) !important;
+}
+
+/* ============================================================
+   OVERVIEW
+   ============================================================ */
+
+.mirrortrace-overview-page .mirrortrace-user-hero,
+.mirrortrace-overview-page .mirrortrace-stat-card,
+.mirrortrace-overview-page .mirrortrace-action-card,
+.mirrortrace-overview-page .mirrortrace-diff-feature,
+.mirrortrace-overview-page .rounded-3xl.border,
+.mirrortrace-overview-page .rounded-2xl.border,
+.mirrortrace-overview-page .rounded-xl.border {
+  background: var(--mt-auth-card-black) !important;
+  background-color: var(--mt-auth-card-black) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(2.5px) saturate(102%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(102%) !important;
+}
+
+/* ============================================================
+   REFLECTIVE SPACE
+   ============================================================ */
+
+.mirrortrace-reflect-page .bg-white,
+.mirrortrace-reflect-page .bg-stone-50,
+.mirrortrace-reflect-page .bg-stone-100,
+.mirrortrace-reflect-page article,
+.mirrortrace-reflect-page form,
+.mirrortrace-reflect-page div[class*="rounded-2xl"][class*="border"],
+.mirrortrace-reflect-page div[class*="rounded-3xl"][class*="border"] {
+  background: var(--mt-auth-card-black) !important;
+  background-color: var(--mt-auth-card-black) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+}
+
+/* Chat footer / editor inner surfaces should be lighter than outer cards. */
+.mirrortrace-reflect-page input,
+.mirrortrace-reflect-page textarea,
+.mirrortrace-reflect-page select,
+.mirrortrace-reflect-page [contenteditable="true"] {
+  background: var(--mt-auth-inner-glass) !important;
+  background-color: var(--mt-auth-inner-glass) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+  border-color: rgba(235,241,245,0.18) !important;
+
+  backdrop-filter: blur(2px) !important;
+  -webkit-backdrop-filter: blur(2px) !important;
+}
+
+.mirrortrace-reflect-page input::placeholder,
+.mirrortrace-reflect-page textarea::placeholder {
+  color: #9faab5 !important;
+}
+
+/* ============================================================
+   JOURNAL HISTORY
+   ============================================================ */
+
+.mirrortrace-history-page .bg-white,
+.mirrortrace-history-page .bg-stone-50,
+.mirrortrace-history-page .bg-stone-100,
+.mirrortrace-history-page article,
+.mirrortrace-history-page div[class*="rounded-2xl"][class*="border"],
+.mirrortrace-history-page div[class*="rounded-3xl"][class*="border"],
+.mirrortrace-history-page div[class*="rounded-xl"][class*="border"] {
+  background: var(--mt-auth-card-black) !important;
+  background-color: var(--mt-auth-card-black) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+}
+
+.mirrortrace-history-page input,
+.mirrortrace-history-page textarea,
+.mirrortrace-history-page select {
+  background: var(--mt-auth-inner-glass) !important;
+  background-color: var(--mt-auth-inner-glass) !important;
+  color: #ffffff !important;
+  border-color: rgba(235,241,245,0.18) !important;
+}
+
+/* ============================================================
+   MEMORY GOVERNANCE
+   ============================================================ */
+
+.mirrortrace-memory-page .mirrortrace-memory-governance,
+.mirrortrace-memory-page .mirrortrace-memory-governance header,
+.mirrortrace-memory-page .mirrortrace-memory-governance article,
+.mirrortrace-memory-page .mirrortrace-memory-governance section,
+.mirrortrace-memory-page .mirrortrace-memory-governance .bg-white,
+.mirrortrace-memory-page .mirrortrace-memory-governance .bg-stone-50,
+.mirrortrace-memory-page .mirrortrace-memory-governance .bg-stone-100,
+.mirrortrace-memory-page .mirrortrace-memory-governance div[class*="rounded-2xl"][class*="border"],
+.mirrortrace-memory-page .mirrortrace-memory-governance div[class*="rounded-3xl"][class*="border"] {
+  background: var(--mt-auth-card-black) !important;
+  background-color: var(--mt-auth-card-black) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+}
+
+.mirrortrace-memory-page input,
+.mirrortrace-memory-page textarea,
+.mirrortrace-memory-page select {
+  background: var(--mt-auth-inner-glass) !important;
+  background-color: var(--mt-auth-inner-glass) !important;
+  color: #ffffff !important;
+  border-color: rgba(235,241,245,0.18) !important;
+}
+
+/* ============================================================
+   SUPPORT
+   ============================================================ */
+
+.mirrortrace-support-page .bg-white,
+.mirrortrace-support-page .bg-stone-50,
+.mirrortrace-support-page .bg-stone-100,
+.mirrortrace-support-page article,
+.mirrortrace-support-page form,
+.mirrortrace-support-page div[class*="rounded-2xl"][class*="border"],
+.mirrortrace-support-page div[class*="rounded-3xl"][class*="border"] {
+  background: var(--mt-auth-card-black) !important;
+  background-color: var(--mt-auth-card-black) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+}
+
+.mirrortrace-support-page input,
+.mirrortrace-support-page textarea,
+.mirrortrace-support-page select {
+  background: var(--mt-auth-inner-glass) !important;
+  background-color: var(--mt-auth-inner-glass) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+  border-color: rgba(235,241,245,0.18) !important;
+}
+
+/* ============================================================
+   FEEDBACK
+   ============================================================ */
+
+.mirrortrace-feedback-page .bg-white,
+.mirrortrace-feedback-page .bg-stone-50,
+.mirrortrace-feedback-page .bg-stone-100,
+.mirrortrace-feedback-page article,
+.mirrortrace-feedback-page form,
+.mirrortrace-feedback-page div[class*="rounded-2xl"][class*="border"],
+.mirrortrace-feedback-page div[class*="rounded-3xl"][class*="border"] {
+  background: var(--mt-auth-card-black) !important;
+  background-color: var(--mt-auth-card-black) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+}
+
+.mirrortrace-feedback-page input,
+.mirrortrace-feedback-page textarea,
+.mirrortrace-feedback-page select {
+  background: var(--mt-auth-inner-glass) !important;
+  background-color: var(--mt-auth-inner-glass) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+  border-color: rgba(235,241,245,0.18) !important;
+}
+
+/* ============================================================
+   ADMIN CONTROL ROOM
+   ============================================================ */
+
+/* The large Security & Operations block: dark transparent BLACK,
+   not dark blue, so the branch image remains visible behind it. */
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-hero {
+  background: var(--mt-auth-card-black) !important;
+  background-color: var(--mt-auth-card-black) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(2.5px) saturate(102%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(102%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.035),
+    0 18px 42px rgba(0,0,0,0.22) !important;
+}
+
+/* Every admin dashboard card that used bg-white/navy. */
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-dashboard .bg-white,
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-dashboard .bg-stone-50,
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-dashboard .bg-stone-100,
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-dashboard .mirrortrace-admin-metric,
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-dashboard .mirrortrace-admin-surface,
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-dashboard article,
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-dashboard section[class*="rounded"],
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-dashboard div[class*="rounded-2xl"][class*="border"],
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-dashboard div[class*="rounded-3xl"][class*="border"] {
+  background: var(--mt-auth-card-black) !important;
+  background-color: var(--mt-auth-card-black) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-auth-border) !important;
+
+  backdrop-filter: blur(2.5px) saturate(102%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(102%) !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.035),
+    0 14px 34px rgba(0,0,0,0.20) !important;
+}
+
+/* Privacy Boundary is intentionally a little darker, matching the
+   sixth reference screenshot but with stronger black tint. */
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-boundary,
+.mirrortrace-app-shell .mirrortrace-admin-page .mirrortrace-admin-hero .bg-emerald-300\/10 {
+  background: var(--mt-auth-card-black-strong) !important;
+  background-color: var(--mt-auth-card-black-strong) !important;
+  background-image: none !important;
+
+  border-color: rgba(220,232,226,0.18) !important;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+
+.mirrortrace-page-skin
+:is(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800,
+  .text-stone-700
+),
+.mirrortrace-admin-page
+:is(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800,
+  .text-stone-700
+) {
+  color: #ffffff !important;
+}
+
+.mirrortrace-page-skin
+:is(
+  p,
+  label,
+  td,
+  th,
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+),
+.mirrortrace-admin-page
+:is(
+  p,
+  label,
+  td,
+  th,
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+) {
+  color: var(--mt-auth-copy) !important;
+}
+
+/* ============================================================
+   PERFORMANCE
+   ============================================================ */
+
+.mirrortrace-app-shell,
+.mirrortrace-admin-overlay {
+  background-attachment: scroll !important;
+}
+
+@media (max-width: 800px) {
+  .mirrortrace-page-skin .bg-white,
+  .mirrortrace-page-skin .bg-stone-50,
+  .mirrortrace-page-skin .bg-stone-100,
+  .mirrortrace-admin-page .mirrortrace-admin-hero,
+  .mirrortrace-admin-page .mirrortrace-admin-dashboard .bg-white {
+    backdrop-filter: blur(1.5px) !important;
+    -webkit-backdrop-filter: blur(1.5px) !important;
+  }
+}

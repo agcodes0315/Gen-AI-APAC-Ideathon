@@ -64,13 +64,7 @@ import type {
   ThoughtDiff,
 } from './types.ts';
 
-/*
- * IMPORTANT:
- * This stylesheet is intentionally imported from App so the authenticated
- * secondary-page theme is guaranteed to load. It does NOT style Overview,
- * Admin Dashboard, or the signed-out landing page.
- */
-import './styles/mirrortrace-authenticated-pages.css';
+import './styles/mirrortrace-authenticated-black.css';
 
 export type MainTab =
   | 'overview'
@@ -91,103 +85,75 @@ const scrollPageToTop = () => {
     behavior: 'auto',
   });
 
-  document.documentElement.scrollTop =
-    0;
-
-  document.body.scrollTop =
-    0;
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
 };
 
 export default function App() {
   const [
     user,
     setUser,
-  ] =
-    useState<UserProfile | null>(
-      null
-    );
+  ] = useState<UserProfile | null>(null);
 
   const [
     authLoading,
     setAuthLoading,
-  ] =
-    useState(true);
+  ] = useState(true);
 
   const [
     activeTab,
     setActiveTab,
-  ] =
-    useState<MainTab>(
-      'overview'
-    );
+  ] = useState<MainTab>('overview');
 
   const [
     historySubTab,
     setHistorySubTab,
-  ] =
-    useState<HistorySubTab>(
-      'reflections'
-    );
+  ] = useState<HistorySubTab>('reflections');
 
   const [
     filterApprovedSnapshots,
     setFilterApprovedSnapshots,
-  ] =
-    useState(false);
+  ] = useState(false);
 
   const [
     highlightDiffId,
     setHighlightDiffId,
-  ] =
-    useState<string | null>(
-      null
-    );
+  ] = useState<string | null>(null);
 
   const [
     privateSessionMode,
     setPrivateSessionMode,
-  ] =
-    useState(false);
+  ] = useState(false);
 
   const [
     externalTags,
     setExternalTags,
-  ] =
-    useState<string[]>([]);
+  ] = useState<string[]>([]);
 
   const [
     refreshCounter,
     setRefreshCounter,
-  ] =
-    useState(0);
+  ] = useState(0);
 
   const [
     entries,
     setEntries,
-  ] =
-    useState<JournalEntry[]>([]);
+  ] = useState<JournalEntry[]>([]);
 
   const [
     snapshots,
     setSnapshots,
-  ] =
-    useState<ThoughtSnapshot[]>([]);
+  ] = useState<ThoughtSnapshot[]>([]);
 
   const [
     diffs,
     setDiffs,
-  ] =
-    useState<ThoughtDiff[]>([]);
+  ] = useState<ThoughtDiff[]>([]);
 
   const [
     dataLoading,
     setDataLoading,
-  ] =
-    useState(true);
-
-  /* ============================================================
-     AUTH
-     ============================================================ */
+  ] = useState(true);
 
   useEffect(() => {
     const unsubscribe =
@@ -228,10 +194,6 @@ export default function App() {
       unsubscribe();
   }, []);
 
-  /* ============================================================
-     PAGE SCROLL
-     ============================================================ */
-
   useLayoutEffect(() => {
     scrollPageToTop();
   }, [
@@ -239,10 +201,6 @@ export default function App() {
     historySubTab,
     user?.uid,
   ]);
-
-  /* ============================================================
-     USER DATA
-     ============================================================ */
 
   const loadData =
     async () => {
@@ -311,10 +269,6 @@ export default function App() {
     refreshCounter,
   ]);
 
-  /* ============================================================
-     SIGN OUT
-     ============================================================ */
-
   const handleSignOut =
     async () => {
       try {
@@ -375,10 +329,6 @@ export default function App() {
       }
     };
 
-  /* ============================================================
-     JOURNAL EVENTS
-     ============================================================ */
-
   const handleEntrySaved =
     (
       _entry:
@@ -412,10 +362,6 @@ export default function App() {
               ]
       );
     };
-
-  /* ============================================================
-     NAVIGATION
-     ============================================================ */
 
   const handleNavigate =
     (
@@ -484,10 +430,6 @@ export default function App() {
       );
     };
 
-  /* ============================================================
-     LOADING
-     ============================================================ */
-
   if (
     authLoading
   ) {
@@ -504,16 +446,11 @@ export default function App() {
         <div className="w-6 h-6 border-2 border-stone-300 border-t-amber-800 rounded-full animate-spin" />
 
         <p className="text-xs text-stone-500 font-sans">
-          Verifying authentication
-          session...
+          Verifying authentication session...
         </p>
       </div>
     );
   }
-
-  /* ============================================================
-     SIGNED OUT
-     ============================================================ */
 
   if (!user) {
     return (
@@ -541,10 +478,6 @@ export default function App() {
     );
   }
 
-  /* ============================================================
-     APPLICATION
-     ============================================================ */
-
   return (
     <div className="mirrortrace-app-shell min-h-screen bg-stone-100 flex flex-col justify-between">
 
@@ -571,40 +504,34 @@ export default function App() {
 
         <main className="mirrortrace-app-main max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-          {/* ==================================================
-              OVERVIEW — intentionally untouched
-              ================================================== */}
-
           {activeTab ===
             'overview' && (
-            <DashboardOverview
-              entries={
-                entries
-              }
-              snapshots={
-                snapshots
-              }
-              diffs={
-                diffs
-              }
-              loading={
-                dataLoading
-              }
-              onNavigate={
-                handleNavigate
-              }
-            />
+            <div className="mirrortrace-page-skin mirrortrace-overview-page">
+              <DashboardOverview
+                entries={
+                  entries
+                }
+                snapshots={
+                  snapshots
+                }
+                diffs={
+                  diffs
+                }
+                loading={
+                  dataLoading
+                }
+                onNavigate={
+                  handleNavigate
+                }
+              />
+            </div>
           )}
-
-          {/* ==================================================
-              REFLECT & CHAT
-              ================================================== */}
 
           {activeTab ===
             'journal' && (
-            <div className="mirrortrace-secondary-page mirrortrace-secondary-journal space-y-6 animate-fade-in">
+            <div className="mirrortrace-page-skin mirrortrace-reflect-page space-y-6 animate-fade-in">
 
-              <div className="mirrortrace-secondary-page-header flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
 
                 <div>
 
@@ -622,7 +549,7 @@ export default function App() {
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-                <div className="mirrortrace-secondary-column lg:col-span-6 space-y-6">
+                <div className="lg:col-span-6 space-y-6">
 
                   <JournalEditor
                     onEntrySaved={
@@ -642,7 +569,7 @@ export default function App() {
                   />
                 </div>
 
-                <div className="mirrortrace-secondary-column lg:col-span-6">
+                <div className="lg:col-span-6">
 
                   <BrainstormChat
                     onSuggestedTagClick={
@@ -654,15 +581,11 @@ export default function App() {
             </div>
           )}
 
-          {/* ==================================================
-              JOURNAL HISTORY
-              ================================================== */}
-
           {activeTab ===
             'history' && (
-            <div className="mirrortrace-secondary-page mirrortrace-secondary-history space-y-6 animate-fade-in">
+            <div className="mirrortrace-page-skin mirrortrace-history-page space-y-6 animate-fade-in">
 
-              <div className="mirrortrace-secondary-page-header flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
 
                 <div>
 
@@ -677,32 +600,26 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="mirrortrace-secondary-content">
-                <JournalList
-                  onRefreshTrigger={
-                    refreshCounter
-                  }
-                  initialSubTab={
-                    historySubTab
-                  }
-                  filterApprovedSnapshots={
-                    filterApprovedSnapshots
-                  }
-                  highlightDiffId={
-                    highlightDiffId
-                  }
-                />
-              </div>
+              <JournalList
+                onRefreshTrigger={
+                  refreshCounter
+                }
+                initialSubTab={
+                  historySubTab
+                }
+                filterApprovedSnapshots={
+                  filterApprovedSnapshots
+                }
+                highlightDiffId={
+                  highlightDiffId
+                }
+              />
             </div>
           )}
 
-          {/* ==================================================
-              MEMORY GOVERNANCE
-              ================================================== */}
-
           {activeTab ===
             'memory' && (
-            <div className="mirrortrace-secondary-page mirrortrace-secondary-memory animate-fade-in">
+            <div className="mirrortrace-page-skin mirrortrace-memory-page">
               <MemoryGovernanceCenter
                 onMemoryChanged={() => {
                   setRefreshCounter(
@@ -717,15 +634,11 @@ export default function App() {
             </div>
           )}
 
-          {/* ==================================================
-              SUPPORT
-              ================================================== */}
-
           {activeTab ===
             'support' && (
-            <div className="mirrortrace-secondary-page mirrortrace-secondary-support space-y-6 animate-fade-in">
+            <div className="mirrortrace-page-skin mirrortrace-support-page space-y-6 animate-fade-in">
 
-              <div className="mirrortrace-secondary-page-header border-b border-stone-200 pb-4">
+              <div className="border-b border-stone-200 pb-4">
 
                 <div className="flex flex-wrap items-center gap-2">
 
@@ -744,21 +657,15 @@ export default function App() {
                 </p>
               </div>
 
-              <div className="mirrortrace-secondary-content">
-                <SupportCenter />
-              </div>
+              <SupportCenter />
             </div>
           )}
 
-          {/* ==================================================
-              FEEDBACK
-              ================================================== */}
-
           {activeTab ===
             'feedback' && (
-            <div className="mirrortrace-secondary-page mirrortrace-secondary-feedback space-y-6 animate-fade-in">
+            <div className="mirrortrace-page-skin mirrortrace-feedback-page space-y-6 animate-fade-in">
 
-              <div className="mirrortrace-secondary-page-header border-b border-stone-200 pb-4">
+              <div className="border-b border-stone-200 pb-4">
 
                 <div className="flex flex-wrap items-center gap-2">
 
@@ -777,9 +684,7 @@ export default function App() {
                 </p>
               </div>
 
-              <div className="mirrortrace-secondary-content">
-                <ProductReviews />
-              </div>
+              <ProductReviews />
             </div>
           )}
 

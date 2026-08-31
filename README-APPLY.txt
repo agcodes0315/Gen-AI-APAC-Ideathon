@@ -1,64 +1,50 @@
-MIRRORTRACE — AUTHENTICATED BLACK 50% THEME
-================================================
+MIRRORTRACE BLACK-HUE FINAL FIX
 
-This package intentionally changes ONLY authenticated UI surfaces.
+FILES TO REPLACE / ADD
+----------------------
+1. Replace:
+   src/App.tsx
 
-CHANGES:
-- User Overview outer hero -> black 50% translucent surface
-- Overview cards -> black 50% translucent surfaces
-- Reflect & Chat -> black 50% card surfaces
-- Journal History -> black 50% card surfaces
-- Memory -> black 50% card surfaces
-- Support -> black 50% card surfaces
-- Feedback -> black 50% card surfaces
-- Admin Security & Operations hero -> black 50%
-- Admin metrics/cards/tables -> black 50%
-- Privacy Boundary / nested panels -> lighter glass so hierarchy remains visible
+2. Add:
+   src/styles/mirrortrace-authenticated-black.css
 
-NOT CHANGED:
-- Sign-in / public landing page
-- Authentication
-- APIs
-- Firebase
-- journal logic
-- Gemini logic
-- notifications
-- layout
-- motion
+IMPORTANT
+---------
+Do NOT run any PowerShell patch script.
 
-HOW TO APPLY
-------------
+The previous issue happened because the authenticated app did not actually have
+the CSS scope classes that the override stylesheet was targeting.
 
-1. Copy:
-   src/styles/mirrortrace-authenticated-black-50.css
+This App.tsx now explicitly adds:
+- mirrortrace-app-shell
+- mirrortrace-page-skin
+- mirrortrace-overview-page
+- mirrortrace-reflect-page
+- mirrortrace-history-page
+- mirrortrace-memory-page
+- mirrortrace-support-page
+- mirrortrace-feedback-page
 
-2. Import it LAST among your authenticated CSS imports.
+The stylesheet is imported directly by App.tsx, so there is no extra script
+and no fragile manual CSS append step.
 
-Recommended:
-   in src/App.tsx, put this CSS import at the very top:
+This does NOT target AuthView, so the signed-out / sign-in page remains untouched.
 
-   import './styles/mirrortrace-authenticated-black-50.css';
+AFTER COPYING
+-------------
+npm run lint
+npm run build
+npm run dev
 
-If other stylesheet imports exist in App.tsx, this one MUST be after them.
+Then:
+Ctrl + Shift + R
 
-3. If AdminDashboard.tsx imports old visual CSS files directly, REMOVE those visual CSS imports from AdminDashboard.tsx.
-   Do not remove JS/TS imports.
-
-4. Run:
-   npm run lint
-   npm run build
-   npm run dev
-
-5. Hard refresh:
-   Ctrl + Shift + R
-
-IMPORTANT:
-This stylesheet is deliberately scoped to:
-- .mirrortrace-app-shell
-- .mirrortrace-dashboard-overview
-- .mirrortrace-themed-page
-- .mirrortrace-memory-governance
-- .mirrortrace-admin-dashboard
-- .mirrortrace-admin-page
-
-It does NOT target .mirrortrace-auth-page, so the sign-in page is unchanged.
+EXPECTED RESULT
+---------------
+- no opaque navy #202940 cards in signed-in pages
+- outer cards are black at about 54% opacity
+- branch background remains visible through them
+- nested inputs are lighter glass
+- Security & Operations hero is black transparent instead of navy
+- Privacy Boundary is slightly darker
+- sign-in page stays unchanged

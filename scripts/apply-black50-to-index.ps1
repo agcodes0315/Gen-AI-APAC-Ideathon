@@ -1,34 +1,44 @@
 $ErrorActionPreference = "Stop"
 
-$project = Split-Path -Parent $PSScriptRoot
-$index = Join-Path $project "src\index.css"
+$projectRoot = Split-Path -Parent $PSScriptRoot
+$indexCss = Join-Path $projectRoot "src\index.css"
+$blockCss = Join-Path $PSScriptRoot "black50-block.css"
 
-if (!(Test-Path $index)) {
-    throw "src\index.css not found."
+if (!(Test-Path $indexCss)) {
+    throw "Could not find src\index.css"
 }
 
-$marker = "/* MIRRORTRACE — AUTHENTICATED BLACK 50 HARD FIX */"
-$blockPath = Join-Path $PSScriptRoot "black50-block.css"
-$block = Get-Content $blockPath -Raw
-
-$content = Get-Content $index -Raw
-
-# Remove an older copy of this exact hard-fix block if present.
-$start = $content.IndexOf("/* ============================================================" + "`r`n" + "   MIRRORTRACE — AUTHENTICATED BLACK 50 HARD FIX")
-if ($start -lt 0) {
-    $start = $content.IndexOf("/* ============================================================" + "`n" + "   MIRRORTRACE — AUTHENTICATED BLACK 50 HARD FIX")
-}
-if ($start -ge 0) {
-    $content = $content.Substring(0, $start).TrimEnd()
+if (!(Test-Path $blockCss)) {
+    throw "Could not find scripts\black50-block.css"
 }
 
-$content = $content.TrimEnd() + "`r`n`r`n" + $block + "`r`n"
-Set-Content -Path $index -Value $content -Encoding UTF8
+$startMarker = "/* ============================================================"
+$titleMarker = "MIRRORTRACE AUTHENTICATED BLACK 50 HARD FIX"
+
+$existing = Get-Content -Path $indexCss -Raw
+$block = Get-Content -Path $blockCss -Raw
+
+# Remove an older copy of this same hard-fix block, if present.
+$titlePos = $existing.IndexOf($titleMarker)
+
+if ($titlePos -ge 0) {
+    $blockStart = $existing.LastIndexOf($startMarker, $titlePos)
+
+    if ($blockStart -ge 0) {
+        $existing = $existing.Substring(0, $blockStart).TrimEnd()
+    }
+}
+
+$updated = $existing.TrimEnd() + "`r`n`r`n" + $block.Trim() + "`r`n"
+
+Set-Content -Path $indexCss -Value $updated -Encoding UTF8
 
 Write-Host ""
-Write-Host "Done: black-50 hard fix appended to the ABSOLUTE END of src/index.css"
+Write-Host "SUCCESS"
+Write-Host "Black-50 CSS appended to the absolute end of:"
+Write-Host $indexCss
 Write-Host ""
-Write-Host "Now run:"
+Write-Host "Next run:"
 Write-Host "npm run dev"
 Write-Host ""
-Write-Host "Then hard refresh Chrome: Ctrl + Shift + R"
+Write-Host "Then hard refresh Chrome with Ctrl + Shift + R"
