@@ -1,22 +1,27 @@
-MirrorTrace 30% Black Hero Fix
+MirrorTrace Feature Card Fix
+============================
 
-1. Copy:
-   src/styles/mirrortrace-final-black30.css
-   into your project's src/styles folder.
+Replace exactly these two files:
 
-2. Import it LAST, after every other MirrorTrace CSS import.
+1. src/components/ScrollArcCard.tsx
+2. src/styles/mirrortrace-motion-and-glass.css
 
-   Example in the component or main stylesheet that already loads your visual CSS:
+No other file is changed.
 
-   import '../styles/mirrortrace-final-black30.css';
+What this fixes:
+- feature card text is white
+- cards are square instead of full-width horizontal bars
+- cards remain in two horizontal rows
+- direction="left" cards move left as the page scrolls
+- direction="right" cards move right as the page scrolls
+- each card follows a shallow semicircular arc
+- spring smoothing removes the harsh / laggy feel
+- horizontal manual browsing still works
+- no global UI/background/auth/admin logic is touched
 
-3. Restart Vite completely:
-   Ctrl+C
-   npm run dev
+After replacing:
+npm run lint
+npm run build
+npm run dev
 
-4. Hard refresh browser:
-   Ctrl+Shift+R
-
-This file only changes the authenticated "Your thinking, versioned." hero surface.
-It forces the hero to rgba(0,0,0,0.30), removes old hero-owned images/pseudo overlays,
-and keeps only a 2px haze so the shared page background remains visible.
+Then hard-refresh Chrome with Ctrl+Shift+R.

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import {
   motion,
   useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
 } from 'motion/react';
 
 interface ScrollArcCardProps {
@@ -14,10 +17,17 @@ interface ScrollArcCardProps {
 }
 
 /**
- * Smooth card entrance without scroll-linked transforms.
- * This deliberately avoids useScroll/useTransform because dozens of
- * scroll-linked MotionValues plus translucent cards can make vertical
- * page scrolling feel sticky on Windows/Chrome.
+ * MirrorTrace feature-card motion.
+ *
+ * Behaviour:
+ * - Cards remain square and laid out horizontally by the existing row.
+ * - Top row (`direction="left"`) drifts left while the page scrolls.
+ * - Bottom row (`direction="right"`) drifts right while the page scrolls.
+ * - Each card follows a shallow semicircular arc rather than a flat line.
+ * - Spring smoothing removes the harsh / stop-start motion.
+ *
+ * This component intentionally keeps the same public props as the existing
+ * ScrollArcCard so AuthView does not need to be rewritten.
  */
 export default function ScrollArcCard({
   children,
@@ -26,58 +36,119 @@ export default function ScrollArcCard({
   direction,
   total = 5,
 }: ScrollArcCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
 
-  const normalizedPosition =
-    total > 1 ? index / (total - 1) : 0.5;
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ['start 0.92', 'end 0.08'],
+  });
 
-  const distanceFromCenter =
-    Math.abs(normalizedPosition - 0.5);
+  /*
+   * Smooth the raw scroll value.
+   * This is the part that removes the jerky / "hard gesture" feeling.
+   */
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 95,
+    damping: 24,
+    mass: 0.38,
+    restDelta: 0.001,
+  });
 
-  const restingY = distanceFromCenter * 10;
-  const entryX = direction === 'left' ? -18 : 18;
+  /*
+   * Give cards a very small stagger based on their index.
+   * It keeps the row feeling like one moving ribbon rather than a stack
+   * of identical blocks moving at exactly the same instant.
+   */
+  const centeredIndex =
+    total > 1
+      ? index - (total - 1) / 2
+      : 0;
+
+  const rowTravel = direction === 'left' ? -150 : 150;
+  const initialOffset = centeredIndex * 7;
+
+  const x = useTransform(
+    smoothProgress,
+    [0, 0.5, 1],
+    [
+      initialOffset,
+      rowTravel * 0.48 + initialOffset,
+      rowTravel + initialOffset,
+    ],
+  );
+
+  /*
+   * Shallow semicircle:
+   * card starts slightly lower -> rises at the middle -> settles lower.
+   * The bottom row mirrors the curve very slightly so both rows feel
+   * related without looking mechanically identical.
+   */
+  const arcPeak =
+    direction === 'left'
+      ? -22
+      : -18;
+
+  const y = useTransform(
+    smoothProgress,
+    [0, 0.5, 1],
+    [20, arcPeak, 18],
+  );
+
+  const rotate = useTransform(
+    smoothProgress,
+    [0, 0.5, 1],
+    direction === 'left'
+      ? [3.4, 0, -3.4]
+      : [-3.4, 0, 3.4],
+  );
+
+  const opacity = useTransform(
+    smoothProgress,
+    [0, 0.12, 0.88, 1],
+    [0.82, 1, 1, 0.9],
+  );
 
   return (
-    <motion.div
-      initial={
-        reducedMotion
-          ? false
-          : {
-              opacity: 0,
-              x: entryX,
-              y: restingY + 12,
-            }
-      }
-      whileInView={
+    <motion.article
+      ref={cardRef}
+      style={
         reducedMotion
           ? undefined
           : {
-              opacity: 1,
-              x: 0,
-              y: restingY,
+              x,
+              y,
+              rotate,
+              opacity,
             }
       }
-      viewport={{
-        once: true,
-        amount: 0.10,
-        margin: '80px',
-      }}
       whileHover={
         reducedMotion
           ? undefined
           : {
-              y: restingY - 5,
-              scale: 1.018,
+              scale: 1.035,
+              y: -8,
+              rotate: 0,
+              zIndex: 20,
             }
       }
-      whileTap={{ scale: 0.99 }}
-      transition={{
-        duration: 0.40,
-        ease: [0.22, 1, 0.36, 1],
+      whileTap={{
+        scale: reducedMotion ? 1 : 0.99,
       }}
-      className={`mirrortrace-arc-card mt-glass mt-hover-pop relative shrink-0 rounded-[26px] p-6 ${className}`}
+      transition={{
+        type: 'spring',
+        stiffness: 190,
+        damping: 22,
+        mass: 0.45,
+      }}
+      className={[
+        'mirrortrace-arc-card',
+        'mt-glass',
+        'mt-hover-pop',
+        className,
+      ].join(' ')}
     >
       {children}
-    </motion.div>
+    </motion.article>
   );
 }

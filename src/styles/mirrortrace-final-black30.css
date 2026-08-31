@@ -1,158 +1,306 @@
 /* ============================================================
-   MIRRORTRACE — FINAL 30% BLACK HERO OVERRIDE
-   Purpose:
-   - make "Your thinking, versioned." exactly 30% black
-   - keep the shared branch background visible through the block
-   - remove older solid-blue/opaque hero overrides
-   - do not change layout, text, buttons, motion, or other pages
+   MIRRORTRACE — USER HERO 30% BLACK GLASS
+   FULL REPLACEMENT FILE
+
+   This file makes the authenticated:
+       "Your thinking, versioned."
+   hero use the SAME visual treatment as the working
+   Security & Operations hero:
+
+   - shared branch background remains visible
+   - exactly one ~30% black glass layer
+   - slight haze only
+   - no solid navy fill
+   - no separate hero photo
+   - no extra full-cover child overlay
+   - no change to layout/buttons/text structure
 
    IMPORTANT:
-   Import this file LAST, after every other MirrorTrace stylesheet.
+   Import this stylesheet LAST.
    ============================================================ */
 
 :root {
-  --mirrortrace-hero-black-30: rgba(0, 0, 0, 0.30);
-  --mirrortrace-hero-border: rgba(255, 255, 255, 0.14);
+  --mt-user-hero-black: rgba(0, 0, 0, 0.30);
+  --mt-user-hero-border: rgba(226, 235, 241, 0.17);
+  --mt-user-hero-text: #f8fafc;
+  --mt-user-hero-muted: #e3eaf0;
+  --mt-user-hero-accent: #d39445;
 }
 
-/* ------------------------------------------------------------
-   USER HERO — THE ACTUAL FIX
-   ------------------------------------------------------------ */
+/* ============================================================
+   1. THE PAGE BEHIND THE HERO MUST STAY TRANSPARENT
+   ============================================================ */
+
+.mirrortrace-app-main,
+.mirrortrace-dashboard-overview,
+.mirrortrace-dashboard-overview > section,
+.mirrortrace-dashboard-overview > div {
+  background: var(--mt-outer-black-30) !important;
+  background-color: var(--mt-outer-black-30) !important;
+  background-image: none !important;
+  border-color: var(--mt-border) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/*
+ * Do NOT force every child transparent.
+ * Only ensure the page-level wrappers do not replace the
+ * shared branch background with a solid page fill.
+ */
+.mirrortrace-dashboard-overview {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* ============================================================
+   2. USER HERO — EXACT 30% BLACK
+   ============================================================ */
 
 .mirrortrace-user-hero,
 .mirrortrace-dashboard-overview .mirrortrace-user-hero,
-.mirrortrace-clean-glass-hero.mirrortrace-user-hero,
-.mirrortrace-photo-panel.mirrortrace-user-hero {
+.mirrortrace-user-hero.mirrortrace-photo-panel,
+.mirrortrace-user-hero.mirrortrace-clean-glass-hero {
   position: relative !important;
   isolation: isolate !important;
   overflow: hidden !important;
 
   /*
-   * Exactly 30% black.
-   * No dark-blue solid background.
-   * No hero-owned image.
-   * The page background beneath remains visible.
+   * This is the actual surface.
+   * It must not be #111820 / navy / opaque.
    */
   background: rgba(0, 0, 0, 0.30) !important;
   background-color: rgba(0, 0, 0, 0.30) !important;
   background-image: none !important;
 
-  /* Keep haze subtle, not foggy. */
-  backdrop-filter: blur(2px) saturate(103%) !important;
-  -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
+  /*
+   * Small haze only.
+   * The admin screenshot shows the branches clearly, so
+   * keep this very light.
+   */
+  backdrop-filter: blur(2.5px) saturate(105%) !important;
+  -webkit-backdrop-filter: blur(2.5px) saturate(105%) !important;
 
   filter: none !important;
+  opacity: 1 !important;
 
-  border: 1px solid var(--mirrortrace-hero-border) !important;
+  border: 1px solid var(--mt-user-hero-border) !important;
 
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
     0 18px 42px rgba(0, 0, 0, 0.18) !important;
 }
 
-/* ------------------------------------------------------------
-   REMOVE OLD HERO IMAGE / DARK OVERLAY PSEUDO ELEMENTS
-   ------------------------------------------------------------ */
+/* ============================================================
+   3. REMOVE ALL OLD HERO-OWNED BACKGROUND IMAGES
+   ============================================================ */
 
 .mirrortrace-user-hero::before,
 .mirrortrace-user-hero::after,
 .mirrortrace-dashboard-overview .mirrortrace-user-hero::before,
 .mirrortrace-dashboard-overview .mirrortrace-user-hero::after,
-.mirrortrace-clean-glass-hero.mirrortrace-user-hero::before,
-.mirrortrace-clean-glass-hero.mirrortrace-user-hero::after,
-.mirrortrace-photo-panel.mirrortrace-user-hero::before,
-.mirrortrace-photo-panel.mirrortrace-user-hero::after {
+.mirrortrace-user-hero.mirrortrace-photo-panel::before,
+.mirrortrace-user-hero.mirrortrace-photo-panel::after,
+.mirrortrace-user-hero.mirrortrace-clean-glass-hero::before,
+.mirrortrace-user-hero.mirrortrace-clean-glass-hero::after {
   content: none !important;
   display: none !important;
+
   background: none !important;
   background-image: none !important;
+
   filter: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 
-/* ------------------------------------------------------------
-   REMOVE OLD ABSOLUTE BLUR / SHADE LAYERS INSIDE HERO
-   Only neutralizes decorative full-surface layers.
-   It does NOT hide actual content.
-   ------------------------------------------------------------ */
+/* ============================================================
+   4. REMOVE THE SOLID FULL-COVER CHILD THAT IS CAUSING
+      THE NAVY RECTANGLE
+   ============================================================ */
 
-.mirrortrace-user-hero > .mirrortrace-hero-sharp-photo,
-.mirrortrace-user-hero > .mirrortrace-hero-minimal-shade,
-.mirrortrace-user-hero > .mirrortrace-hero-background,
+/*
+ * Your screenshot shows that the hero selector itself is not the
+ * only painted layer. A full-size descendant is still sitting over
+ * it. These selectors neutralize only full-cover decorative layers.
+ */
+.mirrortrace-user-hero > .absolute.inset-0,
+.mirrortrace-user-hero > .absolute[class*="inset-0"],
+.mirrortrace-user-hero > [class*="absolute"][class*="inset-0"],
 .mirrortrace-user-hero > .mirrortrace-hero-overlay,
-.mirrortrace-user-hero > [aria-hidden="true"].absolute.inset-0 {
+.mirrortrace-user-hero > .mirrortrace-hero-background,
+.mirrortrace-user-hero > .mirrortrace-hero-minimal-shade,
+.mirrortrace-user-hero > .mirrortrace-hero-sharp-photo {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+
+  filter: none !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  opacity: 0 !important;
+
+  pointer-events: none !important;
+}
+
+/*
+ * If the old layer was implemented as an IMG/VIDEO element,
+ * remove only the full-cover hero background asset.
+ */
+.mirrortrace-user-hero >
+:is(
+  img.absolute.inset-0,
+  video.absolute.inset-0,
+  .mirrortrace-hero-sharp-photo
+) {
   display: none !important;
 }
 
-/* ------------------------------------------------------------
-   CONTENT MUST STAY ABOVE THE TRANSLUCENT SURFACE
-   ------------------------------------------------------------ */
+/* ============================================================
+   5. CONTENT WRAPPERS MUST NOT PAINT A NAVY BACKGROUND
+   ============================================================ */
 
-.mirrortrace-user-hero > * {
+/*
+ * This is the other common source of the solid block:
+ * a relative content wrapper with bg-slate/bg-stone/bg-[#...].
+ *
+ * These rules only affect DIRECT hero wrappers, not cards/buttons
+ * nested deeper inside the hero.
+ */
+.mirrortrace-user-hero >
+.relative:not(button):not(a),
+.mirrortrace-user-hero >
+.mirrortrace-hero-content {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* ============================================================
+   6. CONTENT LAYER
+   ============================================================ */
+
+.mirrortrace-user-hero >
+*:not(.absolute) {
   position: relative;
   z-index: 2;
 }
 
-/* ------------------------------------------------------------
-   KEEP TEXT CRISP
-   ------------------------------------------------------------ */
-
-.mirrortrace-user-hero h1,
-.mirrortrace-user-hero h2,
-.mirrortrace-user-hero h3,
-.mirrortrace-user-hero p,
-.mirrortrace-user-hero span,
-.mirrortrace-user-hero button {
-  filter: none !important;
+.mirrortrace-user-hero .mirrortrace-hero-content {
+  position: relative !important;
+  z-index: 3 !important;
 }
 
+/* ============================================================
+   7. TYPOGRAPHY — KEEP CURRENT LOOK
+   ============================================================ */
+
 .mirrortrace-user-hero h1 {
-  color: #ffffff !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.34) !important;
+  color: var(--mt-user-hero-text) !important;
+
+  text-shadow:
+    0 2px 11px rgba(0, 0, 0, 0.34) !important;
 }
 
 .mirrortrace-user-hero h1 span,
 .mirrortrace-user-hero .mirrortrace-accent-text {
-  color: #d39445 !important;
+  color: var(--mt-user-hero-accent) !important;
 }
 
 .mirrortrace-user-hero p,
 .mirrortrace-user-hero .mirrortrace-overview-copy {
-  color: #eef3f6 !important;
-  text-shadow: 0 1px 7px rgba(0, 0, 0, 0.28) !important;
+  color: var(--mt-user-hero-muted) !important;
+
+  text-shadow:
+    0 1px 7px rgba(0, 0, 0, 0.28) !important;
 }
 
-/* ------------------------------------------------------------
-   BUTTONS — LEAVE EXISTING DESIGN, ONLY PREVENT HEAVY BLUR
-   ------------------------------------------------------------ */
+/* ============================================================
+   8. CHIP + BUTTONS
+   Do not redesign them; only prevent old heavy blur.
+   ============================================================ */
 
-.mirrortrace-user-hero button {
-  backdrop-filter: blur(1.5px) !important;
-  -webkit-backdrop-filter: blur(1.5px) !important;
+.mirrortrace-user-hero
+:where(
+  button,
+  .mirrortrace-chip,
+  .mirrortrace-trust-chip
+) {
+  backdrop-filter: blur(2px) saturate(103%) !important;
+  -webkit-backdrop-filter: blur(2px) saturate(103%) !important;
 }
 
-/* ------------------------------------------------------------
-   MOBILE
-   ------------------------------------------------------------ */
+/* Keep existing dark primary CTA readable. */
+.mirrortrace-user-hero button:first-of-type,
+.mirrortrace-user-hero .mirrortrace-primary-btn {
+  background: rgba(8, 15, 21, 0.74) !important;
+  color: #ffffff !important;
+
+  border-color:
+    rgba(230, 237, 242, 0.15) !important;
+}
+
+/* Keep existing cactus Memory button. */
+.mirrortrace-user-hero button:last-of-type,
+.mirrortrace-user-hero .mirrortrace-secondary-btn {
+  background: rgba(97, 112, 87, 0.64) !important;
+  color: #ffffff !important;
+
+  border-color:
+    rgba(191, 205, 181, 0.25) !important;
+}
+
+/* ============================================================
+   9. IMPORTANT: OLD GENERIC TAILWIND BACKGROUNDS MUST NOT
+      REPAINT THE HERO
+   ============================================================ */
+
+.mirrortrace-dashboard-overview
+.mirrortrace-user-hero.bg-white,
+.mirrortrace-dashboard-overview
+.mirrortrace-user-hero.bg-stone-50,
+.mirrortrace-dashboard-overview
+.mirrortrace-user-hero.bg-stone-100,
+.mirrortrace-dashboard-overview
+.mirrortrace-user-hero.bg-slate-900,
+.mirrortrace-dashboard-overview
+.mirrortrace-user-hero.bg-gray-900,
+.mirrortrace-dashboard-overview
+.mirrortrace-user-hero.bg-zinc-900,
+.mirrortrace-dashboard-overview
+.mirrortrace-user-hero.bg-neutral-900 {
+  background: rgba(0, 0, 0, 0.30) !important;
+  background-color: rgba(0, 0, 0, 0.30) !important;
+  background-image: none !important;
+}
+
+/* ============================================================
+   10. MOBILE
+   ============================================================ */
 
 @media (max-width: 800px) {
   .mirrortrace-user-hero,
   .mirrortrace-dashboard-overview .mirrortrace-user-hero,
-  .mirrortrace-clean-glass-hero.mirrortrace-user-hero,
-  .mirrortrace-photo-panel.mirrortrace-user-hero {
+  .mirrortrace-user-hero.mirrortrace-photo-panel,
+  .mirrortrace-user-hero.mirrortrace-clean-glass-hero {
     background: rgba(0, 0, 0, 0.30) !important;
     background-color: rgba(0, 0, 0, 0.30) !important;
     background-image: none !important;
 
-    backdrop-filter: blur(1.5px) saturate(102%) !important;
-    -webkit-backdrop-filter: blur(1.5px) saturate(102%) !important;
+    backdrop-filter:
+      blur(2px)
+      saturate(103%) !important;
+
+    -webkit-backdrop-filter:
+      blur(2px)
+      saturate(103%) !important;
   }
 }
 
-/* ------------------------------------------------------------
-   REDUCED MOTION
-   ------------------------------------------------------------ */
+/* ============================================================
+   11. ACCESSIBILITY
+   ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
   .mirrortrace-user-hero,
