@@ -1,4 +1,4 @@
-import '../styles/mirrortrace-clean-glass.css';
+﻿import '../styles/mirrortrace-clean-glass.css';
 import '../styles/mirrortrace-authenticated-haze.css';
 
 import {
@@ -497,7 +497,7 @@ export default function AdminDashboard(
           </div>
 
           <h1 className="mt-2 text-xl font-semibold text-stone-900">
-            Verifying administrator access…
+            Verifying administrator accessâ€¦
           </h1>
         </div>
       </div>
@@ -936,7 +936,7 @@ export default function AdminDashboard(
 
                     <td className="px-3 py-3">
                       {user.email ??
-                        '—'}
+                        'â€”'}
                     </td>
 
                     <td className="px-3 py-3">
@@ -954,7 +954,7 @@ export default function AdminDashboard(
                         ? new Date(
                             user.createdAt
                           ).toLocaleDateString()
-                        : '—'}
+                        : 'â€”'}
                     </td>
 
                     <td className="px-3 py-3">
@@ -962,7 +962,7 @@ export default function AdminDashboard(
                         ? new Date(
                             user.lastSignInAt
                           ).toLocaleString()
-                        : '—'}
+                        : 'â€”'}
                     </td>
                   </tr>
                 )
@@ -1002,17 +1002,7 @@ export default function AdminDashboard(
             (
               ticket
             ) => (
-              <SupportTicketCard
-                key={
-                  ticket.id
-                }
-                ticket={
-                  ticket
-                }
-                onSaved={
-                  load
-                }
-              />
+              <div key={ticket.id}><SupportTicketCard ticket={ticket} onSaved={load} /></div>
             )
           )}
 
@@ -1055,17 +1045,7 @@ export default function AdminDashboard(
             (
               review
             ) => (
-              <ReviewModerationCard
-                key={
-                  review.id
-                }
-                review={
-                  review
-                }
-                onSaved={
-                  load
-                }
-              />
+              <div key={review.id}><ReviewModerationCard review={review} onSaved={load} /></div>
             )
           )}
 
@@ -1126,9 +1106,9 @@ export default function AdminDashboard(
 
                   <div className="mt-1 text-xs text-stone-500">
                     {event.actingRole}
-                    {' · '}
+                    {' Â· '}
                     {event.actingUid}
-                    {' · '}
+                    {' Â· '}
                     {event.targetResourceType}
                   </div>
                 </div>
@@ -1267,7 +1247,7 @@ function SupportTicketCard(
             {props.ticket.ownerEmail ??
               props.ticket.ownerUid ??
               'user'}
-            {' · '}
+            {' Â· '}
             {props.ticket.category}
           </div>
         </div>
@@ -1336,7 +1316,7 @@ function SupportTicketCard(
         className="mt-3 rounded-lg bg-stone-900 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
       >
         {saving
-          ? 'Saving…'
+          ? 'Savingâ€¦'
           : 'Save ticket'}
       </button>
     </div>
@@ -1394,7 +1374,7 @@ function ReviewModerationCard(
       <div className="flex items-center justify-between gap-3">
 
         <div className="text-amber-500">
-          {'★'.repeat(
+          {'â˜…'.repeat(
             Math.max(
               1,
               Math.min(
@@ -1477,3 +1457,4 @@ function ReviewModerationCard(
     </div>
   );
 }
+

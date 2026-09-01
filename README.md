@@ -1,102 +1,256 @@
-# 🪞 MirrorTrace
+<div align="center">
 
-### User-Governed AI Memory & Perspective Intelligence
+# MirrorTrace
 
-**Version control for your thinking — with consent, provenance, privacy boundaries, and user-controlled AI memory.**
+### Version control for your thinking
 
-Built for the **Gen AI Academy APAC Edition / Cloud Run AI Challenge**.
+**Evidence-first reflective journaling with consent-governed AI memory and owner-isolated provenance.**
 
-## Overview
+React · TypeScript · Firebase · Cloud Firestore · Gemini · Cloud Run · FCM · Nodemailer
 
-MirrorTrace is an evidence-first reflective journaling application that helps people understand how their thinking changes over time without silently turning AI interpretations into permanent memory.
+</div>
 
-Users can write private reflections, brainstorm with Gemini, approve or edit AI-generated Thought Snapshots, compare related approved memories through Thought Diffs, inspect provenance, schedule Perspective Watches, and revoke governed memory.
+---
 
-> **AI can suggest what a reflection means. The user decides what the system is allowed to remember.**
+## What Is MirrorTrace?
 
-## Who It Is For
+MirrorTrace is a privacy-first reflective journaling application built around one principle:
 
-MirrorTrace is useful for:
-- working professionals reflecting on career, leadership, priorities, and major decisions
-- students and early-career users tracking academic and career choices
-- founders and builders revisiting assumptions, strategy, and product decisions
-- managers and leaders documenting how viewpoints evolve
-- researchers and knowledge workers reflecting on hypotheses and complex ideas
-- anyone navigating long-term personal decisions who wants an evidence-backed record of how their thinking changed
+> AI may suggest what a reflection means. The user decides what the system is allowed to remember.
 
-## Key Features
+Instead of treating an AI interpretation as an unquestionable fact, MirrorTrace separates raw journal writing from reusable AI memory. Gemini can propose a **Thought Snapshot**, but the interpretation remains pending until the user explicitly approves or edits it. Approved snapshots can later be compared as **Thought Diffs**, with provenance linking the comparison back to the source reflections.
 
-- Reflect & Chat with Gemini
-- Private Session with zero persistence
-- Consent-gated Thought Snapshots
-- User-edited memory
-- Thought Diffs across approved memories
-- Provenance / “Why am I seeing this?”
-- Memory Governance and export/revoke controls
-- Perspective Watches
-- Push and email reminders
-- Support tickets
-- Consent-based public reviews
-- Admin Control Room with RBAC and audit visibility
+The application combines journaling, structured reflection, memory governance, provenance, reminders, administration, and production security in one owner-isolated system.
 
-## Who Is MirrorTrace For?
+---
 
-MirrorTrace is designed for people whose decisions, beliefs, and priorities evolve over time.
+## Why MirrorTrace?
 
-### Students & Early-Career Professionals
+Traditional journals preserve what you wrote.
 
-Track how your thinking changes around:
+AI journals can summarize what you wrote.
 
-- career choices
-- internships
-- higher education
-- MBA / MS decisions
-- skill development
-- professional direction
+MirrorTrace focuses on something different:
 
-### Working Professionals
+**How did my thinking change, what evidence produced that interpretation, and what did I actually consent to the AI remembering?**
 
-Reflect on:
+Core product guarantees:
 
-- career transitions
-- leadership
-- workplace decisions
-- professional priorities
-- long-term goals
+- Raw reflections remain private to the authenticated Firebase UID.
+- Gemini credentials remain server-side.
+- AI-generated interpretations do not become persistent reusable memory without approval.
+- Thought Diffs preserve source references and chronology.
+- Perspective Watch reminders contain safe topic-level context rather than raw journal text.
+- Administrative access does not imply private reflection access.
+- Support content is visible to administrators only when the user explicitly submits it.
 
-### Founders & Builders
+---
 
-Revisit:
+## Core Experience
 
-- product assumptions
-- strategic decisions
-- customer hypotheses
-- pivots
-- lessons learned
+### Reflect & Chat
 
-### Managers & Knowledge Workers
+Users can write a private journal reflection or use the Gemini-powered brainstorm companion to clarify a thought before saving.
 
-Trace how your perspective changes around:
+A failed AI request does not make the already-saved reflection disappear. The UI reports temporary AI unavailability separately from persistence.
 
-- leadership
-- team processes
-- complex decisions
-- hypotheses
-- priorities
+### Thought Snapshots
 
-MirrorTrace is not simply a journal archive.
+Gemini can propose a structured interpretation containing:
 
-It is designed for moments where someone eventually asks:
+- a position statement,
+- a topic,
+- suggested tags.
 
-> “What did I used to think about this, what do I think now, and why did it change?”
+The proposal is not automatically trusted. The user can approve it, edit it before approval, or reject it.
 
-Thought Snapshots provide user-approved representations of a position.
+### Thought Diffs
 
-Thought Diffs compare those positions across time.
+Two related approved snapshots can be compared to show:
 
-Provenance connects each comparison back to the original authenticated reflections.
+- earlier position,
+- later position,
+- apparent change,
+- apparent continuity,
+- relationship assessment.
 
-The result is a private, evidence-backed history of how someone's thinking evolved.
+The comparison remains linked to the source journals and snapshots.
+
+### Provenance
+
+MirrorTrace provides a “Why am I seeing this?” path so users can inspect the source records that produced a Thought Diff.
+
+### Memory Governance
+
+Approved AI memory can be inspected, retained for a defined duration, or removed by the owner.
+
+### Journal History
+
+Journal History supports:
+
+- keyword search,
+- topic/tag filtering,
+- date-range filtering,
+- list/calendar browsing,
+- Thought Snapshot generation,
+- Thought Diff history.
+
+### Year in Reflection
+
+A factual yearly summary uses already-loaded journal data to show information such as reflection count, approved snapshots, Thought Diffs, active month, and recurring topics.
+
+It deliberately avoids mood scoring or psychological inference.
+
+### Perspective Watch
+
+Users can choose to revisit a perspective after a fixed interval. Reminder delivery can use push notifications and email without including private journal text.
+
+### Support & Reviews
+
+Users can submit customer-support tickets and product feedback. Public review display requires explicit user consent and moderation.
+
+### Admin Control Room
+
+Authorized admin roles receive operational visibility including:
+
+- aggregate counts,
+- service health,
+- account operations,
+- support queue,
+- review moderation,
+- administrative audit events.
+
+Private journal, conversation, Thought Snapshot, Thought Diff, and provenance content are not exposed as a consequence of being an administrator.
+
+---
+
+## Architecture
+
+```text
+                         ┌──────────────────────────┐
+                         │       React / Vite       │
+                         │      TypeScript UI       │
+                         └────────────┬─────────────┘
+                                      │
+                               Firebase ID token
+                                      │
+                                      ▼
+┌───────────────────────────────────────────────────────────────────┐
+│                    Express / TypeScript Server                    │
+│                                                                   │
+│  Authentication Boundary  →  Verified Firebase UID               │
+│          │                                                        │
+│          ├── Journal / Conversation APIs                          │
+│          ├── Thought Snapshot APIs                                │
+│          ├── Thought Diff + Provenance APIs                       │
+│          ├── Perspective Watch APIs                               │
+│          ├── Notification / Email APIs                            │
+│          ├── Support / Review APIs                                │
+│          └── Admin RBAC APIs                                      │
+└──────────┬───────────────────┬───────────────────┬────────────────┘
+           │                   │                   │
+           ▼                   ▼                   ▼
+   Cloud Firestore          Gemini API       FCM / Nodemailer
+ owner-bound namespace     server-side only      reminders
+```
+
+Owner data remains beneath a namespace such as:
+
+```text
+users/{authenticatedUid}/...
+```
+
+The server derives `authenticatedUid` from a verified Firebase ID token. Client-supplied user IDs are not trusted as authorization boundaries.
+
+---
+
+## Security Model
+
+### Owner-Bound Isolation
+
+Firestore rules restrict user-owned documents to the authenticated UID:
+
+```javascript
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{userId}/{document=**} {
+      allow read, write:
+        if request.auth != null
+        && request.auth.uid == userId;
+    }
+
+    match /perspectiveWatchQueue/{document=**} {
+      allow read, write: if false;
+    }
+
+    match /adminAuditLogs/{document=**} {
+      allow read, write: if false;
+    }
+
+    match /supportTickets/{document=**} {
+      allow read, write: if false;
+    }
+
+    match /productReviews/{document=**} {
+      allow read, write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+```
+
+Server-only operational collections are denied directly to browser clients.
+
+### Server-Side Gemini Boundary
+
+`GEMINI_API_KEY` belongs on the server only.
+
+Before sending user context to Gemini:
+
+1. verify the Firebase ID token,
+2. derive the authenticated UID,
+3. retrieve only owner-bound records,
+4. minimize the context,
+5. never ask Gemini to decide authorization.
+
+### Consent-Governed AI Memory
+
+AI interpretation and persistent user memory are separate states.
+
+```text
+Reflection
+   ↓
+Gemini proposal
+   ↓
+Pending Thought Snapshot
+   ├── Reject → discarded
+   ├── Edit   → user-controlled wording
+   └── Approve
+          ↓
+   Reusable approved memory
+```
+
+### Administrative RBAC
+
+Administrative roles are represented with Firebase custom claims.
+
+Typical roles:
+
+```text
+user
+admin
+super_admin
+```
+
+Changing browser state or local storage must never grant administrative access.
+
+---
 
 ## Tech Stack
 
@@ -110,166 +264,365 @@ The result is a private, evidence-backed history of how someone's thinking evolv
 | Database | Cloud Firestore |
 | Runtime | Google Cloud Run |
 | Secrets | Google Cloud Secret Manager |
-| Push | Firebase Cloud Messaging |
+| Push Notifications | Firebase Cloud Messaging |
 | Email | Nodemailer / SMTP |
 | RBAC | Firebase custom claims |
 | Version Control | Git + GitHub |
+| AI-assisted development | Google AI Studio |
 
-## Architecture
-
-```text
-Browser
-  │
-  ├── Firebase Authentication
-  ▼
-React / TypeScript UI
-  │ Bearer ID token
-  ▼
-Express / TypeScript Backend
-  ├── Firebase Admin SDK
-  ├── Gemini server-side calls
-  ├── Notification routes
-  ├── Email routes
-  ├── Support / review routes
-  └── Admin RBAC routes
-        ▼
-Cloud Firestore
-  users/{uid}/...
-```
-
-All persistent private user data is owner-scoped beneath the verified Firebase UID.
+---
 
 ## Repository Structure
+
+The production repository should stay intentionally small. `dist/` and `node_modules/` are generated and are not source folders.
 
 ```text
 MirrorTrace/
 ├── public/
+│   ├── hero/
+│   │   ├── mirrortrace-hero.mp4
+│   │   ├── mirrortrace-poster.jpeg
+│   │   ├── mirrortrace2.jpeg
+│   │   └── mirrortrace3.jpeg
+│   ├── ui/
+│   │   ├── mirrortrace3.jpeg
+│   │   └── moody-nature.jpeg
+│   ├── favicon.svg
+│   └── firebase-messaging-sw.js
+│
 ├── scripts/
+│   ├── audit-project-structure.ps1
+│   ├── cleanup-repository.ps1
+│   ├── bootstrapAdmin.ts
+│   ├── predeployCheck.ts
+│   ├── productionVerify.ts
+│   ├── releaseGate.ps1
+│   ├── setAdminRole.ts
+│   └── smokeTest.ts
+│
 ├── server/
+│   ├── utils/
+│   ├── adminRbac.ts
+│   ├── adminRoutes.ts
+│   ├── adminService.ts
+│   ├── emailRoutes.ts
+│   ├── emailService.ts
+│   ├── firebaseAdmin.ts
+│   ├── firestoreService.ts
+│   ├── gemini.ts
+│   ├── notificationRoutes.ts
+│   ├── notificationService.ts
+│   ├── perspectiveWatchProcessor.ts
+│   ├── runtimeConfig.ts
+│   ├── securityMiddleware.ts
+│   └── supportReviewRoutes.ts
+│
 ├── src/
 │   ├── components/
+│   │   ├── AdminDashboard.tsx
+│   │   ├── AdminPanelLauncher.tsx
+│   │   ├── AnchoredDatePicker.tsx
+│   │   ├── AuthView.tsx
+│   │   ├── BrainstormChat.tsx
+│   │   ├── DashboardOverview.tsx
+│   │   ├── JournalCalendar.tsx
+│   │   ├── JournalEditor.tsx
+│   │   ├── JournalHistoryFilters.tsx
+│   │   ├── JournalList.tsx
+│   │   ├── MemoryGovernance.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── ProductReviews.tsx
+│   │   ├── PushNotificationSettings.tsx
+│   │   ├── SupportCenter.tsx
+│   │   ├── TargetAudience.tsx
+│   │   ├── ThoughtDiffCard.tsx
+│   │   ├── ThoughtSnapshotCard.tsx
+│   │   └── YearInReflection.tsx
+│   │
 │   ├── lib/
+│   │   ├── admin.ts
+│   │   ├── aiError.ts
+│   │   ├── api.ts
+│   │   ├── emailNotifications.ts
+│   │   ├── firebase.ts
+│   │   ├── forceDarkMode.ts
+│   │   ├── notifications.ts
+│   │   └── supportReviews.ts
+│   │
 │   ├── styles/
+│   │   ├── mirrortrace-app.css
+│   │   ├── mirrortrace-public.css
+│   │   └── mirrortrace-theme.css
+│   │
 │   ├── App.tsx
 │   ├── index.css
 │   ├── main.tsx
 │   └── types.ts
+│
 ├── .env.example
+├── .gitignore
+├── firebase-applet-config.json
+├── firebase-blueprint.json
 ├── firestore.rules
 ├── index.html
+├── metadata.json
 ├── package.json
+├── package-lock.json
 ├── server.ts
 ├── tsconfig.json
 ├── vite.config.ts
 └── README.md
 ```
 
-## Run Locally
+Do not confuse `public/` with `dist/`:
+
+- `public/` is source material copied into the production build.
+- `dist/` is generated output from `npm run build`.
+
+Seeing the same hero assets inside both after a build is expected.
+
+---
+
+## Local Development
+
+### 1. Clone
 
 ```bash
 git clone https://github.com/agcodes0315/Gen-AI-APAC-Ideathon.git
 cd Gen-AI-APAC-Ideathon
+```
+
+### 2. Install dependencies
+
+```bash
 npm install
+```
+
+### 3. Configure environment
+
+Create `.env` from `.env.example`.
+
+Never commit:
+
+- Gemini API keys,
+- Firebase service-account credentials,
+- SMTP passwords,
+- scheduler secrets,
+- Firebase ID tokens.
+
+### 4. Google Cloud ADC for local server access
+
+```bash
+gcloud auth application-default login
+gcloud auth application-default set-quota-project YOUR_PROJECT_ID
+```
+
+### 5. Start MirrorTrace
+
+```bash
 npm run dev
 ```
 
-Open:
+Default development URL:
 
 ```text
 http://localhost:3000
 ```
 
-If you use `127.0.0.1`, add it to Firebase Authentication → Settings → Authorized domains.
+---
 
-## Environment
+## Repository Audit & Cleanup
 
-Create `.env` from `.env.example`.
+Before removing anything, create a clean Git checkpoint.
 
-Typical variables:
-
-```env
-NODE_ENV=development
-PORT=3000
-FIREBASE_PROJECT_ID=your-firebase-project-id
-GEMINI_API_KEY=your-server-side-gemini-key
-
-VITE_FIREBASE_API_KEY=your-firebase-web-api-key
-VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
-VITE_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
-VITE_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
-VITE_FIREBASE_APP_ID=your-firebase-app-id
-VITE_FIREBASE_VAPID_KEY=your-public-vapid-key
+```powershell
+git add .
+git commit -m "Checkpoint before repository cleanup"
 ```
 
-Never commit real secrets.
+Inspect the actual source tree with:
 
-## Admin Access
-
-```bash
-npx tsx scripts/setAdminRole.ts YOUR_EMAIL admin
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\audit-project-structure.ps1
 ```
 
-or:
+Preview cleanup without deleting anything:
 
-```bash
-npx tsx scripts/setAdminRole.ts YOUR_EMAIL super_admin
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\cleanup-repository.ps1
 ```
 
-Sign out and sign back in after changing the role so Firebase issues a fresh token.
+Execute conservative cleanup:
 
-## Security Model
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\cleanup-repository.ps1 -Execute
+```
 
-- private Firestore data is scoped to `users/{uid}/...`
-- Firebase ID tokens are verified server-side
-- Gemini credentials remain server-side
-- only approved Thought Snapshots become reusable memory
-- rejected/unapproved memory is not reused
-- Private Session content is not persisted
-- provenance source IDs remain owner-bound
-- support does not automatically attach private journal/chat content
-- public reviews require explicit consent and moderation
-- admin visibility is operational, not private-content visibility
+Only after the app is stable, unused legacy CSS can also be removed automatically:
 
-## Production Checklist
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\cleanup-repository.ps1 -Execute -RemoveUnusedStyles
+```
+
+The cleanup script creates a Git restore tag before deleting files.
+
+After cleanup:
+
+```powershell
+npm run lint
+npm run build
+git status
+```
+
+Then commit:
+
+```powershell
+git add .
+git commit -m "Clean repository structure"
+git push origin main
+```
+
+---
+
+## Production Verification
+
+Run:
 
 ```bash
 npm run lint
 npm run build
-npx tsx scripts/predeployCheck.ts
-firebase deploy --only firestore:rules
+npx tsx scripts/productionVerify.ts
 ```
 
-Also verify:
-- Google Sign-In
-- journal save/history
-- Thought Snapshot accept/edit/reject
-- Thought Diff + provenance
-- Private Session zero persistence
-- memory export/revoke
-- Perspective Watches
-- push/email reminders
-- two-account isolation
-- admin RBAC
-- Cloud Run hostname in Firebase Authorized Domains
-- `/api/health`
-- no application-breaking console errors
+Recommended manual checks:
 
-## Google AI Studio + GitHub Sync
+- Google Sign-In works.
+- Sign-out and session restore work.
+- A second Firebase account cannot see the first account's journal data.
+- Normal users cannot access admin APIs.
+- Admin Control Room works only for authorized custom claims.
+- `/api/health` returns healthy configuration information.
+- push registration works.
+- test email works.
+- support/review moderation works.
+- private journal content never appears in admin operations.
 
-When resolving sync conflicts:
-- prefer **GitHub** for source files intentionally changed locally
-- preserve **Google AI Studio/runtime configuration** when GitHub contains only placeholder secret values
-- never overwrite real secret configuration with repository placeholders
+---
 
-## Important Limitation
+## Cloud Run Deployment
 
-MirrorTrace is a reflective intelligence and memory-governance application. AI-generated interpretations can be imperfect and should remain inspectable and user-controlled.
+MirrorTrace is designed to run as a single Cloud Run service containing the Vite frontend and Express backend.
 
-It is not medical, psychological, legal, or financial advice.
+Enable the required Google Cloud services:
 
-## Author
+```bash
+gcloud services enable \
+  run.googleapis.com \
+  secretmanager.googleapis.com \
+  firestore.googleapis.com \
+  artifactregistry.googleapis.com
+```
 
-Built by **Agrima Saxena**
+Build/deploy using the deployment method configured for your project, then inject server secrets through Secret Manager rather than client-side environment variables.
 
-GitHub: `agcodes0315/Gen-AI-APAC-Ideathon`
+Example Gemini secret:
+
+```bash
+gcloud secrets create GEMINI_API_KEY --replication-policy="automatic"
+
+echo -n "YOUR_API_KEY" | \
+gcloud secrets versions add GEMINI_API_KEY --data-file=-
+```
+
+Grant the Cloud Run runtime service account access:
+
+```bash
+gcloud secrets add-iam-policy-binding GEMINI_API_KEY \
+  --member="serviceAccount:YOUR_CLOUD_RUN_SERVICE_ACCOUNT" \
+  --role="roles/secretmanager.secretAccessor"
+```
+
+Apply the challenge/service label when required:
+
+```bash
+gcloud run services update YOUR_SERVICE_NAME \
+  --update-labels=dev-tutorial=cloud-run-ai-challenge \
+  --region=YOUR_REGION
+```
+
+After deployment, add the Cloud Run hostname to:
+
+```text
+Firebase Console
+→ Authentication
+→ Settings
+→ Authorized domains
+```
+
+---
+
+## Notification Privacy
+
+Perspective Watch uses topic-level reminder text.
+
+The notification layer intentionally avoids copying raw journal content into push or email messages.
+
+A typical reminder contains:
+
+```text
+MirrorTrace · Perspective Watch
+Career direction is ready to revisit.
+```
+
+Email reminders direct the user back to MirrorTrace to inspect the actual evidence.
+
+---
+
+## Current Roadmap
+
+The next product additions should preserve owner isolation and provenance rather than creating parallel local-only data stores.
+
+Planned candidates:
+
+- Daily reflection reminder
+- Favorites / pinning
+- Draft autosave
+- Provenance-aware editing
+- Export
+- Revisit-this bookmarks
+- Weekly Review
+- Decision Ledger
+- Reflection Chains
+- Assumption Tracker
+- Version history for edited reflections
+- Personal Knowledge Graph
+
+These are roadmap items, not claims about the currently deployed product.
+
+---
+
+## Design Principles
+
+MirrorTrace follows five product rules:
+
+1. **The user owns the reflection.**
+2. **AI interpretations remain suggestions until approved.**
+3. **Every reusable interpretation should remain inspectable.**
+4. **Authorization is enforced by trusted application code, never by Gemini.**
+5. **Private reflection content should never become administrative telemetry.**
+
+---
+
+## AI-Assisted Development
+
+Google AI Studio was used as an agentic development assistant under explicit secure-development instructions, while VS Code was used for iterative implementation, debugging, testing, and production hardening.
+
+The goal is not to outsource security decisions to an AI model. AI-assisted development is used to accelerate implementation while authentication, authorization, ownership boundaries, validation, and production verification remain explicit engineering responsibilities.
+
+---
+
+## License / Submission
+
+MirrorTrace is an experimental reflective-journaling system built for the Google Cloud / Gemini challenge workflow.
+
+Before production use, complete the security, privacy, accessibility, load, and data-retention reviews appropriate for the intended deployment environment.

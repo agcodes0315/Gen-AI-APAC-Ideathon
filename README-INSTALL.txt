@@ -1,84 +1,72 @@
-MIRRORTRACE — GRACEFUL AI OUTAGE + YEAR IN REFLECTION
-=====================================================
+MIRRORTRACE — ANCHORED DATE PICKER FIX
+======================================
 
-WHAT THIS PACKAGE DOES
-----------------------
-1. Keeps your current Journal History search/date filters.
-2. Improves the Thought Snapshot failure message when Gemini/API service is unavailable.
-3. Does NOT delete or invalidate the saved reflection when AI generation fails.
-4. Adds a visible "Year in Reflection" section inside Journal History.
-5. Year in Reflection uses ONLY already-loaded factual data:
-   - reflections this year
-   - approved Thought Snapshots this year
-   - Thought Diffs this year
-   - most active month
-   - most revisited topic/tag
-6. No mood scoring, mental-health inference, or extra Gemini call is used.
+WHAT THIS FIXES
+---------------
+The browser's native <input type="date"> calendar is controlled by Chrome/Windows,
+so it can appear visually detached from the field.
 
-REPLACE / ADD
--------------
+This package replaces ONLY the Journal History From/To native date inputs
+with a custom anchored calendar popover.
+
+The calendar now opens directly underneath the field you clicked.
+
+FILES
+-----
 REPLACE:
   src/components/JournalList.tsx
 
 ADD:
+  src/components/AnchoredDatePicker.tsx
+
+KEEP:
+  src/components/JournalCalendar.tsx
   src/components/YearInReflection.tsx
-  src/lib/aiError.ts
 
-DO NOT CHANGE
--------------
-- server.ts
-- Firebase Authentication
-- Firestore rules
-- Admin Control Room
-- Memory Governance
-- existing CSS
-- Thought Snapshot approval logic
-- Thought Diff persistence logic
+NO BACKEND CHANGES
+------------------
+No Firebase, Firestore, Gemini, Admin, notification, or API changes.
 
-WHY THE CURRENT 500 IS HANDLED THIS WAY
----------------------------------------
-Your browser currently receives a 500 from:
-  POST /api/thought-snapshots/propose
-
-The server/provider may be temporarily unavailable (including quota/billing/provider outages).
-This package makes the UI say:
-
-  "AI generation is temporarily unavailable.
-   Your saved reflection is safe. Please try again later."
-
-instead of presenting a generic failure as if the reflection itself was lost.
-
-INSTALL
--------
-Copy the files into your project, preserving their paths.
+VERIFY
+------
+npm run lint
+npm run build
+npm run dev
 
 Then:
+1. Journal History
+2. Click From date
+3. Calendar should open immediately below From date
+4. Click To date
+5. Calendar should open immediately below To date
+6. Test min/max behavior
+7. Test Clear filters
 
-  npm run build
-  npm run dev
+FEATURE STATUS
+--------------
+DONE:
+- keyword Journal History search
+- topic/tag filtering
+- date-range filtering
+- graceful AI-unavailable message
+- Year in Reflection
+- List / Calendar history view
+- target-audience landing section (if integrated)
 
-Open:
-  http://localhost:3000
+STILL IMPORTANT:
+1. Daily reflection reminder using existing notification opt-ins
+2. Production verification:
+   - Firebase Authentication
+   - admin RBAC
+   - two-account isolation
+   - /api/health
+   - push/email
+   - Cloud Run
+   - Firebase Authorized Domains
 
-TEST
-----
-Journal History:
-- Search still works
-- From/To date still works
-- Clear filters still works
-- Year in Reflection appears below the filters
-- Clicking Generate Thought Snapshot during the current AI outage should show
-  the safer temporary-unavailable message
-
-When Gemini credits/service returns, retry generation normally.
-
-NEXT RECOMMENDED FEATURE
-------------------------
-Daily reflection reminders should be next, but only after using the CURRENT:
-- server/notificationService.ts
-- server/emailService.ts
-- server/perspectiveWatchProcessor.ts
-- server/notificationRoutes.ts
-- src/components/PushNotificationSettings.tsx
-
-That prevents bypassing existing notification opt-in preferences.
+OPTIONAL AFTER STABILITY:
+- edit saved reflection with provenance invalidation rules
+- favorites/pinning
+- export journal history
+- weekly review
+- manual revisit/bookmark reminders

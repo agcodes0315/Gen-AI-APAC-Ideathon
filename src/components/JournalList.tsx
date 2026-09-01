@@ -15,6 +15,8 @@ import {
   ShieldAlert,
   Sparkles,
   GitCompare,
+  CalendarDays,
+  List,
 } from 'lucide-react';
 
 import {
@@ -40,6 +42,10 @@ import {
 } from './ThoughtDiffCard.tsx';
 
 import YearInReflection from './YearInReflection.tsx';
+
+import JournalCalendar from './JournalCalendar.tsx';
+
+import AnchoredDatePicker from './AnchoredDatePicker.tsx';
 
 import type {
   JournalEntry,
@@ -154,6 +160,14 @@ export const JournalList:
       endDate,
       setEndDate,
     ] = useState('');
+
+    const [
+      historyView,
+      setHistoryView,
+    ] =
+      useState<
+        'list' | 'calendar'
+      >('list');
 
     const [
       deletingId,
@@ -634,26 +648,35 @@ export const JournalList:
     /*
      * Search / topic / date / approved snapshot filters.
      */
-    const allTags =
+    const allTags: string[] =
       Array.from(
-        new Set(
+        new Set<string>(
           entries.flatMap(
             (entry) =>
-              entry.topicTags ||
-              []
+              (
+                entry.topicTags ||
+                []
+              ).filter(
+                (
+                  tag
+                ): tag is string =>
+                  typeof tag ===
+                    'string' &&
+                  Boolean(
+                    tag.trim()
+                  )
+              )
           )
         )
-      )
-        .filter(Boolean)
-        .sort(
-          (
-            left,
+      ).sort(
+        (
+          left,
+          right
+        ) =>
+          left.localeCompare(
             right
-          ) =>
-            left.localeCompare(
-              right
-            )
-        );
+          )
+      );
 
     const filteredEntries =
       entries.filter(
@@ -1060,55 +1083,33 @@ export const JournalList:
 
               {/* Date range */}
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]">
-                <label className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-2">
-                  <span className="block text-[10px] font-semibold uppercase tracking-wide text-stone-500">
-                    From date
-                  </span>
+                <AnchoredDatePicker
+                  label="From date"
+                  value={
+                    startDate
+                  }
+                  max={
+                    endDate ||
+                    undefined
+                  }
+                  onChange={
+                    setStartDate
+                  }
+                />
 
-                  <input
-                    type="date"
-                    value={
-                      startDate
-                    }
-                    max={
-                      endDate ||
-                      undefined
-                    }
-                    onChange={(
-                      event
-                    ) =>
-                      setStartDate(
-                        event.target.value
-                      )
-                    }
-                    className="mt-1 w-full bg-transparent text-xs text-stone-800 outline-none"
-                  />
-                </label>
-
-                <label className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-2">
-                  <span className="block text-[10px] font-semibold uppercase tracking-wide text-stone-500">
-                    To date
-                  </span>
-
-                  <input
-                    type="date"
-                    value={
-                      endDate
-                    }
-                    min={
-                      startDate ||
-                      undefined
-                    }
-                    onChange={(
-                      event
-                    ) =>
-                      setEndDate(
-                        event.target.value
-                      )
-                    }
-                    className="mt-1 w-full bg-transparent text-xs text-stone-800 outline-none"
-                  />
-                </label>
+                <AnchoredDatePicker
+                  label="To date"
+                  value={
+                    endDate
+                  }
+                  min={
+                    startDate ||
+                    undefined
+                  }
+                  onChange={
+                    setEndDate
+                  }
+                />
 
                 <button
                   type="button"
@@ -1228,6 +1229,81 @@ export const JournalList:
               />
             )}
 
+            {/* HISTORY VIEW TOGGLE */}
+            {!loading && entries.length > 0 && (
+              <div
+                className="
+                  flex
+                  flex-wrap
+                  items-center
+                  justify-between
+                  gap-3
+                  rounded-2xl
+                  border
+                  border-white/10
+                  bg-black/35
+                  p-3
+                "
+              >
+                <div>
+                  <div className="text-xs font-semibold text-white">
+                    Browse your reflection history
+                  </div>
+
+                  <p className="mt-1 text-[11px] text-stone-400">
+                    Switch between the normal list and a month calendar.
+                  </p>
+                </div>
+
+                <div
+                  className="
+                    inline-flex
+                    rounded-xl
+                    border
+                    border-white/10
+                    bg-black/30
+                    p-1
+                  "
+                >
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setHistoryView(
+                        'list'
+                      )
+                    }
+                    className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${
+                      historyView ===
+                      'list'
+                        ? 'bg-white/10 text-white'
+                        : 'text-stone-400 hover:text-white'
+                    }`}
+                  >
+                    <List className="h-3.5 w-3.5" />
+                    List
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setHistoryView(
+                        'calendar'
+                      )
+                    }
+                    className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${
+                      historyView ===
+                      'calendar'
+                        ? 'bg-white/10 text-white'
+                        : 'text-stone-400 hover:text-white'
+                    }`}
+                  >
+                    <CalendarDays className="h-3.5 w-3.5" />
+                    Calendar
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Error */}
             {error && (
               <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-center justify-between gap-3 text-xs text-red-800">
@@ -1298,291 +1374,82 @@ export const JournalList:
                 </div>
               )}
 
-            {/* Entries */}
-            <div className="space-y-4">
-              {filteredEntries.map(
-                (entry) => {
-                  const linkedSnapshot =
-                    snapshotMap.get(
-                      entry.id
-                    ) ||
-                    (
-                      entry.snapshotId
-                        ? snapshotMap.get(
-                            entry.snapshotId
-                          )
-                        : undefined
-                    );
-
-                  const activeProposal =
-                    proposalsByEntryId[
-                      entry.id
-                    ];
-
-                  const isGenerating =
-                    generatingForEntryId ===
-                    entry.id;
-
-                  const proposalError =
-                    proposalErrorsByEntryId[
-                      entry.id
-                    ];
-
-                  return (
-                    <div
-                      key={
+            {/* Entries / Calendar */}
+            {historyView ===
+            'calendar' ? (
+              <JournalCalendar
+                entries={
+                  filteredEntries
+                }
+              />
+            ) : (
+              <div className="space-y-4">
+                {filteredEntries.map(
+                  (entry) => {
+                    const linkedSnapshot =
+                      snapshotMap.get(
                         entry.id
-                      }
-                      className="bg-white rounded-xl border border-stone-200 shadow-xs p-6 space-y-4 hover:border-stone-300 transition-colors"
-                    >
-                      <div className="flex items-center justify-between text-xs text-stone-500 border-b border-stone-100 pb-3">
-                        <div className="flex items-center gap-1.5 font-mono">
-                          <Calendar className="w-3.5 h-3.5 text-stone-400" />
-
-                          <span>
-                            {formatDate(
-                              entry.createdAt
-                            )}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <span className="text-[11px] text-stone-400 font-mono">
-                            {
-                              entry.content
-                                .split(
-                                  /\s+/
-                                )
-                                .filter(
-                                  Boolean
-                                )
-                                .length
-                            }{' '}
-                            words
-                          </span>
-
-                          <button
-                            id={`btn-delete-${entry.id}`}
-                            type="button"
-                            onClick={() =>
-                              setDeleteConfirmId(
-                                entry.id
-                              )
-                            }
-                            disabled={
-                              deletingId ===
-                              entry.id
-                            }
-                            className="p-1.5 text-stone-400 hover:text-red-600 rounded transition-colors"
-                            title="Delete Entry"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="text-sm text-stone-800 leading-relaxed whitespace-pre-wrap">
-                        {entry.content}
-                      </div>
-
-                      {entry.topicTags &&
-                        entry.topicTags
-                          .length >
-                          0 && (
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            {entry.topicTags.map(
-                              (
-                                tag
-                              ) => (
-                                <span
-                                  key={
-                                    tag
-                                  }
-                                  className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-900 border border-amber-200/60"
-                                >
-                                  #{tag}
-                                </span>
-                              )
-                            )}
-                          </div>
-                        )}
-
-                      {/* Existing Snapshot */}
-                      {linkedSnapshot ? (
-                        <div className="mt-3 p-3.5 bg-amber-50/60 border border-amber-200/70 rounded-lg space-y-2 text-xs">
-                          <div className="flex items-center justify-between gap-3">
-                            <div className="flex items-center gap-1.5 text-amber-950 font-semibold font-serif">
-                              <Sparkles className="w-3.5 h-3.5 text-amber-800" />
-
-                              <span>
-                                Approved Thought Snapshot
-                              </span>
-
-                              {linkedSnapshot.userEdited && (
-                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-200/80 text-amber-900 font-sans font-normal">
-                                  User Edited
-                                </span>
-                              )}
-                            </div>
-
-                            <button
-                              type="button"
-                              onClick={() =>
-                                void handleDeleteSnapshotOnly(
-                                  linkedSnapshot.id
-                                )
-                              }
-                              className="text-[11px] text-stone-400 hover:text-red-600 transition-colors shrink-0"
-                            >
-                              Remove Snapshot
-                            </button>
-                          </div>
-
-                          <blockquote className="text-xs font-serif italic text-amber-950 leading-relaxed">
-                            "{linkedSnapshot.positionStatement}"
-                          </blockquote>
-
-                          <div className="flex items-start gap-3 flex-wrap text-[11px] text-stone-600 pt-1">
+                      ) ||
+                      (
+                        entry.snapshotId
+                          ? snapshotMap.get(
+                              entry.snapshotId
+                            )
+                          : undefined
+                      );
+  
+                    const activeProposal =
+                      proposalsByEntryId[
+                        entry.id
+                      ];
+  
+                    const isGenerating =
+                      generatingForEntryId ===
+                      entry.id;
+  
+                    const proposalError =
+                      proposalErrorsByEntryId[
+                        entry.id
+                      ];
+  
+                    return (
+                      <div
+                        key={
+                          entry.id
+                        }
+                        className="bg-white rounded-xl border border-stone-200 shadow-xs p-6 space-y-4 hover:border-stone-300 transition-colors"
+                      >
+                        <div className="flex items-center justify-between text-xs text-stone-500 border-b border-stone-100 pb-3">
+                          <div className="flex items-center gap-1.5 font-mono">
+                            <Calendar className="w-3.5 h-3.5 text-stone-400" />
+  
                             <span>
-                              <strong>
-                                Topic:
-                              </strong>{' '}
-                              {linkedSnapshot.topic}
-                            </span>
-
-                            {linkedSnapshot.tags &&
-                              linkedSnapshot
-                                .tags
-                                .length >
-                                0 && (
-                                <span className="text-stone-500">
-                                  {linkedSnapshot.tags
-                                    .map(
-                                      (
-                                        tag
-                                      ) =>
-                                        `#${tag}`
-                                    )
-                                    .join(
-                                      ' '
-                                    )}
-                                </span>
+                              {formatDate(
+                                entry.createdAt
                               )}
+                            </span>
                           </div>
-                        </div>
-                      ) : (
-                        <div className="pt-2">
-                          {!activeProposal &&
-                            !isGenerating && (
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  void handleGenerateProposalForEntry(
-                                    entry.id
+  
+                          <div className="flex items-center gap-2">
+                            <span className="text-[11px] text-stone-400 font-mono">
+                              {
+                                entry.content
+                                  .split(
+                                    /\s+/
                                   )
-                                }
-                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-amber-900 bg-amber-50/70 hover:bg-amber-100 border border-amber-200/80 transition-colors"
-                              >
-                                <Sparkles className="w-3.5 h-3.5 text-amber-800" />
-
-                                Generate Thought Snapshot
-                              </button>
-                            )}
-
-                          {isGenerating && (
-                            <div className="p-3 bg-amber-50/40 border border-amber-200/50 rounded-lg flex items-center gap-2 text-xs text-amber-900">
-                              <div className="w-3.5 h-3.5 border-2 border-amber-800/30 border-t-amber-800 rounded-full animate-spin" />
-
-                              Analyzing reflection...
-                            </div>
-                          )}
-
-                          {proposalError && (
-                            <div className="p-2.5 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between gap-3 text-xs text-red-800">
-                              <span>
-                                {proposalError}
-                              </span>
-
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  void handleGenerateProposalForEntry(
-                                    entry.id
+                                  .filter(
+                                    Boolean
                                   )
-                                }
-                                className="font-semibold text-red-700 underline"
-                              >
-                                Retry
-                              </button>
-                            </div>
-                          )}
-
-                          {activeProposal && (
-                            <div className="mt-3">
-                              <ThoughtSnapshotCard
-                                proposal={
-                                  activeProposal
-                                }
-                                onAccepted={(
-                                  snapshot
-                                ) =>
-                                  void handleAcceptProposal(
-                                    entry.id,
-                                    snapshot
-                                  )
-                                }
-                                onRejected={() =>
-                                  handleRejectProposal(
-                                    entry.id
-                                  )
-                                }
-                              />
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {/* Delete Confirmation */}
-                      {deleteConfirmId ===
-                        entry.id && (
-                        <div className="mt-4 p-4 bg-red-50/80 border border-red-200 rounded-lg space-y-3">
-                          <div className="flex items-start gap-2.5">
-                            <ShieldAlert className="w-4 h-4 text-red-700 shrink-0 mt-0.5" />
-
-                            <div>
-                              <p className="text-xs font-semibold text-red-900">
-                                Permanently delete this reflection?
-                              </p>
-
-                              <p className="mt-1 text-[11px] text-red-700 leading-relaxed">
-                                The journal entry, linked snapshots,
-                                dependent Thought Diffs and provenance
-                                will be safely removed or invalidated.
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="flex justify-end gap-2">
+                                  .length
+                              }{' '}
+                              words
+                            </span>
+  
                             <button
+                              id={`btn-delete-${entry.id}`}
                               type="button"
                               onClick={() =>
                                 setDeleteConfirmId(
-                                  null
-                                )
-                              }
-                              disabled={
-                                deletingId ===
-                                entry.id
-                              }
-                              className="px-3 py-1.5 rounded-md text-xs font-medium text-stone-600 hover:bg-stone-200/60"
-                            >
-                              Cancel
-                            </button>
-
-                            <button
-                              type="button"
-                              onClick={() =>
-                                void handleDelete(
                                   entry.id
                                 )
                               }
@@ -1590,28 +1457,246 @@ export const JournalList:
                                 deletingId ===
                                 entry.id
                               }
-                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-red-700 hover:bg-red-800 text-white text-xs font-semibold"
+                              className="p-1.5 text-stone-400 hover:text-red-600 rounded transition-colors"
+                              title="Delete Entry"
                             >
-                              {deletingId ===
-                              entry.id ? (
-                                <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                              ) : (
-                                <Trash2 className="w-3 h-3" />
-                              )}
-
-                              {deletingId ===
-                              entry.id
-                                ? 'Deleting...'
-                                : 'Confirm Delete'}
+                              <Trash2 className="w-3.5 h-3.5" />
                             </button>
                           </div>
                         </div>
-                      )}
-                    </div>
-                  );
-                }
-              )}
-            </div>
+  
+                        <div className="text-sm text-stone-800 leading-relaxed whitespace-pre-wrap">
+                          {entry.content}
+                        </div>
+  
+                        {entry.topicTags &&
+                          entry.topicTags
+                            .length >
+                            0 && (
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              {entry.topicTags.map(
+                                (
+                                  tag
+                                ) => (
+                                  <span
+                                    key={
+                                      tag
+                                    }
+                                    className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-900 border border-amber-200/60"
+                                  >
+                                    #{tag}
+                                  </span>
+                                )
+                              )}
+                            </div>
+                          )}
+  
+                        {/* Existing Snapshot */}
+                        {linkedSnapshot ? (
+                          <div className="mt-3 p-3.5 bg-amber-50/60 border border-amber-200/70 rounded-lg space-y-2 text-xs">
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="flex items-center gap-1.5 text-amber-950 font-semibold font-serif">
+                                <Sparkles className="w-3.5 h-3.5 text-amber-800" />
+  
+                                <span>
+                                  Approved Thought Snapshot
+                                </span>
+  
+                                {linkedSnapshot.userEdited && (
+                                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-200/80 text-amber-900 font-sans font-normal">
+                                    User Edited
+                                  </span>
+                                )}
+                              </div>
+  
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  void handleDeleteSnapshotOnly(
+                                    linkedSnapshot.id
+                                  )
+                                }
+                                className="text-[11px] text-stone-400 hover:text-red-600 transition-colors shrink-0"
+                              >
+                                Remove Snapshot
+                              </button>
+                            </div>
+  
+                            <blockquote className="text-xs font-serif italic text-amber-950 leading-relaxed">
+                              "{linkedSnapshot.positionStatement}"
+                            </blockquote>
+  
+                            <div className="flex items-start gap-3 flex-wrap text-[11px] text-stone-600 pt-1">
+                              <span>
+                                <strong>
+                                  Topic:
+                                </strong>{' '}
+                                {linkedSnapshot.topic}
+                              </span>
+  
+                              {linkedSnapshot.tags &&
+                                linkedSnapshot
+                                  .tags
+                                  .length >
+                                  0 && (
+                                  <span className="text-stone-500">
+                                    {linkedSnapshot.tags
+                                      .map(
+                                        (
+                                          tag
+                                        ) =>
+                                          `#${tag}`
+                                      )
+                                      .join(
+                                        ' '
+                                      )}
+                                  </span>
+                                )}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="pt-2">
+                            {!activeProposal &&
+                              !isGenerating && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    void handleGenerateProposalForEntry(
+                                      entry.id
+                                    )
+                                  }
+                                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-amber-900 bg-amber-50/70 hover:bg-amber-100 border border-amber-200/80 transition-colors"
+                                >
+                                  <Sparkles className="w-3.5 h-3.5 text-amber-800" />
+  
+                                  Generate Thought Snapshot
+                                </button>
+                              )}
+  
+                            {isGenerating && (
+                              <div className="p-3 bg-amber-50/40 border border-amber-200/50 rounded-lg flex items-center gap-2 text-xs text-amber-900">
+                                <div className="w-3.5 h-3.5 border-2 border-amber-800/30 border-t-amber-800 rounded-full animate-spin" />
+  
+                                Analyzing reflection...
+                              </div>
+                            )}
+  
+                            {proposalError && (
+                              <div className="p-2.5 bg-red-50 border border-red-200 rounded-lg flex items-center justify-between gap-3 text-xs text-red-800">
+                                <span>
+                                  {proposalError}
+                                </span>
+  
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    void handleGenerateProposalForEntry(
+                                      entry.id
+                                    )
+                                  }
+                                  className="font-semibold text-red-700 underline"
+                                >
+                                  Retry
+                                </button>
+                              </div>
+                            )}
+  
+                            {activeProposal && (
+                              <div className="mt-3">
+                                <ThoughtSnapshotCard
+                                  proposal={
+                                    activeProposal
+                                  }
+                                  onAccepted={(
+                                    snapshot
+                                  ) =>
+                                    void handleAcceptProposal(
+                                      entry.id,
+                                      snapshot
+                                    )
+                                  }
+                                  onRejected={() =>
+                                    handleRejectProposal(
+                                      entry.id
+                                    )
+                                  }
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )}
+  
+                        {/* Delete Confirmation */}
+                        {deleteConfirmId ===
+                          entry.id && (
+                          <div className="mt-4 p-4 bg-red-50/80 border border-red-200 rounded-lg space-y-3">
+                            <div className="flex items-start gap-2.5">
+                              <ShieldAlert className="w-4 h-4 text-red-700 shrink-0 mt-0.5" />
+  
+                              <div>
+                                <p className="text-xs font-semibold text-red-900">
+                                  Permanently delete this reflection?
+                                </p>
+  
+                                <p className="mt-1 text-[11px] text-red-700 leading-relaxed">
+                                  The journal entry, linked snapshots,
+                                  dependent Thought Diffs and provenance
+                                  will be safely removed or invalidated.
+                                </p>
+                              </div>
+                            </div>
+  
+                            <div className="flex justify-end gap-2">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setDeleteConfirmId(
+                                    null
+                                  )
+                                }
+                                disabled={
+                                  deletingId ===
+                                  entry.id
+                                }
+                                className="px-3 py-1.5 rounded-md text-xs font-medium text-stone-600 hover:bg-stone-200/60"
+                              >
+                                Cancel
+                              </button>
+  
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  void handleDelete(
+                                    entry.id
+                                  )
+                                }
+                                disabled={
+                                  deletingId ===
+                                  entry.id
+                                }
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-red-700 hover:bg-red-800 text-white text-xs font-semibold"
+                              >
+                                {deletingId ===
+                                entry.id ? (
+                                  <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                ) : (
+                                  <Trash2 className="w-3 h-3" />
+                                )}
+  
+                                {deletingId ===
+                                entry.id
+                                  ? 'Deleting...'
+                                  : 'Confirm Delete'}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+                )}
+              </div>
+            )}
           </>
         )}
       </div>

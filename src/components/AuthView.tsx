@@ -1,4 +1,4 @@
-import '../styles/mirrortrace-clean-glass.css';
+﻿import '../styles/mirrortrace-clean-glass.css';
 import '../styles/mirrortrace-authenticated-haze.css';
 import '../styles/mirrortrace-motion-and-glass.css';
 import '../styles/mirrortrace-hero-darken.css';
@@ -1214,7 +1214,7 @@ export const AuthView:
 
                     <span>
                       {loading
-                        ? 'Connecting…'
+                        ? 'Connectingâ€¦'
                         : 'Continue with Google'}
                     </span>
 
@@ -1263,9 +1263,9 @@ export const AuthView:
               "
             >
               Firebase Authentication
-              {' • '}
+              {' â€¢ '}
               Owner-bound UID isolation
-              {' • '}
+              {' â€¢ '}
               Server-side Gemini
             </div>
           </div>
@@ -1424,7 +1424,7 @@ export const AuthView:
                     });
                   }}
                 >
-                  ‹
+                  â€¹
                 </button>
 
                 <div
@@ -1455,9 +1455,7 @@ export const AuthView:
                           total={
                             TOP_ROW.length
                           }
-                          direction="
-                            left
-                          "
+                          direction="left"
                         />
                       )
                     )}
@@ -1496,7 +1494,7 @@ export const AuthView:
                     });
                   }}
                 >
-                  ›
+                  â€º
                 </button>
               </div>
 
@@ -1557,7 +1555,7 @@ export const AuthView:
                     });
                   }}
                 >
-                  ‹
+                  â€¹
                 </button>
 
                 <div
@@ -1588,9 +1586,7 @@ export const AuthView:
                           total={
                             BOTTOM_ROW.length
                           }
-                          direction="
-                            right
-                          "
+                          direction="right"
                         />
                       )
                     )}
@@ -1629,7 +1625,7 @@ export const AuthView:
                     });
                   }}
                 >
-                  ›
+                  â€º
                 </button>
               </div>
             </div>
@@ -2013,7 +2009,7 @@ export const AuthView:
                               "
                             >
                               {
-                                '★'.repeat(
+                                'â˜…'.repeat(
                                   Math.max(
                                     1,
                                     Math.min(
@@ -2181,3 +2177,4 @@ export const AuthView:
       </div>
     );
   };
+

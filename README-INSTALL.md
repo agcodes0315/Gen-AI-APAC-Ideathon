@@ -1,119 +1,116 @@
-# MirrorTrace — Next Features Pack
+# MirrorTrace — Stability + Calendar/Timeline Pack
 
-This pack deliberately separates **safe standalone additions** from changes that should not be made blind against your current live notification backend.
+This pack is designed for the repository state shown by your latest `npm run lint` output.
 
-## Important discovery
+## Why stability comes first
 
-Your current `JournalList.tsx` ALREADY implements:
+Your automated production verification passed, and `npm run build` completed, but `npm run lint` still reported five TypeScript errors:
 
-- keyword search against reflection content
-- keyword matching against topic tags
-- tag filtering
-- approved-snapshot filtering
+- 2 in `AdminDashboard.tsx`
+- 2 in `AuthView.tsx`
+- 1 in `JournalList.tsx`
 
-So the original “Search + Filter” item is mostly finished already.
+Do not add another backend feature until `npm run lint` is clean.
 
-The only obvious missing part from the proposed feature card is **date-range filtering**.
+## Package contents
 
-The included `JournalHistoryFilters.tsx` adds:
+### FULL FILES
+
+- `src/components/JournalList.tsx`
+- `src/components/JournalCalendar.tsx`
+- `src/components/YearInReflection.tsx`
+- `src/lib/aiError.ts`
+
+The supplied JournalList keeps the already-working:
 
 - keyword search
-- topic dropdown
-- from-date
-- to-date
-- clear filters
-- a reusable `journalEntryMatchesFilters()` helper
+- topic filtering
+- date range filtering
+- Thought Snapshot flow
+- Thought Diff flow
+- graceful AI outage message
+- Year in Reflection
 
-No Gemini call and no new Firestore query are required.
+and adds:
 
-## Files
+- List / Calendar view toggle
+- month navigation
+- days with reflection counts
+- click a date to inspect reflections from that day
 
-### `src/components/JournalHistoryFilters.tsx`
+It also fixes the `localeCompare` TypeScript error by explicitly typing topic tags as strings.
 
-Full filter UI + pure filtering helper.
+### SAFE STABILITY SCRIPT
 
-To integrate it into the current JournalList:
+`scripts/fix-current-typescript-errors.ps1`
 
-1. Import:
-   `JournalHistoryFilters`, `journalEntryMatchesFilters`, and `JournalHistoryFilterState`.
-2. Replace separate `searchTerm` / `selectedTag` state with one `filters` state, or keep your current state and map it into the component.
-3. Build `availableTags` from the existing `allTags`.
-4. Apply `journalEntryMatchesFilters(entry, filters)` inside your existing `filteredEntries` filter.
-5. Render the component where the current Search card is.
+This changes only two tiny patterns inside your CURRENT large files instead of overwriting them:
 
-Because your current JournalList already contains working snapshot/diff/delete logic, do NOT replace the entire file just to add a date filter.
+1. `AdminDashboard.tsx`
+   - moves React `key` onto native wrapper divs around `SupportTicketCard` and `ReviewModerationCard`
 
-### `src/components/YearInReflection.tsx`
+2. `AuthView.tsx`
+   - converts multiline `direction=" left "` and `direction=" right "` values to exact string literals
 
-A standalone factual annual summary.
+This avoids replacing your current landing page or admin UI.
 
-It uses existing:
-- JournalEntry[]
-- ThoughtSnapshot[]
-- ThoughtDiff[]
+### DEV PORT SCRIPT
 
-It computes:
-- reflection count
-- approved snapshot count
-- Thought Diff count
-- most active month
-- most revisited topic
+`scripts/free-dev-ports.ps1`
 
-No new AI inference.
+Use only when you see:
 
-Recommended integration later:
-render it inside DashboardOverview with the same `entries`, `snapshots`, and `diffs` props already available there.
+- `EADDRINUSE ... port 3000`
+- `WebSocket server error: Port 24678 is already in use`
 
-### `scripts/productionVerify.ts`
+## Install
 
-Automated non-destructive checks for:
-- required files
-- `.env` ignore
-- Firebase/Gemini env configuration
-- `/api/health`
+Copy/extract this package into your MirrorTrace project root.
 
-Run with:
+Then run:
 
-`npx tsx scripts/productionVerify.ts`
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\fix-current-typescript-errors.ps1
+npm run lint
+npm run build
+```
 
-## Daily reminder
+If lint and build both pass:
 
-Do NOT paste a new scheduler implementation yet.
+```powershell
+npm run dev
+```
 
-Your repository already contains:
-- notificationService.ts
-- notificationRoutes.ts
-- emailService.ts
-- perspectiveWatchProcessor.ts
-- PushNotificationSettings.tsx
+If port 3000 or 24678 is already occupied:
 
-The daily reminder must reuse the exact existing opt-in fields and exact push/email functions. A separate implementation that guesses those collection names or preference fields can accidentally send notifications to users who did not opt in.
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\free-dev-ports.ps1
+npm run dev
+```
 
-Before implementing the daily reminder, use the current authoritative contents of:
+## What you should see
 
-- server/notificationService.ts
-- server/emailService.ts
-- server/perspectiveWatchProcessor.ts
-- server/notificationRoutes.ts
-- src/components/PushNotificationSettings.tsx
+Journal History gains:
 
-Then add one daily processor using those exact functions.
+- **List**
+- **Calendar**
 
-## Recommended order now
+In Calendar mode:
+- month grid
+- reflection count on dates with saved entries
+- previous/next month
+- Today button
+- click a date to inspect that day's reflections
 
-1. Date range addition to existing Journal History filters
-2. Run lint + build
-3. Production verification
-4. Daily reminder after exact notification APIs are confirmed
-5. Year in Reflection
-6. Calendar/timeline only if everything above is stable
+## Production status after this
 
-## Verification
+Once lint is clean, your next priority should be:
 
-`npm run lint`
+1. Firebase/Auth smoke tests
+2. admin RBAC test
+3. two-account isolation test
+4. push/email test
+5. Cloud Run deployment verification
+6. only then add the daily reflection reminder
 
-`npm run build`
-
-`npm run dev`
-
-`npx tsx scripts/productionVerify.ts`
+The daily reminder should reuse your existing notification preference fields and send functions. It should not be guessed from scratch.
