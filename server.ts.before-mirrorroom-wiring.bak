@@ -33,7 +33,6 @@ import { emailRouter } from './server/emailRoutes.ts';
 import { supportReviewRouter } from './server/supportReviewRoutes.ts';
 import { journalEnhancementRouter } from './server/journalEnhancementRoutes.ts';
 
-import { reflectionRoomRouter } from './server/reflectionRoomRoutes.ts';
 const app = express();
 
 const PORT = Number(process.env.PORT || 3000);
@@ -74,8 +73,6 @@ app.use(journalEnhancementRouter);
 /* ============================================================
    3. HEALTH ROUTE
    ============================================================ */
-
-app.use(reflectionRoomRouter);
 
 app.get('/api/health', (_req, res) => {
   res.status(200).json({

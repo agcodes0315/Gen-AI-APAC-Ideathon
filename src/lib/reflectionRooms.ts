@@ -1,83 +1,12 @@
 import { getCurrentIdToken } from './firebase.ts';
 
-/* ============================================================
-   MIRRORROOM TYPES
-   ============================================================ */
-
-export type MirrorRoomVisibilityMode =
-  | 'anonymous'
-  | 'display_name';
-
-export interface MirrorRoomParticipant {
-  uid?: string;
-  role: 'host' | 'participant';
-  visibilityMode: MirrorRoomVisibilityMode;
-  displayName: string;
-  joinedAt?: string | null;
-}
-
-export interface MirrorRoomContribution {
-  id: string;
-  ownerUid?: string;
-  text: string;
-  visibilityMode: MirrorRoomVisibilityMode;
-  displayName: string;
-  createdAt: string;
-}
-
-export interface MirrorRoom {
-  id: string;
-  ownerUid?: string;
-
-  title: string;
-  prompt: string;
-  inviteCode: string;
-
-  status:
-    | 'open'
-    | 'closed'
-    | 'expired';
-
-  expiresAt: string;
-
-  participantCount: number;
-  contributionCount: number;
-
-  createdAt: string;
-  updatedAt: string;
-
-  isHost?: boolean;
-
-  participantRole?:
-    | 'host'
-    | 'participant';
-
-  participants?:
-    MirrorRoomParticipant[];
-
-  contributions?:
-    MirrorRoomContribution[];
-}
-
-export interface MirrorRoomSummary {
-  roomId: string;
-
-  title?: string;
-  prompt?: string;
-
-  participantCount: number;
-  contributionCount: number;
-
-  contributions: Array<{
-    displayName: string;
-    text: string;
-    createdAt?: string | null;
-  }>;
-}
-
-/* ============================================================
-   INTERNAL FETCH HELPER
-   ============================================================ */
+import type {
+  MirrorRoom,
+  MirrorRoomContribution,
+  MirrorRoomParticipant,
+  MirrorRoomSummary,
+  MirrorRoomVisibility,
+} from '../types/reflectionRooms.ts';
 
 async function roomFetch<T>(
   url: string,
@@ -132,9 +61,7 @@ async function roomFetch<T>(
       null;
   }
 
-  if (
-    !response.ok
-  ) {
+  if (!response.ok) {
     throw new Error(
       typeof data?.error ===
       'string'
@@ -146,34 +73,21 @@ async function roomFetch<T>(
   return data as T;
 }
 
-/* ============================================================
-   CREATE ROOM
-   ============================================================ */
-
 export async function createMirrorRoom(
   input: {
     title: string;
-
     prompt: string;
-
-    visibilityMode:
-      MirrorRoomVisibilityMode;
-
-    displayName?: string;
-
-    expiresInHours?: number;
+    visibility: MirrorRoomVisibility;
+    expiryHours: 1 | 6 | 24 | 72;
   }
 ): Promise<MirrorRoom> {
   const data =
     await roomFetch<{
-      success: true;
       room: MirrorRoom;
     }>(
       '/api/mirror-rooms',
       {
-        method:
-          'POST',
-
+        method: 'POST',
         body:
           JSON.stringify(
             input
@@ -184,30 +98,20 @@ export async function createMirrorRoom(
   return data.room;
 }
 
-/* ============================================================
-   JOIN ROOM
-   ============================================================ */
-
 export async function joinMirrorRoom(
   input: {
     inviteCode: string;
-
-    visibilityMode:
-      MirrorRoomVisibilityMode;
-
+    visibility: MirrorRoomVisibility;
     displayName?: string;
   }
 ): Promise<MirrorRoom> {
   const data =
     await roomFetch<{
-      success: true;
       room: MirrorRoom;
     }>(
       '/api/mirror-rooms/join',
       {
-        method:
-          'POST',
-
+        method: 'POST',
         body:
           JSON.stringify(
             input
@@ -218,45 +122,36 @@ export async function joinMirrorRoom(
   return data.room;
 }
 
-/* ============================================================
-   LOAD ROOM
-   ============================================================ */
-
 export async function getMirrorRoom(
   roomId: string
-): Promise<MirrorRoom> {
-  const data =
-    await roomFetch<{
-      room: MirrorRoom;
-    }>(
-      `/api/mirror-rooms/${encodeURIComponent(roomId)}`
-    );
-
-  return data.room;
+): Promise<{
+  room: MirrorRoom;
+  participants: MirrorRoomParticipant[];
+  contributions: MirrorRoomContribution[];
+}> {
+  return roomFetch(
+    `/api/mirror-rooms/${encodeURIComponent(roomId)}`
+  );
 }
 
-/* ============================================================
-   SHARE A THOUGHT
-   ============================================================ */
-
-export async function shareMirrorRoomThought(
-  roomId: string,
-  text: string
+export async function shareMirrorRoomContribution(
+  input: {
+    roomId: string;
+    body: string;
+  }
 ): Promise<MirrorRoomContribution> {
   const data =
     await roomFetch<{
-      success: true;
       contribution:
         MirrorRoomContribution;
     }>(
-      `/api/mirror-rooms/${encodeURIComponent(roomId)}/contributions`,
+      `/api/mirror-rooms/${encodeURIComponent(input.roomId)}/contributions`,
       {
-        method:
-          'POST',
-
+        method: 'POST',
         body:
           JSON.stringify({
-            text,
+            body:
+              input.body,
           }),
       }
     );
@@ -264,15 +159,7 @@ export async function shareMirrorRoomThought(
   return data.contribution;
 }
 
-/* ============================================================
-   ROOM SUMMARY
-
-   IMPORTANT:
-   This is a factual summary endpoint.
-   It does NOT require Gemini or any paid AI API.
-   ============================================================ */
-
-export async function getMirrorRoomSummary(
+export async function buildMirrorRoomSummary(
   roomId: string
 ): Promise<MirrorRoomSummary> {
   const data =
@@ -286,32 +173,24 @@ export async function getMirrorRoomSummary(
   return data.summary;
 }
 
-/**
- * Compatibility export used by ReflectionRoomLauncher.tsx.
- *
- * Earlier versions of the MirrorRoom UI imported:
- *
- *   buildMirrorRoomSummary
- *
- * while the backend client was later renamed to:
- *
- *   getMirrorRoomSummary
- *
- * Keeping both names prevents the Vite
- * "does not provide an export named buildMirrorRoomSummary"
- * runtime failure.
- */
-export async function buildMirrorRoomSummary(
-  roomId: string
-): Promise<MirrorRoomSummary> {
-  return getMirrorRoomSummary(
-    roomId
+export async function saveMirrorRoomTakeaway(
+  input: {
+    roomId: string;
+    takeaway: string;
+  }
+): Promise<void> {
+  await roomFetch(
+    `/api/mirror-rooms/${encodeURIComponent(input.roomId)}/takeaway`,
+    {
+      method: 'POST',
+      body:
+        JSON.stringify({
+          takeaway:
+            input.takeaway,
+        }),
+    }
   );
 }
-
-/* ============================================================
-   CLOSE ROOM
-   ============================================================ */
 
 export async function closeMirrorRoom(
   roomId: string
@@ -319,33 +198,7 @@ export async function closeMirrorRoom(
   await roomFetch(
     `/api/mirror-rooms/${encodeURIComponent(roomId)}/close`,
     {
-      method:
-        'POST',
+      method: 'POST',
     }
   );
 }
-
-/* ============================================================
-   COMPATIBILITY ALIASES
-
-   These preserve compatibility with earlier MirrorRoom component
-   versions without changing backend behavior.
-   ============================================================ */
-
-export const fetchMirrorRoom =
-  getMirrorRoom;
-
-export const loadMirrorRoom =
-  getMirrorRoom;
-
-export const submitMirrorRoomThought =
-  shareMirrorRoomThought;
-
-export const createRoom =
-  createMirrorRoom;
-
-export const joinRoom =
-  joinMirrorRoom;
-
-export const closeRoom =
-  closeMirrorRoom;

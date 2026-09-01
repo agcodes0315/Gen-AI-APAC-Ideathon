@@ -1,43 +1,51 @@
-export type MirrorRoomVisibilityMode =
-  | 'anonymous'
-  | 'display_name';
+export type MirrorRoomVisibility =
+  | 'named'
+  | 'anonymous';
 
 export type MirrorRoomStatus =
   | 'open'
   | 'closed'
   | 'expired';
 
-export interface MirrorRoomParticipant {
-  uid?: string;
-  role: 'host' | 'participant';
-  visibilityMode: MirrorRoomVisibilityMode;
-  displayName: string;
-  joinedAt?: string | null;
-}
-
-export interface MirrorRoomContribution {
-  id: string;
-  ownerUid?: string;
-  text: string;
-  visibilityMode: MirrorRoomVisibilityMode;
-  displayName: string;
-  createdAt: string;
-}
-
 export interface MirrorRoom {
   id: string;
-  ownerUid?: string;
+  ownerUid: string;
   title: string;
   prompt: string;
   inviteCode: string;
   status: MirrorRoomStatus;
   expiresAt: string;
-  participantCount: number;
-  contributionCount: number;
   createdAt: string;
   updatedAt: string;
+  participantCount: number;
+  contributionCount: number;
   isHost?: boolean;
-  participantRole?: 'host' | 'participant';
-  participants?: MirrorRoomParticipant[];
-  contributions?: MirrorRoomContribution[];
+}
+
+export interface MirrorRoomParticipant {
+  id: string;
+  uid?: string;
+  role: 'host' | 'participant';
+  displayName: string;
+  visibility: MirrorRoomVisibility;
+  joinedAt: string;
+}
+
+export interface MirrorRoomContribution {
+  id: string;
+  roomId: string;
+  ownerUid?: string;
+  authorLabel: string;
+  body: string;
+  createdAt: string;
+  shareApproved: true;
+}
+
+export interface MirrorRoomSummary {
+  roomId: string;
+  createdAt: string;
+  participantCount: number;
+  contributionCount: number;
+  sharedContributions: MirrorRoomContribution[];
+  note: 'human_only';
 }
