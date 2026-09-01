@@ -7,316 +7,169 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 
-import {
-  auth,
-} from '../lib/firebase.ts';
-
 import AdminDashboard from './AdminDashboard.tsx';
 import AdminMirrorRoomsPanel from './AdminMirrorRoomsPanel.tsx';
 
-import {
-  AdminApiError,
-  getAdminOverview,
-} from '../lib/admin.ts';
+import '../styles/mirrortrace-admin-translucent-black.css';
 
 
-type AvailabilityState =
-  | 'checking'
-  | 'allowed'
-  | 'denied'
-  | 'failed';
+type AdminPanelLauncherProps = {
+  userEmail:
+    string | null;
+};
 
+
+const ADMIN_EMAIL =
+  'agrimalko@gmail.com';
 
 const ADMIN_HASH =
   '#/admin';
 
 
-const PRIMARY_ADMIN_EMAIL =
-  'agrimalko@gmail.com';
+export default function AdminPanelLauncher({
+  userEmail,
+}: AdminPanelLauncherProps) {
 
-
-function currentUserLooksLikePrimaryAdmin():
-  boolean {
-  const email =
-    auth.currentUser
-      ?.email
+  const normalizedEmail =
+    userEmail
       ?.trim()
-      .toLowerCase();
-
-  return email ===
-    PRIMARY_ADMIN_EMAIL;
-}
+      .toLowerCase() ??
+    '';
 
 
-export default function AdminPanelLauncher() {
-
-  /*
-   * IMPORTANT:
-   *
-   * The authenticated App is already mounted only after Firebase auth has
-   * completed, so auth.currentUser is normally available synchronously here.
-   *
-   * For the known primary admin account we render the launcher immediately
-   * instead of waiting for the /api/admin/overview round trip.
-   *
-   * This is only a UI optimisation.
-   * Actual admin authorization is still enforced server-side by requireRole().
-   */
-  const [
-    state,
-    setState,
-  ] =
-    useState<AvailabilityState>(
-      () =>
-        currentUserLooksLikePrimaryAdmin()
-          ? 'allowed'
-          : 'checking'
-    );
+  const isAllowedAdmin =
+    normalizedEmail ===
+    ADMIN_EMAIL;
 
 
   const [
     adminPageOpen,
     setAdminPageOpen,
   ] =
-    useState(
+    useState<boolean>(
       () =>
         window.location.hash ===
         ADMIN_HASH
     );
 
 
-  useEffect(() => {
+  /*
+   * The authenticated user is already resolved by App.tsx.
+   * We intentionally do NOT read auth.currentUser here and do NOT wait
+   * for a second API request before showing the button.
+   *
+   * That removes the race which caused the Admin Control Room button
+   * to appear late or not appear at all.
+   */
+  useEffect(
+    () => {
 
-    let active =
-      true;
+      const handleHashChange =
+        () => {
+
+          const isAdminHash =
+            window.location.hash ===
+            ADMIN_HASH;
 
 
-    const checkAdminAccess =
-      async () => {
-
-        try {
-
-          const overview =
-            await getAdminOverview();
-
-
-          if (!active) {
-            return;
-          }
-
-
-          console.info(
-            '[MirrorTrace Admin] Access verified.',
-            {
-              role:
-                overview.role,
-
-              generatedAt:
-                overview.generatedAt,
-            }
+          setAdminPageOpen(
+            isAdminHash
           );
-
-
-          setState(
-            'allowed'
-          );
-
-        } catch (error) {
-
-          if (!active) {
-            return;
-          }
 
 
           if (
-            error instanceof
-            AdminApiError
+            isAdminHash
           ) {
 
-            console.error(
-              '[MirrorTrace Admin] Availability check failed.',
-              {
-                status:
-                  error.status,
+            window.scrollTo({
+              top:
+                0,
 
-                code:
-                  error.code ??
-                  'NO_ERROR_CODE',
+              left:
+                0,
 
-                message:
-                  error.message,
-              }
-            );
-
-
-            if (
-              error.status === 401 ||
-              error.status === 403
-            ) {
-
-              setState(
-                'denied'
-              );
-
-              return;
-            }
-
-          } else {
-
-            console.error(
-              '[MirrorTrace Admin] Unexpected availability error.',
-              error
-            );
+              behavior:
+                'auto',
+            });
 
           }
 
-
-          /*
-           * If the known admin is already signed in, do not make the launcher
-           * disappear just because a transient network request failed.
-           * Clicking/opening the admin page will still hit protected server
-           * endpoints, so authorization is never weakened.
-           */
-          if (
-            currentUserLooksLikePrimaryAdmin()
-          ) {
-            setState(
-              'allowed'
-            );
-
-            return;
-          }
+        };
 
 
-          setState(
-            'failed'
-          );
-        }
-      };
-
-
-    void checkAdminAccess();
-
-
-    return () => {
-
-      active =
-        false;
-
-    };
-
-  }, []);
-
-
-  useEffect(() => {
-
-    const handleHashChange =
-      () => {
-
-        const isAdmin =
-          window.location.hash ===
-          ADMIN_HASH;
-
-
-        setAdminPageOpen(
-          isAdmin
-        );
-
-
-        window.scrollTo({
-          top:
-            0,
-
-          behavior:
-            'auto',
-        });
-      };
-
-
-    window.addEventListener(
-      'hashchange',
-      handleHashChange
-    );
-
-
-    return () => {
-
-      window.removeEventListener(
+      window.addEventListener(
         'hashchange',
         handleHashChange
       );
 
-    };
 
-  }, []);
+      return () => {
+
+        window.removeEventListener(
+          'hashchange',
+          handleHashChange
+        );
+
+      };
+
+    },
+    []
+  );
 
 
   /*
-   * Non-admin users never get the launcher.
+   * If the account changes while the admin page is open, remove admin
+   * presentation immediately unless it is the one explicitly allowed email.
+   */
+  useEffect(
+    () => {
+
+      if (
+        !isAllowedAdmin &&
+        adminPageOpen
+      ) {
+
+        window.location.hash =
+          '/overview';
+
+        setAdminPageOpen(
+          false
+        );
+
+      }
+
+    },
+    [
+      isAllowedAdmin,
+      adminPageOpen,
+    ]
+  );
+
+
+  /*
+   * Only agrimalko@gmail.com gets the launcher at all.
    *
-   * During the very short auth check for an unknown account we also keep the
-   * launcher hidden. The known primary admin does not enter this branch because
-   * their initial state is already "allowed".
+   * IMPORTANT:
+   * This controls UI visibility only.
+   * Existing requireRole(...) server checks remain the real authorization
+   * boundary for every admin API endpoint.
    */
   if (
-    state === 'checking' ||
-    state === 'denied'
+    !isAllowedAdmin
   ) {
+
     return null;
+
   }
 
 
-  if (
-    state === 'failed'
-  ) {
-
-    return (
-      <button
-        type="button"
-
-        title="
-          Admin backend check failed.
-          Open DevTools Console for the exact status.
-        "
-
-        onClick={() => {
-          window.location.reload();
-        }}
-
-        className="
-          fixed
-          bottom-5
-          right-5
-          z-[9000]
-
-          rounded-full
-
-          border
-          border-red-400/30
-
-          bg-black/80
-
-          px-5
-          py-3
-
-          text-sm
-          font-semibold
-          text-red-200
-
-          shadow-2xl
-
-          transition-all
-
-          hover:-translate-y-0.5
-          hover:bg-black/95
-        "
-      >
-        Admin check failed — retry
-      </button>
-    );
-  }
-
-
+  /*
+   * Keep the ORIGINAL admin dashboard presentation.
+   *
+   * No new opaque full-screen background is introduced here.
+   * The existing mirrortrace-admin-translucent-black.css is restored,
+   * which brings back the earlier black/translucent appearance.
+   */
   if (
     adminPageOpen
   ) {
@@ -326,6 +179,10 @@ export default function AdminPanelLauncher() {
         className="
           mirrortrace-admin-page
           mirrortrace-admin-overlay
+          fixed
+          inset-0
+          z-[12000]
+          overflow-y-auto
         "
       >
 
@@ -349,7 +206,7 @@ export default function AdminPanelLauncher() {
             onClose={() => {
 
               window.location.hash =
-                '#/overview';
+                '/overview';
 
             }}
           />
@@ -360,9 +217,14 @@ export default function AdminPanelLauncher() {
 
       </div>
     );
+
   }
 
 
+  /*
+   * MirrorRoom uses bottom-20/right-5.
+   * Admin Control Room therefore sits directly below it at bottom-5/right-5.
+   */
   return (
     <button
       type="button"
@@ -374,12 +236,44 @@ export default function AdminPanelLauncher() {
 
       }}
 
-      className="
-        mirrortrace-admin-launcher
-      "
-
       aria-label="
         Open Admin Control Room
+      "
+
+      title="
+        Open Admin Control Room
+      "
+
+      className="
+        fixed
+        bottom-5
+        right-5
+        z-[9000]
+
+        inline-flex
+        items-center
+        gap-2
+
+        rounded-full
+
+        border
+        border-white/15
+
+        bg-black/80
+
+        px-5
+        py-3
+
+        text-sm
+        font-semibold
+        text-white
+
+        shadow-2xl
+
+        transition
+
+        hover:-translate-y-0.5
+        hover:bg-black
       "
     >
 

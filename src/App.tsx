@@ -697,7 +697,7 @@ export default function App() {
       </div>
 
       <ReflectionRoomLauncher />
-      <AdminPanelLauncher />
+      <AdminPanelLauncher userEmail={user?.email ?? null} />
     </div>
   );
 }
