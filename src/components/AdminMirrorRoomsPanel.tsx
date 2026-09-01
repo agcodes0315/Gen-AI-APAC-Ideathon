@@ -141,16 +141,20 @@ export default function AdminMirrorRoomsPanel() {
     <section
       id="admin-mirrorrooms"
       className="
-        mirrortrace-admin-surface
         mt-6
         rounded-[28px]
         border
         border-white/10
-        bg-black/30
         p-5
         text-white
         shadow-sm
       "
+      style={{
+        backgroundColor:
+          'rgba(0, 0, 0, 0.70)',
+        backgroundImage:
+          'none',
+      }}
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
@@ -196,7 +200,7 @@ export default function AdminMirrorRoomsPanel() {
         </button>
       </div>
 
-      <div className="mt-5 rounded-2xl border border-emerald-300/15 bg-emerald-400/5 p-4">
+      <div className="mt-5 rounded-2xl border border-emerald-300/15 bg-black/45 p-4">
         <div className="flex items-center gap-2 text-sm font-semibold text-emerald-200">
           <LockKeyhole className="h-4 w-4" />
           Content visibility disabled
@@ -214,7 +218,7 @@ export default function AdminMirrorRoomsPanel() {
       )}
 
       <div className="mt-5 grid gap-3 sm:grid-cols-3">
-        <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
+        <div className="rounded-2xl border border-white/10 bg-black/55 p-4">
           <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-white/40">
             MirrorRooms created
           </div>
@@ -227,7 +231,7 @@ export default function AdminMirrorRoomsPanel() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-emerald-300/15 bg-emerald-500/5 p-4">
+        <div className="rounded-2xl border border-emerald-300/15 bg-black/60 p-4">
           <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-emerald-100/50">
             Active
           </div>
@@ -240,7 +244,7 @@ export default function AdminMirrorRoomsPanel() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-black/35 p-4">
+        <div className="rounded-2xl border border-white/10 bg-black/55 p-4">
           <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-white/40">
             Closed / expired
           </div>
@@ -254,10 +258,10 @@ export default function AdminMirrorRoomsPanel() {
         </div>
       </div>
 
-      <div className="mt-5 overflow-x-auto rounded-2xl border border-white/10">
+      <div className="mt-5 overflow-x-auto rounded-2xl border border-white/10 bg-black/55">
         <table className="min-w-[1050px] w-full border-collapse text-left">
           <thead>
-            <tr className="border-b border-white/10 bg-black/40 text-[10px] uppercase tracking-[0.08em] text-white/40">
+            <tr className="border-b border-white/10 bg-black/60 text-[10px] uppercase tracking-[0.08em] text-white/40">
               <th className="px-4 py-3">
                 MirrorRoom
               </th>
@@ -327,7 +331,7 @@ export default function AdminMirrorRoomsPanel() {
                         ) => (
                           <div
                             key={`${room.id}-${participant.uid}-${index}`}
-                            className="rounded-lg bg-black/35 px-2.5 py-1.5"
+                            className="rounded-lg bg-black/55 px-2.5 py-1.5"
                           >
                             <div className="text-[11px] text-white/70">
                               {participant.email ||
