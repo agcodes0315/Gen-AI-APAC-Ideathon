@@ -1,7 +1,18 @@
-import { getCurrentIdToken } from './firebase.ts';
+import {
+  getCurrentIdToken,
+} from './firebase.ts';
 
-export type SupportStatus = 'open' | 'in_progress' | 'resolved' | 'closed';
-export type ReviewState = 'pending' | 'approved' | 'hidden' | 'rejected';
+export type SupportStatus =
+  | 'open'
+  | 'in_progress'
+  | 'resolved'
+  | 'closed';
+
+export type ReviewState =
+  | 'pending'
+  | 'approved'
+  | 'hidden'
+  | 'rejected';
 
 export interface SupportTicket {
   id: string;
@@ -26,6 +37,8 @@ export interface ProductReview {
   moderationState: ReviewState;
   adminResponse?: string | null;
   createdAt: string;
+  updatedAt?: string;
+  moderatedAt?: string | null;
 }
 
 async function apiFetch<T>(
@@ -33,28 +46,73 @@ async function apiFetch<T>(
   options: RequestInit = {},
   authRequired = true
 ): Promise<T> {
-  const headers = new Headers(options.headers || {});
+  const headers =
+    new Headers(
+      options.headers ||
+        {}
+    );
 
-  if (authRequired) {
-    const token = await getCurrentIdToken();
-    if (!token) throw new Error('Please sign in first.');
-    headers.set('Authorization', `Bearer ${token}`);
+  if (
+    authRequired
+  ) {
+    const token =
+      await getCurrentIdToken();
+
+    if (!token) {
+      throw new Error(
+        'Please sign in first.'
+      );
+    }
+
+    headers.set(
+      'Authorization',
+      `Bearer ${token}`
+    );
   }
 
-  if (typeof options.body === 'string') {
-    headers.set('Content-Type', 'application/json');
+  headers.set(
+    'Cache-Control',
+    'no-cache'
+  );
+
+  if (
+    typeof options.body ===
+    'string'
+  ) {
+    headers.set(
+      'Content-Type',
+      'application/json'
+    );
   }
 
-  const response = await fetch(url, { ...options, headers });
+  const response =
+    await fetch(
+      url,
+      {
+        ...options,
+        headers,
+        cache:
+          'no-store',
+      }
+    );
 
-  let data: any = null;
+  let data: any =
+    null;
+
   try {
-    data = await response.json();
-  } catch {}
+    data =
+      await response.json();
+  } catch {
+    data =
+      null;
+  }
 
-  if (!response.ok) {
+  if (
+    !response.ok
+  ) {
     throw new Error(
-      typeof data?.error === 'string'
+      typeof data?.error ===
+      'string'
         ? data.error
         : `Request failed with status ${response.status}.`
     );
@@ -63,73 +121,183 @@ async function apiFetch<T>(
   return data as T;
 }
 
-export async function createSupportTicket(input: {
-  category: string;
-  subject: string;
-  message: string;
-}): Promise<void> {
-  await apiFetch('/api/support/tickets', {
-    method: 'POST',
-    body: JSON.stringify(input),
-  });
+export async function createSupportTicket(
+  input: {
+    category: string;
+    subject: string;
+    message: string;
+  }
+): Promise<void> {
+  await apiFetch(
+    '/api/support/tickets',
+    {
+      method:
+        'POST',
+      body:
+        JSON.stringify(
+          input
+        ),
+    }
+  );
 }
 
-export async function getMySupportTickets(): Promise<SupportTicket[]> {
-  const data = await apiFetch<{ tickets: SupportTicket[] }>('/api/support/tickets');
-  return data.tickets ?? [];
+export async function getMySupportTickets():
+Promise<SupportTicket[]> {
+  const data =
+    await apiFetch<{
+      tickets:
+        SupportTicket[];
+    }>(
+      '/api/support/tickets'
+    );
+
+  return data.tickets ??
+    [];
 }
 
-export async function getAdminSupportTickets(): Promise<SupportTicket[]> {
-  const data = await apiFetch<{ tickets: SupportTicket[] }>('/api/admin/support/tickets');
-  return data.tickets ?? [];
+export async function getAdminSupportTickets():
+Promise<SupportTicket[]> {
+  const data =
+    await apiFetch<{
+      tickets:
+        SupportTicket[];
+    }>(
+      '/api/admin/support/tickets'
+    );
+
+  return data.tickets ??
+    [];
 }
 
 export async function updateAdminSupportTicket(
   id: string,
-  input: { status: SupportStatus; adminReply: string }
+  input: {
+    status:
+      SupportStatus;
+    adminReply:
+      string;
+  }
 ): Promise<void> {
-  await apiFetch(`/api/admin/support/tickets/${encodeURIComponent(id)}`, {
-    method: 'PATCH',
-    body: JSON.stringify(input),
-  });
-}
-
-export async function createReview(input: {
-  rating: number;
-  reviewText: string;
-  allowPublic: boolean;
-}): Promise<void> {
-  await apiFetch('/api/reviews', {
-    method: 'POST',
-    body: JSON.stringify(input),
-  });
-}
-
-export async function getMyReviews(): Promise<ProductReview[]> {
-  const data = await apiFetch<{ reviews: ProductReview[] }>('/api/reviews/mine');
-  return data.reviews ?? [];
-}
-
-export async function getPublicReviews(): Promise<ProductReview[]> {
-  const data = await apiFetch<{ reviews: ProductReview[] }>(
-    '/api/reviews/public',
-    {},
-    false
+  await apiFetch(
+    `/api/admin/support/tickets/${encodeURIComponent(
+      id
+    )}`,
+    {
+      method:
+        'PATCH',
+      body:
+        JSON.stringify(
+          input
+        ),
+    }
   );
-  return data.reviews ?? [];
 }
 
-export async function getAdminReviews(): Promise<ProductReview[]> {
-  const data = await apiFetch<{ reviews: ProductReview[] }>('/api/admin/reviews');
-  return data.reviews ?? [];
+export async function createReview(
+  input: {
+    rating: number;
+    reviewText: string;
+    allowPublic: boolean;
+  }
+): Promise<void> {
+  await apiFetch(
+    '/api/reviews',
+    {
+      method:
+        'POST',
+      body:
+        JSON.stringify(
+          input
+        ),
+    }
+  );
+}
+
+export async function getMyReviews():
+Promise<ProductReview[]> {
+  const data =
+    await apiFetch<{
+      reviews:
+        ProductReview[];
+    }>(
+      '/api/reviews/mine'
+    );
+
+  return data.reviews ??
+    [];
+}
+
+export async function getPublicReviews():
+Promise<ProductReview[]> {
+  const data =
+    await apiFetch<{
+      reviews:
+        ProductReview[];
+    }>(
+      '/api/reviews/public',
+      {
+        cache:
+          'no-store',
+      },
+      false
+    );
+
+  return (
+    data.reviews ??
+    []
+  ).filter(
+    (
+      review
+    ) =>
+      review.allowPublic ===
+        true &&
+      review.moderationState ===
+        'approved'
+  );
+}
+
+export async function getAdminReviews():
+Promise<ProductReview[]> {
+  const data =
+    await apiFetch<{
+      reviews:
+        ProductReview[];
+    }>(
+      '/api/admin/reviews'
+    );
+
+  return (
+    data.reviews ??
+    []
+  ).filter(
+    (
+      review
+    ) =>
+      review.moderationState ===
+      'pending'
+  );
 }
 
 export async function moderateReview(
   id: string,
-  input: { moderationState: ReviewState; adminResponse: string }
+  input: {
+    moderationState:
+      ReviewState;
+    adminResponse:
+      string;
+  }
 ): Promise<void> {
-  await apiFetch(`/api/admin/reviews/${encodeURIComponent(id)}`, {
-    method: 'PATCH',
-    body: JSON.stringify(input),
-  });
+  await apiFetch(
+    `/api/admin/reviews/${encodeURIComponent(
+      id
+    )}`,
+    {
+      method:
+        'PATCH',
+      body:
+        JSON.stringify(
+          input
+        ),
+    }
+  );
 }

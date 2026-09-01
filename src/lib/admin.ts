@@ -59,7 +59,9 @@ export interface AdminAuditEvent {
   action: string;
   targetResourceType: string;
   targetIdentifier?: string;
-  outcome: 'success' | 'failure';
+  outcome:
+    | 'success'
+    | 'failure';
   failureCategory?: string;
   createdAt: string | null;
 }
@@ -73,11 +75,18 @@ export class AdminApiError extends Error {
     status: number,
     code?: string
   ) {
-    super(message);
+    super(
+      message
+    );
 
-    this.name = 'AdminApiError';
-    this.status = status;
-    this.code = code;
+    this.name =
+      'AdminApiError';
+
+    this.status =
+      status;
+
+    this.code =
+      code;
   }
 }
 
@@ -89,10 +98,6 @@ async function adminFetch<T>(
     await getCurrentIdToken();
 
   if (!token) {
-    console.warn(
-      '[MirrorTrace Admin] No Firebase ID token available.'
-    );
-
     throw new AdminApiError(
       'Please sign in again.',
       401,
@@ -102,7 +107,8 @@ async function adminFetch<T>(
 
   const headers =
     new Headers(
-      options.headers || {}
+      options.headers ||
+        {}
     );
 
   headers.set(
@@ -110,9 +116,15 @@ async function adminFetch<T>(
     `Bearer ${token}`
   );
 
+  headers.set(
+    'Cache-Control',
+    'no-cache'
+  );
+
   if (
     options.body &&
-    typeof options.body === 'string'
+    typeof options.body ===
+      'string'
   ) {
     headers.set(
       'Content-Type',
@@ -123,25 +135,19 @@ async function adminFetch<T>(
   let response: Response;
 
   try {
-    response = await fetch(
-      url,
-      {
-        ...options,
-        headers,
-      }
-    );
-  } catch (error) {
-    console.error(
-      '[MirrorTrace Admin] Network request failed.',
-      {
+    response =
+      await fetch(
         url,
-        message:
-          error instanceof Error
-            ? error.message
-            : 'Unknown network error',
-      }
-    );
-
+        {
+          ...options,
+          headers,
+          cache:
+            'no-store',
+        }
+      );
+  } catch (
+    error
+  ) {
     throw new AdminApiError(
       'Could not reach the MirrorTrace backend.',
       0,
@@ -150,8 +156,12 @@ async function adminFetch<T>(
   }
 
   let data:
-    | Record<string, unknown>
-    | null = null;
+    | Record<
+        string,
+        unknown
+      >
+    | null =
+      null;
 
   try {
     const parsed =
@@ -159,7 +169,8 @@ async function adminFetch<T>(
 
     if (
       parsed &&
-      typeof parsed === 'object'
+      typeof parsed ===
+        'object'
     ) {
       data =
         parsed as Record<
@@ -168,10 +179,13 @@ async function adminFetch<T>(
         >;
     }
   } catch {
-    data = null;
+    data =
+      null;
   }
 
-  if (!response.ok) {
+  if (
+    !response.ok
+  ) {
     const message =
       typeof data?.message ===
       'string'
@@ -187,19 +201,6 @@ async function adminFetch<T>(
         ? data.code
         : undefined;
 
-    console.error(
-      '[MirrorTrace Admin] API request rejected.',
-      {
-        url,
-        status:
-          response.status,
-        code:
-          code ??
-          'NO_ERROR_CODE',
-        message,
-      }
-    );
-
     throw new AdminApiError(
       message,
       response.status,
@@ -208,15 +209,6 @@ async function adminFetch<T>(
   }
 
   if (!data) {
-    console.error(
-      '[MirrorTrace Admin] Backend returned a non-JSON response.',
-      {
-        url,
-        status:
-          response.status,
-      }
-    );
-
     throw new AdminApiError(
       'The backend returned an unexpected response.',
       response.status,

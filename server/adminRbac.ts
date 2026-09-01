@@ -11,7 +11,7 @@ import {
 import './firebaseAdmin.ts';
 
 /* ============================================================
-   MIRRORTRACE RBAC
+   MIRRORTRACE — OWNER-ONLY CONTROL ROOM RBAC
    ============================================================ */
 
 export const MIRRORTRACE_ROLES = [
@@ -29,13 +29,9 @@ export interface AdminAuthContext {
   email?: string;
 }
 
-/**
- * Privilege ordering.
- *
- * user        = normal owner-bound access
- * admin       = operational/admin dashboard
- * super_admin = admin + role management
- */
+const CONTROL_ROOM_OWNER_EMAIL =
+  'agrimalko@gmail.com';
+
 const ROLE_LEVEL: Record<
   MirrorTraceRole,
   number
@@ -45,28 +41,13 @@ const ROLE_LEVEL: Record<
   super_admin: 2,
 };
 
-/* ============================================================
-   ROLE NORMALIZATION
-   ============================================================ */
-
-function normalizeRole(
+function normalizeEmail(
   value: unknown
-): MirrorTraceRole {
-  if (
-    value === 'admin' ||
-    value === 'super_admin' ||
-    value === 'user'
-  ) {
-    return value;
-  }
-
-  // Fail closed.
-  return 'user';
+): string {
+  return typeof value === 'string'
+    ? value.trim().toLowerCase()
+    : '';
 }
-
-/* ============================================================
-   BEARER TOKEN EXTRACTION
-   ============================================================ */
 
 function extractBearerToken(
   req: Request
@@ -76,43 +57,24 @@ function extractBearerToken(
 
   if (
     !authorization ||
-    typeof authorization !==
-      'string'
+    typeof authorization !== 'string'
   ) {
     return null;
   }
 
   const parts =
-    authorization
-      .trim()
-      .split(/\s+/);
+    authorization.trim().split(/\s+/);
 
   if (
-    parts.length !== 2
+    parts.length !== 2 ||
+    parts[0].toLowerCase() !== 'bearer' ||
+    !parts[1]
   ) {
     return null;
   }
 
-  const [
-    scheme,
-    token,
-  ] = parts;
-
-  if (
-    scheme.toLowerCase() !==
-      'bearer' ||
-    !token ||
-    token.trim().length === 0
-  ) {
-    return null;
-  }
-
-  return token.trim();
+  return parts[1].trim();
 }
-
-/* ============================================================
-   FIREBASE TOKEN VERIFICATION
-   ============================================================ */
 
 export async function resolveVerifiedAuthContext(
   req: Request
@@ -125,38 +87,47 @@ export async function resolveVerifiedAuthContext(
   }
 
   try {
-    /**
-     * checkRevoked=true is intentional because these
-     * are privileged administrative routes.
-     */
     const decoded =
       await getAuth().verifyIdToken(
         token,
         true
       );
 
-    const role =
-      normalizeRole(
-        decoded.role
+    const email =
+      normalizeEmail(
+        decoded.email
       );
+
+    const emailVerified =
+      decoded.email_verified === true;
+
+    /*
+     * IMPORTANT:
+     * We deliberately IGNORE any old `role` custom claim here.
+     * The owner email is the only source of Control Room privilege.
+     */
+    const isOwner =
+      emailVerified &&
+      email ===
+        CONTROL_ROOM_OWNER_EMAIL;
 
     return {
       uid:
         decoded.uid,
 
-      role,
+      role:
+        isOwner
+          ? 'super_admin'
+          : 'user',
 
       email:
-        typeof decoded.email ===
-        'string'
-          ? decoded.email
-          : undefined,
+        email || undefined,
     };
   } catch (
     error
   ) {
     console.warn(
-      '[MirrorTrace RBAC] Firebase token verification rejected.',
+      '[MirrorTrace RBAC] Token verification failed.',
       {
         message:
           error instanceof Error
@@ -168,10 +139,6 @@ export async function resolveVerifiedAuthContext(
     return null;
   }
 }
-
-/* ============================================================
-   ROLE MIDDLEWARE
-   ============================================================ */
 
 export function requireRole(
   minimumRole: MirrorTraceRole
@@ -193,7 +160,6 @@ export function requireRole(
         ).json({
           error:
             'Authentication required.',
-
           code:
             'AUTH_REQUIRED',
         });
@@ -216,10 +182,12 @@ export function requireRole(
         requiredLevel
       ) {
         console.warn(
-          '[MirrorTrace RBAC] Administrative access denied.',
+          '[MirrorTrace RBAC] Control Room access denied.',
           {
             uid:
               context.uid,
+            email:
+              context.email ?? null,
             role:
               context.role,
             requiredRole:
@@ -233,10 +201,9 @@ export function requireRole(
           403
         ).json({
           error:
-            'You do not have permission to access this resource.',
-
+            'This account does not have access to the MirrorTrace Control Room.',
           code:
-            'ADMIN_PERMISSION_REQUIRED',
+            'CONTROL_ROOM_ACCESS_DENIED',
         });
 
         return;
@@ -250,16 +217,11 @@ export function requireRole(
   };
 }
 
-/* ============================================================
-   CONTEXT ACCESSOR
-   ============================================================ */
-
 export function getAdminAuthContext(
   res: Response
 ): AdminAuthContext {
   const context =
-    res.locals
-      .authContext as
+    res.locals.authContext as
       | AdminAuthContext
       | undefined;
 

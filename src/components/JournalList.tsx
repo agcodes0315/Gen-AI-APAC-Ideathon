@@ -40,6 +40,7 @@ import {
 import {
   ThoughtDiffCard,
 } from './ThoughtDiffCard.tsx';
+import JournalEnhancementsHub from './JournalEnhancementsHub.tsx';
 
 import YearInReflection from './YearInReflection.tsx';
 
@@ -940,7 +941,15 @@ export const JournalList:
             )}
         </div>
 
-        {/* THOUGHT DIFF VIEW */}
+                <JournalEnhancementsHub
+          entries={entries}
+          onChanged={() => {
+            void loadData();
+            onDataChanged?.();
+          }}
+        />
+
+{/* THOUGHT DIFF VIEW */}
         {activeSubTab ===
           'diffs' && (
           <div className="space-y-4">

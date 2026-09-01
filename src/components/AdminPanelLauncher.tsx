@@ -8,18 +8,15 @@ import {
 } from 'lucide-react';
 
 import AdminDashboard from './AdminDashboard.tsx';
-
 import {
   AdminApiError,
   getAdminOverview,
 } from '../lib/admin.ts';
+import {
+  getCurrentIdToken,
+} from '../lib/firebase.ts';
 
-/*
- * FINAL ADMIN VISUAL AUTHORITY.
- * Imported here so it loads after AdminDashboard's legacy visual imports.
- */
 import '../styles/mirrortrace-admin-translucent-black.css';
-
 
 type AvailabilityState =
   | 'checking'
@@ -27,227 +24,236 @@ type AvailabilityState =
   | 'denied'
   | 'failed';
 
-
 const ADMIN_HASH =
   '#/admin';
 
+const CONTROL_ROOM_OWNER_EMAIL =
+  'agrimalko@gmail.com';
+
+function decodeJwtPayload(
+  token: string
+): Record<string, unknown> | null {
+  try {
+    const parts = token.split('.');
+    if (parts.length < 2) {
+      return null;
+    }
+
+    const normalized = parts[1]
+      .replace(/-/g, '+')
+      .replace(/_/g, '/');
+
+    const padded = normalized.padEnd(
+      Math.ceil(normalized.length / 4) * 4,
+      '='
+    );
+
+    const json = decodeURIComponent(
+      Array.from(atob(padded))
+        .map((char) =>
+          `%${char
+            .charCodeAt(0)
+            .toString(16)
+            .padStart(2, '0')}`
+        )
+        .join('')
+    );
+
+    return JSON.parse(json) as Record<
+      string,
+      unknown
+    >;
+  } catch {
+    return null;
+  }
+}
+
+function isOwnerToken(
+  token: string
+): boolean {
+  const payload =
+    decodeJwtPayload(token);
+
+  const email =
+    typeof payload?.email ===
+    'string'
+      ? payload.email
+          .trim()
+          .toLowerCase()
+      : '';
+
+  return (
+    payload?.email_verified ===
+      true &&
+    email ===
+      CONTROL_ROOM_OWNER_EMAIL
+  );
+}
 
 export default function AdminPanelLauncher() {
-
-  const [
-    state,
-    setState,
-  ] =
+  const [state, setState] =
     useState<AvailabilityState>(
       'checking'
     );
 
-
   const [
     adminPageOpen,
     setAdminPageOpen,
-  ] =
-    useState(
-      () =>
-        window.location.hash ===
-        ADMIN_HASH
-    );
-
-
-  /*
-     Check whether this authenticated user has
-     administrative access.
-  */
+  ] = useState(false);
 
   useEffect(() => {
+    let active = true;
 
-    let active =
-      true;
-
-
-    const checkAdminAccess =
+    const verify =
       async () => {
-
         try {
+          const token =
+            await getCurrentIdToken();
+
+          if (!active) {
+            return;
+          }
+
+          if (
+            !token ||
+            !isOwnerToken(token)
+          ) {
+            setState('denied');
+            setAdminPageOpen(false);
+
+            if (
+              window.location.hash ===
+              ADMIN_HASH
+            ) {
+              window.history.replaceState(
+                null,
+                '',
+                '#/overview'
+              );
+            }
+
+            return;
+          }
 
           const overview =
             await getAdminOverview();
 
-
           if (!active) {
             return;
           }
 
+          if (
+            overview.role !==
+              'super_admin' &&
+            overview.role !== 'admin'
+          ) {
+            setState('denied');
+            setAdminPageOpen(false);
+            return;
+          }
 
-          console.info(
-            '[MirrorTrace Admin] Access verified.',
-            {
-              role:
-                overview.role,
-
-              generatedAt:
-                overview.generatedAt,
-            }
-          );
-
-
-          setState(
-            'allowed'
-          );
-
+          setState('allowed');
         } catch (error) {
-
           if (!active) {
             return;
           }
-
 
           if (
             error instanceof
-            AdminApiError
+              AdminApiError &&
+            (error.status === 401 ||
+              error.status === 403)
           ) {
-
-            console.error(
-              '[MirrorTrace Admin] Availability check failed.',
-              {
-                status:
-                  error.status,
-
-                code:
-                  error.code ??
-                  'NO_ERROR_CODE',
-
-                message:
-                  error.message,
-              }
-            );
-
+            setState('denied');
+            setAdminPageOpen(false);
 
             if (
-              error.status === 401 ||
-              error.status === 403
+              window.location.hash ===
+              ADMIN_HASH
             ) {
-
-              setState(
-                'denied'
+              window.history.replaceState(
+                null,
+                '',
+                '#/overview'
               );
-
-              return;
             }
 
-          } else {
-
-            console.error(
-              '[MirrorTrace Admin] Unexpected availability error.',
-              error
-            );
-
+            return;
           }
 
-
-          setState(
-            'failed'
+          console.error(
+            '[MirrorTrace Admin] verification failed',
+            error
           );
+          setState('failed');
         }
       };
 
-
-    void checkAdminAccess();
-
+    void verify();
 
     return () => {
-
-      active =
-        false;
-
+      active = false;
     };
-
   }, []);
 
-
-  /*
-     Treat #/admin like a small client-side page.
-  */
-
   useEffect(() => {
+    const syncHash = () => {
+      const wantsAdmin =
+        window.location.hash ===
+        ADMIN_HASH;
 
-    const handleHashChange =
-      () => {
+      if (
+        wantsAdmin &&
+        state === 'allowed'
+      ) {
+        setAdminPageOpen(true);
+      } else {
+        setAdminPageOpen(false);
 
-        const isAdmin =
-          window.location.hash ===
-          ADMIN_HASH;
+        if (
+          wantsAdmin &&
+          state === 'denied'
+        ) {
+          window.history.replaceState(
+            null,
+            '',
+            '#/overview'
+          );
+        }
+      }
+    };
 
-
-        setAdminPageOpen(
-          isAdmin
-        );
-
-
-        window.scrollTo({
-          top:
-            0,
-
-          behavior:
-            'auto',
-        });
-      };
-
-
+    syncHash();
     window.addEventListener(
       'hashchange',
-      handleHashChange
+      syncHash
     );
 
-
     return () => {
-
       window.removeEventListener(
         'hashchange',
-        handleHashChange
+        syncHash
       );
-
     };
-
-  }, []);
-
-
-  /*
-     Lock the underlying application while the Admin Control Room
-     is open. The admin page itself remains independently scrollable.
-  */
+  }, [state]);
 
   useEffect(() => {
-
-    if (!adminPageOpen) {
-      return;
-    }
-
-
-    const previousOverflow =
+    const previous =
       document.body.style.overflow;
 
-
-    document.body.style.overflow =
-      'hidden';
-
+    if (adminPageOpen) {
+      document.body.style.overflow =
+        'hidden';
+    } else {
+      document.body.style.overflow =
+        previous || '';
+    }
 
     return () => {
-
       document.body.style.overflow =
-        previousOverflow;
-
+        previous;
     };
-
-  }, [
-    adminPageOpen,
-  ]);
-
-
-  /*
-     Hide launcher while checking or when the user
-     definitely does not have admin rights.
-  */
+  }, [adminPageOpen]);
 
   if (
     state === 'checking' ||
@@ -256,160 +262,50 @@ export default function AdminPanelLauncher() {
     return null;
   }
 
-
-  /*
-     Backend / network error.
-  */
-
-  if (
-    state === 'failed'
-  ) {
-
+  if (state === 'failed') {
     return (
       <button
         type="button"
-
-        title="
-          Admin backend check failed.
-          Open DevTools Console for the exact status.
-        "
-
-        onClick={() => {
-          window.location.reload();
-        }}
-
-        className="
-          fixed
-          bottom-5
-          right-5
-          z-[9000]
-
-          rounded-full
-
-          border
-          border-red-400/30
-
-          bg-black/80
-
-          px-5
-          py-3
-
-          text-sm
-          font-semibold
-          text-red-200
-
-          shadow-2xl
-
-          transition-all
-
-          hover:-translate-y-0.5
-          hover:bg-black/95
-        "
+        onClick={() =>
+          window.location.reload()
+        }
+        className="fixed bottom-5 right-5 z-[9000] rounded-full border border-red-400/30 bg-black/80 px-5 py-3 text-sm font-semibold text-red-200 shadow-2xl"
       >
         Admin check failed — retry
       </button>
     );
   }
 
-
-  /*
-     ADMIN PAGE
-  */
-
-  if (
-    adminPageOpen
-  ) {
-
+  if (adminPageOpen) {
     return (
-      <div
-        className="
-          mirrortrace-admin-page
-          mirrortrace-admin-overlay
-
-          fixed
-          inset-0
-          z-[10000]
-
-          overflow-x-hidden
-          overflow-y-auto
-        "
-      >
-
-        <main
-          className="
-            mx-auto
-            min-h-screen
-            max-w-[1500px]
-
-            px-4
-            py-6
-
-            sm:px-6
-            sm:py-8
-
-            lg:px-8
-          "
-        >
-
+      <div className="mirrortrace-admin-page mirrortrace-admin-overlay fixed inset-0 z-[10000] overflow-x-hidden overflow-y-auto">
+        <main className="mx-auto min-h-screen max-w-[1600px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
           <AdminDashboard
             onClose={() => {
-
+              setAdminPageOpen(false);
               window.location.hash =
                 '#/overview';
-
             }}
           />
-
         </main>
-
       </div>
     );
   }
 
-
-  /*
-     FLOATING BUTTON
-     Only administrators see this.
-  */
-
   return (
     <button
       type="button"
-
       onClick={() => {
-
         window.location.hash =
           ADMIN_HASH;
-
       }}
-
-      className="
-        mirrortrace-admin-launcher
-
-        fixed
-        bottom-5
-        right-5
-        z-[9000]
-      "
-
-      aria-label="
-        Open Admin Control Room
-      "
+      className="mirrortrace-admin-launcher fixed bottom-5 right-5 z-[9000]"
+      aria-label="Open Admin Control Room"
     >
-
-      <ShieldCheck
-        className="
-          h-4
-          w-4
-          shrink-0
-          text-amber-300
-        "
-      />
-
+      <ShieldCheck className="h-4 w-4 shrink-0 text-amber-300" />
       <span>
         Admin Control Room
       </span>
-
     </button>
   );
 }

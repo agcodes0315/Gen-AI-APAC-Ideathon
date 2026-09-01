@@ -31,6 +31,7 @@ import {
 import { notificationRouter } from './server/notificationRoutes.ts';
 import { emailRouter } from './server/emailRoutes.ts';
 import { supportReviewRouter } from './server/supportReviewRoutes.ts';
+import { journalEnhancementRouter } from './server/journalEnhancementRoutes.ts';
 
 const app = express();
 
@@ -67,6 +68,7 @@ app.use(notificationRouter);
 app.use(emailRouter);
 app.use(adminRouter);
 app.use(supportReviewRouter);
+app.use(journalEnhancementRouter);
 
 /* ============================================================
    3. HEALTH ROUTE

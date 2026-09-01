@@ -24,6 +24,7 @@ import {
 
 import { ThoughtSnapshotCard } from './ThoughtSnapshotCard.tsx';
 import { ThoughtDiffCard } from './ThoughtDiffCard.tsx';
+import { useJournalDraftAutosave } from '../hooks/useJournalDraftAutosave.ts';
 
 import type {
   JournalEntry,
@@ -159,6 +160,16 @@ export const JournalEditor: React.FC<
   ] = useState<string | null>(
     null
   );
+
+  const {
+    restored: draftRestored,
+  } = useJournalDraftAutosave({
+    content,
+    tags,
+    setContent,
+    setTags,
+    enabled: !isPrivateSession,
+  });
 
   /*
    * Sync Private Session mode.
@@ -734,7 +745,13 @@ export const JournalEditor: React.FC<
             </div>
           )}
 
-          {/* Journal textarea */}
+                    {draftRestored && (
+            <div className="rounded-lg border border-amber-300/20 bg-amber-500/10 p-2.5 text-[11px] text-amber-200">
+              Draft restored automatically from this browser.
+            </div>
+          )}
+
+{/* Journal textarea */}
           <textarea
             id="journal-input-area"
             value={content}
