@@ -1,4 +1,4 @@
-﻿import '../styles/mirrortrace-clean-glass.css';
+import '../styles/mirrortrace-clean-glass.css';
 import '../styles/mirrortrace-authenticated-haze.css';
 import '../styles/mirrortrace-motion-and-glass.css';
 import '../styles/mirrortrace-hero-darken.css';
@@ -22,6 +22,10 @@ import {
   AlertCircle,
   ArrowRight,
   BellRing,
+  Briefcase,
+  GraduationCap,
+  Rocket,
+  Brain,
   BookOpen,
   CheckCircle2,
   Clock3,
@@ -44,7 +48,6 @@ import {
 } from 'motion/react';
 
 import ScrollArcCard from './ScrollArcCard.tsx';
-import TargetAudience from './TargetAudience.tsx';
 
 import {
   signInWithGoogle,
@@ -64,10 +67,9 @@ type FeatureCard = {
   eyebrow: string;
   title: string;
   body: string;
-  icon:
-    React.ComponentType<{
-      className?: string;
-    }>;
+  icon: React.ComponentType<{
+    className?: string;
+  }>;
   accent:
     | 'amber'
     | 'emerald'
@@ -82,219 +84,134 @@ const HERO_VIDEO =
 const HERO_POSTER =
   '/hero/mirrortrace-poster.jpeg';
 
-const TOP_ROW:
-  FeatureCard[] = [
-    {
-      id:
-        'reflect',
-      eyebrow:
-        'Reflection',
-      title:
-        'Write naturally',
-      body:
-        'Capture a thought in your own words, with Gemini available only as a companion.',
-      icon:
-        BookOpen,
-      accent:
-        'amber',
-    },
-    {
-      id:
-        'memory',
-      eyebrow:
-        'AI Memory',
-      title:
-        'Approve what persists',
-      body:
-        'Suggested Thought Snapshots stay pending until you explicitly approve them.',
-      icon:
-        Sparkles,
-      accent:
-        'violet',
-    },
-    {
-      id:
-        'diff',
-      eyebrow:
-        'Perspective',
-      title:
-        'See what changed',
-      body:
-        'Thought Diffs compare approved positions and preserve the evidence behind the shift.',
-      icon:
-        GitCompare,
-      accent:
-        'blue',
-    },
-    {
-      id:
-        'private',
-      eyebrow:
-        'Private Session',
-      title:
-        'Reflect without persistence',
-      body:
-        'Use an ephemeral space when you want no journal history, memory, or future comparison.',
-      icon:
-        EyeOff,
-      accent:
-        'stone',
-    },
-    {
-      id:
-        'watch',
-      eyebrow:
-        'Perspective Watch',
-      title:
-        'Revisit later',
-      body:
-        'Schedule a future check-in and receive an optional reminder when it is time to reflect again.',
-      icon:
-        Clock3,
-      accent:
-        'emerald',
-    },
-  ];
+const TOP_ROW: FeatureCard[] = [
+  {
+    id: 'reflect',
+    eyebrow: 'Reflection',
+    title: 'Write naturally',
+    body:
+      'Capture a thought in your own words, with Gemini available only as a companion.',
+    icon: BookOpen,
+    accent: 'amber',
+  },
+  {
+    id: 'memory',
+    eyebrow: 'AI Memory',
+    title: 'Approve what persists',
+    body:
+      'Suggested Thought Snapshots stay pending until you explicitly approve them.',
+    icon: Sparkles,
+    accent: 'violet',
+  },
+  {
+    id: 'diff',
+    eyebrow: 'Perspective',
+    title: 'See what changed',
+    body:
+      'Thought Diffs compare approved positions and preserve the evidence behind the shift.',
+    icon: GitCompare,
+    accent: 'blue',
+  },
+  {
+    id: 'private',
+    eyebrow: 'Private Session',
+    title: 'Reflect without persistence',
+    body:
+      'Use an ephemeral space when you want no journal history, memory, or future comparison.',
+    icon: EyeOff,
+    accent: 'stone',
+  },
+  {
+    id: 'watch',
+    eyebrow: 'Perspective Watch',
+    title: 'Revisit later',
+    body:
+      'Schedule a future check-in and receive an optional reminder when it is time to reflect again.',
+    icon: Clock3,
+    accent: 'emerald',
+  },
+];
 
-const BOTTOM_ROW:
-  FeatureCard[] = [
-    {
-      id:
-        'provenance',
-      eyebrow:
-        'Provenance',
-      title:
-        'Ask "why am I seeing this?"',
-      body:
-        'Trace a generated comparison back to the exact authenticated reflections that support it.',
-      icon:
-        ShieldCheck,
-      accent:
-        'emerald',
-    },
-    {
-      id:
-        'support',
-      eyebrow:
-        'Support',
-      title:
-        'Ask for help safely',
-      body:
-        'Support receives only the text you intentionally submit, never your private journal automatically.',
-      icon:
-        MessagesSquare,
-      accent:
-        'blue',
-    },
-    {
-      id:
-        'notifications',
-      eyebrow:
-        'Notifications',
-      title:
-        'Stay on schedule',
-      body:
-        'Perspective Watch can deliver browser push and email reminders through your configured preferences.',
-      icon:
-        BellRing,
-      accent:
-        'amber',
-    },
-    {
-      id:
-        'governance',
-      eyebrow:
-        'Memory Governance',
-      title:
-        'Review and revoke',
-      body:
-        'Inspect approved memories, retention, watches, export, and revocation from one control center.',
-      icon:
-        Database,
-      accent:
-        'violet',
-    },
-    {
-      id:
-        'security',
-      eyebrow:
-        'Security',
-      title:
-        'Owner-bound by design',
-      body:
-        'Private application data remains scoped to the authenticated Firebase UID.',
-      icon:
-        Lock,
-      accent:
-        'stone',
-    },
-  ];
+const BOTTOM_ROW: FeatureCard[] = [
+  {
+    id: 'provenance',
+    eyebrow: 'Provenance',
+    title: 'Ask "why am I seeing this?"',
+    body:
+      'Trace a generated comparison back to the exact authenticated reflections that support it.',
+    icon: ShieldCheck,
+    accent: 'emerald',
+  },
+  {
+    id: 'support',
+    eyebrow: 'Support',
+    title: 'Ask for help safely',
+    body:
+      'Support receives only the text you intentionally submit, never your private journal automatically.',
+    icon: MessagesSquare,
+    accent: 'blue',
+  },
+  {
+    id: 'notifications',
+    eyebrow: 'Notifications',
+    title: 'Stay on schedule',
+    body:
+      'Perspective Watch can deliver browser push and email reminders through your configured preferences.',
+    icon: BellRing,
+    accent: 'amber',
+  },
+  {
+    id: 'governance',
+    eyebrow: 'Memory Governance',
+    title: 'Review and revoke',
+    body:
+      'Inspect approved memories, retention, watches, export, and revocation from one control center.',
+    icon: Database,
+    accent: 'violet',
+  },
+  {
+    id: 'security',
+    eyebrow: 'Security',
+    title: 'Owner-bound by design',
+    body:
+      'Private application data remains scoped to the authenticated Firebase UID.',
+    icon: Lock,
+    accent: 'stone',
+  },
+];
 
-const GoogleIcon =
-  () => (
-    <svg
-      className="
-        h-5
-        w-5
-      "
-      viewBox="
-        0 0 24 24
-      "
-      aria-hidden="
-        true
-      "
-    >
-      <path
-        fill="#EA4335"
-        d="
-          M12 5c1.6 0 3 .6
-          4.1 1.7l3.1-3.1C17.3
-          1.8 14.8 1 12 1 7.5
-          1 3.7 3.6 1.9 7.3l3.7
-          2.9C6.5 7.2 9 5 12 5z
-        "
-      />
-      <path
-        fill="#4285F4"
-        d="
-          M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3
-          1.5-1.1 2.8-2.4
-          3.7l3.7 2.9c2.2-2
-          3.7-5 3.7-8.9z
-        "
-      />
-      <path
-        fill="#FBBC05"
-        d="
-          M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9
-          7.3C.7 9.7 0 12 0
-          12s.7 2.3 1.9
-          4.7l3.7-2.9z
-        "
-      />
-      <path
-        fill="#34A853"
-        d="
-          M12 23c3.2 0 6-1.1
-          8-3l-3.7-2.9c-1.1.7-2.5
-          1.2-4.3 1.2-3 0-5.5-2.2-6.4-5.2L1.9
-          16c1.8 3.7 5.6 7
-          10.1 7z
-        "
-      />
-    </svg>
-  );
+const GoogleIcon = () => (
+  <svg
+    className="h-5 w-5"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <path
+      fill="#EA4335"
+      d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.2 9 5 12 5z"
+    />
+    <path
+      fill="#4285F4"
+      d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"
+    />
+    <path
+      fill="#FBBC05"
+      d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 12s.7 2.3 1.9 4.7l3.7-2.9z"
+    />
+    <path
+      fill="#34A853"
+      d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.2-6.4-5.2L1.9 16c1.8 3.7 5.6 7 10.1 7z"
+    />
+  </svg>
+);
 
 function getAccentClasses(
-  accent:
-    FeatureCard['accent']
+  accent: FeatureCard['accent']
 ): {
   icon: string;
   chip: string;
 } {
-  switch (
-    accent
-  ) {
+  switch (accent) {
     case 'emerald':
       return {
         icon:
@@ -348,37 +265,18 @@ function FeatureCardView({
   total: number;
   direction: 'left' | 'right';
 }) {
-  const Icon =
-    card.icon;
-
+  const Icon = card.icon;
   const classes =
-    getAccentClasses(
-      card.accent
-    );
+    getAccentClasses(card.accent);
 
   return (
     <ScrollArcCard
-      className="
-        mirrortrace-scroll-card
-      "
-      direction={
-        direction
-      }
-      index={
-        index
-      }
-      total={
-        total
-      }
+      className="mirrortrace-scroll-card"
+      direction={direction}
+      index={index}
+      total={total}
     >
-      <div
-        className="
-          flex
-          items-start
-          justify-between
-          gap-5
-        "
-      >
+      <div className="flex items-start justify-between gap-5">
         <div
           className={`
             grid
@@ -390,12 +288,7 @@ function FeatureCardView({
             ${classes.icon}
           `}
         >
-          <Icon
-            className="
-              h-5
-              w-5
-            "
-          />
+          <Icon className="h-5 w-5" />
         </div>
 
         <span
@@ -411,48 +304,17 @@ function FeatureCardView({
         </span>
       </div>
 
-      <h3
-        className="
-          mt-5
-          font-serif
-          text-xl
-          font-bold
-          tracking-tight
-        "
-      >
+      <h3 className="mt-5 font-serif text-xl font-bold tracking-tight">
         {card.title}
       </h3>
 
-      <p
-        className="
-          mt-3
-          text-sm
-          leading-6
-          text-stone-300
-        "
-      >
+      <p className="mt-3 text-sm leading-6 text-stone-300">
         {card.body}
       </p>
 
-      <div
-        className="
-          mt-6
-          flex
-          items-center
-          gap-1
-          text-[11px]
-          font-semibold
-          text-stone-400
-        "
-      >
+      <div className="mt-6 flex items-center gap-1 text-[11px] font-semibold text-stone-400">
         MirrorTrace
-
-        <ArrowRight
-          className="
-            h-3
-            w-3
-          "
-        />
+        <ArrowRight className="h-3 w-3" />
       </div>
     </ScrollArcCard>
   );
@@ -468,43 +330,35 @@ export const AuthView:
     const [
       loading,
       setLoading,
-    ] =
-      useState(false);
+    ] = useState(false);
 
     const [
       error,
       setError,
     ] =
-      useState<
-        string | null
-      >(null);
+      useState<string | null>(
+        null
+      );
 
     const [
       mobileOpen,
       setMobileOpen,
-    ] =
-      useState(false);
+    ] = useState(false);
 
     const [
       reviews,
       setReviews,
     ] =
-      useState<
-        ProductReview[]
-      >([]);
+      useState<ProductReview[]>(
+        []
+      );
 
     useEffect(() => {
       void getPublicReviews()
-        .then(
-          setReviews
-        )
-        .catch(
-          () => {
-            setReviews(
-              []
-            );
-          }
-        );
+        .then(setReviews)
+        .catch(() => {
+          setReviews([]);
+        });
     }, []);
 
     const reviewLoop =
@@ -513,21 +367,14 @@ export const AuthView:
           ...reviews,
           ...reviews,
         ],
-        [
-          reviews,
-        ]
+        [reviews]
       );
 
     const handleSignIn =
       async () => {
         try {
-          setLoading(
-            true
-          );
-
-          setError(
-            null
-          );
+          setLoading(true);
+          setError(null);
 
           await signInWithGoogle();
 
@@ -544,9 +391,7 @@ export const AuthView:
             'Unable to complete Google sign-in. Please allow popups and try again.'
           );
         } finally {
-          setLoading(
-            false
-          );
+          setLoading(false);
         }
       };
 
@@ -554,156 +399,82 @@ export const AuthView:
       (
         id: string
       ) => {
-        setMobileOpen(
-          false
-        );
+        setMobileOpen(false);
 
         document
-          .getElementById(
-            id
-          )
+          .getElementById(id)
           ?.scrollIntoView({
             behavior:
               reducedMotion
                 ? 'auto'
                 : 'smooth',
-            block:
-              'start',
+            block: 'start',
           });
       };
 
+    const scrollLane = (
+      event:
+        React.MouseEvent<HTMLButtonElement>,
+      amount: number
+    ) => {
+      const lane =
+        event
+          .currentTarget
+          .parentElement
+          ?.querySelector(
+            '.mirrortrace-card-lane'
+          ) as
+            HTMLElement |
+            null;
+
+      lane?.scrollBy({
+        left: amount,
+        behavior:
+          reducedMotion
+            ? 'auto'
+            : 'smooth',
+      });
+    };
+
     return (
-      <div
-        className="
-          mirrortrace-auth-page
-          min-h-screen
-          text-white
-        "
-      >
+      <div className="mirrortrace-auth-page min-h-screen text-white">
         <section
           id="hero"
-          className="
-            relative
-            min-h-screen
-            overflow-hidden
-            bg-black
-          "
+          className="relative min-h-screen overflow-hidden bg-black"
         >
           <video
             autoPlay
             muted
             loop
             playsInline
-            poster={
-              HERO_POSTER
-            }
-            className="
-              absolute
-              inset-0
-              z-0
-              h-full
-              w-full
-              object-cover
-              opacity-60
-            "
+            poster={HERO_POSTER}
+            className="absolute inset-0 z-0 h-full w-full object-cover opacity-60"
             style={{
               filter:
                 'brightness(0.78) saturate(0.88)',
             }}
           >
             <source
-              src={
-                HERO_VIDEO
-              }
-              type="
-                video/mp4
-              "
+              src={HERO_VIDEO}
+              type="video/mp4"
             />
           </video>
 
           <div
-            className="
-              absolute
-              inset-0
-              z-[1]
-            "
+            className="absolute inset-0 z-[1]"
             style={{
               background:
-                `
-                linear-gradient(
-                  120deg,
-                  rgba(0, 3, 5, 0.58) 0%,
-                  rgba(1, 5, 8, 0.49) 38%,
-                  rgba(2, 7, 10, 0.36) 68%,
-                  rgba(3, 9, 12, 0.25) 100%
-                )
-                `,
+                'linear-gradient(120deg, rgba(0,3,5,.58) 0%, rgba(1,5,8,.49) 38%, rgba(2,7,10,.36) 68%, rgba(3,9,12,.25) 100%)',
             }}
           />
 
-          <div
-            className="
-              absolute
-              inset-0
-              z-[2]
-              bg-gradient-to-b
-              from-black/20
-              via-black/10
-              to-black/65
-            "
-          />
+          <div className="absolute inset-0 z-[2] bg-gradient-to-b from-black/20 via-black/10 to-black/65" />
 
-          <div
-            className="
-              absolute
-              inset-x-0
-              bottom-0
-              z-[3]
-              h-48
-              bg-gradient-to-t
-              from-[#05090d]
-              to-transparent
-            "
-          />
+          <div className="absolute inset-x-0 bottom-0 z-[3] h-48 bg-gradient-to-t from-[#05090d] to-transparent" />
 
-          <div
-            className="
-              relative
-              z-10
-              mx-auto
-              flex
-              min-h-screen
-              max-w-7xl
-              flex-col
-              px-4
-              sm:px-6
-              lg:px-8
-            "
-          >
-            <div
-              className="
-                sticky
-                top-0
-                z-30
-                pt-4
-                sm:pt-6
-              "
-            >
-              <div
-                className="
-                  mirrortrace-liquid-nav
-                  mirrortrace-landing-nav
-                  mx-auto
-                  flex
-                  max-w-6xl
-                  items-center
-                  justify-between
-                  rounded-full
-                  px-4
-                  py-3
-                  sm:px-6
-                "
-              >
+          <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-4 sm:px-6 lg:px-8">
+            <div className="sticky top-0 z-30 pt-4 sm:pt-6">
+              <div className="mirrortrace-liquid-nav mirrortrace-landing-nav mx-auto flex max-w-6xl items-center justify-between rounded-full px-4 py-3 sm:px-6">
                 <button
                   type="button"
                   onClick={() =>
@@ -711,78 +482,43 @@ export const AuthView:
                       'hero'
                     )
                   }
-                  className="
-                    mirrortrace-nav-brand
-                    flex
-                    items-center
-                    gap-3
-                  "
+                  className="mirrortrace-nav-brand flex items-center gap-3"
                 >
-                  <div
-                    className="
-                      grid
-                      h-9
-                      w-9
-                      place-items-center
-                      rounded-xl
-                      bg-white
-                      text-stone-950
-                    "
-                  >
-                    <span
-                      className="
-                        font-serif
-                        text-lg
-                        font-bold
-                      "
-                    >
+                  <div className="grid h-9 w-9 place-items-center rounded-xl bg-white text-stone-950">
+                    <span className="font-serif text-lg font-bold">
                       M
                     </span>
                   </div>
 
-                  <div
-                    className="
-                      hidden
-                      text-left
-                      sm:block
-                    "
-                  >
-                    <div
-                      className="
-                        font-serif
-                        text-lg
-                        font-bold
-                      "
-                    >
+                  <div className="hidden text-left sm:block">
+                    <div className="font-serif text-lg font-bold">
                       MirrorTrace
                     </div>
 
-                    <div
-                      className="
-                        text-[10px]
-                        text-white/50
-                      "
-                    >
-                      Version control for
-                      your thinking
+                    <div className="text-[10px] text-white/50">
+                      Version control for your thinking
                     </div>
                   </div>
                 </button>
 
-                <nav
-                  className="
-                    mirrortrace-nav-links
-                    hidden
-                    items-center
-                    gap-8
-                    md:flex
-                  "
-                >
+                <nav className="mirrortrace-nav-links hidden items-center gap-8 md:flex">
                   <button
                     type="button"
                     onClick={() =>
                       scrollToSection(
                         'features'
+                      )
+                    }
+                    className="text-xs font-medium text-white/65 transition-colors hover:text-white"
+                  >
+                    Features
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      scrollToSection(
+                        'who-its-for'
                       )
                     }
                     className="
@@ -793,7 +529,7 @@ export const AuthView:
                       hover:text-white
                     "
                   >
-                    Features
+                    Who it's for
                   </button>
 
                   <button
@@ -803,13 +539,7 @@ export const AuthView:
                         'security'
                       )
                     }
-                    className="
-                      text-xs
-                      font-medium
-                      text-white/65
-                      transition-colors
-                      hover:text-white
-                    "
+                    className="text-xs font-medium text-white/65 transition-colors hover:text-white"
                   >
                     Security
                   </button>
@@ -821,13 +551,7 @@ export const AuthView:
                         'reviews'
                       )
                     }
-                    className="
-                      text-xs
-                      font-medium
-                      text-white/65
-                      transition-colors
-                      hover:text-white
-                    "
+                    className="text-xs font-medium text-white/65 transition-colors hover:text-white"
                   >
                     Reviews
                   </button>
@@ -835,93 +559,54 @@ export const AuthView:
 
                 <button
                   type="button"
-                  onClick={
-                    handleSignIn
-                  }
-                  disabled={
-                    loading
-                  }
-                  className="
-                    mirrortrace-nav-cta
-                    hidden
-                    rounded-full
-                    px-5
-                    py-2.5
-                    text-xs
-                    font-semibold
-                    md:block
-                  "
+                  onClick={handleSignIn}
+                  disabled={loading}
+                  className="mirrortrace-nav-cta hidden rounded-full px-5 py-2.5 text-xs font-semibold md:block"
                 >
                   Continue with Google
                 </button>
 
                 <button
                   type="button"
-                  aria-label="
-                    Toggle navigation
-                  "
+                  aria-label="Toggle navigation"
                   onClick={() =>
                     setMobileOpen(
-                      (
-                        current
-                      ) =>
+                      (current) =>
                         !current
                     )
                   }
-                  className="
-                    mirrortrace-nav-menu
-                    grid
-                    h-9
-                    w-9
-                    place-items-center
-                    rounded-full
-                    md:hidden
-                  "
+                  className="mirrortrace-nav-menu grid h-9 w-9 place-items-center rounded-full md:hidden"
                 >
                   {mobileOpen
                     ? (
-                      <X
-                        className="
-                          h-4
-                          w-4
-                        "
-                      />
+                      <X className="h-4 w-4" />
                     )
                     : (
-                      <Menu
-                        className="
-                          h-4
-                          w-4
-                        "
-                      />
+                      <Menu className="h-4 w-4" />
                     )}
                 </button>
               </div>
 
               {mobileOpen && (
-                <div
-                  className="
-                    mirrortrace-liquid-panel
-                    mirrortrace-mobile-nav
-                    mx-auto
-                    mt-3
-                    max-w-6xl
-                    rounded-3xl
-                    p-4
-                    md:hidden
-                  "
-                >
-                  <div
-                    className="
-                      grid
-                      gap-2
-                    "
-                  >
+                <div className="mirrortrace-liquid-panel mirrortrace-mobile-nav mx-auto mt-3 max-w-6xl rounded-3xl p-4 md:hidden">
+                  <div className="grid gap-2">
                     <button
                       type="button"
                       onClick={() =>
                         scrollToSection(
                           'features'
+                        )
+                      }
+                      className="rounded-xl px-3 py-3 text-left text-sm text-white/80 hover:bg-white/10"
+                    >
+                      Features
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        scrollToSection(
+                          'who-its-for'
                         )
                       }
                       className="
@@ -934,7 +619,7 @@ export const AuthView:
                         hover:bg-white/10
                       "
                     >
-                      Features
+                      Who it's for
                     </button>
 
                     <button
@@ -944,15 +629,7 @@ export const AuthView:
                           'security'
                         )
                       }
-                      className="
-                        rounded-xl
-                        px-3
-                        py-3
-                        text-left
-                        text-sm
-                        text-white/80
-                        hover:bg-white/10
-                      "
+                      className="rounded-xl px-3 py-3 text-left text-sm text-white/80 hover:bg-white/10"
                     >
                       Security
                     </button>
@@ -964,34 +641,15 @@ export const AuthView:
                           'reviews'
                         )
                       }
-                      className="
-                        rounded-xl
-                        px-3
-                        py-3
-                        text-left
-                        text-sm
-                        text-white/80
-                        hover:bg-white/10
-                      "
+                      className="rounded-xl px-3 py-3 text-left text-sm text-white/80 hover:bg-white/10"
                     >
                       Reviews
                     </button>
 
                     <button
                       type="button"
-                      onClick={
-                        handleSignIn
-                      }
-                      className="
-                        mt-2
-                        rounded-xl
-                        bg-white
-                        px-4
-                        py-3
-                        text-sm
-                        font-semibold
-                        text-stone-950
-                      "
+                      onClick={handleSignIn}
+                      className="mt-2 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-stone-950"
                     >
                       Continue with Google
                     </button>
@@ -1000,15 +658,7 @@ export const AuthView:
               )}
             </div>
 
-            <div
-              className="
-                flex
-                flex-1
-                items-center
-                py-16
-                sm:py-24
-              "
-            >
+            <div className="flex flex-1 items-center py-16 sm:py-24">
               <motion.div
                 initial={{
                   opacity: 0,
@@ -1030,135 +680,38 @@ export const AuthView:
                     1,
                   ],
                 }}
-                className="
-                  max-w-4xl
-                "
+                className="max-w-4xl"
               >
-                <div
-                  className="
-                    mirrortrace-chip
-                    inline-flex
-                    items-center
-                    gap-2
-                    rounded-full
-                    px-3
-                    py-1.5
-                    text-xs
-                    font-semibold
-                    text-white/75
-                  "
-                >
-                  <GitCompare
-                    className="
-                      h-3.5
-                      w-3.5
-                      text-amber-300
-                    "
-                  />
-
-                  Evidence-first AI
-                  reflection
+                <div className="mirrortrace-chip inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold text-white/75">
+                  <GitCompare className="h-3.5 w-3.5 text-amber-300" />
+                  Evidence-first AI reflection
                 </div>
 
-                <h1
-                  className="
-                    mt-7
-                    max-w-4xl
-                    font-serif
-                    text-5xl
-                    font-bold
-                    leading-[0.92]
-                    tracking-tight
-                    sm:text-6xl
-                    lg:text-7xl
-                    xl:text-8xl
-                  "
-                >
+                <h1 className="mt-7 max-w-4xl font-serif text-5xl font-bold leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl xl:text-8xl">
                   See how your
-
-                  <span
-                    className="
-                      block
-                      text-amber-200
-                    "
-                  >
+                  <span className="block text-amber-200">
                     thinking evolves.
                   </span>
                 </h1>
 
-                <p
-                  className="
-                    mt-7
-                    max-w-2xl
-                    text-base
-                    leading-7
-                    text-white/75
-                    sm:text-lg
-                  "
-                >
-                  MirrorTrace helps you
-                  revisit ideas over time
-                  without letting AI
-                  silently decide what you
-                  believe.
+                <p className="mt-7 max-w-2xl text-base leading-7 text-white/75 sm:text-lg">
+                  MirrorTrace helps you revisit ideas over time without letting AI silently decide what you believe.
                 </p>
 
-                <p
-                  className="
-                    mt-4
-                    max-w-xl
-                    text-sm
-                    leading-6
-                    text-white/55
-                  "
-                >
-                  You decide what becomes
-                  reusable memory. Every
-                  future comparison remains
-                  traceable to the reflections
-                  that produced it.
+                <p className="mt-4 max-w-xl text-sm leading-6 text-white/55">
+                  You decide what becomes reusable memory. Every future comparison remains traceable to the reflections that produced it.
                 </p>
 
                 {error && (
-                  <div
-                    className="
-                      mt-glass
-                      mt-glass-plain
-                      mt-5
-                      flex
-                      max-w-xl
-                      items-start
-                      gap-2
-                      rounded-2xl
-                      border-red-400/20
-                      p-3
-                      text-xs
-                      text-red-100
-                    "
-                  >
-                    <AlertCircle
-                      className="
-                        mt-0.5
-                        h-4
-                        w-4
-                        shrink-0
-                      "
-                    />
-
+                  <div className="mt-glass mt-glass-plain mt-5 flex max-w-xl items-start gap-2 rounded-2xl border-red-400/20 p-3 text-xs text-red-100">
+                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
                     <span>
                       {error}
                     </span>
                   </div>
                 )}
 
-                <div
-                  className="
-                    mt-8
-                    flex
-                    flex-wrap
-                    gap-3
-                  "
-                >
+                <div className="mt-8 flex flex-wrap gap-3">
                   <motion.button
                     type="button"
                     whileHover={
@@ -1169,62 +722,28 @@ export const AuthView:
                           }
                     }
                     whileTap={{
-                      scale:
-                        0.98,
+                      scale: 0.98,
                     }}
-                    onClick={
-                      handleSignIn
-                    }
-                    disabled={
-                      loading
-                    }
-                    className="
-                      mt-hover-pop
-                      inline-flex
-                      items-center
-                      gap-3
-                      rounded-full
-                      bg-white
-                      px-5
-                      py-3
-                      text-sm
-                      font-semibold
-                      text-stone-950
-                      shadow-2xl
-                      disabled:opacity-60
-                    "
+                    onClick={handleSignIn}
+                    disabled={loading}
+                    className="mt-hover-pop inline-flex items-center gap-3 rounded-full bg-white px-5 py-3 text-sm font-semibold text-stone-950 shadow-2xl disabled:opacity-60"
                   >
                     {loading
                       ? (
-                        <div
-                          className="
-                            h-4
-                            w-4
-                            animate-spin
-                            rounded-full
-                            border-2
-                            border-stone-300
-                            border-t-stone-900
-                          "
-                        />
-                      )
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-stone-300 border-t-stone-900" />
+                    )
                       : (
                         <GoogleIcon />
                       )}
 
                     <span>
                       {loading
-                        ? 'Connectingâ€¦'
+                        ? 'Connecting…'
                         : 'Continue with Google'}
                     </span>
 
                     {!loading && (
-                      <ArrowRight
-                        className="
-                          h-4
-                          w-4
-                        "
-                      />
+                      <ArrowRight className="h-4 w-4" />
                     )}
                   </motion.button>
 
@@ -1235,18 +754,7 @@ export const AuthView:
                         'features'
                       )
                     }
-                    className="
-                      mt-hover-pop
-                      rounded-full
-                      border
-                      border-white/20
-                      bg-black/20
-                      px-5
-                      py-3
-                      text-sm
-                      font-semibold
-                      text-white
-                    "
+                    className="mt-hover-pop rounded-full border border-white/20 bg-black/20 px-5 py-3 text-sm font-semibold text-white"
                   >
                     Explore MirrorTrace
                   </button>
@@ -1254,18 +762,11 @@ export const AuthView:
               </motion.div>
             </div>
 
-            <div
-              className="
-                pb-7
-                text-center
-                text-[10px]
-                text-white/35
-              "
-            >
+            <div className="pb-7 text-center text-[10px] text-white/35">
               Firebase Authentication
-              {' â€¢ '}
+              {' • '}
               Owner-bound UID isolation
-              {' â€¢ '}
+              {' • '}
               Server-side Gemini
             </div>
           </div>
@@ -1274,22 +775,9 @@ export const AuthView:
         <div className="mirrortrace-auth-tail">
           <section
             id="features"
-            className="
-              mirrortrace-feature-section
-              mirrortrace-unified-section
-              mirrortrace-section-glass
-            "
+            className="mirrortrace-feature-section mirrortrace-unified-section mirrortrace-section-glass"
           >
-            <motion.div
-              className="
-                mx-auto
-                max-w-7xl
-                px-4
-                text-center
-                sm:px-6
-                lg:px-8
-              "
-            >
+            <motion.div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
               <motion.div
                 initial={{
                   opacity: 0,
@@ -1307,156 +795,66 @@ export const AuthView:
                   amount: 0.25,
                 }}
                 transition={{
-                  duration:
-                    0.55,
+                  duration: 0.55,
                 }}
               >
-                <div
-                  className="
-                    text-xs
-                    font-bold
-                    uppercase
-                    tracking-[0.22em]
-                    text-[var(--mt-accent)]
-                  "
-                >
+                <div className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--mt-accent)]">
                   Built around your decisions
                 </div>
 
-                <h2
-                  className="
-                    mt-3
-                    font-serif
-                    text-4xl
-                    font-bold
-                    tracking-tight
-                    text-[var(--mt-text)]
-                    sm:text-5xl
-                    lg:text-6xl
-                  "
-                >
-                  Reflection that moves
-                  with you.
+                <h2 className="mt-3 font-serif text-4xl font-bold tracking-tight text-[var(--mt-text)] sm:text-5xl lg:text-6xl">
+                  Reflection that moves with you.
                 </h2>
 
-                <p
-                  className="
-                    mx-auto
-                    mt-4
-                    max-w-2xl
-                    text-sm
-                    leading-7
-                    text-[var(--mt-text-muted)]
-                  "
-                >
-                  Scroll naturally through
-                  the page. Each card enters
-                  with a soft curved motion,
-                  while every row remains
-                  freely browsable left or
-                  right with a trackpad,
-                  swipe, or the arrow
-                  controls.
+                <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[var(--mt-text-muted)]">
+                  Scroll naturally through the page. Each card enters with a soft curved motion, while every row remains freely browsable left or right with a trackpad, swipe, or the arrow controls.
                 </p>
               </motion.div>
             </motion.div>
 
-            <div
-              className="
-                mirrortrace-feature-shell
-                mx-auto
-                mt-11
-                max-w-[1600px]
-              "
-            >
-              <div
-                className="
-                  mirrortrace-lane-heading
-                "
-              >
+            <div className="mirrortrace-feature-shell mx-auto mt-11 max-w-[1600px]">
+              <div className="mirrortrace-lane-heading">
                 <span>
                   Core reflection flow
                 </span>
 
-                <span
-                  className="
-                    mirrortrace-browse-hint
-                  "
-                >
+                <span className="mirrortrace-browse-hint">
                   Browse left / right
                 </span>
               </div>
 
-              <div
-                className="
-                  mirrortrace-lane-wrap
-                "
-              >
+              <div className="mirrortrace-lane-wrap">
                 <button
                   type="button"
-                  aria-label="
-                    Scroll top feature row left
-                  "
-                  className="
-                    mirrortrace-lane-arrow
-                    mirrortrace-lane-arrow-left
-                  "
-                  onClick={(
-                    event
-                  ) => {
-                    const lane =
-                      event
-                        .currentTarget
-                        .parentElement
-                        ?.querySelector(
-                          '.mirrortrace-card-lane'
-                        ) as
-                          HTMLElement |
-                          null;
-
-                    lane?.scrollBy({
-                      left:
-                        -380,
-                      behavior:
-                        reducedMotion
-                          ? 'auto'
-                          : 'smooth',
-                    });
-                  }}
+                  aria-label="Scroll top feature row left"
+                  className="mirrortrace-lane-arrow mirrortrace-lane-arrow-left"
+                  onClick={(event) =>
+                    scrollLane(
+                      event,
+                      -380
+                    )
+                  }
                 >
-                  â€¹
+                  ‹
                 </button>
 
-                <div
-                  className="
-                    mirrortrace-card-lane
-                  "
-                >
-                  <div
-                    className="
-                      mirrortrace-scroll-row
-                    "
-                  >
+                <div className="mirrortrace-card-lane">
+                  <div className="mirrortrace-scroll-row">
                     {TOP_ROW.map(
                       (
                         card,
-                        i
+                        index
                       ) => (
-                        <FeatureCardView
-                          key={
-                            card.id
-                          }
-                          card={
-                            card
-                          }
-                          index={
-                            i
-                          }
-                          total={
-                            TOP_ROW.length
-                          }
-                          direction="left"
-                        />
+                        <React.Fragment
+                          key={card.id}
+                        >
+                          <FeatureCardView
+                            card={card}
+                            index={index}
+                            total={TOP_ROW.length}
+                            direction="left"
+                          />
+                        </React.Fragment>
                       )
                     )}
                   </div>
@@ -1464,130 +862,61 @@ export const AuthView:
 
                 <button
                   type="button"
-                  aria-label="
-                    Scroll top feature row right
-                  "
-                  className="
-                    mirrortrace-lane-arrow
-                    mirrortrace-lane-arrow-right
-                  "
-                  onClick={(
-                    event
-                  ) => {
-                    const lane =
-                      event
-                        .currentTarget
-                        .parentElement
-                        ?.querySelector(
-                          '.mirrortrace-card-lane'
-                        ) as
-                          HTMLElement |
-                          null;
-
-                    lane?.scrollBy({
-                      left:
-                        380,
-                      behavior:
-                        reducedMotion
-                          ? 'auto'
-                          : 'smooth',
-                    });
-                  }}
+                  aria-label="Scroll top feature row right"
+                  className="mirrortrace-lane-arrow mirrortrace-lane-arrow-right"
+                  onClick={(event) =>
+                    scrollLane(
+                      event,
+                      380
+                    )
+                  }
                 >
-                  â€º
+                  ›
                 </button>
               </div>
 
-              <div
-                className="
-                  mirrortrace-lane-heading
-                  mt-8
-                "
-              >
+              <div className="mirrortrace-lane-heading mt-8">
                 <span>
-                  Control, safety &
-                  follow-up
+                  Control, safety & follow-up
                 </span>
 
-                <span
-                  className="
-                    mirrortrace-browse-hint
-                  "
-                >
+                <span className="mirrortrace-browse-hint">
                   Browse left / right
                 </span>
               </div>
 
-              <div
-                className="
-                  mirrortrace-lane-wrap
-                "
-              >
+              <div className="mirrortrace-lane-wrap">
                 <button
                   type="button"
-                  aria-label="
-                    Scroll bottom feature row left
-                  "
-                  className="
-                    mirrortrace-lane-arrow
-                    mirrortrace-lane-arrow-left
-                  "
-                  onClick={(
-                    event
-                  ) => {
-                    const lane =
-                      event
-                        .currentTarget
-                        .parentElement
-                        ?.querySelector(
-                          '.mirrortrace-card-lane'
-                        ) as
-                          HTMLElement |
-                          null;
-
-                    lane?.scrollBy({
-                      left:
-                        -380,
-                      behavior:
-                        reducedMotion
-                          ? 'auto'
-                          : 'smooth',
-                    });
-                  }}
+                  aria-label="Scroll bottom feature row left"
+                  className="mirrortrace-lane-arrow mirrortrace-lane-arrow-left"
+                  onClick={(event) =>
+                    scrollLane(
+                      event,
+                      -380
+                    )
+                  }
                 >
-                  â€¹
+                  ‹
                 </button>
 
-                <div
-                  className="
-                    mirrortrace-card-lane
-                  "
-                >
-                  <div
-                    className="
-                      mirrortrace-scroll-row
-                    "
-                  >
+                <div className="mirrortrace-card-lane">
+                  <div className="mirrortrace-scroll-row">
                     {BOTTOM_ROW.map(
                       (
                         card,
-                        i
+                        index
                       ) => (
-                        <FeatureCardView
-                          key={
-                            card.id
-                          }
-                          card={
-                            card
-                          }
-                          index={
-                            i
-                          }
-                          total={
-                            BOTTOM_ROW.length
-                          }
-                          direction="right"
-                        />
+                        <React.Fragment
+                          key={card.id}
+                        >
+                          <FeatureCardView
+                            card={card}
+                            index={index}
+                            total={BOTTOM_ROW.length}
+                            direction="right"
+                          />
+                        </React.Fragment>
                       )
                     )}
                   </div>
@@ -1595,107 +924,38 @@ export const AuthView:
 
                 <button
                   type="button"
-                  aria-label="
-                    Scroll bottom feature row right
-                  "
-                  className="
-                    mirrortrace-lane-arrow
-                    mirrortrace-lane-arrow-right
-                  "
-                  onClick={(
-                    event
-                  ) => {
-                    const lane =
-                      event
-                        .currentTarget
-                        .parentElement
-                        ?.querySelector(
-                          '.mirrortrace-card-lane'
-                        ) as
-                          HTMLElement |
-                          null;
-
-                    lane?.scrollBy({
-                      left:
-                        380,
-                      behavior:
-                        reducedMotion
-                          ? 'auto'
-                          : 'smooth',
-                    });
-                  }}
+                  aria-label="Scroll bottom feature row right"
+                  className="mirrortrace-lane-arrow mirrortrace-lane-arrow-right"
+                  onClick={(event) =>
+                    scrollLane(
+                      event,
+                      380
+                    )
+                  }
                 >
-                  â€º
+                  ›
                 </button>
               </div>
             </div>
 
-            <div
-              className="
-                mx-auto
-                mt-10
-                max-w-7xl
-                px-4
-                sm:px-6
-                lg:px-8
-              "
-            >
-              <div
-                className="
-                  grid
-                  gap-3
-                  md:grid-cols-3
-                "
-              >
-                <div
-                  className="
-                    mirrortrace-summary-pill
-                  "
-                >
-                  <CheckCircle2
-                    className="
-                      h-4
-                      w-4
-                      text-[var(--mt-success)]
-                    "
-                  />
-
+            <div className="mx-auto mt-10 max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="grid gap-3 md:grid-cols-3">
+                <div className="mirrortrace-summary-pill">
+                  <CheckCircle2 className="h-4 w-4 text-[var(--mt-success)]" />
                   <span>
                     Consent-bound memory
                   </span>
                 </div>
 
-                <div
-                  className="
-                    mirrortrace-summary-pill
-                  "
-                >
-                  <RefreshCcw
-                    className="
-                      h-4
-                      w-4
-                      text-[var(--mt-accent)]
-                    "
-                  />
-
+                <div className="mirrortrace-summary-pill">
+                  <RefreshCcw className="h-4 w-4 text-[var(--mt-accent)]" />
                   <span>
                     Evidence-backed change
                   </span>
                 </div>
 
-                <div
-                  className="
-                    mirrortrace-summary-pill
-                  "
-                >
-                  <ShieldCheck
-                    className="
-                      h-4
-                      w-4
-                      text-[var(--mt-accent-strong)]
-                    "
-                  />
-
+                <div className="mirrortrace-summary-pill">
+                  <ShieldCheck className="h-4 w-4 text-[var(--mt-accent-strong)]" />
                   <span>
                     Owner-isolated by design
                   </span>
@@ -1704,15 +964,14 @@ export const AuthView:
             </div>
           </section>
 
-          <TargetAudience />
-
-
 
           <section
-            id="security"
+            id="who-its-for"
             className="
               mirrortrace-unified-section
-              mirrortrace-security-clean
+              mirrortrace-section-glass
+              relative
+              overflow-hidden
               px-4
               py-20
               text-white
@@ -1723,13 +982,425 @@ export const AuthView:
           >
             <div
               className="
+                pointer-events-none
+                absolute
+                inset-0
+                bg-black/20
+              "
+            />
+
+            <div
+              className="
+                relative
+                z-10
                 mx-auto
-                grid
                 max-w-7xl
-                gap-10
-                lg:grid-cols-[0.9fr_1.1fr]
               "
             >
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  y:
+                    reducedMotion
+                      ? 0
+                      : 20,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                  amount: 0.2,
+                }}
+                transition={{
+                  duration: 0.55,
+                }}
+                className="
+                  mx-auto
+                  max-w-3xl
+                  text-center
+                "
+              >
+                <div
+                  className="
+                    inline-flex
+                    items-center
+                    gap-2
+                    rounded-full
+                    border
+                    border-amber-300/20
+                    bg-black/35
+                    px-3
+                    py-1.5
+                    text-xs
+                    font-bold
+                    uppercase
+                    tracking-[0.18em]
+                    text-amber-200
+                  "
+                >
+                  <Sparkles
+                    className="
+                      h-3.5
+                      w-3.5
+                    "
+                  />
+
+                  Built for reflective decision-making
+                </div>
+
+                <h2
+                  className="
+                    mt-5
+                    font-serif
+                    text-4xl
+                    font-bold
+                    tracking-tight
+                    sm:text-5xl
+                  "
+                >
+                  Who MirrorTrace is for
+                </h2>
+
+                <p
+                  className="
+                    mx-auto
+                    mt-4
+                    max-w-2xl
+                    text-sm
+                    leading-7
+                    text-white/65
+                    sm:text-base
+                  "
+                >
+                  MirrorTrace is built for people who make decisions,
+                  revisit ideas, and want to understand how their
+                  reasoning changes over time without letting AI silently
+                  decide what gets remembered.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial="hidden"
+                whileInView="show"
+                viewport={{
+                  once: true,
+                  amount: 0.12,
+                }}
+                variants={{
+                  hidden: {},
+                  show: {
+                    transition: {
+                      staggerChildren:
+                        reducedMotion
+                          ? 0
+                          : 0.08,
+                    },
+                  },
+                }}
+                className="
+                  mt-12
+                  grid
+                  gap-4
+                  sm:grid-cols-2
+                  xl:grid-cols-4
+                "
+              >
+                {[
+                  {
+                    id: 'students',
+                    icon: GraduationCap,
+                    title:
+                      'Students & Early-Career Professionals',
+                    body:
+                      'Track how your thinking around careers, higher studies, opportunities, and skill priorities changes as you gain experience.',
+                  },
+                  {
+                    id: 'professionals',
+                    icon: Briefcase,
+                    title:
+                      'Working Professionals',
+                    body:
+                      'Revisit the reasoning behind role changes, negotiations, difficult trade-offs, and long-term career decisions with the original evidence still attached.',
+                  },
+                  {
+                    id: 'founders',
+                    icon: Rocket,
+                    title:
+                      'Founders & Builders',
+                    body:
+                      'Keep a governed record of why a product, project, or strategy decision was made so later pivots remain traceable.',
+                  },
+                  {
+                    id: 'leaders',
+                    icon: Brain,
+                    title:
+                      'Knowledge Workers & Leaders',
+                    body:
+                      'Reflect on hypotheses, positions, and judgment calls over time, with Gemini acting as a thinking companion rather than deciding what you believe.',
+                  },
+                ].map(
+                  (
+                    audience
+                  ) => {
+                    const Icon =
+                      audience.icon;
+
+                    return (
+                      <motion.article
+                        key={
+                          audience.id
+                        }
+                        variants={{
+                          hidden: {
+                            opacity: 0,
+                            y:
+                              reducedMotion
+                                ? 0
+                                : 18,
+                          },
+                          show: {
+                            opacity: 1,
+                            y: 0,
+                          },
+                        }}
+                        whileHover={
+                          reducedMotion
+                            ? undefined
+                            : {
+                                y: -4,
+                              }
+                        }
+                        className="
+                          rounded-[26px]
+                          border
+                          border-white/10
+                          bg-black/50
+                          p-6
+                          shadow-xl
+                        "
+                      >
+                        <div
+                          className="
+                            grid
+                            h-11
+                            w-11
+                            place-items-center
+                            rounded-2xl
+                            border
+                            border-amber-300/15
+                            bg-amber-500/10
+                            text-amber-200
+                          "
+                        >
+                          <Icon
+                            className="
+                              h-5
+                              w-5
+                            "
+                          />
+                        </div>
+
+                        <h3
+                          className="
+                            mt-5
+                            font-serif
+                            text-lg
+                            font-bold
+                            text-white
+                          "
+                        >
+                          {audience.title}
+                        </h3>
+
+                        <p
+                          className="
+                            mt-3
+                            text-sm
+                            leading-6
+                            text-white/60
+                          "
+                        >
+                          {audience.body}
+                        </p>
+                      </motion.article>
+                    );
+                  }
+                )}
+              </motion.div>
+
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  y:
+                    reducedMotion
+                      ? 0
+                      : 18,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                  amount: 0.15,
+                }}
+                transition={{
+                  duration: 0.55,
+                }}
+                className="
+                  mt-14
+                  rounded-[30px]
+                  border
+                  border-white/10
+                  bg-black/50
+                  p-6
+                  sm:p-8
+                "
+              >
+                <div
+                  className="
+                    text-xs
+                    font-bold
+                    uppercase
+                    tracking-[0.18em]
+                    text-amber-200
+                  "
+                >
+                  What MirrorTrace is built for
+                </div>
+
+                <h3
+                  className="
+                    mt-3
+                    max-w-4xl
+                    font-serif
+                    text-2xl
+                    font-bold
+                    text-white
+                    sm:text-3xl
+                  "
+                >
+                  A journal that remembers with permission,
+                  compares with evidence, and stays traceable.
+                </h3>
+
+                <p
+                  className="
+                    mt-3
+                    max-w-3xl
+                    text-sm
+                    leading-7
+                    text-white/60
+                  "
+                >
+                  The goal is not to predict your personality or tell
+                  you what to think. MirrorTrace helps preserve,
+                  revisit, compare, and govern the reasoning you
+                  intentionally choose to keep.
+                </p>
+
+                <div
+                  className="
+                    mt-8
+                    grid
+                    gap-4
+                    lg:grid-cols-3
+                  "
+                >
+                  {[
+                    {
+                      icon: Clock3,
+                      title:
+                        'Preserve decision reasoning',
+                      body:
+                        'Return to the reasoning that existed when a decision was actually made instead of reconstructing it later from memory.',
+                    },
+                    {
+                      icon: GitCompare,
+                      title:
+                        'See how thinking evolves',
+                      body:
+                        'Approved Thought Snapshots can be compared across time through Thought Diffs to show what changed and what stayed consistent.',
+                    },
+                    {
+                      icon: ShieldCheck,
+                      title:
+                        'Keep AI memory under your control',
+                      body:
+                        'Gemini may suggest an interpretation, but you decide whether it becomes reusable memory and every comparison remains source-traceable.',
+                    },
+                  ].map(
+                    (
+                      purpose
+                    ) => {
+                      const Icon =
+                        purpose.icon;
+
+                      return (
+                        <article
+                          key={
+                            purpose.title
+                          }
+                          className="
+                            rounded-2xl
+                            border
+                            border-white/10
+                            bg-black/30
+                            p-5
+                          "
+                        >
+                          <div
+                            className="
+                              flex
+                              items-center
+                              gap-2
+                            "
+                          >
+                            <Icon
+                              className="
+                                h-4
+                                w-4
+                                text-amber-200
+                              "
+                            />
+
+                            <h4
+                              className="
+                                text-sm
+                                font-bold
+                                text-white
+                              "
+                            >
+                              {purpose.title}
+                            </h4>
+                          </div>
+
+                          <p
+                            className="
+                              mt-3
+                              text-xs
+                              leading-6
+                              text-white/55
+                            "
+                          >
+                            {purpose.body}
+                          </p>
+                        </article>
+                      );
+                    }
+                  )}
+                </div>
+              </motion.div>
+            </div>
+          </section>
+
+          <section
+            id="security"
+            className="mirrortrace-unified-section mirrortrace-security-clean px-4 py-20 text-white sm:px-6 sm:py-24 lg:px-8"
+          >
+            <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
               <motion.div
                 initial={{
                   opacity: 0,
@@ -1747,76 +1418,33 @@ export const AuthView:
                   amount: 0.3,
                 }}
                 transition={{
-                  duration:
-                    0.65,
+                  duration: 0.65,
                 }}
               >
-                <div
-                  className="
-                    text-xs
-                    font-bold
-                    uppercase
-                    tracking-[0.2em]
-                    text-emerald-300
-                  "
-                >
+                <div className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">
                   Security by architecture
                 </div>
 
-                <h2
-                  className="
-                    mt-4
-                    max-w-xl
-                    font-serif
-                    text-4xl
-                    font-bold
-                    leading-tight
-                    sm:text-5xl
-                  "
-                >
-                  Admins operate the
-                  system without becoming
-                  readers of your private
-                  memory.
+                <h2 className="mt-4 max-w-xl font-serif text-4xl font-bold leading-tight sm:text-5xl">
+                  Admins operate the system without becoming readers of your private memory.
                 </h2>
 
-                <p
-                  className="
-                    mt-5
-                    max-w-xl
-                    text-sm
-                    leading-7
-                    text-white/60
-                  "
-                >
-                  MirrorTrace separates
-                  operational administration
-                  from journal content,
-                  conversations, approved
-                  memories, Thought Diffs,
-                  and provenance.
+                <p className="mt-5 max-w-xl text-sm leading-7 text-white/60">
+                  MirrorTrace separates operational administration from journal content, conversations, approved memories, Thought Diffs, and provenance.
                 </p>
               </motion.div>
 
-              <div
-                className="
-                  grid
-                  gap-4
-                  sm:grid-cols-2
-                "
-              >
+              <div className="grid gap-4 sm:grid-cols-2">
                 {[
                   {
-                    icon:
-                      ShieldCheck,
+                    icon: ShieldCheck,
                     title:
                       'Owner-bound UID isolation',
                     body:
                       'Private journal data remains scoped to the authenticated Firebase UID.',
                   },
                   {
-                    icon:
-                      Lock,
+                    icon: Lock,
                     title:
                       'No password collection',
                     body:
@@ -1847,9 +1475,7 @@ export const AuthView:
 
                     return (
                       <motion.div
-                        key={
-                          item.title
-                        }
+                        key={item.title}
                         initial={{
                           opacity: 0,
                           y:
@@ -1864,39 +1490,15 @@ export const AuthView:
                         viewport={{
                           once: true,
                         }}
-                        className="
-                          mt-glass
-                          mt-glass-cool
-                          mt-hover-pop
-                          rounded-[26px]
-                          p-5
-                        "
+                        className="mt-glass mt-glass-cool mt-hover-pop rounded-[26px] p-5"
                       >
-                        <Icon
-                          className="
-                            h-5
-                            w-5
-                            text-amber-200
-                          "
-                        />
+                        <Icon className="h-5 w-5 text-amber-200" />
 
-                        <h3
-                          className="
-                            mt-4
-                            font-semibold
-                          "
-                        >
+                        <h3 className="mt-4 font-semibold">
                           {item.title}
                         </h3>
 
-                        <p
-                          className="
-                            mt-2
-                            text-xs
-                            leading-6
-                            text-stone-300
-                          "
-                        >
+                        <p className="mt-2 text-xs leading-6 text-stone-300">
                           {item.body}
                         </p>
                       </motion.div>
@@ -1909,107 +1511,39 @@ export const AuthView:
 
           <section
             id="reviews"
-            className="
-              mirrortrace-unified-section
-              mirrortrace-reviews-clean
-              overflow-hidden
-              py-20
-              text-white
-              sm:py-24
-            "
+            className="mirrortrace-unified-section mirrortrace-reviews-clean overflow-hidden py-20 text-white sm:py-24"
           >
-            <div
-              className="
-                mx-auto
-                max-w-7xl
-                px-4
-                text-center
-                sm:px-6
-                lg:px-8
-              "
-            >
-              <div
-                className="
-                  text-xs
-                  font-bold
-                  uppercase
-                  tracking-[0.2em]
-                  text-amber-300
-                "
-              >
+            <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+              <div className="text-xs font-bold uppercase tracking-[0.2em] text-amber-300">
                 Public reviews
               </div>
 
-              <h2
-                className="
-                  mt-3
-                  font-serif
-                  text-4xl
-                  font-bold
-                  sm:text-5xl
-                "
-              >
+              <h2 className="mt-3 font-serif text-4xl font-bold sm:text-5xl">
                 Feedback shared by choice.
               </h2>
 
-              <p
-                className="
-                  mx-auto
-                  mt-4
-                  max-w-2xl
-                  text-sm
-                  leading-7
-                  text-stone-300
-                "
-              >
-                Reviews appear here only
-                when the user explicitly
-                allows public display and
-                an administrator approves
-                the submission.
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-stone-300">
+                Reviews appear here only when the user explicitly allows public display and an administrator approves the submission.
               </p>
             </div>
 
-            <div
-              className="
-                mt-12
-                overflow-hidden
-              "
-            >
+            <div className="mt-12 overflow-hidden">
               {reviews.length > 0
                 ? (
-                  <div
-                    className="
-                      mirrortrace-review-stage
-                    "
-                  >
-                    <div
-                      className="
-                        mirrortrace-review-track
-                      "
-                    >
+                  <div className="mirrortrace-review-stage">
+                    <div className="mirrortrace-review-track">
                       {reviewLoop.map(
                         (
                           review,
                           index
                         ) => (
                           <article
-                            key={`
-                              ${review.id}-${index}
-                            `}
-                            className="
-                              mirrortrace-review-card
-                            "
+                            key={`${review.id}-${index}`}
+                            className="mirrortrace-review-card"
                           >
-                            <div
-                              className="
-                                text-xl
-                                tracking-wider
-                                text-orange-400
-                              "
-                            >
+                            <div className="text-xl tracking-wider text-orange-400">
                               {
-                                'â˜…'.repeat(
+                                '★'.repeat(
                                   Math.max(
                                     1,
                                     Math.min(
@@ -2021,49 +1555,16 @@ export const AuthView:
                               }
                             </div>
 
-                            <p
-                              className="
-                                mt-5
-                                min-h-[110px]
-                                text-base
-                                leading-7
-                                text-stone-300
-                              "
-                            >
-                              {
-                                review.reviewText
-                              }
+                            <p className="mt-5 min-h-[110px] text-base leading-7 text-stone-300">
+                              {review.reviewText}
                             </p>
 
-                            <div
-                              className="
-                                mt-6
-                                flex
-                                items-center
-                                justify-between
-                                border-t
-                                border-white/10
-                                pt-4
-                              "
-                            >
-                              <span
-                                className="
-                                  text-xs
-                                  text-stone-400
-                                "
-                              >
+                            <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-4">
+                              <span className="text-xs text-stone-400">
                                 MirrorTrace user
                               </span>
 
-                              <span
-                                className="
-                                  text-[10px]
-                                  font-semibold
-                                  uppercase
-                                  tracking-wide
-                                  text-emerald-300
-                                "
-                              >
+                              <span className="text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
                                 Approved
                               </span>
                             </div>
@@ -2074,102 +1575,31 @@ export const AuthView:
                   </div>
                 )
                 : (
-                  <div
-                    className="
-                      mx-auto
-                      max-w-2xl
-                      px-4
-                      sm:px-6
-                    "
-                  >
-                    <div
-                      className="
-                        rounded-[28px]
-                        border
-                        border-dashed
-                        border-white/15
-                        bg-black/30
-                        p-8
-                        text-center
-                      "
-                    >
-                      <Star
-                        className="
-                          mx-auto
-                          h-5
-                          w-5
-                          text-amber-300
-                        "
-                      />
+                  <div className="mx-auto max-w-xl">
+                    <div className="mirrortrace-review-card p-8 text-center">
+                      <Star className="mx-auto h-5 w-5 text-amber-300" />
 
-                      <div
-                        className="
-                          mt-3
-                          text-sm
-                          font-semibold
-                          text-white
-                        "
-                      >
+                      <div className="mt-3 text-sm font-semibold text-white">
                         No public reviews yet.
                       </div>
 
-                      <p
-                        className="
-                          mt-2
-                          text-xs
-                          leading-6
-                          text-stone-300
-                        "
-                      >
-                        The first review will
-                        appear only after
-                        explicit public consent
-                        and admin approval.
+                      <p className="mt-2 text-xs leading-6 text-stone-300">
+                        The first review will appear only after explicit public consent and admin approval.
                       </p>
                     </div>
                   </div>
                 )}
             </div>
 
-            <div
-              className="
-                mt-12
-                text-center
-              "
-            >
+            <div className="mt-12 text-center">
               <button
                 type="button"
-                onClick={
-                  handleSignIn
-                }
-                className="
-                  inline-flex
-                  items-center
-                  gap-3
-                  rounded-full
-                  border
-                  border-white/10
-                  bg-black/75
-                  px-6
-                  py-3
-                  text-sm
-                  font-semibold
-                  text-white
-                  shadow-xl
-                  transition
-                  hover:bg-black/90
-                "
+                onClick={handleSignIn}
+                className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/75 px-6 py-3 text-sm font-semibold text-white shadow-xl transition hover:bg-black/90"
               >
                 <GoogleIcon />
-
                 Start reflecting
-
-                <ArrowRight
-                  className="
-                    h-4
-                    w-4
-                  "
-                />
+                <ArrowRight className="h-4 w-4" />
               </button>
             </div>
           </section>
@@ -2177,4 +1607,3 @@ export const AuthView:
       </div>
     );
   };
-
