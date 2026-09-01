@@ -28,12 +28,18 @@ import {
 } from '../lib/api.ts';
 
 import {
+  getAiGenerationError,
+} from '../lib/aiError.ts';
+
+import {
   ThoughtSnapshotCard,
 } from './ThoughtSnapshotCard.tsx';
 
 import {
   ThoughtDiffCard,
 } from './ThoughtDiffCard.tsx';
+
+import YearInReflection from './YearInReflection.tsx';
 
 import type {
   JournalEntry,
@@ -56,8 +62,7 @@ interface JournalListProps {
     | null;
 
   /*
-   * New:
-   * tells App.tsx that persisted Firestore
+   * Tells App.tsx that persisted Firestore
    * state changed.
    */
   onDataChanged?: () => void;
@@ -139,6 +144,16 @@ export const JournalList:
       useState<string | null>(
         null
       );
+
+    const [
+      startDate,
+      setStartDate,
+    ] = useState('');
+
+    const [
+      endDate,
+      setEndDate,
+    ] = useState('');
 
     const [
       deletingId,
@@ -420,9 +435,10 @@ export const JournalList:
           }
         } catch (err: unknown) {
           const message =
-            (err as Error)
-              ?.message ||
-            'Could not generate snapshot proposal.';
+            getAiGenerationError(
+              err,
+              'Could not generate snapshot proposal.'
+            );
 
           setProposalErrorsByEntryId(
             (previous) => ({
@@ -539,8 +555,16 @@ export const JournalList:
 
           /*
            * Snapshot itself is already valid and persisted.
-           * Reload History anyway.
+           * A temporary AI outage must never invalidate the saved snapshot.
            */
+          console.info(
+            '[MirrorTrace] Thought Diff temporarily unavailable:',
+            getAiGenerationError(
+              err,
+              'Thought Diff generation is temporarily unavailable.'
+            )
+          );
+
           await loadData();
         } finally {
           /*
@@ -608,7 +632,7 @@ export const JournalList:
     }
 
     /*
-     * Search/tag filters.
+     * Search / topic / date / approved snapshot filters.
      */
     const allTags =
       Array.from(
@@ -619,7 +643,17 @@ export const JournalList:
               []
           )
         )
-      ).filter(Boolean);
+      )
+        .filter(Boolean)
+        .sort(
+          (
+            left,
+            right
+          ) =>
+            left.localeCompare(
+              right
+            )
+        );
 
     const filteredEntries =
       entries.filter(
@@ -657,6 +691,50 @@ export const JournalList:
               selectedTag
             );
 
+          const createdAt =
+            new Date(
+              entry.createdAt
+            );
+
+          const hasValidDate =
+            !Number.isNaN(
+              createdAt.getTime()
+            );
+
+          let matchesStartDate =
+            true;
+
+          if (
+            startDate &&
+            hasValidDate
+          ) {
+            const start =
+              new Date(
+                `${startDate}T00:00:00`
+              );
+
+            matchesStartDate =
+              createdAt >=
+              start;
+          }
+
+          let matchesEndDate =
+            true;
+
+          if (
+            endDate &&
+            hasValidDate
+          ) {
+            const end =
+              new Date(
+                `${endDate}T23:59:59.999`
+              );
+
+            matchesEndDate =
+              createdAt <=
+              end;
+          }
+
           const linkedSnapshot =
             snapshotMap.get(
               entry.id
@@ -678,10 +756,37 @@ export const JournalList:
           return (
             matchesSearch &&
             matchesTag &&
+            matchesStartDate &&
+            matchesEndDate &&
             matchesSnapshotFilter
           );
         }
       );
+
+    const hasActiveFilters =
+      Boolean(
+        searchTerm ||
+        selectedTag ||
+        startDate ||
+        endDate ||
+        showOnlyApprovedSnapshots
+      );
+
+    const clearAllFilters =
+      () => {
+        setSearchTerm('');
+        setSelectedTag(null);
+        setStartDate('');
+        setEndDate('');
+
+        if (
+          !filterApprovedSnapshots
+        ) {
+          setShowOnlyApprovedSnapshots(
+            false
+          );
+        }
+      };
 
     const formatDate =
       (isoString: string) => {
@@ -891,8 +996,8 @@ export const JournalList:
         {activeSubTab ===
           'reflections' && (
           <>
-            {/* Search */}
-            <div className="bg-white p-4 rounded-xl border border-stone-200 shadow-xs space-y-3">
+            {/* Search + Filter */}
+            <div className="bg-white p-4 rounded-xl border border-stone-200 shadow-xs space-y-4">
               <div className="flex items-center gap-3">
                 <div className="relative flex-1">
                   <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -925,6 +1030,7 @@ export const JournalList:
                         )
                       }
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+                      aria-label="Clear search"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -949,6 +1055,72 @@ export const JournalList:
                         : ''
                     }`}
                   />
+                </button>
+              </div>
+
+              {/* Date range */}
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto]">
+                <label className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-2">
+                  <span className="block text-[10px] font-semibold uppercase tracking-wide text-stone-500">
+                    From date
+                  </span>
+
+                  <input
+                    type="date"
+                    value={
+                      startDate
+                    }
+                    max={
+                      endDate ||
+                      undefined
+                    }
+                    onChange={(
+                      event
+                    ) =>
+                      setStartDate(
+                        event.target.value
+                      )
+                    }
+                    className="mt-1 w-full bg-transparent text-xs text-stone-800 outline-none"
+                  />
+                </label>
+
+                <label className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-2">
+                  <span className="block text-[10px] font-semibold uppercase tracking-wide text-stone-500">
+                    To date
+                  </span>
+
+                  <input
+                    type="date"
+                    value={
+                      endDate
+                    }
+                    min={
+                      startDate ||
+                      undefined
+                    }
+                    onChange={(
+                      event
+                    ) =>
+                      setEndDate(
+                        event.target.value
+                      )
+                    }
+                    className="mt-1 w-full bg-transparent text-xs text-stone-800 outline-none"
+                  />
+                </label>
+
+                <button
+                  type="button"
+                  onClick={
+                    clearAllFilters
+                  }
+                  disabled={
+                    !hasActiveFilters
+                  }
+                  className="rounded-xl border border-stone-200 bg-stone-100 px-4 py-2 text-xs font-semibold text-stone-700 transition-colors hover:bg-stone-200 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Clear filters
                 </button>
               </div>
 
@@ -1027,7 +1199,34 @@ export const JournalList:
                   </div>
                 )}
               </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-stone-200 pt-3 text-[11px] text-stone-500">
+                <span>
+                  Showing{' '}
+                  <strong className="text-stone-800">
+                    {filteredEntries.length}
+                  </strong>{' '}
+                  of{' '}
+                  <strong className="text-stone-800">
+                    {entries.length}
+                  </strong>{' '}
+                  reflections
+                </span>
+
+                <span>
+                  Search and filters use your already-loaded journal data.
+                </span>
+              </div>
             </div>
+
+            {/* YEAR IN REFLECTION */}
+            {!loading && entries.length > 0 && (
+              <YearInReflection
+                entries={entries}
+                snapshots={snapshots}
+                diffs={diffs}
+              />
+            )}
 
             {/* Error */}
             {error && (
@@ -1085,18 +1284,14 @@ export const JournalList:
 
                   <div className="space-y-1 max-w-sm mx-auto">
                     <h3 className="font-serif text-base font-semibold text-stone-900">
-                      {searchTerm ||
-                      selectedTag ||
-                      showOnlyApprovedSnapshots
+                      {hasActiveFilters
                         ? 'No matching reflections'
                         : 'No reflections saved yet'}
                     </h3>
 
                     <p className="text-xs text-stone-500 leading-relaxed">
-                      {searchTerm ||
-                      selectedTag ||
-                      showOnlyApprovedSnapshots
-                        ? 'Try adjusting your search or removing active filters.'
+                      {hasActiveFilters
+                        ? 'Try adjusting your search, topic, date range, or approved-memory filter.'
                         : 'Write your first reflection in Reflect & Chat to begin building your evidence-grounded trace.'}
                     </p>
                   </div>

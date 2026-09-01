@@ -1,73 +1,119 @@
-# MirrorTrace Target Audience Integration
+# MirrorTrace — Next Features Pack
 
-## What you will see
+This pack deliberately separates **safe standalone additions** from changes that should not be made blind against your current live notification backend.
 
-This does NOT create a separate student login or professional dashboard.
+## Important discovery
 
-It adds a public landing-page section called:
+Your current `JournalList.tsx` ALREADY implements:
 
-**Who MirrorTrace Is For**
+- keyword search against reflection content
+- keyword matching against topic tags
+- tag filtering
+- approved-snapshot filtering
 
-with four audience cards:
+So the original “Search + Filter” item is mostly finished already.
 
-1. Students & Early-Career Professionals
-2. Working Professionals
-3. Founders & Builders
-4. Knowledge Workers & Leaders
+The only obvious missing part from the proposed feature card is **date-range filtering**.
 
-Recommended landing order:
+The included `JournalHistoryFilters.tsx` adds:
 
-Hero → Features → Who MirrorTrace Is For → Security → Reviews
+- keyword search
+- topic dropdown
+- from-date
+- to-date
+- clear filters
+- a reusable `journalEntryMatchesFilters()` helper
 
-## Install
+No Gemini call and no new Firestore query are required.
 
-Copy this package into the MirrorTrace project root.
+## Files
 
-Then run:
+### `src/components/JournalHistoryFilters.tsx`
 
-```powershell
-node .\scripts\apply-target-audience.mjs
-npm run lint
-npm run build
-npm run dev
-```
+Full filter UI + pure filtering helper.
 
-Open:
+To integrate it into the current JournalList:
 
-```text
-http://localhost:3000
-```
+1. Import:
+   `JournalHistoryFilters`, `journalEntryMatchesFilters`, and `JournalHistoryFilterState`.
+2. Replace separate `searchTerm` / `selectedTag` state with one `filters` state, or keep your current state and map it into the component.
+3. Build `availableTags` from the existing `allTags`.
+4. Apply `journalEntryMatchesFilters(entry, filters)` inside your existing `filteredEntries` filter.
+5. Render the component where the current Search card is.
 
-Scroll below the Features section or use the **Who it's for** navigation item.
+Because your current JournalList already contains working snapshot/diff/delete logic, do NOT replace the entire file just to add a date filter.
 
-## What this changes
+### `src/components/YearInReflection.tsx`
 
-- adds `src/components/TargetAudience.tsx`
-- updates `src/components/AuthView.tsx`
-- adds the audience section before Security
-- adds a navigation link when the expected desktop/mobile navigation markup is present
+A standalone factual annual summary.
 
-## What this does NOT change
+It uses existing:
+- JournalEntry[]
+- ThoughtSnapshot[]
+- ThoughtDiff[]
 
-- Firebase Authentication
-- Firestore
-- Gemini
-- Admin Control Room
-- authenticated Overview
-- Memory Governance
-- journal logic
-- Thought Snapshot / Thought Diff logic
-- existing CSS files
-- existing hero/video assets
+It computes:
+- reflection count
+- approved snapshot count
+- Thought Diff count
+- most active month
+- most revisited topic
 
-## What to build next
+No new AI inference.
 
-Recommended order:
+Recommended integration later:
+render it inside DashboardOverview with the same `entries`, `snapshots`, and `diffs` props already available there.
 
-1. Search + filter in Journal History
-2. Daily reflection reminder using existing notification infrastructure
-3. Production test / Cloud Run verification
-4. Optional Year in Reflection summary
-5. Calendar/timeline only if time remains
+### `scripts/productionVerify.ts`
 
-Do NOT create separate Student and Professional applications. The personas explain who benefits from the same MirrorTrace product.
+Automated non-destructive checks for:
+- required files
+- `.env` ignore
+- Firebase/Gemini env configuration
+- `/api/health`
+
+Run with:
+
+`npx tsx scripts/productionVerify.ts`
+
+## Daily reminder
+
+Do NOT paste a new scheduler implementation yet.
+
+Your repository already contains:
+- notificationService.ts
+- notificationRoutes.ts
+- emailService.ts
+- perspectiveWatchProcessor.ts
+- PushNotificationSettings.tsx
+
+The daily reminder must reuse the exact existing opt-in fields and exact push/email functions. A separate implementation that guesses those collection names or preference fields can accidentally send notifications to users who did not opt in.
+
+Before implementing the daily reminder, use the current authoritative contents of:
+
+- server/notificationService.ts
+- server/emailService.ts
+- server/perspectiveWatchProcessor.ts
+- server/notificationRoutes.ts
+- src/components/PushNotificationSettings.tsx
+
+Then add one daily processor using those exact functions.
+
+## Recommended order now
+
+1. Date range addition to existing Journal History filters
+2. Run lint + build
+3. Production verification
+4. Daily reminder after exact notification APIs are confirmed
+5. Year in Reflection
+6. Calendar/timeline only if everything above is stable
+
+## Verification
+
+`npm run lint`
+
+`npm run build`
+
+`npm run dev`
+
+`npx tsx scripts/productionVerify.ts`
