@@ -913,5 +913,5 @@ export default function ReflectionRoomLauncher() {
         </section>
       </div>
     </div>
-  );
+  )
 }
