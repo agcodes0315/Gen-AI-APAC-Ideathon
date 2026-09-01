@@ -67,6 +67,7 @@ import type {
 } from './types.ts';
 
 import './styles/mirrortrace-authenticated-black.css';
+import './styles/mirrortrace-scroll-performance.css';
 import './styles/mirrortrace-overview-hero-black50.css';
 
 export type MainTab =
