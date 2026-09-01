@@ -44,6 +44,7 @@ import {
 } from 'motion/react';
 
 import ScrollArcCard from './ScrollArcCard.tsx';
+import TargetAudience from './TargetAudience.tsx';
 
 import {
   signInWithGoogle,
@@ -1706,6 +1707,10 @@ export const AuthView:
               </div>
             </div>
           </section>
+
+          <TargetAudience />
+
+
 
           <section
             id="security"

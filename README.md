@@ -39,6 +39,65 @@ MirrorTrace is useful for:
 - Consent-based public reviews
 - Admin Control Room with RBAC and audit visibility
 
+## Who Is MirrorTrace For?
+
+MirrorTrace is designed for people whose decisions, beliefs, and priorities evolve over time.
+
+### Students & Early-Career Professionals
+
+Track how your thinking changes around:
+
+- career choices
+- internships
+- higher education
+- MBA / MS decisions
+- skill development
+- professional direction
+
+### Working Professionals
+
+Reflect on:
+
+- career transitions
+- leadership
+- workplace decisions
+- professional priorities
+- long-term goals
+
+### Founders & Builders
+
+Revisit:
+
+- product assumptions
+- strategic decisions
+- customer hypotheses
+- pivots
+- lessons learned
+
+### Managers & Knowledge Workers
+
+Trace how your perspective changes around:
+
+- leadership
+- team processes
+- complex decisions
+- hypotheses
+- priorities
+
+MirrorTrace is not simply a journal archive.
+
+It is designed for moments where someone eventually asks:
+
+> “What did I used to think about this, what do I think now, and why did it change?”
+
+Thought Snapshots provide user-approved representations of a position.
+
+Thought Diffs compare those positions across time.
+
+Provenance connects each comparison back to the original authenticated reflections.
+
+The result is a private, evidence-backed history of how someone's thinking evolved.
+
 ## Tech Stack
 
 | Layer | Technology |
