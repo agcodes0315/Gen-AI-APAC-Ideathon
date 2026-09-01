@@ -51,6 +51,8 @@ import ProductReviews from './components/ProductReviews.tsx';
 
 import AdminPanelLauncher from './components/AdminPanelLauncher.tsx';
 
+import ReflectionRoomLauncher from './components/ReflectionRoomLauncher.tsx';
+
 import {
   fetchJournalEntries,
   fetchThoughtSnapshots,
@@ -693,6 +695,7 @@ export default function App() {
         </main>
       </div>
 
+      <ReflectionRoomLauncher />
       <AdminPanelLauncher />
     </div>
   );

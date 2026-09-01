@@ -1,0 +1,14 @@
+/*
+MirrorRoom uses the Firebase Admin SDK through authenticated server routes.
+
+Recommended Firestore rule:
+deny direct client access to the collaborative room collections.
+
+Add this block BEFORE the final catch-all deny rule in firestore.rules:
+
+match /mirrorRooms/{roomId}/{document=**} {
+  allow read, write: if false;
+}
+
+This prevents clients from bypassing the server-side consent and membership checks.
+*/
