@@ -1,21 +1,47 @@
-# MirrorRoom Activity — final dark tint fix
+# MirrorTrace Reflect & Chat — Final No-Blue Tint Fix
 
 Replace exactly:
 
-src/components/AdminMirrorRoomsPanel.tsx
+```text
+src/App.tsx
+src/styles/mirrortrace-reflect-final-tints.css
+```
 
-This version removes the `mirrortrace-admin-surface` class from this panel so
-existing admin CSS cannot override its background.
+This file is imported LAST by App.tsx so it has final visual authority.
 
-The whole section now uses an explicit:
+Exact requested structure:
 
-rgba(0, 0, 0, 0.86)
+```text
+LEFT Compose Reflection
+┌──────────────────────────────┐
+│ OUTER = black 0.70           │
+│  ┌────────────────────────┐  │
+│  │ INNER = black 0.40     │  │
+│  └────────────────────────┘  │
+└──────────────────────────────┘
 
-background, with darker inner counters and table surfaces.
+RIGHT Reflective Brainstorm
+┌──────────────────────────────┐
+│ OUTER = black 0.70           │
+│ header = outer black 0.70    │
+│  ┌────────────────────────┐  │
+│  │ INNER = black 0.40     │  │
+│  └────────────────────────┘  │
+│ footer = outer black 0.70    │
+└──────────────────────────────┘
+```
+
+No blue/navy backgrounds are introduced.
 
 After replacing:
 
+```powershell
 Remove-Item -Recurse -Force .\node_modules\.vite -ErrorAction SilentlyContinue
 npm run dev
+```
 
-Then hard refresh with Ctrl+Shift+R.
+Then hard refresh:
+
+```text
+Ctrl + Shift + R
+```

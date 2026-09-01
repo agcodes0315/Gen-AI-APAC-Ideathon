@@ -1,0 +1,353 @@
+/* ============================================================
+   MIRRORTRACE — REFLECT & CHAT FINAL TINT AUTHORITY
+
+   EXACT visual model requested:
+
+   LEFT — Compose Reflection
+   - OUTER card:  rgba(0, 0, 0, 0.70)
+   - INNER textarea: rgba(0, 0, 0, 0.40)
+
+   RIGHT — Reflective Brainstorm Companion
+   - OUTER shell/header/footer: rgba(0, 0, 0, 0.70)
+   - INNER conversation area: rgba(0, 0, 0, 0.40)
+
+   NO BLUE / NAVY backgrounds.
+
+   This file must be imported LAST by App.tsx.
+   The selectors are intentionally highly specific and use !important
+   so older authenticated-page styles cannot recolor these two blocks.
+   ============================================================ */
+
+:root {
+  --mt-reflect-outer: rgba(0, 0, 0, 0.70);
+  --mt-reflect-inner: rgba(0, 0, 0, 0.40);
+  --mt-reflect-border: rgba(255, 255, 255, 0.15);
+  --mt-reflect-border-soft: rgba(255, 255, 255, 0.10);
+}
+
+
+/* ============================================================
+   LEFT: COMPOSE REFLECTION — OUTER
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-compose-column
+> .space-y-4
+> div:first-child,
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-compose-column
+> .space-y-4
+> .bg-white.rounded-xl.border,
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-compose-column
+.bg-white.rounded-xl.border {
+  background: var(--mt-reflect-outer) !important;
+  background-color: var(--mt-reflect-outer) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-reflect-border) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.035),
+    0 14px 34px rgba(0,0,0,0.20) !important;
+}
+
+
+/* ============================================================
+   LEFT: COMPOSE REFLECTION — INNER
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+#journal-input-area {
+  background: var(--mt-reflect-inner) !important;
+  background-color: var(--mt-reflect-inner) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+
+  border-color: var(--mt-reflect-border) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  box-shadow: none !important;
+}
+
+
+/* Tag input: black only, never navy. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+#tag-input-field {
+  background: rgba(0, 0, 0, 0.46) !important;
+  background-color: rgba(0, 0, 0, 0.46) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+
+  border-color: var(--mt-reflect-border-soft) !important;
+}
+
+
+/* Private Session button: remove any blue/navy fill. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-compose-column
+button[class*="bg-stone-"],
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-compose-column
+button[class*="bg-slate-"],
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-compose-column
+button[class*="bg-blue-"] {
+  background: rgba(0, 0, 0, 0.52) !important;
+  background-color: rgba(0, 0, 0, 0.52) !important;
+  background-image: none !important;
+}
+
+
+/* ============================================================
+   RIGHT: BRAINSTORM — OUTER SHELL
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-shell {
+  background: var(--mt-reflect-outer) !important;
+  background-color: var(--mt-reflect-outer) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-reflect-border) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.035),
+    0 14px 34px rgba(0,0,0,0.20) !important;
+}
+
+
+/* Right header = part of the OUTER dark block. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-header {
+  background: var(--mt-reflect-outer) !important;
+  background-color: var(--mt-reflect-outer) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-reflect-border-soft) !important;
+}
+
+
+/* Right footer = part of the OUTER dark block. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-footer,
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-tags {
+  background: var(--mt-reflect-outer) !important;
+  background-color: var(--mt-reflect-outer) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-reflect-border-soft) !important;
+}
+
+
+/* ============================================================
+   RIGHT: BRAINSTORM — INNER CONVERSATION AREA
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-body {
+  background: var(--mt-reflect-inner) !important;
+  background-color: var(--mt-reflect-inner) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-reflect-border-soft) !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  box-shadow: none !important;
+}
+
+
+/* Right composer input uses the same lighter INNER black family. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-input {
+  background: var(--mt-reflect-inner) !important;
+  background-color: var(--mt-reflect-inner) !important;
+  background-image: none !important;
+
+  color: #ffffff !important;
+
+  border-color: var(--mt-reflect-border) !important;
+}
+
+
+/* ============================================================
+   HARD NO-BLUE OVERRIDE — RIGHT PANEL
+
+   Any old blue/navy/surface utility inside the Brainstorm component
+   becomes transparent black instead of blue.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+[class*="bg-blue-"],
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+[class*="bg-indigo-"],
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+[class*="bg-slate-"],
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+[class*="bg-gray-"],
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+[class*="bg-stone-"] {
+  background-image: none !important;
+}
+
+
+/* Header must always remain dark black even if old utility classes exist. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-header[class*="bg-"],
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-footer[class*="bg-"] {
+  background: var(--mt-reflect-outer) !important;
+  background-color: var(--mt-reflect-outer) !important;
+  background-image: none !important;
+}
+
+
+/* ============================================================
+   SMALL INNER ELEMENTS
+   All remain neutral BLACK — never blue.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-icon,
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-empty-icon,
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-user-icon {
+  background: rgba(0, 0, 0, 0.52) !important;
+  background-color: rgba(0, 0, 0, 0.52) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-reflect-border-soft) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-message-user {
+  background: rgba(0, 0, 0, 0.64) !important;
+  background-color: rgba(0, 0, 0, 0.64) !important;
+  background-image: none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-message-model,
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-loading {
+  background: rgba(0, 0, 0, 0.48) !important;
+  background-color: rgba(0, 0, 0, 0.48) !important;
+  background-image: none !important;
+
+  border-color: var(--mt-reflect-border-soft) !important;
+}
+
+
+/* ============================================================
+   PLACEHOLDERS
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+#journal-input-area::placeholder,
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-input::placeholder {
+  color: rgba(225, 231, 236, 0.62) !important;
+}

@@ -69,6 +69,7 @@ import type {
 import './styles/mirrortrace-authenticated-black.css';
 import './styles/mirrortrace-scroll-performance.css';
 import './styles/mirrortrace-overview-hero-black50.css';
+import './styles/mirrortrace-reflect-final-tints.css';
 
 export type MainTab =
   | 'overview'
