@@ -64,6 +64,9 @@ export default function ReflectionRoomLauncher() {
   const [error, setError] =
     useState<string | null>(null);
 
+  const [copied, setCopied] =
+    useState(false);
+
   const [title, setTitle] =
     useState('');
 
@@ -159,6 +162,7 @@ export default function ReflectionRoomLauncher() {
 
       setBusy(true);
       setError(null);
+      setCopied(false);
 
       try {
         const nextRoom =
@@ -203,6 +207,7 @@ export default function ReflectionRoomLauncher() {
 
       setBusy(true);
       setError(null);
+      setCopied(false);
 
       try {
         const nextRoom =
@@ -353,6 +358,32 @@ export default function ReflectionRoomLauncher() {
       }
     };
 
+  const copyInviteLink =
+    async () => {
+      if (!inviteUrl) return;
+
+      setError(null);
+
+      try {
+        await navigator.clipboard.writeText(
+          inviteUrl
+        );
+
+        setCopied(true);
+
+        window.setTimeout(
+          () => {
+            setCopied(false);
+          },
+          2000
+        );
+      } catch {
+        setError(
+          'Could not copy the invite link.'
+        );
+      }
+    };
+
   const closeRoom =
     async () => {
       if (!room) return;
@@ -365,7 +396,15 @@ export default function ReflectionRoomLauncher() {
           room.id
         );
 
-        await refresh();
+        setRoom(null);
+        setParticipants([]);
+        setContributions([]);
+        setSummary(null);
+        setDraft('');
+        setTakeaway('');
+        setCopied(false);
+        setView('home');
+        setOpen(false);
       } catch (caught) {
         setError(
           caught instanceof Error
@@ -666,14 +705,14 @@ export default function ReflectionRoomLauncher() {
                   <button
                     type="button"
                     onClick={() =>
-                      void navigator.clipboard.writeText(
-                        inviteUrl
-                      )
+                      void copyInviteLink()
                     }
                     className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold"
                   >
                     <Copy className="h-3.5 w-3.5" />
-                    Copy invite link
+                    {copied
+                      ? 'Copied!'
+                      : 'Copy invite link'}
                   </button>
 
                   <button
@@ -688,10 +727,11 @@ export default function ReflectionRoomLauncher() {
 
                   <button
                     type="button"
+                    disabled={busy}
                     onClick={() =>
                       void closeRoom()
                     }
-                    className="rounded-xl border border-red-300/20 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-200"
+                    className="rounded-xl border border-red-300/20 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-200 disabled:opacity-40"
                   >
                     Close room
                   </button>
