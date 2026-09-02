@@ -11,19 +11,6 @@
 
   --mt-feature-card-size:
     clamp(285px, 24vw, 350px);
-/* ============================================================
-   MIRRORTRACE — PUBLIC LANDING + FEATURE MOTION
-   File: src/styles/mirrortrace-public.css
-
-   Only public / signed-out styles live here.
-   ============================================================ */
-
-:root {
-  --mt-landing-shared-image:
-    url("/hero/mirrortrace-poster.jpeg");
-
-  --mt-feature-card-size:
-    clamp(285px, 24vw, 350px);
 
   --mt-feature-card-bg:
     linear-gradient(
@@ -39,7 +26,7 @@
     #ffffff;
 
   --mt-feature-card-copy:
-    #d4dde4;
+    #eef3f6;
 }
 
 html {
@@ -565,121 +552,591 @@ span:not([class*="text-"]) {
   }
 }
 
-  --mt-feature-card-bg:
-    linear-gradient(
-      145deg,
-      rgba(6, 12, 18, 0.76),
-      rgba(11, 19, 25, 0.68)
-    );
+/* ============================================================
+   MIRRORTRACE — FINAL PUBLIC READABILITY + BLACK SURFACES
+   Keeps the current public layout/background image.
+   ============================================================ */
 
-  --mt-feature-card-border:
-    rgba(231, 238, 243, 0.16);
+.mirrortrace-auth-page {
+  --mt-public-deep:
+    rgba(0, 0, 0, 0.90);
 
-  --mt-feature-card-text:
-    #ffffff;
+  --mt-public-soft:
+    rgba(0, 0, 0, 0.82);
 
-  --mt-feature-card-copy:
-    #d4dde4;
+  --mt-public-copy:
+    rgba(248, 250, 252, 0.92);
+
+  --mt-public-muted:
+    rgba(232, 238, 243, 0.80);
 }
 
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 88px;
-}
-
-body {
-  overscroll-behavior-y: auto;
-}
-
-/* Shared public background after hero. */
-.mirrortrace-feature-section,
-#security,
-.mirrortrace-security-clean,
-#reviews,
-.mirrortrace-reviews-clean,
+/* Public feature/security/review cards use the same two-black system. */
 .mirrortrace-auth-page
-.mirrortrace-section-glass {
+:where(
+  .mirrortrace-feature-section .mirrortrace-scroll-card,
+  #security article,
+  #security .mirrortrace-security-card,
+  #reviews .mirrortrace-review-card
+) {
+  background:
+    var(--mt-public-soft) !important;
+
+  background-color:
+    var(--mt-public-soft) !important;
+
   background-image:
-    linear-gradient(
-      rgba(7, 12, 17, 0.62),
-      rgba(7, 12, 17, 0.72)
-    ),
-    var(--mt-landing-shared-image) !important;
+    none !important;
 
-  background-size:
-    cover !important;
-
-  background-position:
-    center center !important;
-
-  background-repeat:
-    no-repeat !important;
-
-  background-attachment:
-    scroll !important;
+  border-color:
+    rgba(255,255,255,0.15) !important;
 }
 
-.mirrortrace-feature-section::before,
-.mirrortrace-feature-section::after,
-#security::before,
-#security::after,
-#reviews::before,
-#reviews::after {
+/* Larger public section headings without touching the hero/video title. */
+.mirrortrace-auth-tail
+:where(
+  .mirrortrace-feature-section,
+  .mirrortrace-security-clean,
+  .mirrortrace-reviews-clean,
+  #features,
+  #security,
+  #reviews
+)
+h2 {
+  color:
+    #ffffff !important;
+
+  font-size:
+    clamp(2.15rem, 4vw, 4rem) !important;
+
+  font-weight:
+    700 !important;
+
+  line-height:
+    1.05 !important;
+
+  letter-spacing:
+    -0.025em !important;
+}
+
+/* Clearer body copy throughout the public tail. */
+.mirrortrace-auth-tail
+:where(
+  p,
+  li
+) {
+  color:
+    var(--mt-public-copy) !important;
+
+  font-size:
+    15px;
+
+  line-height:
+    1.62;
+}
+
+.mirrortrace-auth-tail
+:where(
+  small,
+  .text-xs,
+  .text-sm,
+  .mirrortrace-browse-hint
+) {
+  color:
+    var(--mt-public-muted) !important;
+}
+
+/* Feature-card titles and copy. */
+.mirrortrace-feature-section
+.mirrortrace-scroll-card
+:where(
+  h3,
+  h4,
+  strong
+) {
+  color:
+    #ffffff !important;
+
+  font-size:
+    1.12rem;
+
+  line-height:
+    1.3;
+}
+
+.mirrortrace-feature-section
+.mirrortrace-scroll-card
+p {
+  color:
+    var(--mt-public-copy) !important;
+
+  font-size:
+    15px;
+
+  line-height:
+    1.58;
+}
+
+/* Arrow controls match the deeper black tone. */
+.mirrortrace-lane-arrow {
+  background:
+    var(--mt-public-deep) !important;
+
+  background-color:
+    var(--mt-public-deep) !important;
+}
+
+@media (max-width: 760px) {
+  .mirrortrace-auth-tail
+  :where(
+    .mirrortrace-feature-section,
+    .mirrortrace-security-clean,
+    .mirrortrace-reviews-clean,
+    #features,
+    #security,
+    #reviews
+  )
+  h2 {
+    font-size:
+      clamp(2rem, 10vw, 3rem) !important;
+  }
+}
+
+/* ============================================================
+   MIRRORTRACE — PUBLIC TYPOGRAPHY CONSISTENCY
+   Ranade-style sans-serif fallback stack.
+   Existing public backgrounds/layout remain untouched.
+   ============================================================ */
+
+.mirrortrace-auth-page {
+  font-family:
+    "Ranade",
+    "Avenir Next",
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
+}
+
+.mirrortrace-auth-page
+:where(
+  p,
+  li,
+  button,
+  input,
+  textarea,
+  select,
+  label
+) {
+  font-family:
+    inherit !important;
+}
+
+/* MIRRORTRACE_PUBLIC_BLUE_CARD_TINT_FINAL_START */
+
+/* ============================================================
+   PUBLIC / SIGN-IN PAGE — BLUE-TINT CARD SYSTEM
+
+   Requested:
+   - keep landing background unchanged
+   - tint cards like the provided blue example
+   - reduce the previous 0.70 tint by 0.50
+   - resulting blue card tint = rgba(16,41,75,0.20)
+   ============================================================ */
+
+:root {
+  --mt-public-card-blue:
+    rgba(16, 41, 75, 0.20);
+
+  --mt-public-card-blue-hover:
+    rgba(16, 41, 75, 0.28);
+
+  --mt-public-card-border:
+    rgba(198, 216, 235, 0.17);
+}
+
+/* Feature cards — BOTH rows. */
+.mirrortrace-auth-page
+.mirrortrace-feature-section
+.mirrortrace-scroll-card,
+.mirrortrace-auth-page
+.mirrortrace-arc-card {
+  background:
+    var(--mt-public-card-blue) !important;
+
+  background-color:
+    var(--mt-public-card-blue) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    var(--mt-public-card-border) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,0.055),
+    0 20px 46px
+      rgba(0,0,0,0.24) !important;
+}
+
+/* Who-it-is-for cards. */
+.mirrortrace-auth-page
+#who-its-for
+article {
+  background:
+    var(--mt-public-card-blue) !important;
+
+  background-color:
+    var(--mt-public-card-blue) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    var(--mt-public-card-border) !important;
+}
+
+/* Security — the FOUR cards shown in your screenshot.
+   AuthView uses .mt-glass / .mt-glass-cool for these. */
+.mirrortrace-auth-page
+#security
+.mt-glass,
+.mirrortrace-auth-page
+#security
+.mt-glass-cool,
+.mirrortrace-auth-page
+#security
+article,
+.mirrortrace-auth-page
+#security
+.mirrortrace-security-card {
+  background:
+    var(--mt-public-card-blue) !important;
+
+  background-color:
+    var(--mt-public-card-blue) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    var(--mt-public-card-border) !important;
+}
+
+/* Reviews, including the "No public reviews yet" empty card. */
+.mirrortrace-auth-page
+#reviews
+.mirrortrace-review-card,
+.mirrortrace-auth-page
+#reviews
+article,
+.mirrortrace-auth-page
+#reviews
+.rounded-\[28px\] {
+  background:
+    var(--mt-public-card-blue) !important;
+
+  background-color:
+    var(--mt-public-card-blue) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    var(--mt-public-card-border) !important;
+}
+
+/* Additional public purpose cards that currently use bg-black/30. */
+.mirrortrace-auth-page
+.mirrortrace-auth-tail
+.bg-black\/30,
+.mirrortrace-auth-page
+.mirrortrace-auth-tail
+.bg-black\/50 {
+  background:
+    var(--mt-public-card-blue) !important;
+
+  background-color:
+    var(--mt-public-card-blue) !important;
+
   background-image:
     none !important;
 }
 
-/* Public cards. */
-.mirrortrace-feature-section
-.mirrortrace-scroll-card,
-#security article,
-#security
-.mirrortrace-security-card,
-#reviews
-.mirrortrace-review-card {
+/* Hover remains subtle — not a bright-blue redesign. */
+.mirrortrace-auth-page
+:where(
+  .mirrortrace-scroll-card,
+  .mirrortrace-arc-card,
+  #who-its-for article,
+  #security .mt-glass,
+  #security .mt-glass-cool,
+  #reviews .mirrortrace-review-card
+):hover {
   background:
-    rgba(8, 14, 20, 0.58) !important;
+    var(--mt-public-card-blue-hover) !important;
 
-  border-color:
-    rgba(224, 234, 240, 0.14) !important;
-
-  backdrop-filter:
-    blur(3px)
-    saturate(105%) !important;
-
-  -webkit-backdrop-filter:
-    blur(3px)
-    saturate(105%) !important;
+  background-color:
+    var(--mt-public-card-blue-hover) !important;
 }
 
-/* Feature typography. */
-.mirrortrace-feature-section,
-.mirrortrace-feature-section * {
-  box-sizing:
-    border-box;
-}
-
-.mirrortrace-feature-section
-:is(
-  h1,
-  h2,
+/* Keep card text readable. */
+.mirrortrace-auth-page
+:where(
+  .mirrortrace-scroll-card,
+  .mirrortrace-arc-card,
+  #who-its-for article,
+  #security .mt-glass,
+  #security .mt-glass-cool,
+  #reviews .mirrortrace-review-card
+)
+:where(
   h3,
   h4,
-  strong,
-  .mirrortrace-lane-heading,
-  .mirrortrace-browse-hint
+  strong
 ) {
   color:
     #ffffff !important;
 }
 
-.mirrortrace-feature-section p {
+.mirrortrace-auth-page
+:where(
+  .mirrortrace-scroll-card,
+  .mirrortrace-arc-card,
+  #who-its-for article,
+  #security .mt-glass,
+  #security .mt-glass-cool,
+  #reviews .mirrortrace-review-card
+)
+p {
   color:
-    var(--mt-feature-card-copy) !important;
+    rgba(235, 242, 248, 0.84) !important;
 }
 
-.mirrortrace-feature-section
-.mirrortrace-lane-heading {
+
+/* ============================================================
+   TRACEBOT — PUBLIC GUIDE ASSISTANT
+   Fixed bottom-right and visible only while AuthView is active.
+   ============================================================ */
+
+.mirrortrace-guidebot {
+  position:
+    fixed;
+
+  right:
+    22px;
+
+  bottom:
+    22px;
+
+  z-index:
+    12000;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    flex-end;
+
+  gap:
+    10px;
+
+  max-width:
+    min(390px, calc(100vw - 28px));
+
+  font-family:
+    "Ranade",
+    "Avenir Next",
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+}
+
+.mirrortrace-guidebot-slogan {
+  position:
+    relative;
+
+  max-width:
+    320px;
+
+  padding:
+    11px 15px;
+
+  border:
+    1px solid
+    rgba(214, 228, 241, 0.16);
+
+  border-radius:
+    18px 18px 5px 18px;
+
+  background:
+    rgba(7, 15, 25, 0.92);
+
+  color:
+    rgba(248, 251, 253, 0.94);
+
+  box-shadow:
+    0 14px 36px
+    rgba(0,0,0,0.32);
+
+  font-size:
+    13px;
+
+  font-weight:
+    600;
+
+  line-height:
+    1.45;
+
+  animation:
+    mirrortrace-guidebot-slogan-in
+    520ms
+    ease
+    both;
+}
+
+@keyframes mirrortrace-guidebot-slogan-in {
+  from {
+    opacity:
+      0;
+
+    transform:
+      translateY(8px)
+      scale(0.97);
+  }
+
+  to {
+    opacity:
+      1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.mirrortrace-guidebot-launcher {
+  position:
+    relative;
+
+  width:
+    58px;
+
+  height:
+    58px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid
+    rgba(226, 237, 247, 0.16);
+
+  border-radius:
+    20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16,41,75,0.95),
+      rgba(4,11,19,0.96)
+    );
+
+  color:
+    #ffffff;
+
+  box-shadow:
+    0 18px 42px
+    rgba(0,0,0,0.38);
+
+  cursor:
+    pointer;
+
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.mirrortrace-guidebot-launcher:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(236, 197, 92, 0.52);
+
+  box-shadow:
+    0 22px 48px
+    rgba(0,0,0,0.44);
+}
+
+.mirrortrace-guidebot-launcher::after {
+  content:
+    "";
+
+  position:
+    absolute;
+
+  top:
+    7px;
+
+  right:
+    7px;
+
+  width:
+    8px;
+
+  height:
+    8px;
+
+  border-radius:
+    999px;
+
+  background:
+    #f6d34f;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(246,211,79,0.10);
+}
+
+.mirrortrace-guidebot-panel {
+  width:
+    min(390px, calc(100vw - 28px));
+
+  max-height:
+    min(650px, calc(100vh - 120px));
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgba(214,228,241,0.16);
+
+  border-radius:
+    24px;
+
+  background:
+    rgba(5, 12, 20, 0.97);
+
+  box-shadow:
+    0 24px 70px
+    rgba(0,0,0,0.48);
+
+  color:
+    #ffffff;
+}
+
+.mirrortrace-guidebot-header {
   display:
     flex;
 
@@ -690,276 +1147,36 @@ body {
     space-between;
 
   gap:
-    16px;
-
-  padding:
-    0
-    clamp(24px, 5vw, 76px)
     12px;
 
-  font-size:
-    12px;
-
-  font-weight:
-    800;
-
-  letter-spacing:
-    0.11em;
-
-  text-transform:
-    uppercase;
-}
-
-/* Feature rows. */
-.mirrortrace-lane-wrap {
-  position:
-    relative;
-
-  width:
-    100%;
-
-  overflow:
-    visible;
-}
-
-.mirrortrace-card-lane {
-  position:
-    relative;
-
-  width:
-    100%;
-
-  max-width:
-    100%;
-
-  overflow-x:
-    auto;
-
-  overflow-y:
-    visible;
-
-  scroll-behavior:
-    auto;
-
-  scroll-snap-type:
-    none;
-
-  scroll-padding-inline:
-    clamp(24px, 5vw, 76px);
-
-  -webkit-overflow-scrolling:
-    touch;
-
-  overscroll-behavior-x:
-    auto;
-
-  overscroll-behavior-y:
-    auto;
-
-  touch-action:
-    pan-y pinch-zoom;
-
   padding:
-    34px
-    clamp(24px, 5vw, 76px)
-    42px;
+    16px 17px;
 
-  scrollbar-width:
-    none;
+  border-bottom:
+    1px solid
+    rgba(255,255,255,0.10);
 
-  -ms-overflow-style:
-    none;
+  background:
+    rgba(16,41,75,0.30);
 }
 
-.mirrortrace-card-lane::-webkit-scrollbar {
-  display:
-    none;
-}
-
-.mirrortrace-scroll-row {
+.mirrortrace-guidebot-title {
   display:
     flex;
-
-  flex-flow:
-    row nowrap;
 
   align-items:
     center;
 
-  width:
-    max-content;
-
-  min-width:
-    max-content;
-
   gap:
-    clamp(18px, 2vw, 28px);
-
-  transform:
-    none !important;
+    10px;
 }
 
-/* Square feature cards. */
-.mirrortrace-arc-card,
-.mirrortrace-feature-section
-.mirrortrace-scroll-card {
-  position:
-    relative;
-
+.mirrortrace-guidebot-robot {
   width:
-    var(--mt-feature-card-size) !important;
-
-  min-width:
-    var(--mt-feature-card-size) !important;
-
-  max-width:
-    var(--mt-feature-card-size) !important;
+    36px;
 
   height:
-    var(--mt-feature-card-size) !important;
-
-  min-height:
-    var(--mt-feature-card-size) !important;
-
-  flex:
-    0 0
-    var(--mt-feature-card-size) !important;
-
-  display:
-    flex;
-
-  flex-direction:
-    column;
-
-  padding:
-    28px !important;
-
-  border:
-    1px solid
-    var(--mt-feature-card-border) !important;
-
-  border-radius:
-    28px !important;
-
-  background:
-    var(--mt-feature-card-bg) !important;
-
-  background-color:
-    rgba(7, 13, 19, 0.72) !important;
-
-  color:
-    var(--mt-feature-card-text) !important;
-
-  backdrop-filter:
-    none !important;
-
-  -webkit-backdrop-filter:
-    none !important;
-
-  box-shadow:
-    inset 0 1px 0
-      rgba(255,255,255,.05),
-    0 18px 42px
-      rgba(0,0,0,.24) !important;
-
-  transform-origin:
-    center center;
-
-  backface-visibility:
-    hidden;
-
-  -webkit-font-smoothing:
-    antialiased;
-
-  will-change:
-    auto !important;
-
-  touch-action:
-    pan-y pinch-zoom !important;
-}
-
-.mirrortrace-arc-card
-:is(
-  h1,
-  h2,
-  h3,
-  h4,
-  strong
-),
-.mirrortrace-feature-section
-.mirrortrace-scroll-card
-:is(
-  h1,
-  h2,
-  h3,
-  h4,
-  strong
-) {
-  color:
-    #ffffff !important;
-}
-
-.mirrortrace-arc-card p,
-.mirrortrace-feature-section
-.mirrortrace-scroll-card p {
-  color:
-    var(--mt-feature-card-copy) !important;
-}
-
-.mirrortrace-arc-card
-span:not([class*="text-"]),
-.mirrortrace-feature-section
-.mirrortrace-scroll-card
-span:not([class*="text-"]) {
-  color:
-    #e7edf2;
-}
-
-.mirrortrace-arc-card
-> :last-child,
-.mirrortrace-feature-section
-.mirrortrace-scroll-card
-> :last-child {
-  margin-top:
-    auto;
-
-  margin-bottom:
-    0;
-}
-
-.mt-hover-pop {
-  transition:
-    border-color 220ms ease,
-    box-shadow 220ms ease,
-    background-color 220ms ease;
-}
-
-.mt-hover-pop:hover {
-  border-color:
-    rgba(211, 148, 69, 0.40) !important;
-
-  box-shadow:
-    0 28px 58px
-      rgba(0, 0, 0, 0.32),
-    inset 0 1px 0
-      rgba(255, 255, 255, 0.08) !important;
-}
-
-.mirrortrace-lane-arrow {
-  position:
-    absolute;
-
-  top:
-    50%;
-
-  z-index:
-    30;
-
-  width:
-    44px;
-
-  height:
-    44px;
+    36px;
 
   display:
     grid;
@@ -967,93 +1184,301 @@ span:not([class*="text-"]) {
   place-items:
     center;
 
-  transform:
-    translateY(-50%);
+  border:
+    1px solid
+    rgba(246,211,79,0.26);
+
+  border-radius:
+    13px;
+
+  background:
+    rgba(246,211,79,0.09);
+
+  color:
+    #f6d34f;
+}
+
+.mirrortrace-guidebot-heading {
+  margin:
+    0;
+
+  font-family:
+    ui-serif,
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    18px;
+
+  font-weight:
+    700;
+}
+
+.mirrortrace-guidebot-subtitle {
+  margin-top:
+    2px;
+
+  color:
+    rgba(226,234,240,0.67);
+
+  font-size:
+    11px;
+}
+
+.mirrortrace-guidebot-close {
+  width:
+    34px;
+
+  height:
+    34px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
 
   border:
     1px solid
-    rgba(231, 238, 243, 0.15);
+    rgba(255,255,255,0.10);
 
   border-radius:
-    999px;
+    11px;
 
   background:
-    rgba(7, 13, 19, 0.84);
+    rgba(255,255,255,0.04);
 
   color:
-    #ffffff;
-
-  box-shadow:
-    0 10px 26px
-    rgba(0,0,0,.24);
+    rgba(255,255,255,0.78);
 
   cursor:
     pointer;
 }
 
-.mirrortrace-lane-arrow-left {
-  left:
-    clamp(8px, 1.2vw, 20px);
+.mirrortrace-guidebot-body {
+  max-height:
+    min(440px, calc(100vh - 300px));
+
+  overflow-y:
+    auto;
+
+  padding:
+    16px;
 }
 
-.mirrortrace-lane-arrow-right {
-  right:
-    clamp(8px, 1.2vw, 20px);
+.mirrortrace-guidebot-message {
+  margin-bottom:
+    11px;
+
+  padding:
+    11px 13px;
+
+  border-radius:
+    16px;
+
+  font-size:
+    13px;
+
+  line-height:
+    1.55;
 }
 
-.mirrortrace-auth-page,
-.mirrortrace-auth-tail {
-  background-attachment:
-    scroll !important;
+.mirrortrace-guidebot-message-bot {
+  margin-right:
+    34px;
+
+  border:
+    1px solid
+    rgba(255,255,255,0.09);
+
+  background:
+    rgba(16,41,75,0.24);
+
+  color:
+    rgba(245,249,252,0.90);
 }
 
-@media (max-width: 760px) {
-  :root {
-    --mt-feature-card-size:
-      min(82vw, 310px);
+.mirrortrace-guidebot-message-user {
+  margin-left:
+    34px;
+
+  background:
+    rgba(246,211,79,0.10);
+
+  color:
+    #fff8dd;
+
+  border:
+    1px solid
+    rgba(246,211,79,0.17);
+}
+
+.mirrortrace-guidebot-quick {
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    7px;
+
+  margin-top:
+    8px;
+}
+
+.mirrortrace-guidebot-quick button {
+  border:
+    1px solid
+    rgba(255,255,255,0.11);
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(255,255,255,0.045);
+
+  padding:
+    7px 10px;
+
+  color:
+    rgba(242,247,250,0.82);
+
+  font-size:
+    11px;
+
+  cursor:
+    pointer;
+}
+
+.mirrortrace-guidebot-quick button:hover {
+  border-color:
+    rgba(246,211,79,0.28);
+
+  color:
+    #ffffff;
+}
+
+.mirrortrace-guidebot-form {
+  display:
+    flex;
+
+  gap:
+    9px;
+
+  padding:
+    13px;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,0.10);
+}
+
+.mirrortrace-guidebot-input {
+  min-width:
+    0;
+
+  flex:
+    1;
+
+  border:
+    1px solid
+    rgba(255,255,255,0.12);
+
+  border-radius:
+    13px;
+
+  background:
+    rgba(0,0,0,0.46);
+
+  padding:
+    11px 12px;
+
+  color:
+    #ffffff;
+
+  font-size:
+    13px;
+
+  outline:
+    none;
+}
+
+.mirrortrace-guidebot-input::placeholder {
+  color:
+    rgba(226,234,240,0.48);
+}
+
+.mirrortrace-guidebot-input:focus {
+  border-color:
+    rgba(246,211,79,0.34);
+}
+
+.mirrortrace-guidebot-send {
+  width:
+    42px;
+
+  height:
+    42px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid
+    rgba(246,211,79,0.20);
+
+  border-radius:
+    13px;
+
+  background:
+    rgba(246,211,79,0.10);
+
+  color:
+    #f6d34f;
+
+  cursor:
+    pointer;
+}
+
+@media (max-width: 640px) {
+  .mirrortrace-guidebot {
+    right:
+      14px;
+
+    bottom:
+      14px;
   }
 
-  .mirrortrace-card-lane {
-    padding:
-      26px
-      18px
-      34px;
+  .mirrortrace-guidebot-slogan {
+    max-width:
+      270px;
   }
 
-  .mirrortrace-scroll-row {
-    gap:
-      16px;
-  }
+  .mirrortrace-guidebot-launcher {
+    width:
+      54px;
 
-  .mirrortrace-arc-card,
-  .mirrortrace-feature-section
-  .mirrortrace-scroll-card {
-    padding:
-      23px !important;
-
-    border-radius:
-      24px !important;
-  }
-
-  .mirrortrace-browse-hint {
-    display:
-      none;
+    height:
+      54px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior:
-      auto;
+  .mirrortrace-guidebot-slogan {
+    animation:
+      none;
   }
 
-  .mirrortrace-arc-card,
-  .mt-hover-pop,
-  .mt-hover-pop:hover {
-    transform:
-      none !important;
-
+  .mirrortrace-guidebot-launcher {
     transition:
-      none !important;
+      none;
   }
 }
+
+/* MIRRORTRACE_PUBLIC_BLUE_CARD_TINT_FINAL_END */
+

@@ -8,34 +8,34 @@
 
 :root {
   --mt-app-black-30:
-    rgba(0, 0, 0, 0.30);
+    rgba(0, 0, 0, 0.82);
 
   --mt-app-black-40:
-    rgba(0, 0, 0, 0.40);
+    rgba(0, 0, 0, 0.82);
 
   --mt-app-black-44:
-    rgba(0, 0, 0, 0.44);
+    rgba(0, 0, 0, 0.82);
 
   --mt-app-black-50:
-    rgba(0, 0, 0, 0.50);
+    rgba(0, 0, 0, 0.82);
 
   --mt-app-black-52:
-    rgba(0, 0, 0, 0.52);
+    rgba(0, 0, 0, 0.82);
 
   --mt-app-black-58:
-    rgba(0, 0, 0, 0.58);
+    rgba(0, 0, 0, 0.82);
 
   --mt-app-black-60:
-    rgba(0, 0, 0, 0.60);
+    rgba(0, 0, 0, 0.90);
 
   --mt-app-black-64:
-    rgba(0, 0, 0, 0.64);
+    rgba(0, 0, 0, 0.90);
 
   --mt-app-black-70:
-    rgba(0, 0, 0, 0.70);
+    rgba(0, 0, 0, 0.90);
 
   --mt-app-black-74:
-    rgba(0, 0, 0, 0.74);
+    rgba(0, 0, 0, 0.90);
 
   --mt-app-border:
     rgba(236, 242, 246, 0.15);
@@ -47,10 +47,10 @@
     #f8fafc;
 
   --mt-app-copy:
-    rgba(239, 244, 248, 0.80);
+    rgba(248, 250, 252, 0.92);
 
   --mt-app-muted:
-    rgba(222, 231, 238, 0.62);
+    rgba(232, 238, 243, 0.78);
 
   --mt-overview-accent:
     #d39445;
@@ -1062,10 +1062,10 @@ main
   select
 ) {
   background:
-    rgba(0,0,0,.46) !important;
+    rgba(0,0,0,.82) !important;
 
   background-color:
-    rgba(0,0,0,.46) !important;
+    rgba(0,0,0,.82) !important;
 
   color:
     #ffffff !important;
@@ -1192,7 +1192,7 @@ html body #root
     999px !important;
 
   background:
-    rgba(0,0,0,.76) !important;
+    rgba(0,0,0,.90) !important;
 
   color:
     #ffffff !important;
@@ -1440,3 +1440,1286 @@ html body #root
       .01ms !important;
   }
 }
+
+/* ============================================================
+   MIRRORTRACE — FINAL USER-DASHBOARD VISUAL AUTHORITY
+   Scope: authenticated USER pages + MirrorRoom only.
+   IMPORTANT: intentionally does NOT target .mirrortrace-admin-page
+   or .mirrortrace-admin-dashboard, so the original Admin UI above
+   remains exactly authoritative.
+   ============================================================ */
+
+html body #root .mirrortrace-app-shell {
+  --mt-user-surface-deep: rgba(0, 0, 0, 0.90);
+  --mt-user-surface-soft: rgba(0, 0, 0, 0.82);
+  --mt-user-surface-glass: rgba(0, 0, 0, 0.72);
+  --mt-user-blue-tint: rgba(10, 29, 55, 0.56);
+  --mt-user-text: #ffffff;
+  --mt-user-copy: rgba(248, 250, 252, 0.94);
+  --mt-user-muted: rgba(230, 237, 243, 0.82);
+
+  min-height: 100vh !important;
+
+  background:
+    linear-gradient(
+      var(--mt-user-blue-tint),
+      var(--mt-user-blue-tint)
+    ),
+    url("/hero/mirrortrace-poster.jpeg")
+      center top / cover
+      no-repeat !important;
+
+  background-color:
+    #08111d !important;
+
+  background-attachment:
+    scroll !important;
+
+  font-family:
+    "Ranade",
+    "Avenir Next",
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
+}
+
+/* Every signed-in user page shares the SAME app-shell image. */
+html body #root
+.mirrortrace-app-shell
+:where(
+  .mirrortrace-authenticated-main,
+  .mirrortrace-app-main,
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+) {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* ============================================================
+   USER-PAGE TYPOGRAPHY
+   Larger, high-contrast, Ranade-style sans serif.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+) {
+  font-family:
+    "Ranade",
+    "Avenir Next",
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
+
+  color:
+    var(--mt-user-text) !important;
+}
+
+/* Main page titles: Journal History / Reflective Space /
+   Memory / Customer Support / Feedback. */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+h1 {
+  color:
+    #ffffff !important;
+
+  font-family:
+    "Ranade",
+    "Avenir Next",
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
+
+  font-size:
+    clamp(2.75rem, 4.8vw, 4.85rem) !important;
+
+  font-weight:
+    750 !important;
+
+  line-height:
+    0.98 !important;
+
+  letter-spacing:
+    -0.045em !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+h2 {
+  color:
+    #ffffff !important;
+
+  font-size:
+    clamp(1.45rem, 2vw, 2.05rem) !important;
+
+  font-weight:
+    700 !important;
+
+  line-height:
+    1.15 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+h3 {
+  color:
+    #ffffff !important;
+
+  font-size:
+    clamp(1.08rem, 1.35vw, 1.32rem) !important;
+
+  font-weight:
+    700 !important;
+
+  line-height:
+    1.28 !important;
+}
+
+/* Readability: brighter text, slightly larger body copy. */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  p,
+  li,
+  td,
+  dd
+) {
+  color:
+    var(--mt-user-copy) !important;
+
+  font-size:
+    16px !important;
+
+  line-height:
+    1.62 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  label,
+  th,
+  small,
+  .text-xs,
+  .text-sm
+) {
+  color:
+    var(--mt-user-muted) !important;
+
+  line-height:
+    1.48 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  .text-stone-300,
+  .text-stone-400,
+  .text-stone-500,
+  .text-stone-600,
+  .text-gray-300,
+  .text-gray-400,
+  .text-gray-500,
+  .text-slate-300,
+  .text-slate-400,
+  .text-slate-500
+) {
+  color:
+    var(--mt-user-muted) !important;
+}
+
+/* Inputs remain extremely readable on the shared photo background. */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select
+) {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  color:
+    #ffffff !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.16) !important;
+
+  font-family:
+    inherit !important;
+
+  font-size:
+    16px !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  input,
+  textarea
+)::placeholder {
+  color:
+    rgba(236, 241, 245, 0.66) !important;
+}
+
+/* ============================================================
+   TWO-BLACK SURFACE SYSTEM FOR ALL USER PAGES
+   Deep outer surface = .90
+   Secondary inner surface = .82
+   ============================================================ */
+
+/* Major/outer sections. */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+)
+:where(
+  section.rounded-2xl.border,
+  section.rounded-3xl.border,
+  article.rounded-2xl.border,
+  article.rounded-3xl.border,
+  .mirrortrace-user-hero,
+  .mirrortrace-brainstorm-shell,
+  .mirrortrace-stat-card,
+  .mirrortrace-action-card,
+  .mt-diff-shell,
+  .mt-diff-header,
+  .mt-diff-evidence
+) {
+  background:
+    var(--mt-user-surface-deep) !important;
+
+  background-color:
+    var(--mt-user-surface-deep) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Ordinary inner cards. */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+)
+:where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-200,
+  .bg-gray-700,
+  .bg-gray-800,
+  .bg-gray-900,
+  .rounded-xl.border,
+  .mt-glass
+) {
+  background:
+    var(--mt-user-surface-soft) !important;
+
+  background-color:
+    var(--mt-user-surface-soft) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.13) !important;
+}
+
+/* Explicitly remove blue/navy fills from USER pages only. */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+[class*="bg-blue-"],
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+[class*="bg-slate-"] {
+  background:
+    var(--mt-user-surface-soft) !important;
+
+  background-color:
+    var(--mt-user-surface-soft) !important;
+
+  background-image:
+    none !important;
+}
+
+/* ============================================================
+   REFLECTIVE SPACE / BRAINSTORM
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  .mirrortrace-brainstorm-shell,
+  .mirrortrace-brainstorm-header,
+  .mirrortrace-brainstorm-footer,
+  .mirrortrace-brainstorm-tags
+) {
+  background:
+    var(--mt-user-surface-deep) !important;
+
+  background-color:
+    var(--mt-user-surface-deep) !important;
+
+  background-image:
+    none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  #journal-input-area,
+  #tag-input-field,
+  .mirrortrace-brainstorm-body,
+  .mirrortrace-brainstorm-input,
+  .mirrortrace-brainstorm-message-model,
+  .mirrortrace-brainstorm-message-user,
+  .mirrortrace-brainstorm-loading
+) {
+  background:
+    var(--mt-user-surface-soft) !important;
+
+  background-color:
+    var(--mt-user-surface-soft) !important;
+
+  background-image:
+    none !important;
+
+  color:
+    #ffffff !important;
+}
+
+/* ============================================================
+   MEMORY GOVERNANCE
+   Special glass: keep the blue/photo background slightly visible.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  > section:first-of-type,
+  .mirrortrace-memory-hero,
+  .mirrortrace-photo-panel,
+  section.rounded-2xl.border,
+  article.rounded-2xl.border
+) {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-200,
+  section.rounded-xl.border,
+  article.rounded-xl.border,
+  div.rounded-xl.border
+) {
+  background:
+    rgba(0, 0, 0, 0.72) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.72) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.12) !important;
+}
+
+/* ============================================================
+   THOUGHT DIFF — BLACK, NOT NAVY
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell {
+  background:
+    var(--mt-user-surface-deep) !important;
+
+  background-color:
+    var(--mt-user-surface-deep) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell
+:where(
+  .mt-diff-earlier,
+  .mt-diff-current,
+  .mt-diff-changed,
+  .mt-diff-stable,
+  .mt-diff-source-earlier,
+  .mt-diff-source-later
+) {
+  background:
+    var(--mt-user-surface-soft) !important;
+
+  background-color:
+    var(--mt-user-surface-soft) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell
+.mt-diff-current {
+  border-color:
+    rgba(211, 148, 69, 0.48) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell
+section.rounded-2xl.border.border-amber-200 {
+  background:
+    var(--mt-user-surface-deep) !important;
+
+  background-color:
+    var(--mt-user-surface-deep) !important;
+
+  background-image:
+    none !important;
+}
+
+/* ============================================================
+   MIRRORROOM
+   +2px minimum on body/interface text.
+   MirrorRoom h1 keeps its existing SIZE but receives a premium
+   high-contrast Didot/Bodoni-style serif stack.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+[class~="z-[12000]"][class~="bg-black/80"] {
+  font-family:
+    "Ranade",
+    "Avenir Next",
+    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
+    sans-serif !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+[class~="z-[12000]"][class~="bg-black/80"]
+section {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  color:
+    #ffffff !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+[class~="z-[12000]"][class~="bg-black/80"]
+h1 {
+  font-family:
+    Didot,
+    "Bodoni MT",
+    "Bodoni 72",
+    "Times New Roman",
+    serif !important;
+
+  /* Size deliberately unchanged. */
+  font-weight:
+    700 !important;
+
+  letter-spacing:
+    -0.035em !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+[class~="z-[12000]"][class~="bg-black/80"]
+.text-xs {
+  font-size:
+    14px !important;
+
+  line-height:
+    1.55 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+[class~="z-[12000]"][class~="bg-black/80"]
+.text-sm {
+  font-size:
+    16px !important;
+
+  line-height:
+    1.58 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+[class~="z-[12000]"][class~="bg-black/80"]
+:where(
+  h2,
+  h3
+) {
+  font-size:
+    1.35rem !important;
+
+  line-height:
+    1.25 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+[class~="z-[12000]"][class~="bg-black/80"]
+:where(
+  input,
+  textarea,
+  select,
+  button
+) {
+  font-family:
+    inherit !important;
+
+  font-size:
+    16px !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+[class~="z-[12000]"][class~="bg-black/80"]
+:where(
+  p,
+  label,
+  span
+):not(h1 *) {
+  line-height:
+    1.58;
+}
+
+/* MirrorRoom inner Create/Join cards. */
+html body #root
+.mirrortrace-app-shell
+[class~="z-[12000]"][class~="bg-black/80"]
+article {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+}
+
+/* Keep the green privacy boundary semantic, but improve readability. */
+html body #root
+.mirrortrace-app-shell
+[class~="z-[12000]"][class~="bg-black/80"]
+[class*="bg-emerald-400/5"] {
+  background:
+    rgba(5, 45, 37, 0.48) !important;
+
+  background-color:
+    rgba(5, 45, 37, 0.48) !important;
+}
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 760px) {
+  html body #root
+  .mirrortrace-app-shell
+  :is(
+    .mirrortrace-reflect-page,
+    .mirrortrace-history-page,
+    .mirrortrace-memory-page,
+    .mirrortrace-support-page,
+    .mirrortrace-feedback-page,
+    .mirrortrace-memory-governance
+  )
+  h1 {
+    font-size:
+      clamp(2.3rem, 12vw, 3.5rem) !important;
+  }
+
+  html body #root
+  .mirrortrace-app-shell
+  :is(
+    .mirrortrace-overview-page,
+    .mirrortrace-reflect-page,
+    .mirrortrace-history-page,
+    .mirrortrace-memory-page,
+    .mirrortrace-support-page,
+    .mirrortrace-feedback-page,
+    .mirrortrace-memory-governance
+  )
+  :where(
+    p,
+    li,
+    td,
+    dd
+  ) {
+    font-size:
+      15px !important;
+  }
+}
+
+/* MIRRORTRACE_DIRECT_FINAL_POLISH_START */
+
+/* ============================================================
+   MIRRORTRACE — DIRECT FINAL USER VISUAL POLISH
+   Scope: authenticated USER pages only.
+   Admin selectors are intentionally untouched.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. ONE FIXED, BLURRED POSTER + FULL BLUE HAZE
+   ------------------------------------------------------------ */
+
+html body #root
+.mirrortrace-app-shell {
+  position:
+    relative !important;
+
+  isolation:
+    isolate !important;
+
+  min-height:
+    100vh !important;
+
+  background:
+    #08111d !important;
+
+  background-image:
+    none !important;
+}
+
+/* Stable photo layer: viewport-sized, never page-height sized. */
+html body #root
+.mirrortrace-app-shell::before {
+  content:
+    "" !important;
+
+  position:
+    fixed !important;
+
+  inset:
+    -14px !important;
+
+  z-index:
+    -2 !important;
+
+  pointer-events:
+    none !important;
+
+  background:
+    url("/hero/mirrortrace-poster.jpeg")
+    center center / cover
+    no-repeat !important;
+
+  filter:
+    blur(7px) !important;
+
+  transform:
+    scale(1.025) translateZ(0) !important;
+
+  backface-visibility:
+    hidden !important;
+}
+
+/* Full authenticated blue haze requested. */
+html body #root
+.mirrortrace-app-shell::after {
+  content:
+    "" !important;
+
+  position:
+    fixed !important;
+
+  inset:
+    0 !important;
+
+  z-index:
+    -1 !important;
+
+  pointer-events:
+    none !important;
+
+  background:
+    rgba(16, 41, 75, 0.70) !important;
+}
+
+/* Every signed-in user page reveals the same fixed background. */
+html body #root
+.mirrortrace-app-shell
+:where(
+  .mirrortrace-authenticated-main,
+  .mirrortrace-app-main,
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+) {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* Prevent route wrappers from re-scaling / swapping the background. */
+html body #root
+.mirrortrace-app-shell
+:where(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+) {
+  transform:
+    none !important;
+
+  scale:
+    1 !important;
+}
+
+
+/* ------------------------------------------------------------
+   2. MAIN PAGE TITLES MATCH "YOUR THINKING, VERSIONED."
+   Equivalent to:
+   font-serif text-4xl sm:text-5xl lg:text-6xl font-bold
+   ------------------------------------------------------------ */
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+h1 {
+  font-family:
+    ui-serif,
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+
+  font-size:
+    2.25rem !important;
+
+  font-weight:
+    700 !important;
+
+  line-height:
+    1.12 !important;
+
+  letter-spacing:
+    -0.025em !important;
+
+  color:
+    #ffffff !important;
+}
+
+@media (min-width: 640px) {
+  html body #root
+  .mirrortrace-app-shell
+  :is(
+    .mirrortrace-overview-page,
+    .mirrortrace-reflect-page,
+    .mirrortrace-history-page,
+    .mirrortrace-memory-page,
+    .mirrortrace-support-page,
+    .mirrortrace-feedback-page,
+    .mirrortrace-memory-governance
+  )
+  h1 {
+    font-size:
+      3rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  html body #root
+  .mirrortrace-app-shell
+  :is(
+    .mirrortrace-overview-page,
+    .mirrortrace-reflect-page,
+    .mirrortrace-history-page,
+    .mirrortrace-memory-page,
+    .mirrortrace-support-page,
+    .mirrortrace-feedback-page,
+    .mirrortrace-memory-governance
+  )
+  h1 {
+    font-size:
+      3.75rem !important;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   3. REFLECTIVE SPACE
+   Compose Reflection + Reflective Brainstorm:
+   outer = 0.82
+   inner = 0.90
+   ------------------------------------------------------------ */
+
+/* Compose Reflection outer. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+> .grid
+> div:first-child
+> .space-y-4
+> .bg-white.rounded-xl.border,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+> .grid
+> div:first-child
+.bg-white.rounded-xl.border {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Compose input/interior. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  #journal-input-area,
+  #tag-input-field
+) {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+
+  color:
+    #ffffff !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Brainstorm outer/header/footer = same lighter outer Compose panel. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  .mirrortrace-brainstorm-shell,
+  .mirrortrace-brainstorm-header,
+  .mirrortrace-brainstorm-footer,
+  .mirrortrace-brainstorm-tags
+) {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Brainstorm interior = deep black. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  .mirrortrace-brainstorm-body,
+  .mirrortrace-brainstorm-input,
+  .mirrortrace-brainstorm-message-model,
+  .mirrortrace-brainstorm-message-user,
+  .mirrortrace-brainstorm-loading
+) {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.12) !important;
+}
+
+
+/* ------------------------------------------------------------
+   4. MEMORY GOVERNANCE
+   top/heading block = 0.82
+   deeper KPI / inner surfaces = 0.90
+   ------------------------------------------------------------ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* Exact top heading block. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+.mirrortrace-memory-hero {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Top block inner wrapper stays 0.82 as well. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+> div:first-child {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+/* KPI cells / deeper inner cards. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+.grid.grid-cols-2.gap-px.bg-stone-200
+> *,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  .rounded-xl.border,
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100
+) {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Larger governance panels stay see-through at 0.82. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  section.rounded-2xl.border,
+  article.rounded-2xl.border,
+  div.rounded-2xl.border
+) {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+
+/* ------------------------------------------------------------
+   5. THOUGHT DIFF — BLACK ONLY, NEVER NAVY
+   ------------------------------------------------------------ */
+
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell,
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell
+:where(
+  .mt-diff-header,
+  .mt-diff-evidence
+) {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell
+:where(
+  .mt-diff-earlier,
+  .mt-diff-current,
+  .mt-diff-changed,
+  .mt-diff-stable,
+  .mt-diff-source-earlier,
+  .mt-diff-source-later
+) {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell
+[class*="bg-blue-"],
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell
+[class*="bg-slate-"] {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+/* MIRRORTRACE_DIRECT_FINAL_POLISH_END */
+
