@@ -1,67 +1,61 @@
-MIRRORTRACE — PUBLIC BLUE CARDS + TRACEBOT
-=========================================
+MIRRORTRACE FINAL CAMBRIA UI + TRACEBOT
+======================================
 
-DIRECT FILES ONLY. NO INSTALLER SCRIPT.
+Replace exactly:
 
-Replace/add exactly:
+src/styles/mirrortrace-app.css
+src/styles/mirrortrace-public.css
+src/components/PublicGuideBot.tsx
+src/main.tsx
 
-ADD:
-  src/components/PublicGuideBot.tsx
+Requested values:
 
-REPLACE:
-  src/main.tsx
-  src/styles/mirrortrace-public.css
-  src/styles/mirrortrace-app.css
+Cambria on all user and public text.
 
-WHAT CHANGED
+Heading:
+28px
 
-1. Sign-in/public cards:
-   The previous requested blue tint was rgba(16,41,75,0.70).
-   "Decrease the tint by 0.5" is applied as opacity 0.70 - 0.50 = 0.20.
+Subheading:
+24px
 
-   Final public card tint:
-     rgba(16,41,75,0.20)
+Body:
+18px
 
-   This now explicitly targets:
-   - both feature-card rows
-   - Who-it-is-for cards
-   - the FOUR Security cards (.mt-glass / .mt-glass-cool)
-   - public review cards
-   - the empty "No public reviews yet" card
-   - older bg-black/30 and bg-black/50 public cards
+Footer / utility:
+20px
 
-2. TraceBot:
-   - fixed bottom-right on the sign-in/public page
-   - stays fixed while the user scrolls
-   - animated slogan:
-       "Hi, wanna know more about the application?"
-   - cute robot launcher
-   - expands into a chat panel
-   - answers only about MirrorTrace
-   - navigation
-   - Journal History
-   - Reflect & Chat
-   - privacy/security
-   - Thought Snapshots
-   - Thought Diffs
-   - provenance
-   - Memory Governance
-   - Perspective Watch
-   - MirrorRoom
-   - Support
-   - Feedback
-   - Admin privacy boundary
-   - Gemini brainstorm
-   - no API call / no additional Gemini cost
-   - disappears automatically after sign-in
+User dashboard background blue:
+rgba(16,41,75,0.20)
 
-3. Authenticated app CSS:
-   mirrortrace-app.css is carried forward unchanged from the previous final CSS package.
+This is the same blue tint as the final sign-in cards.
 
-4. Admin:
-   untouched.
+Memory Governance:
+outer / heading / major panels = rgba(0,0,0,0.82)
+deep inner / KPI panels = rgba(0,0,0,0.90)
 
-RUN
+Reflective Space:
+outer = 0.82
+inner = 0.90
+
+Lighter brown action buttons:
+rgba(92,78,73,0.96)
+
+Admin:
+untouched
+
+MirrorRoom:
+untouched by the user-page typography and blue-background selectors
+
+TraceBot:
+- fixed on public page
+- improved intent matching
+- answers "How is this different from ChatGPT?" correctly
+- no em dash characters
+- avoids Oxford-comma style punctuation in its prepared answers
+- app-only guide
+- no extra Gemini call
+
+Run:
 
 Remove-Item -Recurse -Force .\node_modules\.vite -ErrorAction SilentlyContinue; npm run dev
 

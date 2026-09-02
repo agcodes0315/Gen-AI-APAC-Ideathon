@@ -1482,3 +1482,86 @@ p {
 
 /* MIRRORTRACE_PUBLIC_BLUE_CARD_TINT_FINAL_END */
 
+/* MIRRORTRACE_PUBLIC_CAMBRIA_FINAL_START */
+
+/* ============================================================
+   PUBLIC PAGE TYPOGRAPHY
+   Cambria across all public text and controls.
+   The public hero background is unchanged.
+   ============================================================ */
+
+.mirrortrace-auth-page,
+.mirrortrace-auth-page * {
+  font-family:
+    Cambria,
+    Georgia,
+    "Times New Roman",
+    serif !important;
+}
+
+/* Keep public text readable without changing layout. */
+.mirrortrace-auth-page
+:where(
+  p,
+  li,
+  button,
+  input,
+  textarea,
+  select,
+  label
+) {
+  font-size:
+    18px;
+}
+
+/* Sign-in post-hero card tint stays exactly the same as requested. */
+:root {
+  --mt-public-card-blue:
+    rgba(16, 41, 75, 0.20);
+}
+
+/* Security / feature / review / audience cards */
+.mirrortrace-auth-page
+:where(
+  .mirrortrace-scroll-card,
+  .mirrortrace-arc-card,
+  #who-its-for article,
+  #security .mt-glass,
+  #security .mt-glass-cool,
+  #security article,
+  #reviews article,
+  #reviews .mirrortrace-review-card,
+  .mirrortrace-auth-tail .bg-black\/30,
+  .mirrortrace-auth-tail .bg-black\/50
+) {
+  background:
+    var(--mt-public-card-blue) !important;
+
+  background-color:
+    var(--mt-public-card-blue) !important;
+}
+
+/* TraceBot also uses Cambria and avoids oversized text. */
+.mirrortrace-guidebot,
+.mirrortrace-guidebot * {
+  font-family:
+    Cambria,
+    Georgia,
+    "Times New Roman",
+    serif !important;
+}
+
+.mirrortrace-guidebot-heading {
+  font-size:
+    20px !important;
+}
+
+.mirrortrace-guidebot-message,
+.mirrortrace-guidebot-input,
+.mirrortrace-guidebot-slogan {
+  font-size:
+    16px !important;
+}
+
+/* MIRRORTRACE_PUBLIC_CAMBRIA_FINAL_END */
+

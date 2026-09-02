@@ -25,154 +25,181 @@ const QUICK_QUESTIONS = [
   'What is a Thought Diff?',
   'What is Memory Governance?',
   'What is MirrorRoom?',
+  'How is this different from ChatGPT?',
   'How do I navigate the app?',
 ];
 
 
-const ANSWERS: Array<{
-  keywords: string[];
+type KnowledgeItem = {
+  patterns: string[];
   answer: string;
-}> = [
+};
+
+
+const KNOWLEDGE: KnowledgeItem[] = [
   {
-    keywords: [
+    patterns: [
+      'different from chatgpt',
+      'difference from chatgpt',
+      'vs chatgpt',
+      'compare to chatgpt',
+      'why not chatgpt',
+      'why mirrortrace',
+    ],
+    answer:
+      'MirrorTrace is built around governed personal reflection instead of general conversation. It keeps a private journal archive and lets you approve AI memory before it becomes reusable. It can compare approved reflections over time through Thought Diffs and provenance. It also supports Perspective Watch and selective collaboration through MirrorRoom. ChatGPT is a broad assistant. MirrorTrace is a focused reflection system with explicit memory consent and traceable perspective change.',
+  },
+  {
+    patterns: [
       'what does mirrortrace',
       'what is mirrortrace',
+      'about mirrortrace',
+      'what does this app',
+      'what is this app',
       'application',
-      'app',
       'purpose',
     ],
     answer:
-      'MirrorTrace is a privacy-first reflective intelligence app. You can write reflections, brainstorm with Gemini, approve what AI memory is allowed to persist, compare how your thinking changes through Thought Diffs, revisit perspectives later, and selectively collaborate through MirrorRoom.',
+      'MirrorTrace is a privacy-first reflective intelligence app. You can write reflections and brainstorm with Gemini. You decide which AI interpretations may become reusable memory. Thought Diffs can show how your thinking changes over time. Provenance lets you inspect the evidence behind those comparisons. MirrorRoom lets people collaborate by sharing only the thoughts they choose.',
   },
   {
-    keywords: [
+    patterns: [
       'navigate',
       'navigation',
+      'where do i go',
       'pages',
       'navbar',
-      'overview',
+      'menu',
     ],
     answer:
-      'After signing in, use the navbar: Overview shows your reflection activity; Reflect & Chat is where you write or brainstorm; Journal History contains saved reflections and tools; Memory controls approved AI memory and perspective tracking; Support is for privacy-aware help; Feedback lets you submit product reviews with consent.',
+      'Use the navbar after signing in. Overview shows your activity. Reflect & Chat is for writing and Gemini brainstorming. Journal History contains saved reflections and journal tools. Memory contains approved AI memory and perspective controls. Support is for help. Feedback is for product reviews and public consent.',
   },
   {
-    keywords: [
-      'journal',
-      'history',
-      'reflection',
-      'write',
-    ],
-    answer:
-      'Journal History is your owner-isolated archive of saved reflections. You can search, filter, revisit, edit, favorite, review decisions, inspect reflection chains, use version history, and explore other journal tools without automatically exposing those entries to other users or MirrorRoom.',
-  },
-  {
-    keywords: [
-      'private',
+    patterns: [
+      'journal private',
       'privacy',
+      'private',
       'secure',
       'security',
       'uid',
+      'who can see',
     ],
     answer:
-      'Private MirrorTrace data is scoped to your authenticated Firebase UID. MirrorRoom does not automatically read your journal, Thought Snapshots, Thought Diffs, conversations, or reusable AI memory. Admin operations are designed around operational metadata instead of unrestricted access to private reflection content.',
+      'Your private MirrorTrace data is scoped to your authenticated Firebase UID. MirrorRoom does not automatically read your private journal or reusable AI memory. Admin operations are designed around operational data and submitted support or review content instead of unrestricted access to private reflections.',
   },
   {
-    keywords: [
+    patterns: [
+      'journal history',
+      'journal',
+      'saved reflection',
+      'reflection history',
+    ],
+    answer:
+      'Journal History is your private archive of saved reflections. You can search and filter entries. You can revisit ideas and use tools such as favorites and editing. The journal stays separate from MirrorRoom unless you deliberately share a thought or save your own takeaway.',
+  },
+  {
+    patterns: [
       'thought snapshot',
       'snapshot',
-      'memory approval',
       'approve memory',
+      'memory approval',
     ],
     answer:
-      'A Thought Snapshot is Gemini’s proposed interpretation of a reflection. It does not become reusable AI memory until you explicitly accept it. You can accept it, edit the wording before accepting, or reject it.',
+      'A Thought Snapshot is an AI interpretation proposed from a reflection. It does not become reusable memory automatically. You can accept it or edit it before accepting it. You can also reject it.',
   },
   {
-    keywords: [
+    patterns: [
       'thought diff',
       'diff',
-      'changed',
-      'perspective',
+      'what changed',
+      'thinking changed',
+      'perspective changed',
     ],
     answer:
-      'A Thought Diff compares related approved Thought Snapshots from different moments in time. It can show your earlier position, current position, what changed, what stayed consistent, and the evidence behind that comparison.',
+      'A Thought Diff compares related approved Thought Snapshots from different moments. It can show an earlier position and a current position. It can also explain what changed and what stayed consistent. Provenance links the comparison back to the reflections that support it.',
   },
   {
-    keywords: [
+    patterns: [
       'provenance',
-      'why am i seeing',
+      'why am i seeing this',
       'evidence',
+      'source reflection',
     ],
     answer:
-      'Provenance is MirrorTrace’s evidence trail. When a Thought Diff is shown, “Why am I seeing this?” lets you inspect the source reflections and approved positions that support the comparison.',
+      'Provenance is the evidence trail behind a Thought Diff. The feature helps you inspect the source reflections and approved positions that support a generated comparison.',
   },
   {
-    keywords: [
+    patterns: [
       'memory governance',
-      'memory',
-      'revoke',
+      'memory center',
+      'revoke memory',
       'retention',
-      'export',
+      'export memory',
     ],
     answer:
-      'Memory Governance is your control center for reusable AI memory. You can inspect approved memories, see retention status, manage Perspective Watches, export governed memory, and revoke memory you no longer want reused.',
+      'Memory Governance is the control center for reusable AI memory. You can inspect approved memories and retention information. You can review active Perspective Watches. You can export governed memory and revoke memory you no longer want reused.',
   },
   {
-    keywords: [
+    patterns: [
       'perspective watch',
       'watch',
+      'revisit later',
       'reminder',
-      'revisit',
     ],
     answer:
-      'Perspective Watch lets you intentionally schedule a future revisit of a Thought Diff. It can remind you later using safe topic-level context, rather than automatically deciding which beliefs matter.',
+      'Perspective Watch lets you intentionally schedule a future revisit of a Thought Diff. It gives you control over when a perspective should be reviewed again instead of letting AI decide that automatically.',
   },
   {
-    keywords: [
+    patterns: [
       'mirrorroom',
-      'room',
+      'mirror room',
       'collaborate',
-      'invite',
+      'room',
+      'invite code',
       'share thought',
     ],
     answer:
-      'MirrorRoom is temporary, consent-based collaborative reflection. Participants think privately first and explicitly share selected thoughts. Joining a room does not expose personal journal history or reusable AI memory. You can also save only your own takeaway back into your private journal.',
+      'MirrorRoom is temporary consent-based collaborative reflection. Participants think privately and share selected thoughts deliberately. Joining a room does not expose personal journal history or reusable AI memory. A participant can save only their own takeaway back to their private journal.',
   },
   {
-    keywords: [
+    patterns: [
       'support',
-      'help',
       'customer support',
+      'help safely',
     ],
     answer:
-      'Customer Support lets you intentionally submit a support message. The support workflow is separate from your private journal, so asking for help does not automatically submit your reflection history.',
+      'Customer Support lets you submit a support message intentionally. The support workflow is separate from your private journal. Asking for help does not automatically send your journal history.',
   },
   {
-    keywords: [
+    patterns: [
       'feedback',
       'review',
       'public review',
     ],
     answer:
-      'Feedback lets you submit a product review and decide whether it may be considered for public display. Public appearance is consent-controlled and also requires moderation approval.',
+      'Feedback lets you submit a product review. Public display requires the appropriate consent and moderation state. Your review is not automatically made public.',
   },
   {
-    keywords: [
+    patterns: [
       'gemini',
       'brainstorm',
       'reflective brainstorm',
       'ai companion',
+      'misspell',
+      'typo',
+      'spelling',
     ],
     answer:
-      'Reflective Brainstorm is the Gemini-powered thinking companion. It helps you clarify a decision, conflict, question, or perspective. Ordinary misspellings are usually understood by Gemini, while MirrorTrace keeps the wording you actually typed instead of silently rewriting your journal text.',
+      'Reflective Brainstorm uses Gemini to help you clarify a decision or perspective. Common misspellings are usually understood from context. MirrorTrace keeps the wording you typed instead of silently rewriting your journal text.',
   },
   {
-    keywords: [
+    patterns: [
       'admin',
       'administrator',
       'control room',
     ],
     answer:
-      'The Admin Control Room is for operational management such as service health, support, moderation, audit activity, and MirrorRoom metadata. The privacy design avoids turning administrators into unrestricted readers of private reflection content.',
+      'The Admin Control Room is for operational management such as service health and moderation. The design keeps private reflection content outside ordinary admin visibility. MirrorRoom admin analytics are limited to operational metadata.',
   },
 ];
 
@@ -194,69 +221,103 @@ function normalize(
 }
 
 
+function words(
+  value: string
+): string[] {
+  return normalize(value)
+    .split(' ')
+    .filter(Boolean);
+}
+
+
+function similarity(
+  question: string,
+  pattern: string
+): number {
+  const q =
+    normalize(question);
+
+  const p =
+    normalize(pattern);
+
+  if (
+    q.includes(p)
+  ) {
+    return 100 +
+      p.length;
+  }
+
+  const qWords =
+    new Set(
+      words(q)
+    );
+
+  const pWords =
+    words(p);
+
+  let matches =
+    0;
+
+  for (
+    const word
+    of pWords
+  ) {
+    if (
+      qWords.has(word)
+    ) {
+      matches +=
+        1;
+    }
+  }
+
+  return matches;
+}
+
+
 function answerQuestion(
   question: string
 ): string {
-  const normalized =
-    normalize(
-      question
-    );
+  let bestScore =
+    0;
 
-  let best:
-    {
-      score: number;
-      answer: string;
-    } | null =
-    null;
+  let bestAnswer =
+    '';
 
   for (
-    const candidate
-    of ANSWERS
+    const item
+    of KNOWLEDGE
   ) {
-    const score =
-      candidate.keywords
-        .reduce(
-          (
-            total,
-            keyword
-          ) =>
-            normalized.includes(
-              keyword
-            )
-              ? total +
-                keyword
-                  .split(
-                    ' '
-                  )
-                  .length
-              : total,
-          0
+    for (
+      const pattern
+      of item.patterns
+    ) {
+      const score =
+        similarity(
+          question,
+          pattern
         );
 
-    if (
-      score >
-      (
-        best?.score ??
-        0
-      )
-    ) {
-      best = {
-        score,
-        answer:
-          candidate.answer,
-      };
+      if (
+        score >
+        bestScore
+      ) {
+        bestScore =
+          score;
+
+        bestAnswer =
+          item.answer;
+      }
     }
   }
 
   if (
-    best &&
-    best.score >
-    0
+    bestScore >=
+    1
   ) {
-    return best.answer;
+    return bestAnswer;
   }
 
-  return 'I’m TraceBot, so I only explain MirrorTrace itself. Ask me about navigation, Journal History, Reflect & Chat, Thought Snapshots, Thought Diffs, provenance, Memory Governance, Perspective Watch, MirrorRoom, privacy, Support, Feedback, or the Admin privacy boundary.';
+  return 'I only explain MirrorTrace and how to use it. Ask me about navigation or Journal History. You can also ask about Reflect & Chat or Thought Snapshots. I can explain Thought Diffs and provenance. I can also explain Memory Governance or Perspective Watch. MirrorRoom and privacy are supported topics too.';
 }
 
 
@@ -298,7 +359,7 @@ export default function PublicGuideBot() {
         role:
           'bot',
         text:
-          'Hi! I’m TraceBot. I can explain what MirrorTrace does, where features live, and how its privacy controls work.',
+          'Hi! I’m TraceBot. I can explain what MirrorTrace does and where features live. I can also explain how its privacy controls work.',
       },
     ]);
 
@@ -545,8 +606,8 @@ export default function PublicGuideBot() {
                     mirrortrace-guidebot-subtitle
                   "
                 >
-                  MirrorTrace
-                  navigation & product guide
+                  MirrorTrace navigation
+                  and product guide
                 </p>
               </div>
             </div>

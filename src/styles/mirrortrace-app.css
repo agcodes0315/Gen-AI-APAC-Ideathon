@@ -2723,3 +2723,592 @@ article.mt-diff-shell
 
 /* MIRRORTRACE_DIRECT_FINAL_POLISH_END */
 
+/* MIRRORTRACE_CAMBRIA_FINAL_START */
+
+/* ============================================================
+   MIRRORTRACE FINAL TYPOGRAPHY + USER PAGE BACKGROUND AUTHORITY
+
+   USER REQUEST
+   - Cambria across all USER dashboard text
+   - Heading: 28px
+   - Subheading: 24px
+   - Body: 18px
+   - Footer / utility copy: 20px
+   - Same blue tint used on sign-in cards behind all USER pages
+   - Admin Dashboard untouched
+   - MirrorRoom untouched
+   - Memory Governance uses only black 0.82 and 0.90 surfaces
+   - Brown action buttons use the lighter Export My Memory brown
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell {
+  --mt-page-blue:
+    rgba(16, 41, 75, 0.20);
+
+  --mt-black-outer:
+    rgba(0, 0, 0, 0.82);
+
+  --mt-black-inner:
+    rgba(0, 0, 0, 0.90);
+
+  --mt-light-brown:
+    rgba(92, 78, 73, 0.96);
+
+  --mt-light-brown-hover:
+    rgba(111, 94, 87, 0.98);
+
+  --mt-user-text:
+    #ffffff;
+
+  --mt-user-copy:
+    rgba(244, 247, 250, 0.92);
+
+  --mt-user-muted:
+    rgba(226, 232, 238, 0.80);
+}
+
+
+/* ============================================================
+   USER PAGE BACKDROP
+   Exact same blue tint as sign-in cards.
+   Admin and MirrorRoom are deliberately not targeted.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell::after {
+  background:
+    var(--mt-page-blue) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+:where(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+) {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   CAMBRIA EVERYWHERE ON USER PAGES
+   This intentionally covers headings, body copy, small labels,
+   navbar text, buttons, inputs and footer-like utility copy.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+:where(
+  .mirrortrace-user-navbar,
+  nav,
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+),
+html body #root
+.mirrortrace-app-shell
+:where(
+  .mirrortrace-user-navbar,
+  nav,
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+* {
+  font-family:
+    Cambria,
+    Georgia,
+    "Times New Roman",
+    serif !important;
+}
+
+
+/* ============================================================
+   FONT SIZES
+   Heading = 28
+   Subheading = 24
+   Body = 18
+   Footer / utility = 20
+   ============================================================ */
+
+/* Main page title */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+h1 {
+  font-size:
+    28px !important;
+
+  line-height:
+    1.14 !important;
+
+  font-weight:
+    700 !important;
+
+  letter-spacing:
+    -0.015em !important;
+
+  color:
+    var(--mt-user-text) !important;
+}
+
+/* Major section headings */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+h2 {
+  font-size:
+    24px !important;
+
+  line-height:
+    1.2 !important;
+
+  font-weight:
+    700 !important;
+
+  color:
+    var(--mt-user-text) !important;
+}
+
+/* Card headings */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+h3 {
+  font-size:
+    20px !important;
+
+  line-height:
+    1.25 !important;
+
+  font-weight:
+    700 !important;
+
+  color:
+    var(--mt-user-text) !important;
+}
+
+/* Standard body copy */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  p,
+  li,
+  td,
+  dd,
+  blockquote
+) {
+  font-size:
+    18px !important;
+
+  line-height:
+    1.58 !important;
+
+  color:
+    var(--mt-user-copy) !important;
+}
+
+/* Labels and compact utility text remain readable and Cambria. */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  label,
+  th,
+  small,
+  .text-xs,
+  .text-sm
+) {
+  font-family:
+    Cambria,
+    Georgia,
+    "Times New Roman",
+    serif !important;
+
+  color:
+    var(--mt-user-muted) !important;
+}
+
+/* Footer-like controls, action strips and navigation text. */
+html body #root
+.mirrortrace-app-shell
+:where(
+  nav button,
+  nav a,
+  .mirrortrace-brainstorm-footer,
+  .mirrortrace-journal-tools,
+  .mirrortrace-history-toolbar,
+  footer
+) {
+  font-size:
+    20px !important;
+
+  line-height:
+    1.35 !important;
+}
+
+/* Inputs and buttons stay consistent. */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  button,
+  input,
+  textarea,
+  select
+) {
+  font-family:
+    Cambria,
+    Georgia,
+    "Times New Roman",
+    serif !important;
+
+  font-size:
+    18px !important;
+}
+
+
+/* ============================================================
+   LIGHTER BROWN ACTION COLOR
+   Matches the visual family of Export My Memory.
+   Applies across USER pages only.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  .bg-amber-900,
+  .bg-amber-800,
+  .bg-orange-900,
+  .bg-orange-800,
+  [class*="bg-amber-9"],
+  [class*="bg-orange-9"]
+) {
+  background:
+    var(--mt-light-brown) !important;
+
+  background-color:
+    var(--mt-light-brown) !important;
+
+  color:
+    #ffffff !important;
+
+  border-color:
+    rgba(255,255,255,0.13) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  .bg-amber-900,
+  .bg-amber-800,
+  .bg-orange-900,
+  .bg-orange-800,
+  [class*="bg-amber-9"],
+  [class*="bg-orange-9"]
+):hover {
+  background:
+    var(--mt-light-brown-hover) !important;
+
+  background-color:
+    var(--mt-light-brown-hover) !important;
+}
+
+
+/* ============================================================
+   REFLECTIVE SPACE
+   Outer = 0.82
+   Inner = 0.90
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  .mirrortrace-brainstorm-shell,
+  .mirrortrace-brainstorm-header,
+  .mirrortrace-brainstorm-footer,
+  .mirrortrace-brainstorm-tags
+) {
+  background:
+    var(--mt-black-outer) !important;
+
+  background-color:
+    var(--mt-black-outer) !important;
+
+  background-image:
+    none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  #journal-input-area,
+  #tag-input-field,
+  .mirrortrace-brainstorm-body,
+  .mirrortrace-brainstorm-input,
+  .mirrortrace-brainstorm-message-model,
+  .mirrortrace-brainstorm-message-user,
+  .mirrortrace-brainstorm-loading
+) {
+  background:
+    var(--mt-black-inner) !important;
+
+  background-color:
+    var(--mt-black-inner) !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   MEMORY GOVERNANCE
+   No pure jet-black block.
+   Top and major panels = 0.82.
+   Deep inner/KPI panels = 0.90.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* Top governance block */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+.mirrortrace-memory-hero,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+> div:first-child {
+  background:
+    var(--mt-black-outer) !important;
+
+  background-color:
+    var(--mt-black-outer) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Major lower panels */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  section.rounded-2xl.border,
+  article.rounded-2xl.border,
+  div.rounded-2xl.border
+) {
+  background:
+    var(--mt-black-outer) !important;
+
+  background-color:
+    var(--mt-black-outer) !important;
+
+  background-image:
+    none !important;
+}
+
+/* KPI and deep inner surfaces */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-200,
+  .rounded-xl.border
+) {
+  background:
+    var(--mt-black-inner) !important;
+
+  background-color:
+    var(--mt-black-inner) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Explicitly neutralize any pure #000 / bg-black utility inside governance. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  .bg-black,
+  .bg-black\/90,
+  .bg-black\/95,
+  .bg-black\/100
+) {
+  background:
+    var(--mt-black-inner) !important;
+
+  background-color:
+    var(--mt-black-inner) !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   THOUGHT DIFF
+   Black only. No navy.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell,
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell
+:where(
+  .mt-diff-header,
+  .mt-diff-evidence
+) {
+  background:
+    var(--mt-black-inner) !important;
+
+  background-color:
+    var(--mt-black-inner) !important;
+
+  background-image:
+    none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell
+:where(
+  .mt-diff-earlier,
+  .mt-diff-current,
+  .mt-diff-changed,
+  .mt-diff-stable,
+  .mt-diff-source-earlier,
+  .mt-diff-source-later
+),
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell
+[class*="bg-blue-"],
+html body #root
+.mirrortrace-app-shell
+article.mt-diff-shell
+[class*="bg-slate-"] {
+  background:
+    var(--mt-black-outer) !important;
+
+  background-color:
+    var(--mt-black-outer) !important;
+
+  background-image:
+    none !important;
+}
+
+/* MIRRORTRACE_CAMBRIA_FINAL_END */
+
