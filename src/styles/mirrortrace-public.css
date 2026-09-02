@@ -1565,3 +1565,20 @@ p {
 
 /* MIRRORTRACE_PUBLIC_CAMBRIA_FINAL_END */
 
+/* MIRRORTRACE_PUBLIC_GLOBAL_SERIF_START */
+
+.mirrortrace-auth-page,
+.mirrortrace-auth-page *,
+.mirrortrace-guidebot,
+.mirrortrace-guidebot * {
+  font-family:
+    ui-serif,
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+/* MIRRORTRACE_PUBLIC_GLOBAL_SERIF_END */
+

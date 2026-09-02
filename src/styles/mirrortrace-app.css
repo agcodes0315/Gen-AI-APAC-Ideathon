@@ -3312,3 +3312,288 @@ article.mt-diff-shell
 
 /* MIRRORTRACE_CAMBRIA_FINAL_END */
 
+/* MIRRORTRACE_ADMIN_LOAD_AND_GLOBAL_SERIF_START */
+
+/* ============================================================
+   FINAL FIX
+   1. Restore Admin Dashboard rendering.
+   2. Apply blue tint directly to the existing admin background.
+   3. Use one serif stack everywhere in the product:
+      ui-serif, Georgia, Cambria, "Times New Roman", Times, serif.
+   ============================================================ */
+
+
+/* ============================================================
+   GLOBAL TYPOGRAPHY
+   Applies to public page, authenticated app, navbar, MirrorRoom,
+   Admin, TraceBot, buttons, fields and footer/utility copy.
+   ============================================================ */
+
+html,
+body,
+#root,
+button,
+input,
+textarea,
+select,
+option {
+  font-family:
+    ui-serif,
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+html body #root
+:where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  label,
+  li,
+  td,
+  th,
+  dd,
+  dt,
+  blockquote,
+  button,
+  input,
+  textarea,
+  select,
+  small,
+  strong,
+  em,
+  a
+) {
+  font-family:
+    ui-serif,
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+
+/* ============================================================
+   RESTORE ADMIN PAGE
+   Do NOT use ::before / ::after z-index layers here.
+   The admin page itself owns the image + blue tint.
+   This preserves the original dashboard stacking/rendering.
+   ============================================================ */
+
+html body #root
+.mirrortrace-admin-page,
+html body #root
+.mirrortrace-admin-overlay {
+  position:
+    fixed !important;
+
+  inset:
+    0 !important;
+
+  z-index:
+    10000 !important;
+
+  width:
+    100vw !important;
+
+  height:
+    100vh !important;
+
+  overflow-x:
+    hidden !important;
+
+  overflow-y:
+    auto !important;
+
+  isolation:
+    auto !important;
+
+  background:
+    linear-gradient(
+      rgba(16, 41, 75, 0.20),
+      rgba(16, 41, 75, 0.20)
+    ),
+    url("/hero/mirrortrace-poster.jpeg")
+    center top / cover
+    no-repeat !important;
+
+  background-color:
+    #08111d !important;
+
+  color:
+    #ffffff !important;
+}
+
+/*
+ * Explicitly remove the previous pseudo background layers if an
+ * older browser stylesheet copy is still present in the cascade.
+ */
+html body #root
+.mirrortrace-admin-page::before,
+html body #root
+.mirrortrace-admin-page::after,
+html body #root
+.mirrortrace-admin-overlay::before,
+html body #root
+.mirrortrace-admin-overlay::after {
+  content:
+    none !important;
+
+  display:
+    none !important;
+}
+
+/* Dashboard must remain visible above its normal page background. */
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard,
+html body #root
+.mirrortrace-admin-overlay
+.mirrortrace-admin-dashboard {
+  position:
+    relative !important;
+
+  z-index:
+    auto !important;
+
+  display:
+    block !important;
+
+  visibility:
+    visible !important;
+
+  opacity:
+    1 !important;
+
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+}
+
+/* Preserve the original Admin hero/cards/surfaces. */
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-hero {
+  background:
+    var(--mt-app-black-50) !important;
+
+  background-color:
+    var(--mt-app-black-50) !important;
+
+  background-image:
+    none !important;
+}
+
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard
+button.mirrortrace-admin-metric {
+  background:
+    var(--mt-app-black-64) !important;
+
+  background-color:
+    var(--mt-app-black-64) !important;
+
+  color:
+    var(--mt-app-text) !important;
+
+  border-color:
+    var(--mt-app-border) !important;
+}
+
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-surface {
+  background:
+    var(--mt-app-black-58) !important;
+
+  background-color:
+    var(--mt-app-black-58) !important;
+
+  background-image:
+    none !important;
+
+  color:
+    var(--mt-app-text) !important;
+
+  border-color:
+    var(--mt-app-border) !important;
+}
+
+
+/* ============================================================
+   SECURITY & OPERATIONS + YOUR THINKING, VERSIONED.
+   Same serif family.
+   Preserve each component's intended responsive scale.
+   ============================================================ */
+
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-title-float,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+h1.mirrortrace-float-title {
+  font-family:
+    ui-serif,
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+
+  font-weight:
+    700 !important;
+}
+
+/* Restore Overview hero size exactly to text-4xl / 5xl / 6xl. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+h1.mirrortrace-float-title {
+  font-size:
+    2.25rem !important;
+
+  line-height:
+    1.12 !important;
+
+  letter-spacing:
+    -0.025em !important;
+}
+
+@media (min-width: 640px) {
+  html body #root
+  .mirrortrace-app-shell
+  .mirrortrace-overview-page
+  h1.mirrortrace-float-title {
+    font-size:
+      3rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  html body #root
+  .mirrortrace-app-shell
+  .mirrortrace-overview-page
+  h1.mirrortrace-float-title {
+    font-size:
+      3.75rem !important;
+  }
+}
+
+/* MIRRORTRACE_ADMIN_LOAD_AND_GLOBAL_SERIF_END */
+
