@@ -1,6 +1,5 @@
 import React, {
   useEffect,
-  useState,
 } from 'react';
 
 import {
@@ -10,8 +9,6 @@ import {
   BookOpen,
   MessageSquareText,
   Compass,
-  Moon,
-  Sun,
   Database,
   LifeBuoy,
   Star,
@@ -45,38 +42,6 @@ interface NavbarProps {
     () => void;
 }
 
-type ThemeMode =
-  | 'light'
-  | 'dark';
-
-const STORAGE_KEY =
-  'mirrortrace-theme';
-
-const getInitialTheme =
-  (): ThemeMode => {
-    if (
-      typeof window ===
-      'undefined'
-    ) {
-      return 'light';
-    }
-
-    const saved =
-      localStorage.getItem(
-        STORAGE_KEY
-      );
-
-    if (
-      saved ===
-        'light' ||
-      saved ===
-        'dark'
-    ) {
-      return saved;
-    }
-
-    return 'dark';
-  };
 
 export const Navbar:
   React.FC<
@@ -87,14 +52,14 @@ export const Navbar:
     onTabChange,
     onSignOut,
   }) => {
-    const [
-      theme,
-      setTheme,
-    ] =
-      useState<ThemeMode>(
-        getInitialTheme
-      );
 
+    /*
+     * Keep MirrorTrace in its current dark visual mode permanently.
+     *
+     * The light/dark toggle has been removed completely.
+     * This only preserves the current appearance and prevents old saved
+     * theme preferences from switching the UI back to light mode.
+     */
     useEffect(() => {
       const root =
         document
@@ -102,42 +67,19 @@ export const Navbar:
 
       root.setAttribute(
         'data-theme',
-        theme
+        'dark'
       );
 
-      if (
-        theme ===
+      root.classList.add(
         'dark'
-      ) {
-        root.classList.add(
-          'dark'
-        );
-      } else {
-        root.classList.remove(
-          'dark'
-        );
-      }
+      );
 
       localStorage.setItem(
-        STORAGE_KEY,
-        theme
+        'mirrortrace-theme',
+        'dark'
       );
-    }, [
-      theme,
-    ]);
+    }, []);
 
-    const toggleTheme =
-      () => {
-        setTheme(
-          (
-            current
-          ) =>
-            current ===
-            'dark'
-              ? 'light'
-              : 'dark'
-        );
-      };
 
     const navClass =
       (
@@ -162,6 +104,7 @@ export const Navbar:
             ' '
           );
       };
+
 
     return (
       <header className="mirrortrace-navbar">
@@ -340,29 +283,6 @@ export const Navbar:
             {/* RIGHT CONTROLS */}
 
             <div className="mirrortrace-navbar-actions">
-
-              <button
-                id="btn-theme-toggle"
-                type="button"
-                onClick={
-                  toggleTheme
-                }
-                className="mirrortrace-theme-toggle"
-                title={
-                  theme ===
-                  'dark'
-                    ? 'Switch to light mode'
-                    : 'Switch to dark mode'
-                }
-              >
-
-                {theme ===
-                'dark' ? (
-                  <Sun className="w-4 h-4" />
-                ) : (
-                  <Moon className="w-4 h-4" />
-                )}
-              </button>
 
               <div className="mirrortrace-profile">
 
