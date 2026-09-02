@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700;8..60,800&display=swap");
 /* ============================================================
    MIRRORTRACE — CONSOLIDATED AUTHENTICATED + ADMIN THEME
    File: src/styles/mirrortrace-app.css
@@ -3596,4 +3597,289 @@ h1.mirrortrace-float-title {
 }
 
 /* MIRRORTRACE_ADMIN_LOAD_AND_GLOBAL_SERIF_END */
+
+/* MIRRORTRACE_SOURCE_SERIF_FINAL_START */
+
+/* ============================================================
+   MIRRORTRACE FINAL FONT + ADMIN BACKGROUND AUTHORITY
+
+   Font:
+   Source Serif 4 everywhere in the product.
+
+   Navbar:
+   exactly 14px.
+
+   Overview hero:
+   "Your thinking, versioned." now matches the Admin
+   "Security & Operations" title sizing:
+     base  = 30px  (Tailwind text-3xl)
+     >=640 = 36px  (Tailwind text-4xl)
+
+   Admin:
+   shared poster background + blue tint applied directly to the
+   admin page without pseudo-layer stacking.
+   ============================================================ */
+
+
+/* ============================================================
+   SOURCE SERIF 4 EVERYWHERE
+   ============================================================ */
+
+html,
+body,
+#root,
+#root *,
+button,
+input,
+textarea,
+select,
+option {
+  font-family:
+    "Source Serif 4",
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+
+/* ============================================================
+   NAVBAR = EXACTLY 14PX
+   Desktop and mobile nav buttons, profile, brand utility text.
+   ============================================================ */
+
+html body #root
+:where(
+  .mirrortrace-navbar,
+  .mirrortrace-navbar *,
+  .mirrortrace-main-nav,
+  .mirrortrace-main-nav *,
+  .mirrortrace-mobile-nav,
+  .mirrortrace-mobile-nav *,
+  .mirrortrace-nav-button,
+  .mirrortrace-profile,
+  .mirrortrace-profile *,
+  .mirrortrace-signout,
+  .mirrortrace-signout *
+) {
+  font-family:
+    "Source Serif 4",
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+html body #root
+.mirrortrace-nav-button,
+html body #root
+.mirrortrace-mobile-nav
+.mirrortrace-nav-button,
+html body #root
+.mirrortrace-signout,
+html body #root
+.mirrortrace-profile {
+  font-size:
+    14px !important;
+}
+
+
+/* ============================================================
+   OVERVIEW TITLE = SAME SIZE AS SECURITY & OPERATIONS
+   Security & Operations component is text-3xl / sm:text-4xl.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+h1.mirrortrace-float-title,
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard
+h1.mirrortrace-admin-title-float {
+  font-family:
+    "Source Serif 4",
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+
+  font-size:
+    30px !important;
+
+  font-weight:
+    700 !important;
+
+  line-height:
+    1.08 !important;
+
+  letter-spacing:
+    -0.02em !important;
+}
+
+@media (min-width: 640px) {
+  html body #root
+  .mirrortrace-app-shell
+  .mirrortrace-overview-page
+  h1.mirrortrace-float-title,
+  html body #root
+  .mirrortrace-admin-page
+  .mirrortrace-admin-dashboard
+  h1.mirrortrace-admin-title-float {
+    font-size:
+      36px !important;
+  }
+}
+
+
+/* ============================================================
+   USER PAGE TYPE CONSISTENCY
+   Keep the same Source Serif 4 family throughout.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  label,
+  li,
+  td,
+  th,
+  button,
+  input,
+  textarea,
+  select,
+  small,
+  strong,
+  em,
+  a
+) {
+  font-family:
+    "Source Serif 4",
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+
+/* ============================================================
+   ADMIN DASHBOARD BLUE-TINTED BACKGROUND
+   No ::before / ::after layers.
+   ============================================================ */
+
+html body #root
+.mirrortrace-admin-page,
+html body #root
+.mirrortrace-admin-overlay {
+  background-image:
+    linear-gradient(
+      rgba(16, 41, 75, 0.20),
+      rgba(16, 41, 75, 0.20)
+    ),
+    url("/hero/mirrortrace-poster.jpeg") !important;
+
+  background-position:
+    center center !important;
+
+  background-size:
+    cover !important;
+
+  background-repeat:
+    no-repeat !important;
+
+  background-attachment:
+    fixed !important;
+
+  background-color:
+    #08111d !important;
+}
+
+/* Preserve actual admin component UI. */
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard,
+html body #root
+.mirrortrace-admin-overlay
+.mirrortrace-admin-dashboard {
+  position:
+    relative !important;
+
+  display:
+    block !important;
+
+  visibility:
+    visible !important;
+
+  opacity:
+    1 !important;
+
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+}
+
+/* Keep Admin hero readable while allowing page blue tint around it. */
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-hero {
+  font-family:
+    "Source Serif 4",
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+
+/* ============================================================
+   TRACEBOT, MIRRORROOM AND OTHER OVERLAYS
+   Same font family for consistency.
+   ============================================================ */
+
+html body #root
+:where(
+  .mirrortrace-guidebot,
+  .mirrortrace-guidebot *,
+  .mirrortrace-admin-page,
+  .mirrortrace-admin-page *,
+  .mirrortrace-admin-overlay,
+  .mirrortrace-admin-overlay *,
+  [class~="z-[12000]"],
+  [class~="z-[12000]"] *
+) {
+  font-family:
+    "Source Serif 4",
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+/* MIRRORTRACE_SOURCE_SERIF_FINAL_END */
 
