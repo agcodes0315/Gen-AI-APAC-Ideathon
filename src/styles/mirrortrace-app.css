@@ -2387,8 +2387,7 @@ h1 {
   font-family:
     ui-serif,
     Georgia,
-    Cambria,
-    "Times New Roman",
+        "Times New Roman",
     Times,
     serif !important;
 
@@ -2723,14 +2722,10 @@ article.mt-diff-shell
 }
 
 /* MIRRORTRACE_DIRECT_FINAL_POLISH_END */
-
-/* MIRRORTRACE_CAMBRIA_FINAL_START */
-
 /* ============================================================
    MIRRORTRACE FINAL TYPOGRAPHY + USER PAGE BACKGROUND AUTHORITY
 
    USER REQUEST
-   - Cambria across all USER dashboard text
    - Heading: 28px
    - Subheading: 24px
    - Body: 18px
@@ -2805,8 +2800,7 @@ html body #root
 
 
 /* ============================================================
-   CAMBRIA EVERYWHERE ON USER PAGES
-   This intentionally covers headings, body copy, small labels,
+    This intentionally covers headings, body copy, small labels,
    navbar text, buttons, inputs and footer-like utility copy.
    ============================================================ */
 
@@ -2838,7 +2832,6 @@ html body #root
 )
 * {
   font-family:
-    Cambria,
     Georgia,
     "Times New Roman",
     serif !important;
@@ -2963,7 +2956,7 @@ html body #root
     var(--mt-user-copy) !important;
 }
 
-/* Labels and compact utility text remain readable and Cambria. */
+/* Labels and compact utility text remain readable */
 html body #root
 .mirrortrace-app-shell
 :is(
@@ -2983,8 +2976,7 @@ html body #root
   .text-sm
 ) {
   font-family:
-    Cambria,
-    Georgia,
+     Georgia,
     "Times New Roman",
     serif !important;
 
@@ -3029,8 +3021,7 @@ html body #root
   select
 ) {
   font-family:
-    Cambria,
-    Georgia,
+     Georgia,
     "Times New Roman",
     serif !important;
 
@@ -3311,8 +3302,6 @@ article.mt-diff-shell
     none !important;
 }
 
-/* MIRRORTRACE_CAMBRIA_FINAL_END */
-
 /* MIRRORTRACE_ADMIN_LOAD_AND_GLOBAL_SERIF_START */
 
 /* ============================================================
@@ -3320,7 +3309,7 @@ article.mt-diff-shell
    1. Restore Admin Dashboard rendering.
    2. Apply blue tint directly to the existing admin background.
    3. Use one serif stack everywhere in the product:
-      ui-serif, Georgia, Cambria, "Times New Roman", Times, serif.
+      ui-serif, Georgia, "Times New Roman", Times, serif.
    ============================================================ */
 
 
@@ -3341,7 +3330,6 @@ option {
   font-family:
     ui-serif,
     Georgia,
-    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3376,7 +3364,6 @@ html body #root
   font-family:
     ui-serif,
     Georgia,
-    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3552,7 +3539,6 @@ h1.mirrortrace-float-title {
   font-family:
     ui-serif,
     Georgia,
-    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3637,7 +3623,6 @@ option {
   font-family:
     "Source Serif 4",
     Georgia,
-    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3666,8 +3651,7 @@ html body #root
   font-family:
     "Source Serif 4",
     Georgia,
-    Cambria,
-    "Times New Roman",
+     "Times New Roman",
     Times,
     serif !important;
 }
@@ -3702,7 +3686,6 @@ h1.mirrortrace-admin-title-float {
   font-family:
     "Source Serif 4",
     Georgia,
-    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3776,7 +3759,6 @@ html body #root
   font-family:
     "Source Serif 4",
     Georgia,
-    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3849,7 +3831,6 @@ html body #root
   font-family:
     "Source Serif 4",
     Georgia,
-    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3875,7 +3856,6 @@ html body #root
   font-family:
     "Source Serif 4",
     Georgia,
-    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3899,7 +3879,7 @@ html body #root
   --mt-final-font:
     "Source Serif 4",
     Georgia,
-    Cambria,
+   
     "Times New Roman",
     Times,
     serif;
