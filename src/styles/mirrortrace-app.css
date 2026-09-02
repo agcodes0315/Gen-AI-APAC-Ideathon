@@ -3883,3 +3883,463 @@ html body #root
 
 /* MIRRORTRACE_SOURCE_SERIF_FINAL_END */
 
+/* MIRRORTRACE_FINAL_MIRRORTRACE2_BLUE70_START */
+
+/* ============================================================
+   FINAL AUTHORITY
+   1. mirrortrace2.jpeg on all signed-in user pages
+   2. clearly visible blue haze rgba(16,41,75,0.70)
+   3. larger readable text
+   4. Overview hero title exactly matches Admin hero title
+   5. Memory Governance top block exactly black rgba(0,0,0,0.82)
+   6. Source Serif 4 everywhere
+   ============================================================ */
+
+:root {
+  --mt-final-font:
+    "Source Serif 4",
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif;
+
+  --mt-final-blue-haze:
+    rgba(16, 41, 75, 0.70);
+
+  --mt-final-black-82:
+    rgba(0, 0, 0, 0.82);
+
+  --mt-final-black-90:
+    rgba(0, 0, 0, 0.90);
+}
+
+
+/* ============================================================
+   GLOBAL FONT CONSISTENCY
+   ============================================================ */
+
+html,
+body,
+#root,
+#root *,
+button,
+input,
+textarea,
+select,
+option {
+  font-family:
+    var(--mt-final-font) !important;
+}
+
+
+/* ============================================================
+   USER DASHBOARD BACKGROUND
+   EXACT IMAGE:
+   public/hero/mirrortrace2.jpeg
+   EXACT BLUE HAZE:
+   rgba(16,41,75,0.70)
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell {
+  min-height:
+    100vh !important;
+
+  background:
+    linear-gradient(
+      var(--mt-final-blue-haze),
+      var(--mt-final-blue-haze)
+    ),
+    url("/hero/mirrortrace2.jpeg")
+      center center / cover
+      fixed
+      no-repeat !important;
+
+  background-color:
+    #08111d !important;
+}
+
+/* Every requested page shows the shell image rather than replacing it. */
+html body #root
+.mirrortrace-app-shell
+:where(
+  .mirrortrace-authenticated-main,
+  .mirrortrace-app-main,
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance,
+  .mirrortrace-dashboard-overview
+) {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   ADMIN BACKGROUND
+   Keep Admin UI intact while making the requested blue haze clear.
+   ============================================================ */
+
+html body #root
+.mirrortrace-admin-page,
+html body #root
+.mirrortrace-admin-overlay {
+  background:
+    linear-gradient(
+      var(--mt-final-blue-haze),
+      var(--mt-final-blue-haze)
+    ),
+    url("/hero/mirrortrace2.jpeg")
+      center center / cover
+      fixed
+      no-repeat !important;
+
+  background-color:
+    #08111d !important;
+}
+
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard,
+html body #root
+.mirrortrace-admin-overlay
+.mirrortrace-admin-dashboard {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+}
+
+
+/* ============================================================
+   READABILITY / TYPE SCALE
+   Standard page heading: 28
+   Standard subheading: 24
+   Body: 18
+   Footer/utility: 20
+   Navbar: 14
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+h1 {
+  font-size:
+    28px !important;
+
+  line-height:
+    1.16 !important;
+
+  font-weight:
+    700 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+h2 {
+  font-size:
+    24px !important;
+
+  line-height:
+    1.24 !important;
+
+  font-weight:
+    700 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  p,
+  li,
+  td,
+  dd,
+  blockquote
+) {
+  font-size:
+    18px !important;
+
+  line-height:
+    1.58 !important;
+}
+
+/* Keep tiny utility classes readable. */
+html body #root
+.mirrortrace-app-shell
+:is(
+  .mirrortrace-overview-page,
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+)
+:where(
+  .text-xs,
+  .text-sm,
+  small,
+  label,
+  th
+) {
+  font-size:
+    16px !important;
+
+  line-height:
+    1.45 !important;
+}
+
+/* Footer/action utility copy. */
+html body #root
+.mirrortrace-app-shell
+:where(
+  footer,
+  .mirrortrace-brainstorm-footer,
+  .mirrortrace-history-toolbar,
+  .mirrortrace-journal-tools
+) {
+  font-size:
+    20px !important;
+}
+
+
+/* ============================================================
+   NAVBAR EXACTLY 14PX
+   ============================================================ */
+
+html body #root
+:where(
+  .mirrortrace-navbar,
+  .mirrortrace-main-nav,
+  .mirrortrace-mobile-nav,
+  .mirrortrace-profile,
+  .mirrortrace-signout
+)
+:where(
+  button,
+  a,
+  span
+),
+html body #root
+.mirrortrace-nav-button {
+  font-size:
+    14px !important;
+
+  line-height:
+    1.3 !important;
+}
+
+
+/* ============================================================
+   OVERVIEW TITLE MUST MATCH SECURITY & OPERATIONS EXACTLY
+   Both selectors receive exactly the same responsive declaration.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+h1.mirrortrace-float-title,
+html body #root
+.mirrortrace-dashboard-overview
+h1.mirrortrace-float-title,
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard
+h1.mirrortrace-admin-title-float,
+html body #root
+.mirrortrace-admin-overlay
+.mirrortrace-admin-dashboard
+h1.mirrortrace-admin-title-float {
+  font-family:
+    var(--mt-final-font) !important;
+
+  font-size:
+    clamp(52px, 5.2vw, 82px) !important;
+
+  font-weight:
+    700 !important;
+
+  line-height:
+    0.98 !important;
+
+  letter-spacing:
+    -0.035em !important;
+}
+
+/* Do not let component Tailwind break the matched hero sizes. */
+@media (max-width: 760px) {
+  html body #root
+  .mirrortrace-app-shell
+  .mirrortrace-overview-page
+  h1.mirrortrace-float-title,
+  html body #root
+  .mirrortrace-dashboard-overview
+  h1.mirrortrace-float-title,
+  html body #root
+  .mirrortrace-admin-page
+  .mirrortrace-admin-dashboard
+  h1.mirrortrace-admin-title-float,
+  html body #root
+  .mirrortrace-admin-overlay
+  .mirrortrace-admin-dashboard
+  h1.mirrortrace-admin-title-float {
+    font-size:
+      clamp(42px, 11vw, 58px) !important;
+  }
+}
+
+
+/* ============================================================
+   MEMORY GOVERNANCE
+   Top heading block EXACTLY 0.82.
+   Inner KPI/deeper panels = 0.90.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-page
+.mirrortrace-memory-governance {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* Entire first / heading block. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-page
+.mirrortrace-memory-governance
+> :first-child,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> :first-child,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+.mirrortrace-memory-hero {
+  background:
+    var(--mt-final-black-82) !important;
+
+  background-color:
+    var(--mt-final-black-82) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Force children of the hero not to repaint it jet black. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> :first-child
+> :where(
+  header,
+  section,
+  div
+):not(.grid) {
+  background-color:
+    transparent !important;
+}
+
+/* KPI / deep inner surfaces. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .rounded-xl.border
+) {
+  background:
+    var(--mt-final-black-90) !important;
+
+  background-color:
+    var(--mt-final-black-90) !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   ADMIN TEXT READABILITY
+   Preserve cards/layout. Only raise tiny text sizes.
+   ============================================================ */
+
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard
+:where(
+  p,
+  li,
+  td,
+  dd
+) {
+  font-size:
+    16px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard
+:where(
+  .text-xs,
+  .text-sm,
+  small,
+  label,
+  th
+) {
+  font-size:
+    14px !important;
+}
+
+
+/* MIRRORTRACE_FINAL_MIRRORTRACE2_BLUE70_END */
+

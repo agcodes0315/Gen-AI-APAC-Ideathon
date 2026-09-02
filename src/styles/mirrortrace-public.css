@@ -1605,3 +1605,36 @@ p {
 
 /* MIRRORTRACE_PUBLIC_SOURCE_SERIF_FINAL_END */
 
+/* MIRRORTRACE_PUBLIC_FINAL_SOURCE_SERIF_READABILITY_START */
+
+/* ============================================================
+   PUBLIC PAGE FONT CONSISTENCY
+   ============================================================ */
+
+.mirrortrace-auth-page,
+.mirrortrace-auth-page *,
+.mirrortrace-guidebot,
+.mirrortrace-guidebot * {
+  font-family:
+    "Source Serif 4",
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+/* Public navbar remains compact. */
+.mirrortrace-auth-page
+.mirrortrace-landing-nav
+:where(
+  button,
+  a,
+  span
+) {
+  font-size:
+    14px !important;
+}
+
+/* MIRRORTRACE_PUBLIC_FINAL_SOURCE_SERIF_READABILITY_END */
+
