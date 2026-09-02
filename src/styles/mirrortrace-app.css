@@ -2,78 +2,102 @@
    MIRRORTRACE — CONSOLIDATED AUTHENTICATED + ADMIN THEME
    File: src/styles/mirrortrace-app.css
 
-   KEEP THIS AS THE ONLY APP/ADMIN VISUAL OVERRIDE FILE.
-
-   This merges:
-   - authenticated translucent-black fixes
-   - Overview "Your thinking, versioned." hero
-   - Memory Governance black glass
-   - Reflect & Chat black glass
-   - History / Support / Feedback black glass
-   - Admin full-page Control Room
-   - Admin Security & Operations hero
-   - Admin KPI cards / surfaces / nested cards
-   - Admin launcher bottom-right
-   - scroll-performance fixes
-
-   It intentionally does NOT target .mirrortrace-auth-page.
+   This is the ONLY authenticated/admin visual override file.
+   It intentionally does not target the public AuthView.
    ============================================================ */
 
 :root {
-  --mt-app-black-36: rgba(0, 0, 0, 0.36);
-  --mt-app-black-44: rgba(0, 0, 0, 0.44);
-  --mt-app-black-50: rgba(0, 0, 0, 0.50);
-  --mt-app-black-52: rgba(0, 0, 0, 0.52);
-  --mt-app-black-58: rgba(0, 0, 0, 0.58);
-  --mt-app-black-60: rgba(0, 0, 0, 0.60);
-  --mt-app-black-64: rgba(0, 0, 0, 0.64);
-  --mt-app-black-68: rgba(0, 0, 0, 0.68);
-  --mt-app-black-74: rgba(0, 0, 0, 0.74);
+  --mt-app-black-30:
+    rgba(0, 0, 0, 0.30);
 
-  --mt-app-border: rgba(236, 242, 246, 0.15);
-  --mt-app-border-soft: rgba(236, 242, 246, 0.09);
-  --mt-app-border-strong: rgba(236, 242, 246, 0.22);
+  --mt-app-black-40:
+    rgba(0, 0, 0, 0.40);
 
-  --mt-app-text: #f8fafc;
-  --mt-app-copy: rgba(239, 244, 248, 0.80);
-  --mt-app-muted: rgba(222, 231, 238, 0.62);
+  --mt-app-black-44:
+    rgba(0, 0, 0, 0.44);
 
-  --mt-overview-hero: rgba(0, 0, 0, 0.30);
-  --mt-overview-accent: #d39445;
+  --mt-app-black-50:
+    rgba(0, 0, 0, 0.50);
 
-  --mt-admin-inner: rgba(0, 0, 0, 0.40);
-  --mt-admin-input: rgba(0, 0, 0, 0.52);
+  --mt-app-black-52:
+    rgba(0, 0, 0, 0.52);
+
+  --mt-app-black-58:
+    rgba(0, 0, 0, 0.58);
+
+  --mt-app-black-60:
+    rgba(0, 0, 0, 0.60);
+
+  --mt-app-black-64:
+    rgba(0, 0, 0, 0.64);
+
+  --mt-app-black-70:
+    rgba(0, 0, 0, 0.70);
+
+  --mt-app-black-74:
+    rgba(0, 0, 0, 0.74);
+
+  --mt-app-border:
+    rgba(236, 242, 246, 0.15);
+
+  --mt-app-border-soft:
+    rgba(236, 242, 246, 0.09);
+
+  --mt-app-text:
+    #f8fafc;
+
+  --mt-app-copy:
+    rgba(239, 244, 248, 0.80);
+
+  --mt-app-muted:
+    rgba(222, 231, 238, 0.62);
+
+  --mt-overview-accent:
+    #d39445;
 }
 
 /* ============================================================
-   AUTHENTICATED ROOT + DARK-ONLY APP
+   AUTHENTICATED ROOT
    ============================================================ */
 
 html:has(.mirrortrace-app-shell),
 html:has(.mirrortrace-admin-page),
 html:has(.mirrortrace-admin-overlay) {
-  color-scheme: dark !important;
-  scroll-behavior: auto !important;
+  color-scheme:
+    dark !important;
+
+  scroll-behavior:
+    auto !important;
 }
 
 body:has(.mirrortrace-app-shell),
 body:has(.mirrortrace-admin-page),
 body:has(.mirrortrace-admin-overlay) {
-  overscroll-behavior-y: auto;
+  overscroll-behavior-y:
+    auto;
 }
 
-html body #root .mirrortrace-app-shell {
-  color: var(--mt-app-text) !important;
-  background-attachment: scroll !important;
+html body #root
+.mirrortrace-app-shell {
+  color:
+    var(--mt-app-text) !important;
+
+  background-attachment:
+    scroll !important;
 }
 
-html body #root .mirrortrace-app-shell .mirrortrace-theme-toggle {
-  display: none !important;
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-theme-toggle {
+  display:
+    none !important;
 }
 
-html body #root .mirrortrace-app-shell
+html body #root
+.mirrortrace-app-shell
 :where(
   .mirrortrace-authenticated-main,
+  .mirrortrace-app-main,
   .mirrortrace-overview-page,
   .mirrortrace-reflect-page,
   .mirrortrace-history-page,
@@ -82,47 +106,11 @@ html body #root .mirrortrace-app-shell
   .mirrortrace-feedback-page,
   .mirrortrace-memory-governance
 ) {
-  background: transparent !important;
-  background-color: transparent !important;
-}
+  background:
+    transparent !important;
 
-/* ============================================================
-   PERFORMANCE
-   No large backdrop-filter stacks in authenticated pages.
-   ============================================================ */
-
-html body #root .mirrortrace-app-shell
-:where(
-  .mirrortrace-stat-card,
-  .mirrortrace-action-card,
-  .mirrortrace-diff-feature,
-  .rounded-xl.border,
-  .rounded-2xl.border,
-  .rounded-3xl.border,
-  article.border,
-  section.border
-) {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-
-  transition:
-    border-color 160ms ease,
-    background-color 160ms ease,
-    box-shadow 160ms ease !important;
-}
-
-html body #root .mirrortrace-app-shell
-:where(
-  .mirrortrace-stat-card,
-  .mirrortrace-action-card,
-  .mirrortrace-diff-feature,
-  .rounded-xl.border,
-  .rounded-2xl.border,
-  .rounded-3xl.border,
-  article.border,
-  section.border
-):hover {
-  transform: none !important;
+  background-color:
+    transparent !important;
 }
 
 /* ============================================================
@@ -151,21 +139,600 @@ main
   .mirrortrace-diff-feature,
   .mt-glass
 ) {
-  background: var(--mt-app-black-52) !important;
-  background-color: var(--mt-app-black-52) !important;
-  background-image: none !important;
+  background:
+    var(--mt-app-black-52) !important;
 
-  border-color: var(--mt-app-border) !important;
-  color: var(--mt-app-text) !important;
+  background-color:
+    var(--mt-app-black-52) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    var(--mt-app-border) !important;
+
+  color:
+    var(--mt-app-text) !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
 
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.035),
-    0 14px 30px rgba(0,0,0,0.18) !important;
+    inset 0 1px 0
+      rgba(255,255,255,.035),
+    0 14px 30px
+      rgba(0,0,0,.18) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+:where(
+  .mirrortrace-stat-card,
+  .mirrortrace-action-card,
+  .mirrortrace-diff-feature,
+  article.border,
+  section.border,
+  .rounded-xl.border,
+  .rounded-2xl.border,
+  .rounded-3xl.border
+) {
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+:where(
+  .mirrortrace-stat-card,
+  .mirrortrace-action-card,
+  .mirrortrace-diff-feature,
+  article.border,
+  section.border,
+  .rounded-xl.border,
+  .rounded-2xl.border,
+  .rounded-3xl.border
+):hover {
+  transform:
+    none !important;
 }
 
 /* ============================================================
-   OVERVIEW HERO — "YOUR THINKING, VERSIONED."
-   Preserves the final 30% rule from your latest source.
+   CLEAN AUTHENTICATED NAVBAR
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-navbar {
+  position:
+    sticky;
+
+  top:
+    0;
+
+  z-index:
+    8000;
+
+  width:
+    100%;
+
+  min-height:
+    88px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  background:
+    rgba(8, 13, 18, 0.94) !important;
+
+  background-color:
+    rgba(8, 13, 18, 0.94) !important;
+
+  background-image:
+    none !important;
+
+  border-bottom:
+    1px solid
+    rgba(236, 242, 246, 0.11) !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+
+  box-shadow:
+    0 8px 26px
+    rgba(0, 0, 0, 0.18) !important;
+}
+
+.mirrortrace-navbar-container {
+  width:
+    100%;
+
+  max-width:
+    1600px;
+
+  margin:
+    0 auto;
+
+  padding:
+    0 40px;
+}
+
+.mirrortrace-navbar-inner {
+  min-height:
+    88px;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    minmax(270px, auto)
+    minmax(620px, 1fr)
+    minmax(220px, auto);
+
+  align-items:
+    center;
+
+  gap:
+    24px;
+}
+
+/* Brand */
+.mirrortrace-brand {
+  min-width:
+    0;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    14px;
+
+  padding:
+    0 !important;
+
+  border:
+    0 !important;
+
+  background:
+    transparent !important;
+
+  color:
+    #ffffff !important;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+}
+
+.mirrortrace-logo {
+  width:
+    48px;
+
+  height:
+    48px;
+
+  flex:
+    0 0 48px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.16);
+
+  border-radius:
+    14px;
+
+  background:
+    rgba(117, 132, 103, 0.78);
+
+  color:
+    #ffffff;
+
+  font-family:
+    Georgia,
+    'Times New Roman',
+    serif;
+
+  font-size:
+    27px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1;
+}
+
+.mirrortrace-brand-copy {
+  min-width:
+    0;
+}
+
+.mirrortrace-brand-title-row {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  white-space:
+    nowrap;
+}
+
+.mirrortrace-brand-name {
+  color:
+    #ffffff;
+
+  font-family:
+    Georgia,
+    'Times New Roman',
+    serif;
+
+  font-size:
+    25px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1;
+}
+
+.mirrortrace-uid-chip {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    6px;
+
+  min-height:
+    32px;
+
+  padding:
+    0 11px;
+
+  border:
+    1px solid
+    rgba(211, 148, 69, 0.28);
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(211, 148, 69, 0.10);
+
+  color:
+    rgba(255, 244, 228, 0.84);
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.1;
+
+  white-space:
+    nowrap;
+}
+
+.mirrortrace-brand-subtitle {
+  margin:
+    7px 0 0 !important;
+
+  color:
+    rgba(220, 229, 236, 0.58) !important;
+
+  font-size:
+    12px;
+
+  line-height:
+    1;
+}
+
+/* Main nav */
+.mirrortrace-main-nav {
+  justify-self:
+    center;
+
+  width:
+    fit-content;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    4px;
+
+  padding:
+    5px;
+
+  border:
+    1px solid
+    rgba(236, 242, 246, 0.12);
+
+  border-radius:
+    15px;
+
+  background:
+    rgba(0, 0, 0, 0.24) !important;
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255,255,255,.025);
+}
+
+.mirrortrace-nav-button {
+  height:
+    44px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+
+  padding:
+    0 14px;
+
+  border:
+    1px solid
+    transparent !important;
+
+  border-radius:
+    11px;
+
+  background:
+    transparent !important;
+
+  color:
+    rgba(220, 229, 236, 0.66) !important;
+
+  font-size:
+    13px;
+
+  font-weight:
+    600;
+
+  white-space:
+    nowrap;
+
+  cursor:
+    pointer;
+
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease !important;
+}
+
+.mirrortrace-nav-button:hover {
+  background:
+    rgba(255,255,255,.045) !important;
+
+  color:
+    rgba(255,255,255,.90) !important;
+}
+
+.mirrortrace-nav-button-active {
+  background:
+    rgba(255,255,255,.09) !important;
+
+  border-color:
+    rgba(255,255,255,.14) !important;
+
+  color:
+    #ffffff !important;
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255,255,255,.04);
+}
+
+.mirrortrace-nav-button svg {
+  flex:
+    0 0 auto;
+
+  opacity:
+    .92;
+}
+
+/* Profile + sign out */
+.mirrortrace-navbar-actions {
+  justify-self:
+    end;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    14px;
+
+  min-width:
+    0;
+}
+
+.mirrortrace-profile {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    10px;
+
+  min-width:
+    0;
+}
+
+.mirrortrace-avatar {
+  width:
+    38px;
+
+  height:
+    38px;
+
+  flex:
+    0 0 38px;
+
+  object-fit:
+    cover;
+
+  border-radius:
+    999px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.15);
+}
+
+.mirrortrace-avatar-fallback {
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  background:
+    rgba(117, 171, 62, 0.92);
+
+  color:
+    #ffffff;
+}
+
+.mirrortrace-profile-name {
+  max-width:
+    112px;
+
+  overflow:
+    hidden;
+
+  color:
+    rgba(239,244,248,.82);
+
+  font-size:
+    13px;
+
+  font-weight:
+    600;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+.mirrortrace-signout {
+  height:
+    42px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    7px;
+
+  padding:
+    0 12px;
+
+  border:
+    0 !important;
+
+  border-left:
+    1px solid
+    rgba(236,242,246,.12) !important;
+
+  border-radius:
+    0 !important;
+
+  background:
+    transparent !important;
+
+  color:
+    rgba(220,229,236,.72) !important;
+
+  font-size:
+    13px;
+
+  font-weight:
+    600;
+
+  white-space:
+    nowrap;
+
+  cursor:
+    pointer;
+}
+
+.mirrortrace-signout:hover {
+  color:
+    #ffffff !important;
+}
+
+/* Mobile nav */
+.mirrortrace-mobile-nav {
+  display:
+    none;
+}
+
+/* ============================================================
+   OVERVIEW HERO
    ============================================================ */
 
 html body #root
@@ -176,25 +743,39 @@ html body #root
 .mirrortrace-app-shell
 .mirrortrace-dashboard-overview
 .mirrortrace-user-hero {
-  position: relative !important;
-  isolation: isolate !important;
-  overflow: hidden !important;
+  position:
+    relative !important;
 
-  background: var(--mt-overview-hero) !important;
-  background-color: var(--mt-overview-hero) !important;
-  background-image: none !important;
+  isolation:
+    isolate !important;
 
-  border: 1px solid var(--mt-app-border) !important;
+  overflow:
+    hidden !important;
 
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background:
+    var(--mt-app-black-50) !important;
 
-  filter: none !important;
-  opacity: 1 !important;
+  background-color:
+    var(--mt-app-black-50) !important;
+
+  background-image:
+    none !important;
+
+  border:
+    1px solid
+    var(--mt-app-border) !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
 
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.045),
-    0 18px 42px rgba(0,0,0,0.18) !important;
+    inset 0 1px 0
+      rgba(255,255,255,.035),
+    0 18px 42px
+      rgba(0,0,0,.18) !important;
 }
 
 html body #root
@@ -203,219 +784,163 @@ html body #root
 html body #root
 .mirrortrace-app-shell
 .mirrortrace-user-hero::after {
-  content: none !important;
-  display: none !important;
-  background: none !important;
-  background-image: none !important;
+  content:
+    none !important;
+
+  display:
+    none !important;
 }
 
 html body #root
 .mirrortrace-app-shell
 .mirrortrace-user-hero
-> :is(
-  .absolute.inset-0,
-  .mirrortrace-hero-overlay,
-  .mirrortrace-hero-background,
-  .mirrortrace-hero-minimal-shade,
-  .mirrortrace-hero-sharp-photo
+:is(
+  h1,
+  h2,
+  h3
 ) {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-
-  filter: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-
-  opacity: 0 !important;
-  pointer-events: none !important;
+  color:
+    #ffffff !important;
 }
 
 html body #root
 .mirrortrace-app-shell
 .mirrortrace-user-hero
-> :is(
-  img.absolute.inset-0,
-  video.absolute.inset-0,
-  .mirrortrace-hero-sharp-photo
-) {
-  display: none !important;
-}
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-user-hero
-> .relative:not(button):not(a),
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-user-hero
-> .mirrortrace-hero-content {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-}
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-user-hero
-> *:not(.absolute) {
-  position: relative;
-  z-index: 2;
-}
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-user-hero h1 {
-  color: #ffffff !important;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.30) !important;
-}
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-user-hero h1 span,
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-user-hero .mirrortrace-accent-text {
-  color: var(--mt-overview-accent) !important;
-}
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-user-hero p,
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-user-hero .mirrortrace-overview-copy {
-  color: #e4ebf0 !important;
+.mirrortrace-accent-text {
+  color:
+    var(--mt-overview-accent) !important;
 }
 
 /* ============================================================
    REFLECT & CHAT
+   EXACT CURRENT REQUIREMENT:
+   OUTER = 0.70 BLACK
+   INNER = 0.40 BLACK
+   NO BLUE
    ============================================================ */
 
 html body #root
 .mirrortrace-app-shell
 .mirrortrace-reflect-page
-:where(
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100,
-  .rounded-xl.border,
-  .rounded-2xl.border,
-  .rounded-3xl.border
+> .grid
+> div:first-child
+> .space-y-4
+> .bg-white.rounded-xl.border,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+> .grid
+> div:first-child
+.bg-white.rounded-xl.border,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-shell {
+  background:
+    var(--mt-app-black-70) !important;
+
+  background-color:
+    var(--mt-app-black-70) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    var(--mt-app-border) !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+#journal-input-area,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-input {
+  background:
+    var(--mt-app-black-40) !important;
+
+  background-color:
+    var(--mt-app-black-40) !important;
+
+  background-image:
+    none !important;
+
+  color:
+    #ffffff !important;
+
+  border-color:
+    var(--mt-app-border) !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:is(
+  .mirrortrace-brainstorm-header,
+  .mirrortrace-brainstorm-footer,
+  .mirrortrace-brainstorm-tags
 ) {
-  background: var(--mt-app-black-60) !important;
-  background-color: var(--mt-app-black-60) !important;
-  background-image: none !important;
+  background:
+    var(--mt-app-black-70) !important;
 
-  border-color: var(--mt-app-border) !important;
+  background-color:
+    var(--mt-app-black-70) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    var(--mt-app-border-soft) !important;
 }
 
-/* Compose Reflection outer card. */
 html body #root
 .mirrortrace-app-shell
 .mirrortrace-reflect-page
-.mirrortrace-compose-column
-.bg-white.rounded-xl.border {
-  background: var(--mt-app-black-60) !important;
-  background-color: var(--mt-app-black-60) !important;
-  background-image: none !important;
-}
+#tag-input-field {
+  background:
+    var(--mt-app-black-52) !important;
 
-/* Brainstorm shell. */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.bg-white.rounded-xl.border {
-  background: var(--mt-app-black-60) !important;
-  background-color: var(--mt-app-black-60) !important;
-  background-image: none !important;
-}
+  background-color:
+    var(--mt-app-black-52) !important;
 
-/* Brainstorm top strip. */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.bg-white.rounded-xl.border
-> div:first-child {
-  background: var(--mt-app-black-68) !important;
-  background-color: var(--mt-app-black-68) !important;
-  background-image: none !important;
+  background-image:
+    none !important;
 
-  border-color: var(--mt-app-border-soft) !important;
-}
-
-/* Chat body. */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.bg-white.rounded-xl.border
-> div:nth-child(2) {
-  background: rgba(0,0,0,0.30) !important;
-  background-color: rgba(0,0,0,0.30) !important;
-}
-
-/* Chat footer. */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.bg-white.rounded-xl.border
-> div:last-child {
-  background: var(--mt-app-black-52) !important;
-  background-color: var(--mt-app-black-52) !important;
-  background-image: none !important;
-
-  border-color: var(--mt-app-border-soft) !important;
+  color:
+    #ffffff !important;
 }
 
 /* ============================================================
-   AUTHENTICATED INPUTS
-   ============================================================ */
-
-html body #root
-.mirrortrace-app-shell
-main
-:where(
-  input:not([type="checkbox"]):not([type="radio"]),
-  textarea,
-  select
-) {
-  background: rgba(0, 0, 0, 0.46) !important;
-  background-color: rgba(0, 0, 0, 0.46) !important;
-  background-image: none !important;
-
-  color: #ffffff !important;
-  border-color: rgba(236, 242, 246, 0.16) !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html body #root
-.mirrortrace-app-shell
-main
-:where(input, textarea)::placeholder {
-  color: rgba(224, 232, 238, 0.54) !important;
-}
-
-/* ============================================================
-   MEMORY GOVERNANCE
+   MEMORY
    ============================================================ */
 
 html body #root
 .mirrortrace-app-shell
 .mirrortrace-memory-governance {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
+  background:
+    transparent !important;
 
-  color: var(--mt-app-text) !important;
+  color:
+    var(--mt-app-text) !important;
 }
 
-/* Top shell + header. */
 html body #root
 .mirrortrace-app-shell
 .mirrortrace-memory-governance
@@ -427,38 +952,45 @@ html body #root
   .mirrortrace-memory-hero,
   .mirrortrace-photo-panel
 ) {
-  background: var(--mt-app-black-60) !important;
-  background-color: var(--mt-app-black-60) !important;
-  background-image: none !important;
+  background:
+    var(--mt-app-black-58) !important;
 
-  border-color: var(--mt-app-border) !important;
+  background-color:
+    var(--mt-app-black-58) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    var(--mt-app-border) !important;
 }
 
-/* KPI separator. */
 html body #root
 .mirrortrace-app-shell
 .mirrortrace-memory-governance
 .grid.grid-cols-2.gap-px.bg-stone-200 {
-  background: rgba(255,255,255,0.08) !important;
-  background-color: rgba(255,255,255,0.08) !important;
-  background-image: none !important;
+  background:
+    rgba(255,255,255,.10) !important;
+
+  background-color:
+    rgba(255,255,255,.10) !important;
 }
 
-/* KPI cells. */
 html body #root
 .mirrortrace-app-shell
 .mirrortrace-memory-governance
 .grid.grid-cols-2.gap-px.bg-stone-200
 > * {
-  background: var(--mt-app-black-52) !important;
-  background-color: var(--mt-app-black-52) !important;
-  background-image: none !important;
+  background:
+    var(--mt-app-black-50) !important;
 
-  color: #ffffff !important;
-  box-shadow: none !important;
+  background-color:
+    var(--mt-app-black-50) !important;
+
+  color:
+    #ffffff !important;
 }
 
-/* Reminder Delivery and other Memory sections. */
 html body #root
 .mirrortrace-app-shell
 .mirrortrace-memory-governance
@@ -470,63 +1002,17 @@ html body #root
   div.rounded-2xl.border,
   div.rounded-xl.border
 ) {
-  background: var(--mt-app-black-52) !important;
-  background-color: var(--mt-app-black-52) !important;
-  background-image: none !important;
+  background:
+    var(--mt-app-black-50) !important;
 
-  border-color: var(--mt-app-border) !important;
-}
+  background-color:
+    var(--mt-app-black-50) !important;
 
-/* Ordinary inner Memory surfaces. */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-memory-governance
-:where(
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100,
-  .bg-stone-200
-) {
-  background: var(--mt-app-black-44) !important;
-  background-color: var(--mt-app-black-44) !important;
-  background-image: none !important;
+  background-image:
+    none !important;
 
-  border-color: var(--mt-app-border-soft) !important;
-}
-
-/* Principle cards. */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-memory-governance
-.grid.lg\:grid-cols-3
-> div {
-  background: var(--mt-app-black-60) !important;
-  background-color: var(--mt-app-black-60) !important;
-  background-image: none !important;
-
-  border-color: var(--mt-app-border) !important;
-}
-
-/* Preserve semantic status meaning, but make it translucent. */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-memory-governance
-.bg-emerald-50 {
-  background: rgba(19, 74, 55, 0.46) !important;
-}
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-memory-governance
-.bg-amber-50 {
-  background: rgba(87, 58, 22, 0.46) !important;
-}
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-memory-governance
-.bg-red-50 {
-  background: rgba(89, 27, 27, 0.48) !important;
+  border-color:
+    var(--mt-app-border) !important;
 }
 
 /* ============================================================
@@ -550,16 +1036,43 @@ html body #root
   article.border,
   section.border
 ) {
-  background: var(--mt-app-black-52) !important;
-  background-color: var(--mt-app-black-52) !important;
-  background-image: none !important;
+  background:
+    var(--mt-app-black-52) !important;
 
-  border-color: var(--mt-app-border) !important;
+  background-color:
+    var(--mt-app-black-52) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    var(--mt-app-border) !important;
 }
 
 /* ============================================================
-   AUTHENTICATED TYPOGRAPHY
+   AUTHENTICATED INPUTS + TYPOGRAPHY
    ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+main
+:where(
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select
+) {
+  background:
+    rgba(0,0,0,.46) !important;
+
+  background-color:
+    rgba(0,0,0,.46) !important;
+
+  color:
+    #ffffff !important;
+
+  border-color:
+    var(--mt-app-border) !important;
+}
 
 html body #root
 .mirrortrace-app-shell
@@ -575,7 +1088,8 @@ html body #root
   .text-stone-800,
   .text-stone-700
 ) {
-  color: var(--mt-app-text) !important;
+  color:
+    var(--mt-app-text) !important;
 }
 
 html body #root
@@ -589,293 +1103,155 @@ html body #root
   .text-stone-500,
   .text-stone-400
 ) {
-  color: var(--mt-app-copy) !important;
+  color:
+    var(--mt-app-copy) !important;
 }
 
 /* ============================================================
-   NAVBAR
-   ============================================================ */
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-navbar {
-  background: rgba(6, 10, 14, 0.90) !important;
-  background-color: rgba(6, 10, 14, 0.90) !important;
-  background-image: none !important;
-
-  border-color: rgba(236, 242, 246, 0.10) !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-main-nav {
-  background: rgba(0,0,0,0.34) !important;
-  background-color: rgba(0,0,0,0.34) !important;
-}
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-nav-button-active {
-  background: rgba(255,255,255,0.08) !important;
-  background-color: rgba(255,255,255,0.08) !important;
-}
-
-/* ============================================================
-   ADMIN CONTROL ROOM — FULL PAGE
+   ADMIN
    ============================================================ */
 
 html body #root
 .mirrortrace-admin-page,
 html body #root
 .mirrortrace-admin-overlay {
-  position: fixed !important;
-  inset: 0 !important;
+  position:
+    fixed !important;
 
-  z-index: 10000 !important;
+  inset:
+    0 !important;
 
-  width: 100vw !important;
-  height: 100vh !important;
+  z-index:
+    10000 !important;
 
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
+  width:
+    100vw !important;
+
+  height:
+    100vh !important;
+
+  overflow-x:
+    hidden !important;
+
+  overflow-y:
+    auto !important;
 
   background:
     linear-gradient(
-      rgba(0, 0, 0, 0.18),
-      rgba(0, 0, 0, 0.24)
+      rgba(0,0,0,.18),
+      rgba(0,0,0,.24)
     ),
     url("/hero/mirrortrace-poster.jpeg")
-      center top / cover scroll no-repeat !important;
+    center top / cover scroll
+    no-repeat !important;
 
-  background-color: #090d11 !important;
-  background-attachment: scroll !important;
+  background-color:
+    #090d11 !important;
 
-  color: var(--mt-app-text) !important;
-
-  scroll-behavior: auto !important;
-  overscroll-behavior: contain !important;
+  color:
+    var(--mt-app-text) !important;
 }
-
-html body #root
-.mirrortrace-admin-page
-> main {
-  background: transparent !important;
-  background-color: transparent !important;
-}
-
-/* ============================================================
-   ADMIN LAUNCHER — BOTTOM RIGHT
-   ============================================================ */
 
 html body #root
 .mirrortrace-admin-launcher {
-  position: fixed !important;
+  position:
+    fixed !important;
 
-  right: 22px !important;
-  bottom: 22px !important;
-  top: auto !important;
-  left: auto !important;
+  right:
+    22px !important;
 
-  z-index: 9000 !important;
+  bottom:
+    22px !important;
 
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
+  z-index:
+    9000 !important;
 
-  min-height: 46px !important;
-  padding: 0 18px !important;
+  min-height:
+    46px !important;
 
-  border: 1px solid rgba(255,255,255,0.15) !important;
-  border-radius: 999px !important;
+  display:
+    inline-flex !important;
 
-  background: rgba(0,0,0,0.76) !important;
-  background-color: rgba(0,0,0,0.76) !important;
-  background-image: none !important;
+  align-items:
+    center !important;
 
-  color: #ffffff !important;
+  justify-content:
+    center !important;
 
-  box-shadow:
-    0 14px 34px rgba(0,0,0,0.30),
-    inset 0 1px 0 rgba(255,255,255,0.04) !important;
+  gap:
+    8px !important;
 
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  padding:
+    0 18px !important;
 
-  transition:
-    transform 160ms ease,
-    background-color 160ms ease,
-    border-color 160ms ease !important;
+  border:
+    1px solid
+    rgba(255,255,255,.15) !important;
+
+  border-radius:
+    999px !important;
+
+  background:
+    rgba(0,0,0,.76) !important;
+
+  color:
+    #ffffff !important;
 }
-
-html body #root
-.mirrortrace-admin-launcher:hover {
-  transform: translateY(-3px) !important;
-
-  background: rgba(0,0,0,0.88) !important;
-  background-color: rgba(0,0,0,0.88) !important;
-
-  border-color: rgba(211,148,69,0.30) !important;
-}
-
-/* ============================================================
-   ADMIN SECURITY & OPERATIONS HERO
-   ============================================================ */
 
 html body #root
 .mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-.mirrortrace-admin-hero,
-html body #root
-.mirrortrace-admin-overlay
 .mirrortrace-admin-dashboard
 .mirrortrace-admin-hero {
-  position: relative !important;
-  isolation: isolate !important;
-  overflow: hidden !important;
+  background:
+    var(--mt-app-black-50) !important;
 
-  background: var(--mt-app-black-50) !important;
-  background-color: var(--mt-app-black-50) !important;
-  background-image: none !important;
+  background-color:
+    var(--mt-app-black-50) !important;
 
-  border: 1px solid var(--mt-app-border) !important;
+  background-image:
+    none !important;
 
-  color: var(--mt-app-text) !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.035),
-    0 18px 42px rgba(0,0,0,0.18) !important;
-}
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-hero::before,
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-hero::after,
-html body #root
-.mirrortrace-admin-overlay
-.mirrortrace-admin-hero::before,
-html body #root
-.mirrortrace-admin-overlay
-.mirrortrace-admin-hero::after {
-  content: none !important;
-  display: none !important;
-
-  background: none !important;
-  background-image: none !important;
-}
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-hero
-:is(
-  .mirrortrace-admin-boundary,
-  .bg-emerald-300\/10
-) {
-  background: var(--mt-admin-inner) !important;
-  background-color: var(--mt-admin-inner) !important;
-  background-image: none !important;
-
-  border-color: rgba(151,207,177,0.20) !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* ============================================================
-   ADMIN KPI CARDS
-   ============================================================ */
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-button.mirrortrace-admin-metric,
-html body #root
-.mirrortrace-admin-overlay
-.mirrortrace-admin-dashboard
-button.mirrortrace-admin-metric,
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-.mirrortrace-admin-metric.bg-white {
-  background: var(--mt-app-black-64) !important;
-  background-color: var(--mt-app-black-64) !important;
-  background-image: none !important;
-
-  color: var(--mt-app-text) !important;
-
-  border: 1px solid var(--mt-app-border) !important;
-
-  opacity: 1 !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.035),
-    0 14px 30px rgba(0,0,0,0.22) !important;
+  border-color:
+    var(--mt-app-border) !important;
 }
 
 html body #root
 .mirrortrace-admin-page
 .mirrortrace-admin-dashboard
-.mirrortrace-admin-metric::before,
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-.mirrortrace-admin-metric::after {
-  background: none !important;
-  background-color: transparent !important;
-  background-image: none !important;
+button.mirrortrace-admin-metric {
+  background:
+    var(--mt-app-black-64) !important;
 
-  opacity: 0 !important;
-  pointer-events: none !important;
+  background-color:
+    var(--mt-app-black-64) !important;
+
+  color:
+    var(--mt-app-text) !important;
+
+  border-color:
+    var(--mt-app-border) !important;
 }
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-button.mirrortrace-admin-metric:hover {
-  background: var(--mt-app-black-74) !important;
-  background-color: var(--mt-app-black-74) !important;
-
-  border-color: rgba(211,148,69,0.30) !important;
-
-  transform: none !important;
-}
-
-/* ============================================================
-   ADMIN LARGE SURFACES
-   ============================================================ */
 
 html body #root
 .mirrortrace-admin-page
 .mirrortrace-admin-dashboard
 .mirrortrace-admin-surface {
-  background: var(--mt-app-black-58) !important;
-  background-color: var(--mt-app-black-58) !important;
-  background-image: none !important;
+  background:
+    var(--mt-app-black-58) !important;
 
-  color: var(--mt-app-text) !important;
+  background-color:
+    var(--mt-app-black-58) !important;
 
-  border-color: var(--mt-app-border) !important;
+  background-image:
+    none !important;
 
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  color:
+    var(--mt-app-text) !important;
 
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.03),
-    0 14px 32px rgba(0,0,0,0.18) !important;
+  border-color:
+    var(--mt-app-border) !important;
 }
 
-/* Nested admin cards. */
 html body #root
 .mirrortrace-admin-page
 .mirrortrace-admin-dashboard
@@ -889,218 +1265,178 @@ html body #root
   article[class*="rounded-xl"][class*="border"],
   article[class*="rounded-2xl"][class*="border"]
 ) {
-  background: var(--mt-admin-inner) !important;
-  background-color: var(--mt-admin-inner) !important;
-  background-image: none !important;
+  background:
+    var(--mt-app-black-40) !important;
 
-  border-color: var(--mt-app-border-soft) !important;
-  color: var(--mt-app-text) !important;
+  background-color:
+    var(--mt-app-black-40) !important;
 
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
+  background-image:
+    none !important;
 
-/* Donut center. */
-html body #root
-.mirrortrace-admin-page
-#admin-activity
-.rounded-full.bg-white {
-  background: var(--mt-app-black-64) !important;
-  background-color: var(--mt-app-black-64) !important;
-  color: #ffffff !important;
+  border-color:
+    var(--mt-app-border-soft) !important;
+
+  color:
+    var(--mt-app-text) !important;
 }
 
 /* ============================================================
-   ADMIN TABLES / INPUTS
+   RESPONSIVE NAVBAR
    ============================================================ */
 
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-table {
-  color: var(--mt-app-copy) !important;
-}
+@media (max-width: 1350px) {
+  .mirrortrace-navbar-container {
+    padding:
+      0 24px;
+  }
 
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-thead,
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-th {
-  color: var(--mt-app-muted) !important;
-}
+  .mirrortrace-navbar-inner {
+    grid-template-columns:
+      minmax(230px, auto)
+      1fr
+      auto;
 
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-tr {
-  border-color: var(--mt-app-border-soft) !important;
-}
+    gap:
+      15px;
+  }
 
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-tbody tr {
-  background: transparent !important;
-}
+  .mirrortrace-main-nav {
+    gap:
+      2px;
+  }
 
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-:is(
-  input:not([type="checkbox"]):not([type="radio"]),
-  textarea,
-  select
-) {
-  background: var(--mt-admin-input) !important;
-  background-color: var(--mt-admin-input) !important;
-  background-image: none !important;
+  .mirrortrace-nav-button {
+    padding:
+      0 10px;
 
-  color: #ffffff !important;
+    font-size:
+      12px;
+  }
 
-  border-color: var(--mt-app-border) !important;
+  .mirrortrace-brand-subtitle {
+    display:
+      none;
+  }
 
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-:is(input, textarea)::placeholder {
-  color: var(--mt-app-muted) !important;
-}
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-select option {
-  background: #111317 !important;
-  color: #ffffff !important;
-}
-
-/* ============================================================
-   ADMIN COLLISION GUARD
-   ============================================================ */
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-:is(
-  .bg-white,
-  .bg-stone-50,
-  .bg-stone-100,
-  .bg-stone-200,
-  .bg-slate-800,
-  .bg-slate-900,
-  .bg-blue-800,
-  .bg-blue-900,
-  .bg-indigo-800,
-  .bg-indigo-900
-) {
-  background-color: var(--mt-admin-inner) !important;
-  background-image: none !important;
-}
-
-/* Restore the intended major admin levels after broad collision guard. */
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-.mirrortrace-admin-surface {
-  background: var(--mt-app-black-58) !important;
-  background-color: var(--mt-app-black-58) !important;
-}
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-button.mirrortrace-admin-metric,
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-button.mirrortrace-admin-metric.bg-white {
-  background: var(--mt-app-black-64) !important;
-  background-color: var(--mt-app-black-64) !important;
-}
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-.mirrortrace-admin-hero {
-  background: var(--mt-app-black-50) !important;
-  background-color: var(--mt-app-black-50) !important;
-}
-
-/* ============================================================
-   ADMIN TYPOGRAPHY
-   ============================================================ */
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-:is(
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  strong,
-  .text-stone-950,
-  .text-stone-900,
-  .text-stone-800,
-  .text-stone-700
-) {
-  color: var(--mt-app-text) !important;
-}
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-:is(
-  p,
-  td,
-  label,
-  .text-stone-600,
-  .text-stone-500,
-  .text-stone-400
-) {
-  color: var(--mt-app-copy) !important;
-}
-
-/* ============================================================
-   MOBILE
-   ============================================================ */
-
-@media (max-width: 800px) {
-  html body #root
-  .mirrortrace-admin-launcher {
-    right: 14px !important;
-    bottom: 14px !important;
-
-    min-height: 43px !important;
-    padding: 0 15px !important;
+  .mirrortrace-profile-name {
+    display:
+      none;
   }
 }
 
-/* ============================================================
-   REDUCED MOTION
-   ============================================================ */
+@media (max-width: 1080px) {
+  .mirrortrace-navbar {
+    min-height:
+      72px !important;
+  }
+
+  .mirrortrace-navbar-inner {
+    min-height:
+      72px;
+
+    grid-template-columns:
+      1fr auto;
+  }
+
+  .mirrortrace-main-nav {
+    display:
+      none;
+  }
+
+  .mirrortrace-mobile-nav {
+    display:
+      flex;
+
+    align-items:
+      center;
+
+    gap:
+      4px;
+
+    width:
+      100%;
+
+    overflow-x:
+      auto;
+
+    padding:
+      0 0 10px;
+
+    scrollbar-width:
+      none;
+  }
+
+  .mirrortrace-mobile-nav::-webkit-scrollbar {
+    display:
+      none;
+  }
+
+  .mirrortrace-mobile-nav
+  .mirrortrace-nav-button {
+    flex:
+      0 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .mirrortrace-navbar-container {
+    padding:
+      0 14px;
+  }
+
+  .mirrortrace-logo {
+    width:
+      40px;
+
+    height:
+      40px;
+
+    flex-basis:
+      40px;
+
+    font-size:
+      23px;
+  }
+
+  .mirrortrace-brand-name {
+    font-size:
+      21px;
+  }
+
+  .mirrortrace-uid-chip {
+    display:
+      none;
+  }
+
+  .mirrortrace-signout span {
+    display:
+      none;
+  }
+
+  .mirrortrace-signout {
+    width:
+      40px;
+
+    padding:
+      0;
+
+    border-left:
+      0 !important;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
-  html body #root
-  .mirrortrace-admin-launcher {
-    transition: none !important;
-  }
+  .mirrortrace-app-shell *,
+  .mirrortrace-app-shell *::before,
+  .mirrortrace-app-shell *::after {
+    animation-duration:
+      .01ms !important;
 
-  html body #root
-  .mirrortrace-admin-launcher:hover {
-    transform: none !important;
-  }
+    animation-iteration-count:
+      1 !important;
 
-  html body #root
-  .mirrortrace-app-shell * {
-    scroll-behavior: auto !important;
+    transition-duration:
+      .01ms !important;
   }
 }

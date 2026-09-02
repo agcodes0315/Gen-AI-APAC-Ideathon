@@ -27,43 +27,22 @@ type MainTab =
   | 'feedback';
 
 interface NavbarProps {
-  user:
-    UserProfile;
-
-  activeTab:
-    MainTab;
-
-  onTabChange: (
-    tab:
-      MainTab
-  ) => void;
-
-  onSignOut:
-    () => void;
+  user: UserProfile;
+  activeTab: MainTab;
+  onTabChange: (tab: MainTab) => void;
+  onSignOut: () => void;
 }
 
-
 export const Navbar:
-  React.FC<
-    NavbarProps
-  > = ({
+  React.FC<NavbarProps> = ({
     user,
     activeTab,
     onTabChange,
     onSignOut,
   }) => {
-
-    /*
-     * Keep MirrorTrace in its current dark visual mode permanently.
-     *
-     * The light/dark toggle has been removed completely.
-     * This only preserves the current appearance and prevents old saved
-     * theme preferences from switching the UI back to light mode.
-     */
     useEffect(() => {
       const root =
-        document
-          .documentElement;
+        document.documentElement;
 
       root.setAttribute(
         'data-theme',
@@ -80,41 +59,22 @@ export const Navbar:
       );
     }, []);
 
-
     const navClass =
-      (
-        tab:
-          MainTab
-      ) => {
-        const active =
-          activeTab ===
-          tab;
-
-        return [
-          'mirrortrace-nav-button',
-
-          active
-            ? 'mirrortrace-nav-button-active'
-            : '',
-        ]
-          .filter(
-            Boolean
-          )
-          .join(
-            ' '
-          );
-      };
-
+      (tab: MainTab) => [
+        'mirrortrace-nav-button',
+        activeTab === tab
+          ? 'mirrortrace-nav-button-active'
+          : '',
+      ]
+        .filter(Boolean)
+        .join(' ');
 
     return (
       <header className="mirrortrace-navbar">
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
+        <div className="mirrortrace-navbar-container">
           <div className="mirrortrace-navbar-inner">
 
             {/* BRAND */}
-
             <button
               type="button"
               onClick={() =>
@@ -125,24 +85,21 @@ export const Navbar:
               className="mirrortrace-brand"
               aria-label="MirrorTrace Overview"
             >
-
               <div className="mirrortrace-logo">
                 M
               </div>
 
-              <div className="min-w-0">
-
-                <div className="flex items-center gap-2">
-
+              <div className="mirrortrace-brand-copy">
+                <div className="mirrortrace-brand-title-row">
                   <span className="mirrortrace-brand-name">
                     MirrorTrace
                   </span>
 
                   <span className="mirrortrace-uid-chip">
-
                     <ShieldCheck className="w-3 h-3" />
-
-                    Isolated UID
+                    <span>
+                      Isolated UID
+                    </span>
                   </span>
                 </div>
 
@@ -153,12 +110,10 @@ export const Navbar:
             </button>
 
             {/* DESKTOP NAV */}
-
             <nav
               className="mirrortrace-main-nav"
               aria-label="Primary navigation"
             >
-
               <button
                 type="button"
                 onClick={() =>
@@ -173,7 +128,6 @@ export const Navbar:
                 }
               >
                 <Compass className="w-4 h-4" />
-
                 <span>
                   Overview
                 </span>
@@ -193,7 +147,6 @@ export const Navbar:
                 }
               >
                 <MessageSquareText className="w-4 h-4" />
-
                 <span>
                   Reflect & Chat
                 </span>
@@ -213,7 +166,6 @@ export const Navbar:
                 }
               >
                 <BookOpen className="w-4 h-4" />
-
                 <span>
                   Journal History
                 </span>
@@ -233,7 +185,6 @@ export const Navbar:
                 }
               >
                 <Database className="w-4 h-4" />
-
                 <span>
                   Memory
                 </span>
@@ -253,7 +204,6 @@ export const Navbar:
                 }
               >
                 <LifeBuoy className="w-4 h-4" />
-
                 <span>
                   Support
                 </span>
@@ -273,25 +223,18 @@ export const Navbar:
                 }
               >
                 <Star className="w-4 h-4" />
-
                 <span>
                   Feedback
                 </span>
               </button>
             </nav>
 
-            {/* RIGHT CONTROLS */}
-
+            {/* PROFILE / SIGN OUT */}
             <div className="mirrortrace-navbar-actions">
-
               <div className="mirrortrace-profile">
-
-                {user
-                  .photoURL ? (
+                {user.photoURL ? (
                   <img
-                    src={
-                      user.photoURL
-                    }
+                    src={user.photoURL}
                     alt={
                       user.displayName ||
                       'User'
@@ -301,14 +244,12 @@ export const Navbar:
                   />
                 ) : (
                   <div className="mirrortrace-avatar mirrortrace-avatar-fallback">
-
                     <UserIcon className="w-4 h-4" />
                   </div>
                 )}
 
                 <span className="mirrortrace-profile-name">
-                  {user
-                    .displayName ||
+                  {user.displayName ||
                     user.email ||
                     'User'}
                 </span>
@@ -317,14 +258,11 @@ export const Navbar:
               <button
                 id="btn-sign-out"
                 type="button"
-                onClick={
-                  onSignOut
-                }
+                onClick={onSignOut}
                 className="mirrortrace-signout"
               >
                 <LogOut className="w-3.5 h-3.5" />
-
-                <span className="hidden xl:inline">
+                <span>
                   Sign Out
                 </span>
               </button>
@@ -332,12 +270,10 @@ export const Navbar:
           </div>
 
           {/* MOBILE NAV */}
-
           <nav
             className="mirrortrace-mobile-nav"
             aria-label="Mobile navigation"
           >
-
             <button
               type="button"
               onClick={() =>
@@ -352,7 +288,6 @@ export const Navbar:
               }
             >
               <Compass className="w-4 h-4" />
-
               Overview
             </button>
 
@@ -370,7 +305,6 @@ export const Navbar:
               }
             >
               <MessageSquareText className="w-4 h-4" />
-
               Reflect
             </button>
 
@@ -388,7 +322,6 @@ export const Navbar:
               }
             >
               <BookOpen className="w-4 h-4" />
-
               History
             </button>
 
@@ -406,7 +339,6 @@ export const Navbar:
               }
             >
               <Database className="w-4 h-4" />
-
               Memory
             </button>
 
@@ -424,7 +356,6 @@ export const Navbar:
               }
             >
               <LifeBuoy className="w-4 h-4" />
-
               Support
             </button>
 
@@ -442,7 +373,6 @@ export const Navbar:
               }
             >
               <Star className="w-4 h-4" />
-
               Feedback
             </button>
           </nav>
