@@ -1,6 +1,0 @@
-# Ensure these are present in .gitignore
-node_modules/
-dist/
-.env
-.cleanup-backup/
-*.log
