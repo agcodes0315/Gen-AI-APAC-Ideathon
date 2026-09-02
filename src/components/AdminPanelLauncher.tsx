@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useRef,
   useState,
 } from 'react';
 
@@ -9,7 +10,6 @@ import {
 
 import AdminDashboard from './AdminDashboard.tsx';
 import AdminMirrorRoomsPanel from './AdminMirrorRoomsPanel.tsx';
-
 
 
 type AdminPanelLauncherProps = {
@@ -23,6 +23,9 @@ const ADMIN_EMAIL =
 
 const ADMIN_HASH =
   '#/admin';
+
+const VERIFYING_TEXT =
+  'Verifying administrator access';
 
 
 export default function AdminPanelLauncher({
@@ -41,9 +44,20 @@ export default function AdminPanelLauncher({
     ADMIN_EMAIL;
 
 
+  /*
+   * requestedOpen = the user has clicked Admin Control Room
+   *                  (or the URL is already #/admin).
+   *
+   * dashboardReady = AdminDashboard has finished its own existing
+   *                  verification/loading phase.
+   *
+   * The visible admin page opens ONLY when BOTH are true.
+   * This prevents the intermediate
+   * "Verifying administrator access..." card from ever being shown.
+   */
   const [
-    adminPageOpen,
-    setAdminPageOpen,
+    requestedOpen,
+    setRequestedOpen,
   ] =
     useState<boolean>(
       () =>
@@ -52,32 +66,44 @@ export default function AdminPanelLauncher({
     );
 
 
+  const [
+    dashboardReady,
+    setDashboardReady,
+  ] =
+    useState(false);
+
+
   /*
-   * The authenticated user is already resolved by App.tsx.
-   * We intentionally do NOT read auth.currentUser here and do NOT wait
-   * for a second API request before showing the button.
+   * AdminDashboard is mounted from the moment the approved admin
+   * account is available, but it is kept visually hidden while it
+   * performs its EXISTING data/authorization load.
    *
-   * That removes the race which caused the Admin Control Room button
-   * to appear late or not appear at all.
+   * We deliberately do not modify AdminDashboard.tsx or any CSS.
    */
+  const preloadRef =
+    useRef<HTMLDivElement | null>(
+      null
+    );
+
+
   useEffect(
     () => {
 
       const handleHashChange =
         () => {
 
-          const isAdminHash =
+          const wantsAdmin =
             window.location.hash ===
             ADMIN_HASH;
 
 
-          setAdminPageOpen(
-            isAdminHash
+          setRequestedOpen(
+            wantsAdmin
           );
 
 
           if (
-            isAdminHash
+            wantsAdmin
           ) {
 
             window.scrollTo({
@@ -117,21 +143,36 @@ export default function AdminPanelLauncher({
 
 
   /*
-   * If the account changes while the admin page is open, remove admin
-   * presentation immediately unless it is the one explicitly allowed email.
+   * If the signed-in account stops being the approved frontend
+   * admin account, immediately close the admin hash/page.
+   *
+   * This is UI visibility only. Your server-side admin role/claim
+   * checks remain the actual authorization boundary.
    */
   useEffect(
     () => {
 
       if (
-        !isAllowedAdmin &&
-        adminPageOpen
+        !isAllowedAdmin
       ) {
 
-        window.location.hash =
-          '/overview';
+        setDashboardReady(
+          false
+        );
 
-        setAdminPageOpen(
+
+        if (
+          window.location.hash ===
+          ADMIN_HASH
+        ) {
+
+          window.location.hash =
+            '/overview';
+
+        }
+
+
+        setRequestedOpen(
           false
         );
 
@@ -140,18 +181,133 @@ export default function AdminPanelLauncher({
     },
     [
       isAllowedAdmin,
-      adminPageOpen,
     ]
   );
 
 
   /*
-   * Only agrimalko@gmail.com gets the launcher at all.
+   * Watch the already-mounted AdminDashboard.
    *
-   * IMPORTANT:
-   * This controls UI visibility only.
-   * Existing requireRole(...) server checks remain the real authorization
-   * boundary for every admin API endpoint.
+   * AdminDashboard currently renders the text:
+   *   "Verifying administrator access..."
+   * during its loading state.
+   *
+   * We simply keep that preloaded copy invisible. As soon as that
+   * text disappears, the existing AdminDashboard has finished its
+   * load (either successfully or with its own existing error state).
+   *
+   * No CSS is changed.
+   * No AdminDashboard JSX is changed.
+   * No backend authorization is changed.
+   */
+  useEffect(
+    () => {
+
+      if (
+        !isAllowedAdmin
+      ) {
+
+        return;
+
+      }
+
+
+      const host =
+        preloadRef.current;
+
+
+      if (
+        !host
+      ) {
+
+        return;
+
+      }
+
+
+      const updateReadyState =
+        () => {
+
+          const text =
+            host.textContent ??
+            '';
+
+
+          const stillVerifying =
+            text.includes(
+              VERIFYING_TEXT
+            );
+
+
+          /*
+           * The host can briefly be empty before React has committed
+           * AdminDashboard. Do not mark it ready until it has content.
+           */
+          const hasRenderedContent =
+            text.trim().length >
+            0;
+
+
+          if (
+            hasRenderedContent &&
+            !stillVerifying
+          ) {
+
+            setDashboardReady(
+              true
+            );
+
+          } else {
+
+            setDashboardReady(
+              false
+            );
+
+          }
+
+        };
+
+
+      updateReadyState();
+
+
+      const observer =
+        new MutationObserver(
+          updateReadyState
+        );
+
+
+      observer.observe(
+        host,
+        {
+          childList:
+            true,
+
+          subtree:
+            true,
+
+          characterData:
+            true,
+        }
+      );
+
+
+      return () => {
+
+        observer.disconnect();
+
+      };
+
+    },
+    [
+      isAllowedAdmin,
+    ]
+  );
+
+
+  /*
+   * Only the approved frontend admin account gets the launcher and
+   * the pre-mounted dashboard.
    */
   if (
     !isAllowedAdmin
@@ -163,26 +319,57 @@ export default function AdminPanelLauncher({
 
 
   /*
-   * Keep the ORIGINAL admin dashboard presentation.
+   * visibleOpen is intentionally different from requestedOpen.
    *
-   * No new opaque full-screen background is introduced here.
-   * The existing mirrortrace-admin-translucent-black.css is restored,
-   * which brings back the earlier black/translucent appearance.
+   * If the user clicks before AdminDashboard finishes loading,
+   * nothing half-loaded is shown. The full page appears immediately
+   * after the existing dashboard load completes.
    */
-  if (
-    adminPageOpen
-  ) {
+  const visibleOpen =
+    requestedOpen &&
+    dashboardReady;
 
-    return (
+
+  return (
+    <>
+
+      {/*
+       * PRELOAD HOST
+       * ------------
+       * Always mounted for the approved admin.
+       * Never visible.
+       *
+       * This is the SAME AdminDashboard instance that will later be
+       * revealed; it is not unmounted/re-mounted when the page opens.
+       */}
       <div
-        className="
-          mirrortrace-admin-page
-          mirrortrace-admin-overlay
-          fixed
-          inset-0
-          z-[12000]
-          overflow-y-auto
-        "
+        ref={
+          preloadRef
+        }
+        aria-hidden={
+          !visibleOpen
+        }
+        className={
+          visibleOpen
+            ? `
+                mirrortrace-admin-page
+                mirrortrace-admin-overlay
+                fixed
+                inset-0
+                z-[12000]
+                overflow-y-auto
+              `
+            : `
+                fixed
+                left-[-100000px]
+                top-0
+                h-px
+                w-px
+                overflow-hidden
+                pointer-events-none
+                opacity-0
+              `
+        }
       >
 
         <main
@@ -215,81 +402,99 @@ export default function AdminPanelLauncher({
         </main>
 
       </div>
-    );
-
-  }
 
 
-  /*
-   * MirrorRoom uses bottom-20/right-5.
-   * Admin Control Room therefore sits directly below it at bottom-5/right-5.
-   */
-  return (
-    <button
-      type="button"
+      {/*
+       * Keep the launcher visible until the complete admin page is
+       * actually ready to be displayed.
+       *
+       * Once ready + requested, it disappears at the same render in
+       * which the full Control Room becomes visible.
+       */}
+      {!visibleOpen && (
+        <button
+          type="button"
 
-      onClick={() => {
+          onClick={() => {
 
-        window.location.hash =
-          '/admin';
+            setRequestedOpen(
+              true
+            );
 
-      }}
 
-      aria-label="
-        Open Admin Control Room
-      "
+            if (
+              window.location.hash !==
+              ADMIN_HASH
+            ) {
 
-      title="
-        Open Admin Control Room
-      "
+              window.location.hash =
+                '/admin';
 
-      className="
-        fixed
-        bottom-5
-        right-5
-        z-[9000]
+            }
 
-        inline-flex
-        items-center
-        gap-2
+          }}
 
-        rounded-full
+          aria-label="
+            Open Admin Control Room
+          "
 
-        border
-        border-white/15
+          title={
+            dashboardReady
+              ? 'Open Admin Control Room'
+              : 'Admin Control Room is preparing'
+          }
 
-        bg-black/80
+          className="
+            mirrortrace-admin-launcher
 
-        px-5
-        py-3
+            fixed
+            bottom-5
+            right-5
+            z-[9000]
 
-        text-sm
-        font-semibold
-        text-white
+            inline-flex
+            items-center
+            gap-2
 
-        shadow-2xl
+            rounded-full
 
-        transition
+            border
+            border-white/15
 
-        hover:-translate-y-0.5
-        hover:bg-black
-      "
-    >
+            bg-black/80
 
-      <ShieldCheck
-        className="
-          h-4
-          w-4
-          shrink-0
-          text-amber-300
-        "
-      />
+            px-5
+            py-3
 
-      <span>
-        Admin Control Room
-      </span>
+            text-sm
+            font-semibold
+            text-white
 
-    </button>
+            shadow-2xl
+
+            transition
+
+            hover:-translate-y-0.5
+            hover:bg-black
+          "
+        >
+
+          <ShieldCheck
+            className="
+              h-4
+              w-4
+              shrink-0
+              text-amber-300
+            "
+          />
+
+          <span>
+            Admin Control Room
+          </span>
+
+        </button>
+      )}
+
+    </>
   );
 }
-
