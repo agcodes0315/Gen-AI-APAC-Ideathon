@@ -1,8 +1,4 @@
-import '../styles/mirrortrace-clean-glass.css';
-import '../styles/mirrortrace-authenticated-haze.css';
-import '../styles/mirrortrace-motion-and-glass.css';
-import '../styles/mirrortrace-hero-darken.css';
-import '../styles/mirrortrace-scroll-performance.css';
+import '../styles/mirrortrace-public.css';
 
 import '../mirrortrace-motion.css';
 
@@ -10,7 +6,6 @@ import '../mirrortrace-motion.css';
  * FINAL VISUAL AUTHORITY.
  * This MUST stay after every other stylesheet.
  */
-import '../styles/mirrortrace-final-visual-fix.css';
 
 import React, {
   useEffect,
@@ -1607,3 +1602,4 @@ export const AuthView:
       </div>
     );
   };
+

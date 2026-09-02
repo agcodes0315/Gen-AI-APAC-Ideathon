@@ -25,7 +25,6 @@ import type {
   ConversationMessage,
 } from '../types.ts';
 
-import '../styles/mirrortrace-brainstorm-black.css';
 
 
 interface BrainstormChatProps {
@@ -761,3 +760,4 @@ export const BrainstormChat:
       </div>
     );
   };
+

@@ -10,7 +10,6 @@ import {
 import AdminDashboard from './AdminDashboard.tsx';
 import AdminMirrorRoomsPanel from './AdminMirrorRoomsPanel.tsx';
 
-import '../styles/mirrortrace-admin-translucent-black.css';
 
 
 type AdminPanelLauncherProps = {
@@ -293,3 +292,4 @@ export default function AdminPanelLauncher({
     </button>
   );
 }
+

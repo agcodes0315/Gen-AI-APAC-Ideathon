@@ -1,3 +1,4 @@
+import './styles/mirrortrace-app.css';
 import {
   useEffect,
   useLayoutEffect,
@@ -66,10 +67,6 @@ import type {
   ThoughtDiff,
 } from './types.ts';
 
-import './styles/mirrortrace-authenticated-black.css';
-import './styles/mirrortrace-scroll-performance.css';
-import './styles/mirrortrace-overview-hero-black50.css';
-import './styles/mirrortrace-reflect-final-tints.css';
 
 export type MainTab =
   | 'overview'
@@ -702,3 +699,4 @@ export default function App() {
     </div>
   );
 }
+

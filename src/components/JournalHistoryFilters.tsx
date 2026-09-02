@@ -540,3 +540,4 @@ export function journalEntryMatchesFilters(
 }
 
 export default JournalHistoryFilters;
+

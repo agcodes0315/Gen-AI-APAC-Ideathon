@@ -1,67 +1,103 @@
-MIRRORTRACE — CLEAN TWO-STYLE + NAVBAR PACKAGE
-================================================
+MIRRORTRACE — FINAL TWO CSS FILE MERGE
+=======================================
 
-FILES
------
-src/components/Navbar.tsx
-src/styles/mirrortrace-app.css
-src/styles/mirrortrace-public.css
+This package is designed for the exact situation shown in your screenshot:
+src/styles contains many overlapping MirrorTrace stylesheets.
 
-WHAT CHANGED
-------------
-1. Navbar visual organization only:
-   - cleaner brand area
-   - one consistent navigation capsule
-   - uniform button heights
-   - balanced profile/sign-out area
-   - responsive behavior for narrower screens
-   - dark-only appearance retained
-   - NO light/dark toggle
+The merger converts the CURRENT WORKING CSS IMPORT GRAPH into exactly:
 
-2. Style folder is reduced to two visual authorities:
-   - mirrortrace-public.css = signed-out/landing page
-   - mirrortrace-app.css = authenticated pages + admin
+    src/styles/mirrortrace-bundle-1.css
+    src/styles/mirrortrace-bundle-2.css
 
-3. Reflect & Chat remains:
-   OUTER = rgba(0,0,0,.70)
-   INNER = rgba(0,0,0,.40)
-   NO BLUE
+WHY THE UI SHOULD STAY THE SAME
+-------------------------------
 
-IMPORTS
+It does NOT manually redesign/rewrite the CSS.
+
+Instead it:
+
+- starts from the CURRENT restored App.tsx
+- follows real TS/TSX module imports in order
+- finds the stylesheets that are actually loaded by the app
+- expands local CSS @imports exactly where they occur
+- concatenates the existing CSS without changing selectors or property values
+- splits the final ordered stream into two CONTIGUOUS files
+- imports bundle 1 before bundle 2
+
+That keeps CSS cascade order intact.
+
+IMPORTANT
+---------
+
+Inactive/unreferenced CSS files are NOT injected into the final bundles.
+Loading unused styles would itself change the UI.
+
+They are removed from src/styles after the active working CSS has been
+compiled.
+
+src/index.css stays untouched because it is global/Tailwind base CSS and is
+already owned by src/main.tsx.
+
+BACKUP
+------
+
+Before deleting anything, the script creates:
+
+    .mirrortrace-before-two-css
+
+containing a full copy of src.
+
+INSTALL
 -------
-In src/App.tsx keep only:
 
-import './styles/mirrortrace-app.css';
+1. FIRST restore the exact Git version whose UI currently looks correct:
 
-for the visual style folder.
+    git fetch origin; git reset --hard origin/main; git clean -fd
 
-In src/components/AuthView.tsx keep:
+2. Extract this ZIP into the project root.
 
-import '../styles/mirrortrace-public.css';
-import '../mirrortrace-motion.css';
+3. Run:
 
-The second file is outside src/styles and should remain.
+    powershell -ExecutionPolicy Bypass -File .\scripts\merge-to-two-css.ps1
 
-Remove old src/styles/... imports from:
-- DashboardOverview.tsx
-- BrainstormChat.tsx
-- AdminDashboard.tsx
-- AdminPanelLauncher.tsx
+4. Build:
 
-DO NOT CHANGE
--------------
-- JSX content other than Navbar.tsx supplied here
-- Firebase
-- Gemini
-- MirrorRoom
-- Admin authorization
-- journals
-- API code
-- public text/content
+    Remove-Item -Recurse -Force .\node_modules\.vite -ErrorAction SilentlyContinue; npm run build
 
-RESTART
--------
-Remove-Item -Recurse -Force .\node_modules\.vite -ErrorAction SilentlyContinue; npm run dev
+5. If the build passes:
 
-Then hard refresh:
-Ctrl + Shift + R
+    npm run dev
+
+6. Hard refresh:
+
+    Ctrl + Shift + R
+
+FINAL SOURCE STRUCTURE
+----------------------
+
+src/styles/
+    mirrortrace-bundle-1.css
+    mirrortrace-bundle-2.css
+
+src/App.tsx:
+    import './styles/mirrortrace-bundle-1.css';
+    import './styles/mirrortrace-bundle-2.css';
+
+src/main.tsx continues to keep:
+    import './index.css';
+
+No component needs to import an old MirrorTrace stylesheet after the merge.
+
+ROLLBACK
+--------
+
+If you do not like the result:
+
+    git restore .
+    git clean -fd
+
+Or recover src from:
+
+    .mirrortrace-before-two-css
+
+DO NOT USE THE PREVIOUS CLEANUP SCRIPT.

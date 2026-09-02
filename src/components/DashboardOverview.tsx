@@ -1,5 +1,3 @@
-import '../styles/mirrortrace-motion-and-glass.css';
-import '../styles/mirrortrace-theme.css';
 
 import React, { useState } from 'react';
 

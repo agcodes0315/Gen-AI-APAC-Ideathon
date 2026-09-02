@@ -24,3 +24,4 @@ export const SecurityBadge: React.FC = () => {
     </footer>
   );
 };
+

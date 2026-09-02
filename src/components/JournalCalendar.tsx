@@ -669,3 +669,4 @@ export const JournalCalendar:
   };
 
 export default JournalCalendar;
+
