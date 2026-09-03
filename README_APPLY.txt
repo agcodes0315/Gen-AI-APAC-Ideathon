@@ -1,43 +1,27 @@
-MIRRORTRACE EXACT REFLECT + SNAPSHOT FIX
-=======================================
+MIRRORTRACE THOUGHT SNAPSHOT — BLACK 0.82 FINAL
+================================================
 
-Replace only:
-src/styles/mirrortrace-app.css
+Replace exactly:
+src/components/ThoughtSnapshotCard.tsx
 
-IMPORTANT
----------
-BrainstormChat.tsx should NOT import the old:
-../styles/mirrortrace-brainstorm-black.css
+What changed:
+- Entire snapshot card uses black-tinted rgba(0,0,0,0.82) theme.
+- Cream / white surfaces are removed.
+- Major inner block sections are solid black-tinted panels.
+- Body text is reduced by 1.5px from the current component values.
+- Subheading-sized text is reduced by 1px.
+- Memory retention control is changed from a boxed dropdown to a full-width
+  horizontal retention layer.
+- Existing approval logic, edit flow, retention values, retry behavior,
+  API calls and consent logic are unchanged.
 
-The intended two-style setup is:
-App.tsx -> mirrortrace-app.css
-AuthView.tsx -> mirrortrace-public.css
+Retention options preserved:
+- Until I remove it
+- 30 days
+- 6 months
+- 1 year
 
-EXACT CHANGES
--------------
-
-REFLECTIVE BRAINSTORM
-Outer shell: rgba(0,0,0,0.82)
-Header: rgba(0,0,0,0.82)
-Footer: rgba(0,0,0,0.82)
-Inner body: rgba(0,0,0,0.90)
-
-FONT SIZES
-Reflective Brainstorm Companion: 18px
-Powered by Server-Side Gemini: 12px
-New Thread: 14px
-Need help untangling a thought?: 14px
-Description: 14px
-Topic Tags helper: 14px
-
-THOUGHT SNAPSHOT
-The cream/white "Suggested Thought Snapshot" header band:
-rgba(0,0,0,0.82)
-
-Its title/copy/badge colors are adjusted only for readability on black.
-
-RUN
----
+Run:
 Remove-Item -Recurse -Force .\node_modules\.vite -ErrorAction SilentlyContinue; npm run dev
 
 Then hard refresh:

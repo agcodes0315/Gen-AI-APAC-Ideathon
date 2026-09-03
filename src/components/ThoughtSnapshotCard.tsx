@@ -119,28 +119,72 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
   return (
     <article
       id={`thought-snapshot-proposal-${proposal.sourceJournalId}`}
-      className="overflow-hidden rounded-[22px] border border-amber-300 bg-[#fffaf0] shadow-sm animate-fade-in"
+      className="
+        overflow-hidden
+        rounded-[22px]
+        border
+        border-white/15
+        bg-[rgba(0,0,0,0.82)]
+        shadow-[0_18px_50px_rgba(0,0,0,0.28)]
+        animate-fade-in
+      "
     >
       {/* Header */}
-      <div className="border-b border-amber-200 bg-gradient-to-r from-amber-100/80 via-amber-50 to-[#fffaf0] px-5 py-4">
+      <div
+        className="
+          border-b
+          border-white/15
+          bg-[rgba(0,0,0,0.82)]
+          px-5
+          py-4
+        "
+      >
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-800 text-amber-50 shadow-sm">
+            <div
+              className="
+                flex
+                h-9
+                w-9
+                shrink-0
+                items-center
+                justify-center
+                rounded-xl
+                border
+                border-white/15
+                bg-[rgba(92,78,70,0.92)]
+                text-white
+              "
+            >
               <Sparkles className="h-4 w-4" />
             </div>
 
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="font-serif text-base font-bold text-amber-950">
+                <h3 className="font-serif text-[15px] font-bold text-white">
                   Suggested Thought Snapshot
                 </h3>
 
-                <span className="rounded-full border border-amber-300 bg-white px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide text-amber-900">
+                <span
+                  className="
+                    rounded-full
+                    border
+                    border-amber-300/35
+                    bg-black/70
+                    px-2.5
+                    py-1
+                    text-[8px]
+                    font-bold
+                    uppercase
+                    tracking-wide
+                    text-amber-200
+                  "
+                >
                   Pending Consent
                 </span>
               </div>
 
-              <p className="mt-1 text-[11px] leading-relaxed text-stone-600">
+              <p className="mt-1 text-[9.5px] leading-relaxed text-white/70">
                 Gemini’s proposed interpretation of this reflection.
               </p>
             </div>
@@ -149,7 +193,14 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
           <button
             type="button"
             onClick={() => setShowInfo((current) => !current)}
-            className="rounded-lg p-2 text-amber-800 transition-colors hover:bg-amber-100 hover:text-amber-950"
+            className="
+              rounded-lg
+              p-2
+              text-white/70
+              transition-colors
+              hover:bg-white/10
+              hover:text-white
+            "
             title="Why am I seeing this?"
             aria-label="Explain this thought snapshot"
           >
@@ -158,19 +209,19 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
         </div>
       </div>
 
-      <div className="space-y-5 p-5">
+      <div className="space-y-5 bg-[rgba(0,0,0,0.82)] p-5">
         {/* Consent explanation */}
         {showInfo && (
-          <div className="rounded-2xl border border-amber-300 bg-amber-100/70 p-4">
+          <div className="rounded-2xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-4">
             <div className="flex items-start gap-2">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-amber-900" />
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
 
               <div>
-                <p className="text-xs font-bold text-amber-950">
+                <p className="text-[11px] font-bold text-white">
                   Interpretation Integrity & Consent
                 </p>
 
-                <p className="mt-1 text-[11px] leading-relaxed text-amber-900">
+                <p className="mt-1 text-[9.5px] leading-relaxed text-white/70">
                   This is an AI-suggested interpretation grounded only in your
                   saved reflection. It does <strong>not</strong> become
                   persistent memory or participate in future Thought Diff
@@ -183,9 +234,9 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
 
         {/* Error */}
         {error && (
-          <div className="flex items-start justify-between gap-3 rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-800">
+          <div className="flex items-start justify-between gap-3 rounded-xl border border-red-400/30 bg-red-950/40 p-3 text-[10.5px] text-red-100">
             <div className="flex items-start gap-2">
-              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-300" />
               <span>{error}</span>
             </div>
 
@@ -193,7 +244,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
               <button
                 type="button"
                 onClick={onRetryGenerate}
-                className="inline-flex shrink-0 items-center gap-1 font-semibold text-red-700 hover:underline"
+                className="inline-flex shrink-0 items-center gap-1 font-semibold text-red-200 hover:underline"
               >
                 <RefreshCw className="h-3.5 w-3.5" />
                 Retry
@@ -205,35 +256,35 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
         {!isEditing ? (
           <>
             {/* Main proposal */}
-            <div className="rounded-2xl border border-amber-200 bg-white p-4">
+            <div className="rounded-2xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-4">
               <div className="mb-3 flex items-center gap-2">
-                <Brain className="h-4 w-4 text-amber-800" />
+                <Brain className="h-4 w-4 text-amber-200" />
 
-                <span className="font-mono text-[9px] font-bold uppercase tracking-[0.12em] text-stone-500">
+                <span className="font-mono text-[8px] font-bold uppercase tracking-[0.12em] text-white/55">
                   Proposed Position
                 </span>
               </div>
 
-              <blockquote className="font-serif text-sm italic leading-relaxed text-stone-900 sm:text-base">
+              <blockquote className="font-serif text-[12.5px] italic leading-relaxed text-white/80 sm:text-[14.5px]">
                 “{proposal.positionStatement}”
               </blockquote>
             </div>
 
             {/* Metadata */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-[auto_1fr]">
-              <div className="rounded-xl border border-amber-200 bg-amber-50/70 px-3 py-2.5">
-                <span className="text-[9px] font-bold uppercase tracking-wide text-amber-900">
+              <div className="rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2.5">
+                <span className="text-[8px] font-bold uppercase tracking-wide text-white/60">
                   Topic
                 </span>
 
-                <p className="mt-1 text-xs font-semibold text-stone-900">
+                <p className="mt-1 text-[11px] font-semibold text-white/85">
                   {proposal.topic}
                 </p>
               </div>
 
               {proposal.tags.length > 0 && (
-                <div className="rounded-xl border border-stone-200 bg-white px-3 py-2.5">
-                  <div className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wide text-stone-500">
+                <div className="rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2.5">
+                  <div className="flex items-center gap-1 text-[8px] font-bold uppercase tracking-wide text-white/55">
                     <Tag className="h-3 w-3" />
                     Tags
                   </div>
@@ -242,7 +293,17 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                     {proposal.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[10px] font-semibold text-amber-900"
+                        className="
+                          rounded-full
+                          border
+                          border-white/15
+                          bg-black/65
+                          px-2
+                          py-1
+                          text-[8.5px]
+                          font-semibold
+                          text-white/75
+                        "
                       >
                         #{tag}
                       </span>
@@ -254,11 +315,11 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
           </>
         ) : (
           /* Edit Mode */
-          <div className="space-y-4 rounded-2xl border border-amber-300 bg-white p-4">
+          <div className="space-y-4 rounded-2xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-4">
             <div className="space-y-1.5">
               <label
                 htmlFor="edit-position-input"
-                className="text-xs font-bold text-stone-800"
+                className="text-[11px] font-bold text-white/85"
               >
                 Refine Position Statement
               </label>
@@ -269,7 +330,23 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                 onChange={(event) =>
                   setEditedPosition(event.target.value)
                 }
-                className="h-24 w-full resize-none rounded-xl border border-stone-300 bg-stone-50 p-3 text-xs leading-relaxed text-stone-900 outline-none transition-colors focus:border-amber-700"
+                className="
+                  h-24
+                  w-full
+                  resize-none
+                  rounded-xl
+                  border
+                  border-white/15
+                  bg-black/70
+                  p-3
+                  text-[10.5px]
+                  leading-relaxed
+                  text-white/85
+                  outline-none
+                  transition-colors
+                  placeholder:text-white/35
+                  focus:border-amber-300/45
+                "
                 placeholder="State your position clearly and concisely..."
               />
             </div>
@@ -278,7 +355,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
               <div className="space-y-1.5">
                 <label
                   htmlFor="edit-topic-input"
-                  className="text-xs font-bold text-stone-800"
+                  className="text-[11px] font-bold text-white/85"
                 >
                   Primary Topic
                 </label>
@@ -290,7 +367,21 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                   onChange={(event) =>
                     setEditedTopic(event.target.value)
                   }
-                  className="w-full rounded-xl border border-stone-300 bg-stone-50 px-3 py-2.5 text-xs text-stone-900 outline-none transition-colors focus:border-amber-700"
+                  className="
+                    w-full
+                    rounded-xl
+                    border
+                    border-white/15
+                    bg-black/70
+                    px-3
+                    py-2.5
+                    text-[10.5px]
+                    text-white/85
+                    outline-none
+                    transition-colors
+                    placeholder:text-white/35
+                    focus:border-amber-300/45
+                  "
                   placeholder="e.g. Career Planning"
                 />
               </div>
@@ -298,7 +389,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
               <div className="space-y-1.5">
                 <label
                   htmlFor="edit-tags-input"
-                  className="text-xs font-bold text-stone-800"
+                  className="text-[11px] font-bold text-white/85"
                 >
                   Tags
                 </label>
@@ -310,11 +401,25 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                   onChange={(event) =>
                     setEditedTagsInput(event.target.value)
                   }
-                  className="w-full rounded-xl border border-stone-300 bg-stone-50 px-3 py-2.5 text-xs text-stone-900 outline-none transition-colors focus:border-amber-700"
+                  className="
+                    w-full
+                    rounded-xl
+                    border
+                    border-white/15
+                    bg-black/70
+                    px-3
+                    py-2.5
+                    text-[10.5px]
+                    text-white/85
+                    outline-none
+                    transition-colors
+                    placeholder:text-white/35
+                    focus:border-amber-300/45
+                  "
                   placeholder="career, mba, technology"
                 />
 
-                <p className="text-[9px] text-stone-400">
+                <p className="text-[7.5px] text-white/40">
                   Comma-separated, maximum 5 tags.
                 </p>
               </div>
@@ -323,14 +428,14 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
         )}
 
         {/* Time-bound memory consent */}
-        <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <div className="max-w-xl">
-              <p className="text-xs font-bold text-stone-900">
+        <div className="rounded-2xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-4">
+          <div className="flex flex-col gap-3">
+            <div>
+              <p className="text-[11px] font-bold text-white">
                 Memory permission
               </p>
 
-              <p className="mt-1 text-[10px] leading-relaxed text-stone-600">
+              <p className="mt-1 text-[8.5px] leading-relaxed text-white/65">
                 Choose how long this approved interpretation may be reused for
                 future Thought Diff matching. Expiry does not delete your
                 journal or snapshot; it only removes the snapshot from future
@@ -338,39 +443,73 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
               </p>
             </div>
 
-            <select
-              id="snapshot-memory-retention"
-              value={memoryRetention}
-              onChange={(event) =>
-                setMemoryRetention(
-                  event.target.value as MemoryRetention
-                )
-              }
-              disabled={approving}
-              className="min-w-[180px] rounded-xl border border-amber-300 bg-white px-3 py-2 text-xs font-semibold text-stone-800 outline-none transition-colors focus:border-amber-700 disabled:opacity-60"
-              aria-label="Thought Snapshot memory retention"
+            {/* Horizontal retention layer */}
+            <div
+              className="
+                flex
+                w-full
+                items-center
+                justify-between
+                gap-4
+                border-y
+                border-white/15
+                bg-black/55
+                px-3
+                py-2
+              "
             >
-              <option value="until_removed">
-                Until I remove it
-              </option>
+              <span className="text-[9px] font-semibold text-white/55">
+                Retention
+              </span>
 
-              <option value="30_days">
-                30 days
-              </option>
+              <select
+                id="snapshot-memory-retention"
+                value={memoryRetention}
+                onChange={(event) =>
+                  setMemoryRetention(
+                    event.target.value as MemoryRetention
+                  )
+                }
+                disabled={approving}
+                className="
+                  w-auto
+                  min-w-[180px]
+                  appearance-none
+                  border-0
+                  bg-transparent
+                  px-0
+                  py-1
+                  text-right
+                  text-[11px]
+                  font-semibold
+                  text-white/85
+                  outline-none
+                  disabled:opacity-60
+                "
+                aria-label="Thought Snapshot memory retention"
+              >
+                <option value="until_removed">
+                  Until I remove it
+                </option>
 
-              <option value="180_days">
-                6 months
-              </option>
+                <option value="30_days">
+                  30 days
+                </option>
 
-              <option value="365_days">
-                1 year
-              </option>
-            </select>
+                <option value="180_days">
+                  6 months
+                </option>
+
+                <option value="365_days">
+                  1 year
+                </option>
+              </select>
+            </div>
           </div>
 
-          <div className="mt-3 rounded-xl border border-amber-200 bg-white px-3 py-2">
-            <p className="text-[10px] leading-relaxed text-stone-600">
-              <strong className="text-stone-900">
+          <div className="mt-3 rounded-xl border border-white/15 bg-black/70 px-3 py-2">
+            <p className="text-[8.5px] leading-relaxed text-white/65">
+              <strong className="text-white/90">
                 Time-bound consent:
               </strong>{' '}
               MirrorTrace will not use an expired snapshot as evidence for a
@@ -380,11 +519,11 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
         </div>
 
         {/* Explicit consent boundary */}
-        <div className="rounded-xl bg-stone-950 px-4 py-3">
+        <div className="rounded-xl border border-white/10 bg-black/85 px-4 py-3">
           <div className="flex items-start gap-2">
-            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
 
-            <p className="text-[10px] leading-relaxed text-stone-300">
+            <p className="text-[8.5px] leading-relaxed text-white/70">
               <strong className="text-white">
                 Nothing becomes memory automatically.
               </strong>{' '}
@@ -395,13 +534,28 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col-reverse gap-3 border-t border-amber-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col-reverse gap-3 border-t border-white/15 pt-4 sm:flex-row sm:items-center sm:justify-between">
           <button
             id="btn-reject-snapshot"
             type="button"
             onClick={onRejected}
             disabled={approving}
-            className="inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold text-stone-600 transition-colors hover:bg-stone-100 hover:text-stone-900 disabled:opacity-60"
+            className="
+              inline-flex
+              items-center
+              justify-center
+              gap-1.5
+              rounded-xl
+              px-3
+              py-2
+              text-[10.5px]
+              font-semibold
+              text-white/55
+              transition-colors
+              hover:bg-white/10
+              hover:text-white
+              disabled:opacity-60
+            "
           >
             <X className="h-4 w-4" />
             Reject
@@ -418,7 +572,23 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                     setError(null);
                   }}
                   disabled={approving}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-amber-300 bg-white px-3.5 py-2 text-xs font-semibold text-amber-900 transition-colors hover:bg-amber-100 disabled:opacity-60"
+                  className="
+                    inline-flex
+                    items-center
+                    gap-1.5
+                    rounded-xl
+                    border
+                    border-white/15
+                    bg-[rgba(0,0,0,0.82)]
+                    px-3.5
+                    py-2
+                    text-[10.5px]
+                    font-semibold
+                    text-white/75
+                    transition-colors
+                    hover:bg-black/95
+                    disabled:opacity-60
+                  "
                 >
                   <Edit3 className="h-4 w-4" />
                   Edit Interpretation
@@ -429,7 +599,24 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                   type="button"
                   onClick={() => void handleApprove(false)}
                   disabled={approving}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-amber-900 px-4 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-amber-950 disabled:opacity-60"
+                  className="
+                    inline-flex
+                    items-center
+                    gap-1.5
+                    rounded-xl
+                    border
+                    border-white/15
+                    bg-[rgba(92,78,70,0.92)]
+                    px-4
+                    py-2
+                    text-[10.5px]
+                    font-bold
+                    text-white
+                    shadow-sm
+                    transition-colors
+                    hover:bg-[rgba(108,90,80,0.98)]
+                    disabled:opacity-60
+                  "
                 >
                   {approving ? (
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
@@ -446,7 +633,17 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                   type="button"
                   onClick={handleCancelEdit}
                   disabled={approving}
-                  className="rounded-xl px-3.5 py-2 text-xs font-semibold text-stone-600 transition-colors hover:bg-stone-100 disabled:opacity-60"
+                  className="
+                    rounded-xl
+                    px-3.5
+                    py-2
+                    text-[10.5px]
+                    font-semibold
+                    text-white/55
+                    transition-colors
+                    hover:bg-white/10
+                    disabled:opacity-60
+                  "
                 >
                   Cancel Edit
                 </button>
@@ -456,7 +653,24 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                   type="button"
                   onClick={() => void handleApprove(true)}
                   disabled={approving}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-amber-900 px-4 py-2 text-xs font-bold text-white shadow-sm transition-colors hover:bg-amber-950 disabled:opacity-60"
+                  className="
+                    inline-flex
+                    items-center
+                    gap-1.5
+                    rounded-xl
+                    border
+                    border-white/15
+                    bg-[rgba(92,78,70,0.92)]
+                    px-4
+                    py-2
+                    text-[10.5px]
+                    font-bold
+                    text-white
+                    shadow-sm
+                    transition-colors
+                    hover:bg-[rgba(108,90,80,0.98)]
+                    disabled:opacity-60
+                  "
                 >
                   {approving ? (
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
