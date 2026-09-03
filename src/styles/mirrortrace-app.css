@@ -8047,266 +8047,136 @@ p.text-xs {
 
 /* MIRRORTRACE_BRAINSTORM_TRUE_FINAL_END */
 
-/* MIRRORTRACE_EXACT_REFLECT_SNAPSHOT_FIX_START */
+/* MIRRORTRACE_DELETE_CONFIRM_BLACK070_START */
 
 /* ============================================================
-   EXACT FINAL FIX — REFLECT & CHAT + THOUGHT SNAPSHOT
-   ============================================================
+   JOURNAL HISTORY — DELETE CONFIRMATION
+   Exact current block:
+   bg-red-50/80 border-red-200
 
-   REFLECTIVE BRAINSTORM
-   - outer/header/footer matches Compose Reflection black tint
-   - inner conversation stays unchanged/deeper
-   - title matches Compose Reflection size
-   - New Thread = 14px
-   - Need help untangling a thought? = 14px
-   - Description = 14px
-   - Topic Tags helper = 14px
-
-   THOUGHT SNAPSHOT
-   - white/cream proposal header becomes rgba(0,0,0,0.82)
+   Requested:
+   - white/red-light surface -> black rgba(0,0,0,0.70)
+   - all text in this confirmation -> 1px smaller
+   - destructive Confirm Delete button remains red
    ============================================================ */
 
-
-/* ============================================================
-   1. REFLECTIVE BRAINSTORM — MATCH COMPOSE REFLECTION
-   Compose outer uses --mt-final-outer-black = rgba(0,0,0,0.82)
-   Compose inner uses --mt-final-inner-black = rgba(0,0,0,0.90)
-   ============================================================ */
-
-/* Right outer shell */
 html body #root
 .mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.mirrortrace-brainstorm-shell {
+.mirrortrace-history-page
+div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3 {
   background:
-    rgba(0, 0, 0, 0.82) !important;
+    rgba(0, 0, 0, 0.70) !important;
 
   background-color:
-    rgba(0, 0, 0, 0.82) !important;
+    rgba(0, 0, 0, 0.70) !important;
 
   background-image:
     none !important;
 
   border-color:
-    rgba(255, 255, 255, 0.14) !important;
+    rgba(248, 113, 113, 0.34) !important;
+
+  color:
+    rgba(255, 255, 255, 0.84) !important;
 }
 
-/* Header: EXACT same outer black tint as Compose Reflection */
+/* Warning icon */
 html body #root
 .mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.mirrortrace-brainstorm-header {
-  background:
-    rgba(0, 0, 0, 0.82) !important;
-
-  background-color:
-    rgba(0, 0, 0, 0.82) !important;
-
-  background-image:
-    none !important;
-
-  border-color:
-    rgba(255, 255, 255, 0.14) !important;
+.mirrortrace-history-page
+div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
+svg {
+  color:
+    rgba(252, 165, 165, 0.92) !important;
 }
 
-/* Footer remains same outer tint */
+/* "Permanently delete this reflection?" 12px -> 11px */
 html body #root
 .mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.mirrortrace-brainstorm-footer {
-  background:
-    rgba(0, 0, 0, 0.82) !important;
-
-  background-color:
-    rgba(0, 0, 0, 0.82) !important;
-
-  background-image:
-    none !important;
-
-  border-color:
-    rgba(255, 255, 255, 0.14) !important;
-}
-
-/* Inner conversation stays deeper exactly as before */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.mirrortrace-brainstorm-body {
-  background:
-    rgba(0, 0, 0, 0.90) !important;
-
-  background-color:
-    rgba(0, 0, 0, 0.90) !important;
-
-  background-image:
-    none !important;
-}
-
-
-/* ============================================================
-   2. EXACT FONT SIZES
-   ============================================================ */
-
-/* Reflective Brainstorm Companion = same as Compose Reflection (text-lg = 18px) */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.mirrortrace-brainstorm-header
-h3 {
-  font-size:
-    18px !important;
-
-  line-height:
-    1.25 !important;
-
-  font-weight:
-    600 !important;
-}
-
-/* Powered by Server-Side Gemini = same compact tier as Compose header utilities */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.mirrortrace-brainstorm-header
-p.text-\[11px\] {
-  font-size:
-    12px !important;
-
-  line-height:
-    1.35 !important;
-}
-
-/* New Thread = 14px */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.mirrortrace-brainstorm-thread-btn {
-  font-size:
-    14px !important;
-
-  line-height:
-    1.35 !important;
-}
-
-/* Need help untangling a thought? = 14px */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.mirrortrace-brainstorm-body
-p.text-sm {
-  font-size:
-    14px !important;
-
-  line-height:
-    1.45 !important;
-}
-
-/* Description = 14px */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-reflect-page
-.mirrortrace-brainstorm-column
-.mirrortrace-brainstorm-body
+.mirrortrace-history-page
+div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
 p.text-xs {
   font-size:
-    14px !important;
+    11px !important;
+
+  line-height:
+    1.42 !important;
+
+  color:
+    rgba(255, 255, 255, 0.92) !important;
+}
+
+/* Supporting copy 11px -> 10px */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-history-page
+div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
+p.text-\[11px\] {
+  font-size:
+    10px !important;
 
   line-height:
     1.5 !important;
+
+  color:
+    rgba(255, 255, 255, 0.68) !important;
 }
 
-/* Topic Tags helper on Compose Reflection = 14px */
+/* Both action buttons 12px -> 11px */
 html body #root
 .mirrortrace-app-shell
-.mirrortrace-reflect-page
-> .grid
-> div:first-child
-label.text-xs.font-medium {
+.mirrortrace-history-page
+div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
+button.text-xs {
   font-size:
-    14px !important;
-
-  line-height:
-    1.4 !important;
+    11px !important;
 }
 
-
-/* ============================================================
-   3. SUGGESTED THOUGHT SNAPSHOT
-   Replace the white/cream header band with black 0.82.
-   ============================================================ */
-
+/* Cancel button stays dark/neutral on the black panel. */
 html body #root
-article[id^="thought-snapshot-proposal-"] {
-  border-color:
-    rgba(255, 255, 255, 0.14) !important;
-}
+.mirrortrace-app-shell
+.mirrortrace-history-page
+div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
+button.text-stone-600 {
+  color:
+    rgba(255, 255, 255, 0.70) !important;
 
-/* The white/cream header area shown in the screenshot */
-html body #root
-article[id^="thought-snapshot-proposal-"]
-> div:first-child {
   background:
-    rgba(0, 0, 0, 0.82) !important;
-
-  background-color:
-    rgba(0, 0, 0, 0.82) !important;
-
-  background-image:
-    none !important;
-
-  border-color:
-    rgba(255, 255, 255, 0.14) !important;
+    transparent !important;
 }
 
-/* Keep the dark header readable after removing the cream surface */
 html body #root
-article[id^="thought-snapshot-proposal-"]
-> div:first-child
-h3 {
+.mirrortrace-app-shell
+.mirrortrace-history-page
+div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
+button.text-stone-600:hover {
+  background:
+    rgba(255, 255, 255, 0.08) !important;
+
+  color:
+    #ffffff !important;
+}
+
+/* Keep destructive action clearly destructive. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-history-page
+div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
+button.bg-red-700 {
+  background:
+    rgb(185, 28, 28) !important;
+
   color:
     #ffffff !important;
 }
 
 html body #root
-article[id^="thought-snapshot-proposal-"]
-> div:first-child
-p {
-  color:
-    rgba(255, 255, 255, 0.76) !important;
-}
-
-html body #root
-article[id^="thought-snapshot-proposal-"]
-> div:first-child
-span {
-  color:
-    rgba(255, 255, 255, 0.90) !important;
-}
-
-/* Pending Consent badge */
-html body #root
-article[id^="thought-snapshot-proposal-"]
-> div:first-child
-span.rounded-full {
+.mirrortrace-app-shell
+.mirrortrace-history-page
+div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
+button.bg-red-700:hover {
   background:
-    rgba(0, 0, 0, 0.72) !important;
-
-  background-color:
-    rgba(0, 0, 0, 0.72) !important;
-
-  color:
-    rgba(255, 232, 170, 0.96) !important;
-
-  border-color:
-    rgba(246, 211, 79, 0.32) !important;
+    rgb(153, 27, 27) !important;
 }
 
-/* MIRRORTRACE_EXACT_REFLECT_SNAPSHOT_FIX_END */
+/* MIRRORTRACE_DELETE_CONFIRM_BLACK070_END */

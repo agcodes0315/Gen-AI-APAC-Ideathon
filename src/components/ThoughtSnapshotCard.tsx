@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   HelpCircle,
   Brain,
+  Clock3,
 } from 'lucide-react';
 
 import type {
@@ -34,16 +35,9 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
   onRetryGenerate,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-
-  const [editedPosition, setEditedPosition] =
-    useState(proposal.positionStatement);
-
-  const [editedTopic, setEditedTopic] =
-    useState(proposal.topic);
-
-  const [editedTagsInput, setEditedTagsInput] =
-    useState(proposal.tags.join(', '));
-
+  const [editedPosition, setEditedPosition] = useState(proposal.positionStatement);
+  const [editedTopic, setEditedTopic] = useState(proposal.topic);
+  const [editedTagsInput, setEditedTagsInput] = useState(proposal.tags.join(', '));
   const [memoryRetention, setMemoryRetention] =
     useState<MemoryRetention>('until_removed');
 
@@ -98,11 +92,10 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
 
       onAccepted(res.snapshot);
     } catch (err: unknown) {
-      const msg =
+      setError(
         (err as Error)?.message ||
-        'Failed to approve thought snapshot.';
-
-      setError(msg);
+          'Failed to approve thought snapshot.'
+      );
     } finally {
       setApproving(false);
     }
@@ -120,448 +113,429 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
     <article
       id={`thought-snapshot-proposal-${proposal.sourceJournalId}`}
       className="
+        w-full
         overflow-hidden
         rounded-[22px]
         border
         border-white/15
-        bg-[rgba(0,0,0,0.82)]
-        shadow-[0_18px_50px_rgba(0,0,0,0.28)]
+        bg-[rgba(0,0,0,0.68)]
+        shadow-[0_18px_50px_rgba(0,0,0,0.22)]
+        backdrop-blur-[3px]
         animate-fade-in
       "
     >
-      {/* Header */}
-      <div
+      {/* ======================================================
+          TOP HORIZONTAL HEADER BAR
+         ====================================================== */}
+      <header
         className="
+          flex
+          flex-col
+          gap-3
           border-b
           border-white/15
-          bg-[rgba(0,0,0,0.82)]
+          bg-[rgba(0,0,0,0.74)]
           px-5
           py-4
+          sm:flex-row
+          sm:items-center
+          sm:justify-between
         "
       >
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-start gap-3">
-            <div
-              className="
-                flex
-                h-9
-                w-9
-                shrink-0
-                items-center
-                justify-center
-                rounded-xl
-                border
-                border-white/15
-                bg-[rgba(92,78,70,0.92)]
-                text-white
-              "
-            >
-              <Sparkles className="h-4 w-4" />
-            </div>
-
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="font-serif text-[15px] font-bold text-white">
-                  Suggested Thought Snapshot
-                </h3>
-
-                <span
-                  className="
-                    rounded-full
-                    border
-                    border-amber-300/35
-                    bg-black/70
-                    px-2.5
-                    py-1
-                    text-[8px]
-                    font-bold
-                    uppercase
-                    tracking-wide
-                    text-amber-200
-                  "
-                >
-                  Pending Consent
-                </span>
-              </div>
-
-              <p className="mt-1 text-[9.5px] leading-relaxed text-white/70">
-                Gemini’s proposed interpretation of this reflection.
-              </p>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setShowInfo((current) => !current)}
+        <div className="flex min-w-0 items-center gap-3">
+          <div
             className="
-              rounded-lg
-              p-2
-              text-white/70
-              transition-colors
-              hover:bg-white/10
-              hover:text-white
+              flex
+              h-9
+              w-9
+              shrink-0
+              items-center
+              justify-center
+              rounded-xl
+              border
+              border-white/15
+              bg-[rgba(0,0,0,0.82)]
+              text-amber-200
             "
-            title="Why am I seeing this?"
-            aria-label="Explain this thought snapshot"
           >
-            <HelpCircle className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
-
-      <div className="space-y-5 bg-[rgba(0,0,0,0.82)] p-5">
-        {/* Consent explanation */}
-        {showInfo && (
-          <div className="rounded-2xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-4">
-            <div className="flex items-start gap-2">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
-
-              <div>
-                <p className="text-[11px] font-bold text-white">
-                  Interpretation Integrity & Consent
-                </p>
-
-                <p className="mt-1 text-[9.5px] leading-relaxed text-white/70">
-                  This is an AI-suggested interpretation grounded only in your
-                  saved reflection. It does <strong>not</strong> become
-                  persistent memory or participate in future Thought Diff
-                  comparisons unless you explicitly accept or edit it.
-                </p>
-              </div>
-            </div>
+            <Sparkles className="h-4 w-4" />
           </div>
-        )}
 
-        {/* Error */}
-        {error && (
-          <div className="flex items-start justify-between gap-3 rounded-xl border border-red-400/30 bg-red-950/40 p-3 text-[10.5px] text-red-100">
-            <div className="flex items-start gap-2">
-              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-300" />
-              <span>{error}</span>
-            </div>
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="font-serif text-[15px] font-bold leading-tight text-white">
+                Suggested Thought Snapshot
+              </h3>
 
-            {onRetryGenerate && (
-              <button
-                type="button"
-                onClick={onRetryGenerate}
-                className="inline-flex shrink-0 items-center gap-1 font-semibold text-red-200 hover:underline"
+              <span
+                className="
+                  rounded-full
+                  border
+                  border-amber-300/35
+                  bg-[rgba(0,0,0,0.82)]
+                  px-2.5
+                  py-1
+                  text-[8px]
+                  font-bold
+                  uppercase
+                  tracking-wide
+                  text-amber-200
+                "
               >
-                <RefreshCw className="h-3.5 w-3.5" />
-                Retry
-              </button>
-            )}
-          </div>
-        )}
-
-        {!isEditing ? (
-          <>
-            {/* Main proposal */}
-            <div className="rounded-2xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-4">
-              <div className="mb-3 flex items-center gap-2">
-                <Brain className="h-4 w-4 text-amber-200" />
-
-                <span className="font-mono text-[8px] font-bold uppercase tracking-[0.12em] text-white/55">
-                  Proposed Position
-                </span>
-              </div>
-
-              <blockquote className="font-serif text-[12.5px] italic leading-relaxed text-white/80 sm:text-[14.5px]">
-                “{proposal.positionStatement}”
-              </blockquote>
+                Pending Consent
+              </span>
             </div>
 
-            {/* Metadata */}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-[auto_1fr]">
-              <div className="rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2.5">
-                <span className="text-[8px] font-bold uppercase tracking-wide text-white/60">
-                  Topic
-                </span>
+            <p className="mt-1 text-[10px] leading-relaxed text-white/68">
+              Gemini’s proposed interpretation of this reflection.
+            </p>
+          </div>
+        </div>
 
-                <p className="mt-1 text-[11px] font-semibold text-white/85">
-                  {proposal.topic}
-                </p>
+        <button
+          type="button"
+          onClick={() => setShowInfo((current) => !current)}
+          className="
+            self-start
+            rounded-lg
+            p-2
+            text-white/65
+            transition-colors
+            hover:bg-white/10
+            hover:text-white
+            sm:self-auto
+          "
+          title="Why am I seeing this?"
+          aria-label="Explain this thought snapshot"
+        >
+          <HelpCircle className="h-4 w-4" />
+        </button>
+      </header>
+
+      {/* ======================================================
+          MAIN HORIZONTAL CONTENT BAR
+          3 balanced columns on desktop.
+          No fixed 250/300px columns, so content cannot squeeze.
+         ====================================================== */}
+      <div
+        className="
+          grid
+          grid-cols-1
+          gap-0
+          lg:grid-cols-[minmax(0,1.65fr)_minmax(250px,0.85fr)_minmax(220px,0.7fr)]
+        "
+      >
+        {/* LEFT: proposal + metadata */}
+        <section
+          className="
+            min-w-0
+            border-b
+            border-white/15
+            bg-[rgba(0,0,0,0.70)]
+            p-4
+            lg:border-b-0
+            lg:border-r
+          "
+        >
+          {error && (
+            <div className="mb-3 flex items-start justify-between gap-3 rounded-xl border border-red-400/30 bg-[rgba(0,0,0,0.82)] p-3 text-[10px] text-red-100">
+              <div className="flex min-w-0 items-start gap-2">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-300" />
+                <span className="break-words">{error}</span>
               </div>
 
-              {proposal.tags.length > 0 && (
-                <div className="rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2.5">
-                  <div className="flex items-center gap-1 text-[8px] font-bold uppercase tracking-wide text-white/55">
+              {onRetryGenerate && (
+                <button
+                  type="button"
+                  onClick={onRetryGenerate}
+                  className="inline-flex shrink-0 items-center gap-1 font-semibold text-red-200 hover:underline"
+                >
+                  <RefreshCw className="h-3.5 w-3.5" />
+                  Retry
+                </button>
+              )}
+            </div>
+          )}
+
+          {!isEditing ? (
+            <>
+              <div className="rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-3.5">
+                <div className="mb-2 flex items-center gap-2">
+                  <Brain className="h-4 w-4 shrink-0 text-amber-200" />
+
+                  <span className="font-mono text-[8px] font-bold uppercase tracking-[0.12em] text-white/50">
+                    Proposed Position
+                  </span>
+                </div>
+
+                <blockquote className="break-words font-serif text-[13px] italic leading-relaxed text-white/80 sm:text-[14px]">
+                  “{proposal.positionStatement}”
+                </blockquote>
+              </div>
+
+              <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-[minmax(150px,0.7fr)_minmax(0,1.3fr)]">
+                <div className="min-w-0 rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2.5">
+                  <span className="text-[8px] font-bold uppercase tracking-wide text-white/50">
+                    Topic
+                  </span>
+
+                  <p className="mt-1 break-words text-[10.5px] font-semibold leading-snug text-white/82">
+                    {proposal.topic}
+                  </p>
+                </div>
+
+                <div className="min-w-0 rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2.5">
+                  <div className="flex items-center gap-1 text-[8px] font-bold uppercase tracking-wide text-white/50">
                     <Tag className="h-3 w-3" />
                     Tags
                   </div>
 
                   <div className="mt-2 flex flex-wrap gap-1.5">
-                    {proposal.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="
-                          rounded-full
-                          border
-                          border-white/15
-                          bg-black/65
-                          px-2
-                          py-1
-                          text-[8.5px]
-                          font-semibold
-                          text-white/75
-                        "
-                      >
-                        #{tag}
+                    {proposal.tags.length > 0 ? (
+                      proposal.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="
+                            max-w-full
+                            rounded-full
+                            border
+                            border-white/15
+                            bg-[rgba(0,0,0,0.78)]
+                            px-2
+                            py-1
+                            text-[8px]
+                            font-semibold
+                            text-white/70
+                          "
+                        >
+                          #{tag}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-[8.5px] text-white/40">
+                        No tags
                       </span>
-                    ))}
+                    )}
                   </div>
                 </div>
-              )}
-            </div>
-          </>
-        ) : (
-          /* Edit Mode */
-          <div className="space-y-4 rounded-2xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-4">
-            <div className="space-y-1.5">
-              <label
-                htmlFor="edit-position-input"
-                className="text-[11px] font-bold text-white/85"
-              >
-                Refine Position Statement
-              </label>
-
-              <textarea
-                id="edit-position-input"
-                value={editedPosition}
-                onChange={(event) =>
-                  setEditedPosition(event.target.value)
-                }
-                className="
-                  h-24
-                  w-full
-                  resize-none
-                  rounded-xl
-                  border
-                  border-white/15
-                  bg-black/70
-                  p-3
-                  text-[10.5px]
-                  leading-relaxed
-                  text-white/85
-                  outline-none
-                  transition-colors
-                  placeholder:text-white/35
-                  focus:border-amber-300/45
-                "
-                placeholder="State your position clearly and concisely..."
-              />
-            </div>
-
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <div className="space-y-1.5">
+              </div>
+            </>
+          ) : (
+            <div className="space-y-3 rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-3.5">
+              <div>
                 <label
-                  htmlFor="edit-topic-input"
-                  className="text-[11px] font-bold text-white/85"
+                  htmlFor="edit-position-input"
+                  className="text-[10px] font-bold text-white/82"
                 >
-                  Primary Topic
+                  Refine Position Statement
                 </label>
 
+                <textarea
+                  id="edit-position-input"
+                  value={editedPosition}
+                  onChange={(event) => setEditedPosition(event.target.value)}
+                  className="
+                    mt-1.5
+                    h-20
+                    w-full
+                    resize-none
+                    rounded-lg
+                    border
+                    border-white/15
+                    bg-[rgba(0,0,0,0.78)]
+                    p-2.5
+                    text-[10px]
+                    leading-relaxed
+                    text-white/82
+                    outline-none
+                    placeholder:text-white/35
+                    focus:border-amber-300/45
+                  "
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 <input
                   id="edit-topic-input"
                   type="text"
                   value={editedTopic}
-                  onChange={(event) =>
-                    setEditedTopic(event.target.value)
-                  }
+                  onChange={(event) => setEditedTopic(event.target.value)}
                   className="
-                    w-full
-                    rounded-xl
+                    min-w-0
+                    rounded-lg
                     border
                     border-white/15
-                    bg-black/70
+                    bg-[rgba(0,0,0,0.78)]
                     px-3
-                    py-2.5
-                    text-[10.5px]
-                    text-white/85
+                    py-2
+                    text-[10px]
+                    text-white/82
                     outline-none
-                    transition-colors
-                    placeholder:text-white/35
                     focus:border-amber-300/45
                   "
-                  placeholder="e.g. Career Planning"
+                  placeholder="Primary topic"
                 />
-              </div>
-
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="edit-tags-input"
-                  className="text-[11px] font-bold text-white/85"
-                >
-                  Tags
-                </label>
 
                 <input
                   id="edit-tags-input"
                   type="text"
                   value={editedTagsInput}
-                  onChange={(event) =>
-                    setEditedTagsInput(event.target.value)
-                  }
+                  onChange={(event) => setEditedTagsInput(event.target.value)}
                   className="
-                    w-full
-                    rounded-xl
+                    min-w-0
+                    rounded-lg
                     border
                     border-white/15
-                    bg-black/70
+                    bg-[rgba(0,0,0,0.78)]
                     px-3
-                    py-2.5
-                    text-[10.5px]
-                    text-white/85
+                    py-2
+                    text-[10px]
+                    text-white/82
                     outline-none
-                    transition-colors
-                    placeholder:text-white/35
                     focus:border-amber-300/45
                   "
-                  placeholder="career, mba, technology"
+                  placeholder="tags, comma, separated"
                 />
-
-                <p className="text-[7.5px] text-white/40">
-                  Comma-separated, maximum 5 tags.
-                </p>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </section>
 
-        {/* Time-bound memory consent */}
-        <div className="rounded-2xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-4">
-          <div className="flex flex-col gap-3">
-            <div>
-              <p className="text-[11px] font-bold text-white">
-                Memory permission
-              </p>
-
-              <p className="mt-1 text-[8.5px] leading-relaxed text-white/65">
-                Choose how long this approved interpretation may be reused for
-                future Thought Diff matching. Expiry does not delete your
-                journal or snapshot; it only removes the snapshot from future
-                AI-memory comparisons.
-              </p>
-            </div>
-
-            {/* Horizontal retention layer */}
-            <div
-              className="
-                flex
-                w-full
-                items-center
-                justify-between
-                gap-4
-                border-y
-                border-white/15
-                bg-black/55
-                px-3
-                py-2
-              "
-            >
-              <span className="text-[9px] font-semibold text-white/55">
-                Retention
-              </span>
-
-              <select
-                id="snapshot-memory-retention"
-                value={memoryRetention}
-                onChange={(event) =>
-                  setMemoryRetention(
-                    event.target.value as MemoryRetention
-                  )
-                }
-                disabled={approving}
-                className="
-                  w-auto
-                  min-w-[180px]
-                  appearance-none
-                  border-0
-                  bg-transparent
-                  px-0
-                  py-1
-                  text-right
-                  text-[11px]
-                  font-semibold
-                  text-white/85
-                  outline-none
-                  disabled:opacity-60
-                "
-                aria-label="Thought Snapshot memory retention"
-              >
-                <option value="until_removed">
-                  Until I remove it
-                </option>
-
-                <option value="30_days">
-                  30 days
-                </option>
-
-                <option value="180_days">
-                  6 months
-                </option>
-
-                <option value="365_days">
-                  1 year
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <div className="mt-3 rounded-xl border border-white/15 bg-black/70 px-3 py-2">
-            <p className="text-[8.5px] leading-relaxed text-white/65">
-              <strong className="text-white/90">
-                Time-bound consent:
-              </strong>{' '}
-              MirrorTrace will not use an expired snapshot as evidence for a
-              new Thought Diff unless you approve a new interpretation later.
+        {/* MIDDLE: memory permission */}
+        <section
+          className="
+            min-w-0
+            border-b
+            border-white/15
+            bg-[rgba(0,0,0,0.74)]
+            p-4
+            lg:border-b-0
+            lg:border-r
+          "
+        >
+          <div className="flex items-center gap-2">
+            <Clock3 className="h-4 w-4 shrink-0 text-white/62" />
+            <p className="text-[11px] font-bold text-white">
+              Memory permission
             </p>
           </div>
-        </div>
 
-        {/* Explicit consent boundary */}
-        <div className="rounded-xl border border-white/10 bg-black/85 px-4 py-3">
-          <div className="flex items-start gap-2">
-            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
+          <p className="mt-2 text-[8.5px] leading-relaxed text-white/60">
+            Choose how long this approved interpretation may be reused for
+            future Thought Diff matching.
+          </p>
 
-            <p className="text-[8.5px] leading-relaxed text-white/70">
-              <strong className="text-white">
-                Nothing becomes memory automatically.
-              </strong>{' '}
-              Accepting this snapshot is the consent boundary that makes it
-              eligible for future comparisons.
-            </p>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex flex-col-reverse gap-3 border-t border-white/15 pt-4 sm:flex-row sm:items-center sm:justify-between">
-          <button
-            id="btn-reject-snapshot"
-            type="button"
-            onClick={onRejected}
-            disabled={approving}
+          <div
             className="
-              inline-flex
+              mt-3
+              flex
+              w-full
               items-center
-              justify-center
-              gap-1.5
-              rounded-xl
+              justify-between
+              gap-3
+              border-y
+              border-white/15
+              bg-[rgba(0,0,0,0.82)]
               px-3
               py-2
-              text-[10.5px]
-              font-semibold
-              text-white/55
-              transition-colors
-              hover:bg-white/10
-              hover:text-white
-              disabled:opacity-60
             "
           >
-            <X className="h-4 w-4" />
-            Reject
-          </button>
+            <span className="shrink-0 text-[8px] font-semibold text-white/45">
+              Retention
+            </span>
 
-          <div className="flex flex-wrap justify-end gap-2">
+            <select
+              id="snapshot-memory-retention"
+              value={memoryRetention}
+              onChange={(event) =>
+                setMemoryRetention(event.target.value as MemoryRetention)
+              }
+              disabled={approving}
+              className="
+                min-w-0
+                max-w-[150px]
+                appearance-none
+                border-0
+                bg-transparent
+                px-0
+                py-0
+                text-right
+                text-[9.5px]
+                font-semibold
+                text-white/82
+                outline-none
+                disabled:opacity-60
+              "
+              aria-label="Thought Snapshot memory retention"
+            >
+              <option value="until_removed">Until I remove it</option>
+              <option value="30_days">30 days</option>
+              <option value="180_days">6 months</option>
+              <option value="365_days">1 year</option>
+            </select>
+          </div>
+
+          <div className="mt-3 rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2">
+            <p className="text-[8px] leading-relaxed text-white/60">
+              <strong className="text-white/85">
+                Time-bound consent:
+              </strong>{' '}
+              Expired snapshots are not used as evidence for a new Thought Diff.
+            </p>
+          </div>
+        </section>
+
+        {/* RIGHT: consent + actions */}
+        <section
+          className="
+            flex
+            min-w-0
+            flex-col
+            justify-between
+            gap-4
+            bg-[rgba(0,0,0,0.70)]
+            p-4
+          "
+        >
+          <div className="rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-3">
+            <div className="flex items-start gap-2">
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
+
+              <p className="text-[8.5px] leading-relaxed text-white/66">
+                <strong className="text-white">
+                  Nothing becomes memory automatically.
+                </strong>{' '}
+                Accepting this snapshot is the consent boundary.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <button
+              id="btn-reject-snapshot"
+              type="button"
+              onClick={onRejected}
+              disabled={approving}
+              className="
+                inline-flex
+                items-center
+                gap-1.5
+                rounded-lg
+                px-3
+                py-2
+                text-[10px]
+                font-semibold
+                text-white/55
+                transition-colors
+                hover:bg-white/10
+                hover:text-white
+                disabled:opacity-60
+              "
+            >
+              <X className="h-4 w-4" />
+              Reject
+            </button>
+
             {!isEditing ? (
               <>
                 <button
@@ -576,22 +550,22 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                     inline-flex
                     items-center
                     gap-1.5
-                    rounded-xl
+                    rounded-lg
                     border
                     border-white/15
-                    bg-[rgba(0,0,0,0.82)]
-                    px-3.5
+                    bg-[rgba(0,0,0,0.78)]
+                    px-3
                     py-2
-                    text-[10.5px]
+                    text-[10px]
                     font-semibold
-                    text-white/75
+                    text-white/72
                     transition-colors
-                    hover:bg-black/95
+                    hover:bg-[rgba(0,0,0,0.86)]
                     disabled:opacity-60
                   "
                 >
                   <Edit3 className="h-4 w-4" />
-                  Edit Interpretation
+                  Edit
                 </button>
 
                 <button
@@ -603,16 +577,15 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                     inline-flex
                     items-center
                     gap-1.5
-                    rounded-xl
+                    rounded-lg
                     border
                     border-white/15
                     bg-[rgba(92,78,70,0.92)]
-                    px-4
+                    px-3
                     py-2
-                    text-[10.5px]
+                    text-[10px]
                     font-bold
                     text-white
-                    shadow-sm
                     transition-colors
                     hover:bg-[rgba(108,90,80,0.98)]
                     disabled:opacity-60
@@ -624,7 +597,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                     <Check className="h-4 w-4" />
                   )}
 
-                  Accept Snapshot
+                  Accept
                 </button>
               </>
             ) : (
@@ -634,18 +607,17 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                   onClick={handleCancelEdit}
                   disabled={approving}
                   className="
-                    rounded-xl
-                    px-3.5
+                    rounded-lg
+                    px-3
                     py-2
-                    text-[10.5px]
+                    text-[10px]
                     font-semibold
                     text-white/55
-                    transition-colors
                     hover:bg-white/10
                     disabled:opacity-60
                   "
                 >
-                  Cancel Edit
+                  Cancel
                 </button>
 
                 <button
@@ -657,16 +629,15 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                     inline-flex
                     items-center
                     gap-1.5
-                    rounded-xl
+                    rounded-lg
                     border
                     border-white/15
                     bg-[rgba(92,78,70,0.92)]
-                    px-4
+                    px-3
                     py-2
-                    text-[10.5px]
+                    text-[10px]
                     font-bold
                     text-white
-                    shadow-sm
                     transition-colors
                     hover:bg-[rgba(108,90,80,0.98)]
                     disabled:opacity-60
@@ -683,8 +654,23 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
               </>
             )}
           </div>
-        </div>
+        </section>
       </div>
+
+      {/* Optional explanation spans full width instead of squeezing a column */}
+      {showInfo && (
+        <div className="border-t border-white/15 bg-[rgba(0,0,0,0.74)] px-5 py-3">
+          <div className="flex items-start gap-2 rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-3">
+            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
+
+            <p className="text-[9px] leading-relaxed text-white/68">
+              This is an AI-suggested interpretation grounded only in your saved
+              reflection. It becomes reusable memory only if you explicitly
+              accept or edit it.
+            </p>
+          </div>
+        </div>
+      )}
     </article>
   );
 };
