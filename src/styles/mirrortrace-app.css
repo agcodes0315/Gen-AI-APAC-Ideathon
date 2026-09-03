@@ -6432,3 +6432,715 @@ html body #root
 }
 
 /* MIRRORTRACE_FINAL_EXACT_CORRECTIONS_END */
+
+/* MIRRORTRACE_LOCKED_FINAL_ADMIN_READABILITY_START */
+
+/* ============================================================
+   LOCKED FINAL CORRECTIONS
+   Only these three things are changed:
+   1. "Your thinking, versioned." is bold.
+   2. Admin background receives a real black tint.
+   3. MirrorRoom analytics/admin text shown in the screenshot
+      is increased by exactly 1px.
+   ============================================================ */
+
+
+/* ============================================================
+   1. OVERVIEW HERO TITLE
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+h1.mirrortrace-float-title,
+html body #root
+.mirrortrace-dashboard-overview
+h1.mirrortrace-float-title {
+  font-weight:
+    700 !important;
+}
+
+
+/* ============================================================
+   2. ADMIN DASHBOARD BACKGROUND
+   Keep the current branch image.
+   Apply a full black 0.50 tint over it.
+   No blue overlay.
+   No pseudo-layer stacking.
+   ============================================================ */
+
+html body #root
+.mirrortrace-admin-page,
+html body #root
+.mirrortrace-admin-overlay {
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.50),
+      rgba(0, 0, 0, 0.50)
+    ),
+    url("/hero/mirrortrace3.jpeg")
+      center center / cover
+      fixed
+      no-repeat !important;
+
+  background-color:
+    #05080c !important;
+
+  color:
+    #ffffff !important;
+}
+
+/* Prevent any older blue/background pseudo-layer from reappearing. */
+html body #root
+.mirrortrace-admin-page::before,
+html body #root
+.mirrortrace-admin-page::after,
+html body #root
+.mirrortrace-admin-overlay::before,
+html body #root
+.mirrortrace-admin-overlay::after {
+  content:
+    none !important;
+
+  display:
+    none !important;
+}
+
+/* Keep the actual dashboard transparent above the page background. */
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard,
+html body #root
+.mirrortrace-admin-overlay
+.mirrortrace-admin-dashboard {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+
+  visibility:
+    visible !important;
+
+  opacity:
+    1 !important;
+}
+
+
+/* ============================================================
+   3. ADMIN MIRRORROOM ANALYTICS
+   Increase every text tier shown in the screenshot by EXACTLY 1px.
+   Tailwind defaults:
+     text-[10px] -> 11px
+     text-[11px] -> 12px
+     text-xs     -> 13px
+     text-sm     -> 15px
+     text-lg     -> 19px
+     text-3xl    -> 31px
+   ============================================================ */
+
+/* Collaborative operations / metric labels / compact labels */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-\[10px\],
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-\[10px\] {
+  font-size:
+    11px !important;
+}
+
+/* Participant email/name micro rows */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-\[11px\],
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-\[11px\] {
+  font-size:
+    12px !important;
+}
+
+/* Main explanatory copy, table rows, refresh, status copy */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-xs,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-xs {
+  font-size:
+    13px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+/* "Content visibility disabled" */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-sm,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-sm {
+  font-size:
+    15px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+/* "MirrorRoom Activity" */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-lg,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-lg {
+  font-size:
+    19px !important;
+}
+
+/* 3 / 0 / 3 metric values */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-3xl,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-3xl {
+  font-size:
+    31px !important;
+
+  line-height:
+    1.12 !important;
+}
+
+/* Explicit table authority so older global admin table rules
+   cannot shrink the screenshot text back down. */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+thead th,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+thead th {
+  font-size:
+    11px !important;
+
+  line-height:
+    1.45 !important;
+}
+
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+tbody td,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+tbody td {
+  font-size:
+    13px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+/* Keep all admin text on the same product font. */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms,
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms *,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms * {
+  font-family:
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+/* MIRRORTRACE_LOCKED_FINAL_ADMIN_READABILITY_END */
+
+/* MIRRORTRACE_ADMIN_BLACK_TINT_LOCK_START */
+
+/* ============================================================
+   ADMIN DASHBOARD — FINAL BLACK-TINT AUTHORITY
+   Only the Admin background treatment is changed here.
+   Existing Admin cards, layout, metrics and content remain intact.
+   ============================================================ */
+
+/*
+ * IMPORTANT:
+ * The image stays mirrortrace3.jpeg.
+ * A stronger black veil is baked directly into the page background.
+ * background-blend-mode guarantees the image cannot appear bright
+ * through the page even if an earlier rule tries to repaint it.
+ */
+html body #root
+.mirrortrace-admin-page,
+html body #root
+.mirrortrace-admin-overlay {
+  background-image:
+    linear-gradient(
+      rgba(0, 0, 0, 0.72),
+      rgba(0, 0, 0, 0.72)
+    ),
+    url("/hero/mirrortrace3.jpeg") !important;
+
+  background-position:
+    center center !important;
+
+  background-size:
+    cover !important;
+
+  background-repeat:
+    no-repeat !important;
+
+  background-attachment:
+    fixed !important;
+
+  background-color:
+    #020304 !important;
+
+  background-blend-mode:
+    normal !important;
+
+  color:
+    #ffffff !important;
+}
+
+/* Do not allow older pseudo-background layers to interfere. */
+html body #root
+.mirrortrace-admin-page::before,
+html body #root
+.mirrortrace-admin-page::after,
+html body #root
+.mirrortrace-admin-overlay::before,
+html body #root
+.mirrortrace-admin-overlay::after {
+  content:
+    none !important;
+
+  display:
+    none !important;
+
+  background:
+    none !important;
+}
+
+/*
+ * The actual dashboard remains transparent so the one black-tinted
+ * page background is visible consistently from top to bottom.
+ */
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard,
+html body #root
+.mirrortrace-admin-overlay
+.mirrortrace-admin-dashboard {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+
+  visibility:
+    visible !important;
+
+  opacity:
+    1 !important;
+}
+
+/*
+ * Main Admin hero remains readable, but now uses a translucent black
+ * panel instead of visually competing with the background image.
+ */
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-hero,
+html body #root
+.mirrortrace-admin-overlay
+.mirrortrace-admin-dashboard
+.mirrortrace-admin-hero {
+  background:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/*
+ * KPI cards and all major Admin surfaces remain translucent black,
+ * not blue and not opaque.
+ */
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard
+:where(
+  .mirrortrace-admin-surface,
+  button.mirrortrace-admin-metric
+),
+html body #root
+.mirrortrace-admin-overlay
+.mirrortrace-admin-dashboard
+:where(
+  .mirrortrace-admin-surface,
+  button.mirrortrace-admin-metric
+) {
+  background:
+    rgba(0, 0, 0, 0.78) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.78) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.13) !important;
+}
+
+/*
+ * MirrorRoom Activity wrapper/table should also sit on black glass
+ * so the page reads as one coherent Admin Control Room.
+ */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms {
+  background:
+    rgba(0, 0, 0, 0.62) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.62) !important;
+
+  background-image:
+    none !important;
+}
+
+/* MIRRORTRACE_ADMIN_BLACK_TINT_LOCK_END */
+
+/* MIRRORTRACE_FINAL_ADMIN_MEMORY_VISIBILITY_START */
+
+/* ============================================================
+   FINAL EXACT FIX
+   1. Admin MirrorRoom analytics: increase visible text by +1px.
+   2. Memory Governance heading/top block: visibly translucent
+      black with 0.70 outer tint and 0.82 deeper KPI tier.
+   ============================================================ */
+
+
+/* ============================================================
+   1. ADMIN MIRRORROOM ACTIVITY +1PX
+   ============================================================ */
+
+/* 10 -> 12px total from original, because current final was 11px. */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-\[10px\],
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-\[10px\] {
+  font-size:
+    12px !important;
+}
+
+/* 11 -> 13px total from original, because current final was 12px. */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-\[11px\],
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-\[11px\] {
+  font-size:
+    13px !important;
+}
+
+/* text-xs: current 13px -> 14px */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-xs,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-xs {
+  font-size:
+    14px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+/* text-sm: current 15px -> 16px */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-sm,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-sm {
+  font-size:
+    16px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+/* MirrorRoom Activity: current 19px -> 20px */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-lg,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-lg {
+  font-size:
+    20px !important;
+
+  line-height:
+    1.3 !important;
+}
+
+/* metric values: current 31px -> 32px */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+.text-3xl,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+.text-3xl {
+  font-size:
+    32px !important;
+
+  line-height:
+    1.1 !important;
+}
+
+/* Explicit table override: +1px */
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+thead th,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+thead th {
+  font-size:
+    12px !important;
+}
+
+html body #root
+.mirrortrace-admin-page
+#admin-mirrorrooms
+tbody td,
+html body #root
+.mirrortrace-admin-overlay
+#admin-mirrorrooms
+tbody td {
+  font-size:
+    14px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+
+/* ============================================================
+   2. MEMORY GOVERNANCE
+   OUTER/TOP HEADING BLOCK = rgba(0,0,0,0.70)
+   KPI / DEEPER STRIP = rgba(0,0,0,0.82)
+
+   The top title area must remain SEE-THROUGH so the common
+   authenticated background is visible behind it.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* Entire first governance section. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type {
+  background:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+
+  backdrop-filter:
+    blur(2px) !important;
+
+  -webkit-backdrop-filter:
+    blur(2px) !important;
+}
+
+/* USER-GOVERNED AI MEMORY + Memory Governance Center area */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+> :first-child,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+.mirrortrace-memory-hero,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+header {
+  background:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Prevent inner utility classes from repainting the heading pure black/white. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+> :first-child
+:where(
+  .bg-black,
+  [class*="bg-black/"],
+  .bg-white,
+  [class*="bg-white/"],
+  .bg-stone-950,
+  .bg-stone-900,
+  .bg-neutral-950,
+  .bg-neutral-900
+) {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* KPI strip under the heading = 0.82 */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+.grid
+> div {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Keep lower major governance cards translucent too. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  section.rounded-2xl.border,
+  article.rounded-2xl.border,
+  div.rounded-2xl.border
+) {
+  background:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Deeper controls can be 0.82 for hierarchy. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  .rounded-xl.border,
+  .rounded-lg.border,
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-950
+) {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+/* MIRRORTRACE_FINAL_ADMIN_MEMORY_VISIBILITY_END */
