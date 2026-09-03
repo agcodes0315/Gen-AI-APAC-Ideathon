@@ -120,7 +120,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
         rounded-[22px]
         border
         border-white/15
-        bg-[rgba(0,0,0,0.72)]
+        bg-[rgba(0,0,0,0.58)]
         shadow-[0_18px_50px_rgba(0,0,0,0.22)]
         backdrop-blur-[3px]
         animate-fade-in
@@ -136,7 +136,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
           gap-3
           border-b
           border-white/15
-          bg-[rgba(0,0,0,0.76)]
+          bg-[rgba(0,0,0,0.64)]
           px-5
           py-4
           sm:flex-row
@@ -233,7 +233,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
             min-w-0
             border-b
             border-white/15
-            bg-[rgba(0,0,0,0.74)]
+            bg-[rgba(0,0,0,0.62)]
             p-4
             lg:border-b-0
             lg:border-r
@@ -287,7 +287,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                 </div>
 
                 <div className="min-w-0 rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2.5">
-                  <div className="flex items-center gap-1 text-[8px] font-bold uppercase tracking-wide text-white/50">
+                  <div className="flex items-center gap-1 text-[16px] font-bold uppercase tracking-wide text-white/70">
                     <Tag className="h-3 w-3" />
                     Tags
                   </div>
@@ -327,7 +327,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
               <div>
                 <label
                   htmlFor="edit-position-input"
-                  className="text-[10px] font-bold text-white/82"
+                  className="text-[9px] font-bold text-white/82"
                 >
                   Refine Position Statement
                 </label>
@@ -409,7 +409,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
             min-w-0
             border-b
             border-white/15
-            bg-[rgba(0,0,0,0.76)]
+            bg-[rgba(0,0,0,0.64)]
             p-4
             lg:border-b-0
             lg:border-r
@@ -417,12 +417,12 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
         >
           <div className="flex items-center gap-2">
             <Clock3 className="h-4 w-4 shrink-0 text-white/62" />
-            <p className="text-[10px] font-bold text-white">
+            <p className="text-[9px] font-bold text-white">
               Memory permission
             </p>
           </div>
 
-          <p className="mt-2 text-[7.5px] leading-relaxed text-white/60">
+          <p className="mt-2 text-[6.5px] leading-relaxed text-white/60">
             Choose how long this approved interpretation may be reused for
             future Thought Diff matching.
           </p>
@@ -478,7 +478,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
           </div>
 
           <div className="mt-3 rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2">
-            <p className="text-[7px] leading-relaxed text-white/60">
+            <p className="text-[6px] leading-relaxed text-white/60">
               <strong className="text-white/85">
                 Time-bound consent:
               </strong>{' '}
@@ -495,7 +495,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
             flex-col
             justify-between
             gap-4
-            bg-[rgba(0,0,0,0.74)]
+            bg-[rgba(0,0,0,0.62)]
             p-4
           "
         >
@@ -503,7 +503,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
             <div className="flex items-start gap-2">
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
 
-              <p className="text-[7.5px] leading-relaxed text-white/66">
+              <p className="text-[6.5px] leading-relaxed text-white/66">
                 <strong className="text-white">
                   Nothing becomes memory automatically.
                 </strong>{' '}
@@ -525,7 +525,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                 rounded-lg
                 px-3
                 py-2
-                text-[8.5px]
+                text-[7px]
                 font-semibold
                 text-white/55
                 transition-colors
@@ -558,7 +558,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                     bg-[rgba(0,0,0,0.78)]
                     px-3
                     py-2
-                    text-[8.5px]
+                    text-[7px]
                     font-semibold
                     text-white/72
                     transition-colors
@@ -585,7 +585,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                     bg-[rgba(92,78,70,0.92)]
                     px-3
                     py-2
-                    text-[8.5px]
+                    text-[7px]
                     font-bold
                     text-white
                     transition-colors
@@ -612,7 +612,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                     rounded-lg
                     px-3
                     py-2
-                    text-[8.5px]
+                    text-[7px]
                     font-semibold
                     text-white/55
                     hover:bg-white/10
@@ -637,7 +637,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                     bg-[rgba(92,78,70,0.92)]
                     px-3
                     py-2
-                    text-[8.5px]
+                    text-[7px]
                     font-bold
                     text-white
                     transition-colors
@@ -661,7 +661,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
 
       {/* Optional explanation spans full width instead of squeezing a column */}
       {showInfo && (
-        <div className="border-t border-white/15 bg-[rgba(0,0,0,0.76)] px-5 py-3">
+        <div className="border-t border-white/15 bg-[rgba(0,0,0,0.64)] px-5 py-3">
           <div className="flex items-start gap-2 rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] p-3">
             <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
 

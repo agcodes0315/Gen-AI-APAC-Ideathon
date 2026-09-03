@@ -478,7 +478,7 @@ export const BrainstormChat:
       <div
         className="mirrortrace-brainstorm-shell rounded-xl border shadow-xs flex flex-col h-full min-h-[520px]"
         style={{
-          background: 'rgba(0, 0, 0, 0.56)',
+          background: 'rgba(0, 0, 0, 0.46)',
           borderColor: 'rgba(255,255,255,0.14)',
           backdropFilter: 'blur(2px)',
           WebkitBackdropFilter: 'blur(2px)',
@@ -488,7 +488,7 @@ export const BrainstormChat:
         <div
           className="mirrortrace-brainstorm-header px-5 py-4 border-b flex items-center justify-between rounded-t-xl"
           style={{
-            background: 'rgba(0, 0, 0, 0.62)',
+            background: 'rgba(0, 0, 0, 0.52)',
             borderColor: 'rgba(255,255,255,0.14)',
           }}
         >
@@ -505,7 +505,7 @@ export const BrainstormChat:
               <p
                 className="text-white/65"
                 style={{
-                  fontSize: '12px',
+                  fontSize: '12.5px',
                   lineHeight: 1.4,
                 }}
               >
@@ -525,7 +525,7 @@ export const BrainstormChat:
             }
             className="mirrortrace-brainstorm-thread-btn flex items-center gap-1.5 px-2.5 py-1 rounded-md font-medium text-white/70 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             style={{
-              fontSize: '14px',
+              fontSize: '14.5px',
               lineHeight: 1.35,
             }}
             title="Start a fresh conversation"
@@ -541,7 +541,7 @@ export const BrainstormChat:
         <div
           className="mirrortrace-brainstorm-body flex-1 p-5 overflow-y-auto space-y-4 max-h-[380px]"
           style={{
-            background: 'rgba(0, 0, 0, 0.68)',
+            background: 'rgba(0, 0, 0, 0.58)',
           }}
         >
           {initLoading ? (
@@ -713,7 +713,7 @@ export const BrainstormChat:
           <div
             className="mirrortrace-brainstorm-tags px-5 py-2 border-t flex items-center gap-2 flex-wrap"
             style={{
-              background: 'rgba(0, 0, 0, 0.62)',
+              background: 'rgba(0, 0, 0, 0.52)',
               borderColor: 'rgba(255,255,255,0.14)',
             }}
           >
@@ -745,7 +745,7 @@ export const BrainstormChat:
         <div
           className="mirrortrace-brainstorm-footer p-4 border-t rounded-b-xl"
           style={{
-            background: 'rgba(0, 0, 0, 0.62)',
+            background: 'rgba(0, 0, 0, 0.52)',
             borderColor: 'rgba(255,255,255,0.14)',
           }}
         >
@@ -777,7 +777,7 @@ export const BrainstormChat:
               }
               className="mirrortrace-brainstorm-input flex-1 px-3.5 py-2.5 rounded-lg border text-white placeholder:text-white/45 focus:outline-none focus:ring-2 focus:ring-amber-300/20 focus:border-amber-300/40 disabled:opacity-50"
               style={{
-                background: 'rgba(0, 0, 0, 0.74)',
+                background: 'rgba(0, 0, 0, 0.66)',
                 borderColor: 'rgba(255,255,255,0.14)',
                 fontSize: '13px',
               }}
