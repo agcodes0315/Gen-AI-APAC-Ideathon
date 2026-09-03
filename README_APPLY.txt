@@ -1,17 +1,17 @@
-MIRRORTRACE MEMORY GOVERNANCE TINT FINAL
-=======================================
+MIRRORTRACE MEMORY GOVERNANCE HEADING 0.90
+=========================================
 
 Replace:
 src/styles/mirrortrace-app.css
 
-The top Memory Governance block is now forced to:
-rgba(0,0,0,0.70)
+Change:
+Memory Governance heading/top block:
+rgba(0,0,0,0.90)
 
-The KPI strip is:
+KPI strip remains:
 rgba(0,0,0,0.82)
 
-The title/header area and its nested children are explicitly painted
-with 0.70 so no older solid-black utility can override it.
+No other styling or component logic changed.
 
 Run:
 Remove-Item -Recurse -Force .\node_modules\.vite -ErrorAction SilentlyContinue; npm run dev
