@@ -2242,3 +2242,105 @@ p {
 
 
 /* MIRRORTRACE_PUBLIC_SCREENSHOT_CORRECTIONS_END */
+
+/* MIRRORTRACE_PUBLIC_FINAL_REQUESTED_CORRECTIONS_START */
+
+/* ============================================================
+   FINAL SIGN-IN PAGE CORRECTIONS
+   ============================================================ */
+
+
+/* ============================================================
+   SECURITY BY ARCHITECTURE
+   Force all four cards to BLACK rather than blue/navy.
+   This selector is intentionally stronger than earlier mt-glass
+   styling.
+   ============================================================ */
+
+html body #root
+.mirrortrace-auth-page
+#security
+.mt-glass.mt-glass-cool,
+html body #root
+.mirrortrace-auth-page
+#security
+article,
+html body #root
+.mirrortrace-auth-page
+#security
+.mirrortrace-security-card {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(255,255,255,0.04),
+    0 18px 38px
+      rgba(0,0,0,0.24) !important;
+}
+
+
+/* ============================================================
+   HERO CTA + TRUST LINE
+   Latest request: increase each by 1px.
+   Previous final values:
+   hero CTA = 12px
+   trust line = 13px
+
+   New values:
+   hero CTA = 13px
+   trust line = 14px
+   ============================================================ */
+
+html body #root
+.mirrortrace-auth-page
+#hero
+.max-w-4xl
+> .mt-8.flex.flex-wrap.gap-3
+> button {
+  font-size:
+    13px !important;
+
+  line-height:
+    1.3 !important;
+}
+
+html body #root
+.mirrortrace-auth-page
+#hero
+div[class~="text-[10px]"][class*="pb-7"] {
+  font-size:
+    14px !important;
+
+  line-height:
+    1.4 !important;
+}
+
+
+/* ============================================================
+   EMPTY PUBLIC REVIEWS
+   Remove only:
+   "The first review will appear only after explicit public
+    consent and admin approval."
+   ============================================================ */
+
+html body #root
+.mirrortrace-auth-page
+#reviews
+.mirrortrace-review-card
+> p.mt-2.text-xs {
+  display:
+    none !important;
+}
+
+
+/* MIRRORTRACE_PUBLIC_FINAL_REQUESTED_CORRECTIONS_END */

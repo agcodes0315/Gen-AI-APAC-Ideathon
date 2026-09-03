@@ -5335,3 +5335,1100 @@ section[class*="rounded-[26px]"]
 
 
 /* MIRRORTRACE_SCREENSHOT_CORRECTIONS_END */
+
+/* MIRRORTRACE_FINAL_REQUESTED_CORRECTIONS_START */
+
+/* ============================================================
+   FINAL REQUESTED CORRECTIONS
+   Scope: Reflect & Chat, Journal History and Memory Governance.
+   No component logic is changed.
+   ============================================================ */
+
+
+/* ============================================================
+   REFLECT & CHAT
+   Outer Reflective Brainstorm shell = lighter black.
+   Inner conversation area stays darker.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-shell {
+  background:
+    rgba(0, 0, 0, 0.72) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.72) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+}
+
+/* Header/footer sit on the same lighter outer tint. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  .mirrortrace-brainstorm-header,
+  .mirrortrace-brainstorm-footer,
+  .mirrortrace-brainstorm-tags
+) {
+  background:
+    rgba(0, 0, 0, 0.72) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.72) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.12) !important;
+}
+
+/* Inner area remains deeper exactly as requested. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  .mirrortrace-brainstorm-body,
+  .mirrortrace-brainstorm-input,
+  .mirrortrace-brainstorm-message-model,
+  .mirrortrace-brainstorm-message-user,
+  .mirrortrace-brainstorm-loading
+) {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Requested 0.5px reductions inside Reflective Brainstorm. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-header
+p {
+  font-size:
+    10.5px !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-thread-btn {
+  font-size:
+    11.5px !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body
+.text-sm {
+  font-size:
+    13.5px !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body
+.text-xs {
+  font-size:
+    11.5px !important;
+}
+
+/* Topic Tags helper label: reduce by 0.5px from the current 18px. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+label {
+  font-size:
+    17.5px !important;
+}
+
+
+/* ============================================================
+   JOURNAL HISTORY
+   Increase the summary line and date controls by 1px.
+   ============================================================ */
+
+/* "Showing 0 of 0 reflections / Search and filters..." */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-history-page
+div[class~="text-[11px]"][class*="border-t"] {
+  font-size:
+    13px !important;
+
+  line-height:
+    1.45 !important;
+}
+
+/* AnchoredDatePicker trigger:
+   From date / To date labels: 10px -> 11px
+   mm/dd/yyyy value: 12px -> 13px */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-history-page
+button[aria-haspopup="dialog"]
+> span:first-child {
+  font-size:
+    11px !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-history-page
+button[aria-haspopup="dialog"]
+> span:nth-child(2)
+> span:first-child {
+  font-size:
+    13px !important;
+}
+
+
+/* ============================================================
+   MEMORY GOVERNANCE
+   Third screenshot request:
+   main governance block = rgba(0,0,0,0.82)
+   and body/subheading text = 0.5px smaller.
+   ============================================================ */
+
+/* Main top Governance block darker at exact 0.82. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+.mirrortrace-memory-hero {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+
+  backdrop-filter:
+    blur(2px) !important;
+
+  -webkit-backdrop-filter:
+    blur(2px) !important;
+}
+
+/* Deeper KPI cells remain deeper black. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+.grid
+> div {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Major lower governance surfaces keep the same 0.82 hierarchy. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  section.rounded-2xl.border,
+  article.rounded-2xl.border,
+  div.rounded-2xl.border
+) {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Deep cards/controls remain 0.90. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  .rounded-xl.border,
+  .rounded-lg.border,
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-950
+) {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Requested 0.5px decrease for Memory Governance body/subheading copy. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+h2 {
+  font-size:
+    22.5px !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+h3 {
+  font-size:
+    13.5px !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+p {
+  font-size:
+    17.5px !important;
+
+  line-height:
+    1.52 !important;
+}
+
+/* Buttons/utility text inside memory stay slightly smaller too. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+button {
+  font-size:
+    13.5px !important;
+}
+
+
+/* MIRRORTRACE_FINAL_REQUESTED_CORRECTIONS_END */
+
+/* MIRRORTRACE_ADMIN_MEMORY_BRAINSTORM_FIX_START */
+
+/* ============================================================
+   FINAL FIX — ADMIN BACKGROUND + MEMORY GOVERNANCE + BRAINSTORM
+   ============================================================ */
+
+
+/* ============================================================
+   1. ADMIN DASHBOARD BACKGROUND
+   Use public/hero/mirrortrace3.jpeg exactly.
+   Keep the existing black haze and preserve Admin UI/cards.
+   ============================================================ */
+
+html body #root
+.mirrortrace-admin-page,
+html body #root
+.mirrortrace-admin-overlay {
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.50),
+      rgba(0, 0, 0, 0.50)
+    ),
+    url("/hero/mirrortrace3.jpeg")
+      center center / cover
+      fixed
+      no-repeat !important;
+
+  background-color:
+    #08111d !important;
+}
+
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard,
+html body #root
+.mirrortrace-admin-overlay
+.mirrortrace-admin-dashboard {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   2. MEMORY GOVERNANCE TOP / HEADING BLOCK
+   Force the entire first governance section to translucent
+   black rgba(0,0,0,0.82), including any utility-generated
+   white/black backgrounds inside the header area.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* Entire first block. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+
+  backdrop-filter:
+    blur(2px) !important;
+
+  -webkit-backdrop-filter:
+    blur(2px) !important;
+}
+
+/* Header/hero content must inherit the translucent section. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+> :first-child,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+.mirrortrace-memory-hero,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+header {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* Kill solid black/white utilities only inside the heading area. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+> :first-child
+:where(
+  .bg-black,
+  [class*="bg-black/"],
+  .bg-white,
+  [class*="bg-white/"],
+  .bg-stone-950,
+  .bg-stone-900,
+  .bg-stone-800
+) {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* KPI row stays darker so the hierarchy remains clear. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+.grid
+> div {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   3. REFLECTIVE BRAINSTORM COMPANION
+   Outer shell exactly rgba(0,0,0,0.70).
+   Inner body stays darker.
+   Restore readable text sizing.
+   ============================================================ */
+
+/* Exact outer shell. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-shell {
+  background:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+}
+
+/* Header and footer are part of the lighter outer shell. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  .mirrortrace-brainstorm-header,
+  .mirrortrace-brainstorm-footer,
+  .mirrortrace-brainstorm-tags
+) {
+  background:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.12) !important;
+}
+
+/* Darker inner conversation surface. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  .mirrortrace-brainstorm-body,
+  .mirrortrace-brainstorm-input,
+  .mirrortrace-brainstorm-message-model,
+  .mirrortrace-brainstorm-message-user,
+  .mirrortrace-brainstorm-loading
+) {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Restore prior readable sizes. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-header
+h2,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-title {
+  font-size:
+    23px !important;
+
+  line-height:
+    1.18 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-header
+p {
+  font-size:
+    12px !important;
+
+  line-height:
+    1.35 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-thread-btn {
+  font-size:
+    12px !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body
+.text-sm {
+  font-size:
+    14px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body
+.text-xs {
+  font-size:
+    12px !important;
+
+  line-height:
+    1.45 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-input {
+  font-size:
+    18px !important;
+}
+
+/* MIRRORTRACE_ADMIN_MEMORY_BRAINSTORM_FIX_END */
+
+/* MIRRORTRACE_FINAL_EXACT_CORRECTIONS_START */
+
+/* ============================================================
+   MIRRORTRACE — EXACT CORRECTIONS
+   Requested:
+   - Your thinking, versioned. weight = 500
+   - Overview Write a Reflection = exact Isolated UID color family
+   - Memory Governance heading/top block = rgba(0,0,0,0.70)
+   - Journal History screenshot text +0.5px
+   - MirrorTrace Security Architecture chips +0.5px
+   - Admin entire background black tinted
+   - MirrorRoom uses exact same font family as the rest
+   ============================================================ */
+
+:root {
+  --mt-exact-font:
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif;
+
+  --mt-exact-black-page:
+    rgba(0, 0, 0, 0.50);
+
+  --mt-exact-black-70:
+    rgba(0, 0, 0, 0.70);
+
+  --mt-exact-black-82:
+    rgba(0, 0, 0, 0.82);
+
+  --mt-exact-black-90:
+    rgba(0, 0, 0, 0.90);
+
+  /* Exact current Isolated UID visual from Navbar CSS. */
+  --mt-uid-bg:
+    rgba(211, 148, 69, 0.10);
+
+  --mt-uid-border:
+    rgba(211, 148, 69, 0.28);
+
+  --mt-uid-text:
+    rgba(255, 244, 228, 0.84);
+}
+
+
+/* ============================================================
+   ONE FONT FAMILY ACROSS THE WHOLE PRODUCT
+   ============================================================ */
+
+html,
+body,
+#root,
+#root *,
+button,
+input,
+textarea,
+select,
+option {
+  font-family:
+    var(--mt-exact-font) !important;
+}
+
+
+/* ============================================================
+   1. OVERVIEW — YOUR THINKING, VERSIONED.
+   ONLY change requested: weight = 500.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+h1.mirrortrace-float-title,
+html body #root
+.mirrortrace-dashboard-overview
+h1.mirrortrace-float-title {
+  font-family:
+    var(--mt-exact-font) !important;
+
+  font-weight:
+    500 !important;
+}
+
+
+/* ============================================================
+   2. OVERVIEW WRITE A REFLECTION
+   Exact Isolated UID color family.
+   Covers the primary overview button and the perspective-empty
+   Write a Reflection CTA shown in the screenshot.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+.mirrortrace-primary-btn,
+html body #root
+.mirrortrace-dashboard-overview
+.mirrortrace-primary-btn,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+:where(
+  .mirrortrace-perspective-empty,
+  .mirrortrace-perspective-evolution,
+  .mirrortrace-empty-state
+)
+button:first-of-type {
+  background:
+    var(--mt-uid-bg) !important;
+
+  background-color:
+    var(--mt-uid-bg) !important;
+
+  color:
+    var(--mt-uid-text) !important;
+
+  border:
+    1px solid
+    var(--mt-uid-border) !important;
+
+  box-shadow:
+    inset 0 1px 0
+    rgba(255,255,255,0.04) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+.mirrortrace-primary-btn:hover,
+html body #root
+.mirrortrace-dashboard-overview
+.mirrortrace-primary-btn:hover,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+:where(
+  .mirrortrace-perspective-empty,
+  .mirrortrace-perspective-evolution,
+  .mirrortrace-empty-state
+)
+button:first-of-type:hover {
+  background:
+    rgba(211, 148, 69, 0.16) !important;
+
+  background-color:
+    rgba(211, 148, 69, 0.16) !important;
+}
+
+
+/* Fallback for the orange Tailwind CTA in the Overview page only. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+:where(
+  button.bg-orange-600,
+  button.bg-orange-700,
+  button.bg-amber-600,
+  button.bg-amber-700
+) {
+  background:
+    var(--mt-uid-bg) !important;
+
+  background-color:
+    var(--mt-uid-bg) !important;
+
+  color:
+    var(--mt-uid-text) !important;
+
+  border:
+    1px solid
+    var(--mt-uid-border) !important;
+}
+
+
+/* ============================================================
+   3. MEMORY GOVERNANCE
+   HEADING / TOP BLOCK EXACTLY rgba(0,0,0,0.70).
+   The background image must visibly show through.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* Entire first Governance section. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type {
+  background:
+    var(--mt-exact-black-70) !important;
+
+  background-color:
+    var(--mt-exact-black-70) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+
+  backdrop-filter:
+    blur(2px) !important;
+
+  -webkit-backdrop-filter:
+    blur(2px) !important;
+}
+
+/* Heading/hero portion cannot repaint itself black. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+> :first-child,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+.mirrortrace-memory-hero,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+header {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* Neutralize solid utility colors in the heading area only. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+> :first-child
+:where(
+  .bg-black,
+  [class*="bg-black/"],
+  .bg-white,
+  [class*="bg-white/"],
+  .bg-stone-950,
+  .bg-stone-900,
+  .bg-stone-800,
+  .bg-neutral-950,
+  .bg-neutral-900
+) {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* KPI/deeper cells stay darker. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+.grid
+> div {
+  background:
+    var(--mt-exact-black-82) !important;
+
+  background-color:
+    var(--mt-exact-black-82) !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   4. JOURNAL HISTORY SCREENSHOT TEXT +0.5PX
+   Current final:
+   summary 13px -> 13.5px
+   From/To label 11px -> 11.5px
+   date value 13px -> 13.5px
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-history-page
+div[class~="text-[11px]"][class*="border-t"] {
+  font-size:
+    13.5px !important;
+
+  line-height:
+    1.45 !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-history-page
+button[aria-haspopup="dialog"]
+> span:first-child {
+  font-size:
+    11.5px !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-history-page
+button[aria-haspopup="dialog"]
+> span:nth-child(2)
+> span:first-child {
+  font-size:
+    13.5px !important;
+}
+
+
+/* ============================================================
+   5. MIRRORTRACE SECURITY ARCHITECTURE +0.5PX
+   Current final = 14px -> 14.5px.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+:where(
+  .mirrortrace-security-chip,
+  .mirrortrace-architecture-chip
+) {
+  font-size:
+    14.5px !important;
+
+  line-height:
+    1.4 !important;
+}
+
+/* Fallback for the actual architecture strip if it uses text-xs. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+:where(
+  .mirrortrace-security-architecture,
+  .mirrortrace-architecture-strip
+)
+:where(
+  span,
+  strong,
+  p
+) {
+  font-size:
+    14.5px !important;
+}
+
+
+/* ============================================================
+   6. ADMIN DASHBOARD
+   Entire page gets the same BLACK-TINTED treatment as the user
+   pages. Keep requested mirrortrace3.jpeg admin image.
+   ============================================================ */
+
+html body #root
+.mirrortrace-admin-page,
+html body #root
+.mirrortrace-admin-overlay {
+  min-height:
+    100vh !important;
+
+  background:
+    linear-gradient(
+      var(--mt-exact-black-page),
+      var(--mt-exact-black-page)
+    ),
+    url("/hero/mirrortrace3.jpeg")
+      center center / cover
+      fixed
+      no-repeat !important;
+
+  background-color:
+    #05080c !important;
+
+  color:
+    #ffffff !important;
+}
+
+/* Remove any older blue pseudo-overlay if present. */
+html body #root
+.mirrortrace-admin-page::before,
+html body #root
+.mirrortrace-admin-page::after,
+html body #root
+.mirrortrace-admin-overlay::before,
+html body #root
+.mirrortrace-admin-overlay::after {
+  content:
+    none !important;
+
+  display:
+    none !important;
+}
+
+/* Preserve the actual Admin component layout and panels. */
+html body #root
+.mirrortrace-admin-page
+.mirrortrace-admin-dashboard,
+html body #root
+.mirrortrace-admin-overlay
+.mirrortrace-admin-dashboard {
+  position:
+    relative !important;
+
+  display:
+    block !important;
+
+  visibility:
+    visible !important;
+
+  opacity:
+    1 !important;
+
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   7. MIRRORROOM
+   Force the SAME Georgia/Cambria stack as every other page.
+   Do not alter layout or sizes.
+   ============================================================ */
+
+html body #root
+div[class*="z-[12000]"],
+html body #root
+div[class*="z-[12000]"] *,
+html body #root
+.mirrortrace-mirrorroom,
+html body #root
+.mirrortrace-mirrorroom * {
+  font-family:
+    var(--mt-exact-font) !important;
+}
+
+
+/* ============================================================
+   8. KEEP REFLECTIVE BRAINSTORM CORRECT
+   Outer = 0.70, inner = 0.90.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  .mirrortrace-brainstorm-shell,
+  .mirrortrace-brainstorm-header,
+  .mirrortrace-brainstorm-footer,
+  .mirrortrace-brainstorm-tags
+) {
+  background:
+    var(--mt-exact-black-70) !important;
+
+  background-color:
+    var(--mt-exact-black-70) !important;
+
+  background-image:
+    none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  .mirrortrace-brainstorm-body,
+  .mirrortrace-brainstorm-input,
+  .mirrortrace-brainstorm-message-model,
+  .mirrortrace-brainstorm-message-user,
+  .mirrortrace-brainstorm-loading
+) {
+  background:
+    var(--mt-exact-black-90) !important;
+
+  background-color:
+    var(--mt-exact-black-90) !important;
+
+  background-image:
+    none !important;
+}
+
+/* MIRRORTRACE_FINAL_EXACT_CORRECTIONS_END */
