@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700;8..60,800&display=swap");
+8..60,500;8..60,600;8..60,700;8..60,800&display=swap");
 /* ============================================================
    MIRRORTRACE — CONSOLIDATED AUTHENTICATED + ADMIN THEME
    File: src/styles/mirrortrace-app.css
@@ -2387,7 +2387,8 @@ h1 {
   font-family:
     ui-serif,
     Georgia,
-        "Times New Roman",
+    Cambria,
+    "Times New Roman",
     Times,
     serif !important;
 
@@ -2722,10 +2723,14 @@ article.mt-diff-shell
 }
 
 /* MIRRORTRACE_DIRECT_FINAL_POLISH_END */
+
+/* MIRRORTRACE_CAMBRIA_FINAL_START */
+
 /* ============================================================
    MIRRORTRACE FINAL TYPOGRAPHY + USER PAGE BACKGROUND AUTHORITY
 
    USER REQUEST
+   - Cambria across all USER dashboard text
    - Heading: 28px
    - Subheading: 24px
    - Body: 18px
@@ -2800,7 +2805,8 @@ html body #root
 
 
 /* ============================================================
-    This intentionally covers headings, body copy, small labels,
+   CAMBRIA EVERYWHERE ON USER PAGES
+   This intentionally covers headings, body copy, small labels,
    navbar text, buttons, inputs and footer-like utility copy.
    ============================================================ */
 
@@ -2832,6 +2838,7 @@ html body #root
 )
 * {
   font-family:
+    Cambria,
     Georgia,
     "Times New Roman",
     serif !important;
@@ -2956,7 +2963,7 @@ html body #root
     var(--mt-user-copy) !important;
 }
 
-/* Labels and compact utility text remain readable */
+/* Labels and compact utility text remain readable and Cambria. */
 html body #root
 .mirrortrace-app-shell
 :is(
@@ -2976,7 +2983,8 @@ html body #root
   .text-sm
 ) {
   font-family:
-     Georgia,
+    Cambria,
+    Georgia,
     "Times New Roman",
     serif !important;
 
@@ -3021,7 +3029,8 @@ html body #root
   select
 ) {
   font-family:
-     Georgia,
+    Cambria,
+    Georgia,
     "Times New Roman",
     serif !important;
 
@@ -3302,6 +3311,8 @@ article.mt-diff-shell
     none !important;
 }
 
+/* MIRRORTRACE_CAMBRIA_FINAL_END */
+
 /* MIRRORTRACE_ADMIN_LOAD_AND_GLOBAL_SERIF_START */
 
 /* ============================================================
@@ -3309,7 +3320,7 @@ article.mt-diff-shell
    1. Restore Admin Dashboard rendering.
    2. Apply blue tint directly to the existing admin background.
    3. Use one serif stack everywhere in the product:
-      ui-serif, Georgia, "Times New Roman", Times, serif.
+      ui-serif, Georgia, Cambria, "Times New Roman", Times, serif.
    ============================================================ */
 
 
@@ -3330,6 +3341,7 @@ option {
   font-family:
     ui-serif,
     Georgia,
+    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3364,6 +3376,7 @@ html body #root
   font-family:
     ui-serif,
     Georgia,
+    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3539,6 +3552,7 @@ h1.mirrortrace-float-title {
   font-family:
     ui-serif,
     Georgia,
+    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3623,6 +3637,7 @@ option {
   font-family:
     "Source Serif 4",
     Georgia,
+    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3651,7 +3666,8 @@ html body #root
   font-family:
     "Source Serif 4",
     Georgia,
-     "Times New Roman",
+    Cambria,
+    "Times New Roman",
     Times,
     serif !important;
 }
@@ -3686,6 +3702,7 @@ h1.mirrortrace-admin-title-float {
   font-family:
     "Source Serif 4",
     Georgia,
+    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3759,6 +3776,7 @@ html body #root
   font-family:
     "Source Serif 4",
     Georgia,
+    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3831,6 +3849,7 @@ html body #root
   font-family:
     "Source Serif 4",
     Georgia,
+    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3856,6 +3875,7 @@ html body #root
   font-family:
     "Source Serif 4",
     Georgia,
+    Cambria,
     "Times New Roman",
     Times,
     serif !important;
@@ -3863,42 +3883,21 @@ html body #root
 
 /* MIRRORTRACE_SOURCE_SERIF_FINAL_END */
 
-/* MIRRORTRACE_FINAL_MIRRORTRACE2_BLUE70_START */
-
-/* ============================================================
-   FINAL AUTHORITY
-   1. mirrortrace2.jpeg on all signed-in user pages
-   2. clearly visible blue haze rgba(16,41,75,0.70)
-   3. larger readable text
-   4. Overview hero title exactly matches Admin hero title
-   5. Memory Governance top block exactly black rgba(0,0,0,0.82)
-   6. Source Serif 4 everywhere
-   ============================================================ */
+/* MIRRORTRACE_FINAL_GEORGIA_CAMBRIA_SYSTEM_START */
 
 :root {
-  --mt-final-font:
-    "Source Serif 4",
-    Georgia,
-   
-    "Times New Roman",
-    Times,
-    serif;
-
-  --mt-final-blue-haze:
-    rgba(16, 41, 75, 0.70);
-
-  --mt-final-black-82:
-    rgba(0, 0, 0, 0.82);
-
-  --mt-final-black-90:
-    rgba(0, 0, 0, 0.90);
+  --mt-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+  --mt-page-black-haze: rgba(0, 0, 0, 0.50);
+  --mt-black-82: rgba(0, 0, 0, 0.82);
+  --mt-black-90: rgba(0, 0, 0, 0.90);
+  --mt-white: #ffffff;
+  --mt-copy: rgba(235, 242, 248, 0.84);
+  --mt-muted: rgba(226, 232, 238, 0.78);
+  --mt-gold: #f6d34f;
+  --mt-gold-soft: #ffe27a;
 }
 
-
-/* ============================================================
-   GLOBAL FONT CONSISTENCY
-   ============================================================ */
-
+/* One font family across the whole application. */
 html,
 body,
 #root,
@@ -3908,42 +3907,20 @@ input,
 textarea,
 select,
 option {
-  font-family:
-    var(--mt-final-font) !important;
+  font-family: var(--mt-serif) !important;
+  letter-spacing: -0.008em;
 }
 
-
-/* ============================================================
-   USER DASHBOARD BACKGROUND
-   EXACT IMAGE:
-   public/hero/mirrortrace2.jpeg
-   EXACT BLUE HAZE:
-   rgba(16,41,75,0.70)
-   ============================================================ */
-
-html body #root
-.mirrortrace-app-shell {
-  min-height:
-    100vh !important;
-
+/* User pages: mirrortrace2.jpeg + black 0.50 haze. */
+html body #root .mirrortrace-app-shell {
+  min-height: 100vh !important;
   background:
-    linear-gradient(
-      var(--mt-final-blue-haze),
-      var(--mt-final-blue-haze)
-    ),
-    url("/hero/mirrortrace2.jpeg")
-      center center / cover
-      fixed
-      no-repeat !important;
-
-  background-color:
-    #08111d !important;
+    linear-gradient(var(--mt-page-black-haze), var(--mt-page-black-haze)),
+    url("/hero/mirrortrace2.jpeg") center center / cover fixed no-repeat !important;
+  background-color: #08111d !important;
 }
 
-/* Every requested page shows the shell image rather than replacing it. */
-html body #root
-.mirrortrace-app-shell
-:where(
+html body #root .mirrortrace-app-shell :where(
   .mirrortrace-authenticated-main,
   .mirrortrace-app-main,
   .mirrortrace-overview-page,
@@ -3955,371 +3932,222 @@ html body #root
   .mirrortrace-memory-governance,
   .mirrortrace-dashboard-overview
 ) {
-  background:
-    transparent !important;
-
-  background-color:
-    transparent !important;
-
-  background-image:
-    none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
 }
 
-
-/* ============================================================
-   ADMIN BACKGROUND
-   Keep Admin UI intact while making the requested blue haze clear.
-   ============================================================ */
-
-html body #root
-.mirrortrace-admin-page,
-html body #root
-.mirrortrace-admin-overlay {
-  background:
-    linear-gradient(
-      var(--mt-final-blue-haze),
-      var(--mt-final-blue-haze)
-    ),
-    url("/hero/mirrortrace2.jpeg")
-      center center / cover
-      fixed
-      no-repeat !important;
-
-  background-color:
-    #08111d !important;
-}
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard,
-html body #root
-.mirrortrace-admin-overlay
-.mirrortrace-admin-dashboard {
-  background:
-    transparent !important;
-
-  background-color:
-    transparent !important;
-}
-
-
-/* ============================================================
-   READABILITY / TYPE SCALE
-   Standard page heading: 28
-   Standard subheading: 24
-   Body: 18
-   Footer/utility: 20
-   Navbar: 14
-   ============================================================ */
-
-html body #root
-.mirrortrace-app-shell
-:is(
-  .mirrortrace-reflect-page,
-  .mirrortrace-history-page,
-  .mirrortrace-memory-page,
-  .mirrortrace-support-page,
-  .mirrortrace-feedback-page,
-  .mirrortrace-memory-governance
-)
-h1 {
-  font-size:
-    28px !important;
-
-  line-height:
-    1.16 !important;
-
-  font-weight:
-    700 !important;
-}
-
-html body #root
-.mirrortrace-app-shell
-:is(
-  .mirrortrace-overview-page,
-  .mirrortrace-reflect-page,
-  .mirrortrace-history-page,
-  .mirrortrace-memory-page,
-  .mirrortrace-support-page,
-  .mirrortrace-feedback-page,
-  .mirrortrace-memory-governance
-)
-h2 {
-  font-size:
-    24px !important;
-
-  line-height:
-    1.24 !important;
-
-  font-weight:
-    700 !important;
-}
-
-html body #root
-.mirrortrace-app-shell
-:is(
-  .mirrortrace-overview-page,
-  .mirrortrace-reflect-page,
-  .mirrortrace-history-page,
-  .mirrortrace-memory-page,
-  .mirrortrace-support-page,
-  .mirrortrace-feedback-page,
-  .mirrortrace-memory-governance
-)
-:where(
-  p,
-  li,
-  td,
-  dd,
-  blockquote
-) {
-  font-size:
-    18px !important;
-
-  line-height:
-    1.58 !important;
-}
-
-/* Keep tiny utility classes readable. */
-html body #root
-.mirrortrace-app-shell
-:is(
-  .mirrortrace-overview-page,
-  .mirrortrace-reflect-page,
-  .mirrortrace-history-page,
-  .mirrortrace-memory-page,
-  .mirrortrace-support-page,
-  .mirrortrace-feedback-page,
-  .mirrortrace-memory-governance
-)
-:where(
-  .text-xs,
-  .text-sm,
-  small,
-  label,
-  th
-) {
-  font-size:
-    16px !important;
-
-  line-height:
-    1.45 !important;
-}
-
-/* Footer/action utility copy. */
-html body #root
-.mirrortrace-app-shell
-:where(
-  footer,
-  .mirrortrace-brainstorm-footer,
-  .mirrortrace-history-toolbar,
-  .mirrortrace-journal-tools
-) {
-  font-size:
-    20px !important;
-}
-
-
-/* ============================================================
-   NAVBAR EXACTLY 14PX
-   ============================================================ */
-
-html body #root
-:where(
+/* Authenticated navbar exactly 14px. */
+html body #root :where(
   .mirrortrace-navbar,
+  .mirrortrace-navbar *,
   .mirrortrace-main-nav,
+  .mirrortrace-main-nav *,
   .mirrortrace-mobile-nav,
+  .mirrortrace-mobile-nav *,
+  .mirrortrace-nav-button,
   .mirrortrace-profile,
-  .mirrortrace-signout
-)
-:where(
-  button,
-  a,
-  span
-),
-html body #root
-.mirrortrace-nav-button {
-  font-size:
-    14px !important;
-
-  line-height:
-    1.3 !important;
+  .mirrortrace-profile *,
+  .mirrortrace-signout,
+  .mirrortrace-signout *
+) {
+  font-family: var(--mt-serif) !important;
 }
 
-
-/* ============================================================
-   OVERVIEW TITLE MUST MATCH SECURITY & OPERATIONS EXACTLY
-   Both selectors receive exactly the same responsive declaration.
-   ============================================================ */
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-overview-page
-h1.mirrortrace-float-title,
-html body #root
-.mirrortrace-dashboard-overview
-h1.mirrortrace-float-title,
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-h1.mirrortrace-admin-title-float,
-html body #root
-.mirrortrace-admin-overlay
-.mirrortrace-admin-dashboard
-h1.mirrortrace-admin-title-float {
-  font-family:
-    var(--mt-final-font) !important;
-
-  font-size:
-    clamp(52px, 5.2vw, 82px) !important;
-
-  font-weight:
-    700 !important;
-
-  line-height:
-    0.98 !important;
-
-  letter-spacing:
-    -0.035em !important;
+html body #root .mirrortrace-nav-button,
+html body #root .mirrortrace-mobile-nav .mirrortrace-nav-button,
+html body #root .mirrortrace-signout,
+html body #root .mirrortrace-profile {
+  font-size: 14px !important;
+  line-height: 1.35 !important;
 }
 
-/* Do not let component Tailwind break the matched hero sizes. */
-@media (max-width: 760px) {
-  html body #root
-  .mirrortrace-app-shell
-  .mirrortrace-overview-page
-  h1.mirrortrace-float-title,
-  html body #root
-  .mirrortrace-dashboard-overview
-  h1.mirrortrace-float-title,
-  html body #root
-  .mirrortrace-admin-page
-  .mirrortrace-admin-dashboard
-  h1.mirrortrace-admin-title-float,
-  html body #root
-  .mirrortrace-admin-overlay
-  .mirrortrace-admin-dashboard
-  h1.mirrortrace-admin-title-float {
-    font-size:
-      clamp(42px, 11vw, 58px) !important;
-  }
+/* Standard user page titles exactly 30px. */
+html body #root .mirrortrace-app-shell :is(
+  .mirrortrace-reflect-page,
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page,
+  .mirrortrace-memory-governance
+) h1 {
+  font-family: var(--mt-serif) !important;
+  font-size: 30px !important;
+  font-weight: 700 !important;
+  line-height: 1.14 !important;
+  letter-spacing: -0.025em !important;
+  color: var(--mt-white) !important;
 }
 
-
-/* ============================================================
-   MEMORY GOVERNANCE
-   Top heading block EXACTLY 0.82.
-   Inner KPI/deeper panels = 0.90.
-   ============================================================ */
-
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-memory-page
-.mirrortrace-memory-governance {
-  background:
-    transparent !important;
-
-  background-color:
-    transparent !important;
-
-  background-image:
-    none !important;
+/* Overview eyebrow. */
+html body #root .mirrortrace-app-shell .mirrortrace-overview-page :where(
+  .mirrortrace-version-badge,
+  .text-xs
+) {
+  font-size: 15px !important;
+  color: rgba(240, 244, 248, 0.88) !important;
 }
 
-/* Entire first / heading block. */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-memory-page
-.mirrortrace-memory-governance
-> :first-child,
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-memory-governance
-> :first-child,
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-memory-governance
-.mirrortrace-memory-hero {
-  background:
-    var(--mt-final-black-82) !important;
-
-  background-color:
-    var(--mt-final-black-82) !important;
-
-  background-image:
-    none !important;
+/* Overview hero and Admin hero exactly share one display rule. */
+html body #root .mirrortrace-app-shell .mirrortrace-overview-page h1.mirrortrace-float-title,
+html body #root .mirrortrace-dashboard-overview h1.mirrortrace-float-title,
+html body #root .mirrortrace-admin-page .mirrortrace-admin-dashboard h1.mirrortrace-admin-title-float,
+html body #root .mirrortrace-admin-overlay .mirrortrace-admin-dashboard h1.mirrortrace-admin-title-float {
+  font-family: var(--mt-serif) !important;
+  font-size: clamp(52px, 5.2vw, 82px) !important;
+  font-weight: 500 !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.025em !important;
 }
 
-/* Force children of the hero not to repaint it jet black. */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-memory-governance
-> :first-child
-> :where(
-  header,
-  section,
-  div
+/* Overview body and buttons. */
+html body #root .mirrortrace-app-shell .mirrortrace-overview-page :where(p, li, dd) {
+  font-size: 18px !important;
+  line-height: 1.58 !important;
+  color: var(--mt-copy) !important;
+}
+html body #root .mirrortrace-app-shell .mirrortrace-overview-page :where(
+  .mirrortrace-security-chip,
+  .mirrortrace-architecture-chip,
+  .text-xs,
+  .text-sm
+) {
+  font-size: 14px !important;
+}
+html body #root .mirrortrace-app-shell .mirrortrace-overview-page button {
+  font-size: 15px !important;
+}
+
+/* Reflect & Chat. */
+html body #root .mirrortrace-app-shell .mirrortrace-reflect-page :where(
+  h2,
+  .mirrortrace-brainstorm-title
+) {
+  font-size: 23px !important;
+  line-height: 1.24 !important;
+  font-weight: 700 !important;
+}
+html body #root .mirrortrace-app-shell .mirrortrace-reflect-page :where(
+  p, textarea, input, select, button, label
+) {
+  font-size: 18px !important;
+}
+html body #root .mirrortrace-app-shell .mirrortrace-reflect-page :where(
+  .mirrortrace-brainstorm-shell,
+  .mirrortrace-brainstorm-header,
+  .mirrortrace-brainstorm-footer,
+  .mirrortrace-brainstorm-tags
+) {
+  background: var(--mt-black-82) !important;
+  background-color: var(--mt-black-82) !important;
+  background-image: none !important;
+}
+html body #root .mirrortrace-app-shell .mirrortrace-reflect-page :where(
+  #journal-input-area,
+  #tag-input-field,
+  .mirrortrace-brainstorm-body,
+  .mirrortrace-brainstorm-input,
+  .mirrortrace-brainstorm-message-model,
+  .mirrortrace-brainstorm-message-user,
+  .mirrortrace-brainstorm-loading
+) {
+  background: var(--mt-black-90) !important;
+  background-color: var(--mt-black-90) !important;
+  background-image: none !important;
+}
+
+/* Journal History / Memory / Support / Feedback. */
+html body #root .mirrortrace-app-shell :is(
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) :where(p, li, td, dd, blockquote, input, textarea, select, button) {
+  font-size: 18px !important;
+  line-height: 1.58 !important;
+}
+html body #root .mirrortrace-app-shell :is(
+  .mirrortrace-history-page,
+  .mirrortrace-memory-page,
+  .mirrortrace-support-page,
+  .mirrortrace-feedback-page
+) h2 {
+  font-size: 24px !important;
+}
+
+/* Memory Governance: top exactly 0.82, inner exactly 0.90. */
+html body #root .mirrortrace-app-shell .mirrortrace-memory-governance {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+html body #root .mirrortrace-app-shell .mirrortrace-memory-governance > :first-child,
+html body #root .mirrortrace-app-shell .mirrortrace-memory-governance .mirrortrace-memory-hero {
+  background: var(--mt-black-82) !important;
+  background-color: var(--mt-black-82) !important;
+  background-image: none !important;
+}
+html body #root .mirrortrace-app-shell .mirrortrace-memory-governance > :first-child > :where(
+  header, section, div
 ):not(.grid) {
-  background-color:
-    transparent !important;
+  background: transparent !important;
+  background-color: transparent !important;
 }
-
-/* KPI / deep inner surfaces. */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-memory-governance
-:where(
+html body #root .mirrortrace-app-shell .mirrortrace-memory-governance :where(
   .bg-white,
   .bg-stone-50,
   .bg-stone-100,
   .rounded-xl.border
 ) {
+  background: var(--mt-black-90) !important;
+  background-color: var(--mt-black-90) !important;
+  background-image: none !important;
+}
+
+/* Admin: same image with BLACK 0.50 tint, not blue. */
+html body #root .mirrortrace-admin-page,
+html body #root .mirrortrace-admin-overlay {
   background:
-    var(--mt-final-black-90) !important;
-
-  background-color:
-    var(--mt-final-black-90) !important;
-
-  background-image:
-    none !important;
+    linear-gradient(var(--mt-page-black-haze), var(--mt-page-black-haze)),
+    url("/hero/mirrortrace2.jpeg") center center / cover fixed no-repeat !important;
+  background-color: #08111d !important;
 }
 
-
-/* ============================================================
-   ADMIN TEXT READABILITY
-   Preserve cards/layout. Only raise tiny text sizes.
-   ============================================================ */
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-:where(
-  p,
-  li,
-  td,
-  dd
+/* Admin typography. */
+html body #root .mirrortrace-admin-page .mirrortrace-admin-dashboard :where(
+  .mirrortrace-admin-eyebrow,
+  .mirrortrace-admin-kicker
 ) {
-  font-size:
-    16px !important;
-
-  line-height:
-    1.5 !important;
+  font-size: 15px !important;
 }
-
-html body #root
-.mirrortrace-admin-page
-.mirrortrace-admin-dashboard
-:where(
-  .text-xs,
-  .text-sm,
-  small,
-  label,
-  th
+html body #root .mirrortrace-admin-page .mirrortrace-admin-dashboard :where(
+  p, li, dd, .text-sm
 ) {
-  font-size:
-    14px !important;
+  font-size: 18px !important;
+  line-height: 1.55 !important;
+}
+html body #root .mirrortrace-admin-page .mirrortrace-admin-dashboard button {
+  font-size: 15px !important;
+}
+html body #root .mirrortrace-admin-page .mirrortrace-admin-dashboard :where(
+  table, th, td
+) {
+  font-size: 16px !important;
+  line-height: 1.45 !important;
+}
+html body #root .mirrortrace-admin-page .mirrortrace-admin-dashboard :where(
+  time, .text-xs, small
+) {
+  font-size: 12px !important;
 }
 
+@media (max-width: 760px) {
+  html body #root .mirrortrace-app-shell .mirrortrace-overview-page h1.mirrortrace-float-title,
+  html body #root .mirrortrace-dashboard-overview h1.mirrortrace-float-title,
+  html body #root .mirrortrace-admin-page .mirrortrace-admin-dashboard h1.mirrortrace-admin-title-float,
+  html body #root .mirrortrace-admin-overlay .mirrortrace-admin-dashboard h1.mirrortrace-admin-title-float {
+    font-size: clamp(42px, 11vw, 58px) !important;
+  }
+}
 
-/* MIRRORTRACE_FINAL_MIRRORTRACE2_BLUE70_END */
-
+/* MIRRORTRACE_FINAL_GEORGIA_CAMBRIA_SYSTEM_END */

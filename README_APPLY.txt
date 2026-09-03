@@ -1,63 +1,41 @@
-MIRRORTRACE FINAL CAMBRIA UI + TRACEBOT
-======================================
+MIRRORTRACE FINAL GEORGIA/CAMBRIA + BLACK TINT
 
 Replace exactly:
-
 src/styles/mirrortrace-app.css
 src/styles/mirrortrace-public.css
-src/components/PublicGuideBot.tsx
-src/main.tsx
 
-Requested values:
+Global font:
+Georgia, Cambria, "Times New Roman", Times, serif
 
-Cambria on all user and public text.
+Letter spacing:
+display: -0.025em
+regular UI/body: -0.008em
 
-Heading:
-28px
-
-Subheading:
-24px
-
-Body:
-18px
-
-Footer / utility:
-20px
-
-User dashboard background blue:
-rgba(16,41,75,0.20)
-
-This is the same blue tint as the final sign-in cards.
-
-Memory Governance:
-outer / heading / major panels = rgba(0,0,0,0.82)
-deep inner / KPI panels = rgba(0,0,0,0.90)
-
-Reflective Space:
-outer = 0.82
-inner = 0.90
-
-Lighter brown action buttons:
-rgba(92,78,73,0.96)
+User dashboard:
+mirrortrace2.jpeg + rgba(0,0,0,0.50)
 
 Admin:
-untouched
+mirrortrace2.jpeg + rgba(0,0,0,0.50)
 
-MirrorRoom:
-untouched by the user-page typography and blue-background selectors
+Memory Governance:
+top/heading block rgba(0,0,0,0.82)
+deep inner/KPI rgba(0,0,0,0.90)
 
-TraceBot:
-- fixed on public page
-- improved intent matching
-- answers "How is this different from ChatGPT?" correctly
-- no em dash characters
-- avoids Oxford-comma style punctuation in its prepared answers
-- app-only guide
-- no extra Gemini call
+Navbar 14px
+Public hero eyebrow 15px
+Public hero body 18px
+Public hero buttons 15px
+Public trust row 13px
+Standard dashboard page titles 30px
+Reflective Brainstorm Companion / Compose Reflection 23px
+User dashboard body 18px
+Admin Control Room label 15px
+Admin descriptive/service copy 18px
+Admin MirrorRoom table 16px
+Admin timestamps 12px
 
 Run:
-
 Remove-Item -Recurse -Force .\node_modules\.vite -ErrorAction SilentlyContinue; npm run dev
 
-Then:
+Then hard refresh:
 Ctrl + Shift + R
