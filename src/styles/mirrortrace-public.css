@@ -2175,3 +2175,70 @@ p {
 
 
 /* MIRRORTRACE_PUBLIC_FINAL_CONSISTENCY_PASS_END */
+
+/* MIRRORTRACE_PUBLIC_SCREENSHOT_CORRECTIONS_START */
+
+/* ============================================================
+   PUBLIC / SIGN-IN SCREENSHOT CORRECTIONS
+   ============================================================ */
+
+/* 1. Security by architecture cards:
+   force BLACK tint, no blue/navy anywhere. */
+.mirrortrace-auth-page
+#security
+:where(
+  .mt-glass,
+  .mt-glass-cool,
+  article,
+  .mirrortrace-security-card
+) {
+  background:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+}
+
+
+/* 2. Hero trust/footer line:
+   previous pass = 12px, latest request = +1 => 13px. */
+.mirrortrace-auth-page
+#hero
+div[class~="text-[10px]"][class*="pb-7"] {
+  font-size:
+    13px !important;
+
+  line-height:
+    1.4 !important;
+}
+
+
+/* 3. Remove the instructional paragraph beneath
+   "Reflection that moves with you."
+   This hides only that exact intro paragraph in #features. */
+.mirrortrace-auth-page
+#features
+> div:first-child
+p {
+  display:
+    none !important;
+}
+
+
+/* Keep the remaining feature heading spacing visually balanced
+   after the explanatory paragraph is removed. */
+.mirrortrace-auth-page
+#features
+.mirrortrace-feature-shell {
+  margin-top:
+    34px !important;
+}
+
+
+/* MIRRORTRACE_PUBLIC_SCREENSHOT_CORRECTIONS_END */

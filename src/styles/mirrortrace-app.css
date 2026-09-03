@@ -5055,3 +5055,283 @@ html body #root
 
 
 /* MIRRORTRACE_FINAL_CONSISTENCY_PASS_END */
+
+/* MIRRORTRACE_SCREENSHOT_CORRECTIONS_START */
+
+/* ============================================================
+   SCREENSHOT-SPECIFIC CORRECTIONS
+   Only the areas requested in the latest screenshots are changed.
+   ============================================================ */
+
+/* 1. One font family remains authoritative. */
+html,
+body,
+#root,
+#root *,
+button,
+input,
+textarea,
+select,
+option {
+  font-family:
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+
+/* ============================================================
+   OVERVIEW
+   ============================================================ */
+
+/* Keep "Your thinking, versioned." untouched.
+   Increase ONLY the supporting sentence by 1px. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+.mirrortrace-overview-copy,
+html body #root
+.mirrortrace-dashboard-overview
+.mirrortrace-overview-copy {
+  font-size:
+    19px !important;
+
+  line-height:
+    1.55 !important;
+}
+
+/* Use the same lighter stone/brown family as the Isolated UID
+   chip for the primary overview action. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+.mirrortrace-primary-btn,
+html body #root
+.mirrortrace-dashboard-overview
+.mirrortrace-primary-btn {
+  background:
+    rgba(92, 78, 73, 0.96) !important;
+
+  background-color:
+    rgba(92, 78, 73, 0.96) !important;
+
+  color:
+    #ffffff !important;
+
+  border-color:
+    rgba(255,255,255,0.15) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-overview-page
+.mirrortrace-primary-btn:hover,
+html body #root
+.mirrortrace-dashboard-overview
+.mirrortrace-primary-btn:hover {
+  background:
+    rgba(111, 94, 87, 0.98) !important;
+
+  background-color:
+    rgba(111, 94, 87, 0.98) !important;
+}
+
+
+/* ============================================================
+   REFLECT & CHAT
+   Right outer block must visually match Compose Reflection.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-shell,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-header,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-footer,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-tags {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+}
+
+/* Inner chat surface stays deeper exactly as requested. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+:where(
+  .mirrortrace-brainstorm-body,
+  .mirrortrace-brainstorm-input,
+  .mirrortrace-brainstorm-message-model,
+  .mirrortrace-brainstorm-message-user,
+  .mirrortrace-brainstorm-loading
+) {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   MEMORY GOVERNANCE
+   Make the whole governance surface visibly lighter/translucent.
+   ============================================================ */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+.mirrortrace-memory-hero,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  section.rounded-2xl.border,
+  article.rounded-2xl.border,
+  div.rounded-2xl.border
+) {
+  background:
+    rgba(0, 0, 0, 0.72) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.72) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255,255,255,0.14) !important;
+
+  backdrop-filter:
+    blur(2px) !important;
+
+  -webkit-backdrop-filter:
+    blur(2px) !important;
+}
+
+/* KPI and deeper control surfaces remain darker, but not solid. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+.grid
+> div,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+:where(
+  .rounded-xl.border,
+  .rounded-lg.border,
+  .bg-white,
+  .bg-stone-50,
+  .bg-stone-100,
+  .bg-stone-950
+) {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   JOURNAL TOOLS / REFLECTION WORKSPACE
+   Reduce oversized body copy by 1px and keep all ten tools
+   on a single row on desktop.
+   ============================================================ */
+
+/* Reflection Workspace top panel body copy one size smaller. */
+html body #root
+.mirrortrace-history-page
+section[class*="rounded-[26px]"]
+> div:first-child
+p {
+  font-size:
+    17px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+/* One-row tool bar. */
+html body #root
+.mirrortrace-history-page
+section[class*="rounded-[26px]"]
+> div.mt-5.flex {
+  display:
+    flex !important;
+
+  flex-wrap:
+    nowrap !important;
+
+  gap:
+    8px !important;
+
+  overflow-x:
+    auto !important;
+
+  scrollbar-width:
+    none;
+}
+
+html body #root
+.mirrortrace-history-page
+section[class*="rounded-[26px]"]
+> div.mt-5.flex::-webkit-scrollbar {
+  display:
+    none;
+}
+
+html body #root
+.mirrortrace-history-page
+section[class*="rounded-[26px]"]
+> div.mt-5.flex
+> button {
+  flex:
+    0 0 auto !important;
+
+  white-space:
+    nowrap !important;
+
+  padding:
+    8px 10px !important;
+
+  font-size:
+    13px !important;
+
+  line-height:
+    1.3 !important;
+}
+
+
+/* MIRRORTRACE_SCREENSHOT_CORRECTIONS_END */

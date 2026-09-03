@@ -1,60 +1,45 @@
-MIRRORTRACE FINAL FONT + SURFACE CONSISTENCY
-============================================
+MIRRORTRACE SCREENSHOT CORRECTIONS FINAL
+========================================
 
 Replace exactly:
 
 src/styles/mirrortrace-app.css
 src/styles/mirrortrace-public.css
 
-This package changes CSS only.
+Latest corrections:
 
-FINAL FONT FAMILY
------------------
-Georgia,
-Cambria,
-"Times New Roman",
-Times,
-serif
+1. Security by architecture cards:
+   BLACK rgba(0,0,0,0.50), no blue/navy.
 
-SPECIFIC CHANGES
-----------------
-Public sign-in:
-- navbar size/color/layout untouched
-- "See how your thinking evolves." untouched
-- hero explanatory text untouched
-- Evidence-first AI reflection: +2px => 17px
-- hero Continue with Google / Explore MirrorTrace: -2px => 12px
-- Firebase Authentication / UID / Gemini footer: +2px => 12px
-- top feature cards remain as they are
-- Who MirrorTrace is for cards: black rgba(0,0,0,0.50)
-- What MirrorTrace is built for block/cards: black rgba(0,0,0,0.50)
-- Security cards: black rgba(0,0,0,0.50)
-- Reviews / No public reviews yet: black rgba(0,0,0,0.50)
+2. Sign-in footer:
+   Firebase Authentication / Owner-bound UID isolation /
+   Server-side Gemini = 13px.
 
-Authenticated user pages:
-- mirrortrace2.jpeg remains the shared image
-- blue haze removed
-- black rgba(0,0,0,0.50) haze used instead
-- Overview special hero left as-is
-- Reflective Brainstorm outer: rgba(0,0,0,0.82)
-- Reflective Brainstorm inner: rgba(0,0,0,0.90)
-- Journal History summary/filter line: 11px -> 12px
-- Memory Governance entire top block: rgba(0,0,0,0.82)
-- Memory Governance KPI/deep inner surfaces: rgba(0,0,0,0.90)
-- Support and Feedback layouts untouched
-- MirrorRoom layout/type sizes untouched
-- Create MirrorRoom uses lighter brown rgba(92,78,73,0.96)
+3. The sentence beginning:
+   "Scroll naturally through the page..."
+   is removed from the rendered sign-in UI.
 
-Admin:
-- layout/cards preserved
-- same Georgia/Cambria font
-- black 0.50 backdrop rather than blue
-- body/service text raised to 16px
-- buttons/table text 14px
-- micro timestamps 12px
+4. Reflective Brainstorm:
+   outer/header/footer = rgba(0,0,0,0.82)
+   inner/body/input = rgba(0,0,0,0.90)
 
-RUN
----
+5. Overview:
+   "Track how your ideas evolve..." = 19px
+   "Your thinking, versioned." is not resized.
+   primary Write a Reflection button uses the same lighter
+   stone/brown family as the Isolated UID chip.
+
+6. Memory Governance:
+   major/heading panels = rgba(0,0,0,0.72)
+   KPI/deeper surfaces = rgba(0,0,0,0.82)
+   background remains visibly hazy.
+
+7. Reflection Workspace:
+   top explanatory body = 17px
+   all 10 Journal Tools stay in one horizontal row on desktop
+   and remain horizontally scrollable if the viewport is too narrow.
+
+Run:
 Remove-Item -Recurse -Force .\node_modules\.vite -ErrorAction SilentlyContinue; npm run dev
 
 Then hard refresh:
