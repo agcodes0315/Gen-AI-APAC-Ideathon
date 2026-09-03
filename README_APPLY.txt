@@ -1,31 +1,43 @@
-MIRRORTRACE BRAINSTORM HEADER LIGHT + FONT +1
-=============================================
+MIRRORTRACE EXACT REFLECT + SNAPSHOT FIX
+=======================================
 
 Replace only:
 src/styles/mirrortrace-app.css
 
-Changed only in Reflective Brainstorm:
+IMPORTANT
+---------
+BrainstormChat.tsx should NOT import the old:
+../styles/mirrortrace-brainstorm-black.css
 
-Outer shell:
-rgba(0,0,0,0.80)
+The intended two-style setup is:
+App.tsx -> mirrortrace-app.css
+AuthView.tsx -> mirrortrace-public.css
 
-Heading/header block:
-rgba(0,0,0,0.70)
+EXACT CHANGES
+-------------
 
-Footer:
-rgba(0,0,0,0.80)
+REFLECTIVE BRAINSTORM
+Outer shell: rgba(0,0,0,0.82)
+Header: rgba(0,0,0,0.82)
+Footer: rgba(0,0,0,0.82)
+Inner body: rgba(0,0,0,0.90)
 
-Smaller text increased by +1px:
-- Powered by Server-Side Gemini -> 13px
-- New Thread -> 13px
-- Need help untangling a thought? -> 15px
-- Supporting empty-state sentence -> 13px
-- Input text -> 19px
+FONT SIZES
+Reflective Brainstorm Companion: 18px
+Powered by Server-Side Gemini: 12px
+New Thread: 14px
+Need help untangling a thought?: 14px
+Description: 14px
+Topic Tags helper: 14px
 
-The main title "Reflective Brainstorm Companion" is not resized.
-The inner conversation body background is not changed.
+THOUGHT SNAPSHOT
+The cream/white "Suggested Thought Snapshot" header band:
+rgba(0,0,0,0.82)
 
-Run:
+Its title/copy/badge colors are adjusted only for readability on black.
+
+RUN
+---
 Remove-Item -Recurse -Force .\node_modules\.vite -ErrorAction SilentlyContinue; npm run dev
 
 Then hard refresh:

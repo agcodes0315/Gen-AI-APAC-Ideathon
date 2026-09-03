@@ -8046,3 +8046,267 @@ p.text-xs {
 }
 
 /* MIRRORTRACE_BRAINSTORM_TRUE_FINAL_END */
+
+/* MIRRORTRACE_EXACT_REFLECT_SNAPSHOT_FIX_START */
+
+/* ============================================================
+   EXACT FINAL FIX — REFLECT & CHAT + THOUGHT SNAPSHOT
+   ============================================================
+
+   REFLECTIVE BRAINSTORM
+   - outer/header/footer matches Compose Reflection black tint
+   - inner conversation stays unchanged/deeper
+   - title matches Compose Reflection size
+   - New Thread = 14px
+   - Need help untangling a thought? = 14px
+   - Description = 14px
+   - Topic Tags helper = 14px
+
+   THOUGHT SNAPSHOT
+   - white/cream proposal header becomes rgba(0,0,0,0.82)
+   ============================================================ */
+
+
+/* ============================================================
+   1. REFLECTIVE BRAINSTORM — MATCH COMPOSE REFLECTION
+   Compose outer uses --mt-final-outer-black = rgba(0,0,0,0.82)
+   Compose inner uses --mt-final-inner-black = rgba(0,0,0,0.90)
+   ============================================================ */
+
+/* Right outer shell */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-shell {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Header: EXACT same outer black tint as Compose Reflection */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-header {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Footer remains same outer tint */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-footer {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Inner conversation stays deeper exactly as before */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-body {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* ============================================================
+   2. EXACT FONT SIZES
+   ============================================================ */
+
+/* Reflective Brainstorm Companion = same as Compose Reflection (text-lg = 18px) */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-header
+h3 {
+  font-size:
+    18px !important;
+
+  line-height:
+    1.25 !important;
+
+  font-weight:
+    600 !important;
+}
+
+/* Powered by Server-Side Gemini = same compact tier as Compose header utilities */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-header
+p.text-\[11px\] {
+  font-size:
+    12px !important;
+
+  line-height:
+    1.35 !important;
+}
+
+/* New Thread = 14px */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-thread-btn {
+  font-size:
+    14px !important;
+
+  line-height:
+    1.35 !important;
+}
+
+/* Need help untangling a thought? = 14px */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-body
+p.text-sm {
+  font-size:
+    14px !important;
+
+  line-height:
+    1.45 !important;
+}
+
+/* Description = 14px */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-body
+p.text-xs {
+  font-size:
+    14px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+/* Topic Tags helper on Compose Reflection = 14px */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+> .grid
+> div:first-child
+label.text-xs.font-medium {
+  font-size:
+    14px !important;
+
+  line-height:
+    1.4 !important;
+}
+
+
+/* ============================================================
+   3. SUGGESTED THOUGHT SNAPSHOT
+   Replace the white/cream header band with black 0.82.
+   ============================================================ */
+
+html body #root
+article[id^="thought-snapshot-proposal-"] {
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* The white/cream header area shown in the screenshot */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+> div:first-child {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Keep the dark header readable after removing the cream surface */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+> div:first-child
+h3 {
+  color:
+    #ffffff !important;
+}
+
+html body #root
+article[id^="thought-snapshot-proposal-"]
+> div:first-child
+p {
+  color:
+    rgba(255, 255, 255, 0.76) !important;
+}
+
+html body #root
+article[id^="thought-snapshot-proposal-"]
+> div:first-child
+span {
+  color:
+    rgba(255, 255, 255, 0.90) !important;
+}
+
+/* Pending Consent badge */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+> div:first-child
+span.rounded-full {
+  background:
+    rgba(0, 0, 0, 0.72) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.72) !important;
+
+  color:
+    rgba(255, 232, 170, 0.96) !important;
+
+  border-color:
+    rgba(246, 211, 79, 0.32) !important;
+}
+
+/* MIRRORTRACE_EXACT_REFLECT_SNAPSHOT_FIX_END */
