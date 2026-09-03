@@ -7547,3 +7547,502 @@ html body #root
 }
 
 /* MIRRORTRACE_MEMORY_GOVERNANCE_090_END */
+
+/* MIRRORTRACE_BRAINSTORM_BLOCKS_082_START */
+
+/* Reflective Brainstorm Companion:
+   exact two blocks requested in the screenshots.
+   Header block + input block = rgba(0,0,0,0.82)
+   Nothing else is changed.
+*/
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-header {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-input {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Keep the surrounding footer/input row consistent with the input tint. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-footer {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+/* MIRRORTRACE_BRAINSTORM_BLOCKS_082_END */
+
+/* MIRRORTRACE_BRAINSTORM_EXACT_082_FINAL_START */
+
+/* ============================================================
+   REFLECTIVE BRAINSTORM — EXACT 0.82 FINAL AUTHORITY
+   Targets the ACTUAL current App/Brainstorm structure:
+   .mirrortrace-reflect-page
+   .mirrortrace-brainstorm-column
+   .mirrortrace-brainstorm-shell
+   ============================================================ */
+
+/* Whole right outer card */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-shell {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Header block: Reflective Brainstorm Companion / New Thread */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-header {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Footer row around the composer */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-footer {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Actual input shown in your second screenshot */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-input {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Fallback using the exact current component DOM classes.
+   This wins even if another old stylesheet targets .bg-white later. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+> .mirrortrace-brainstorm-shell.rounded-xl.border
+> .mirrortrace-brainstorm-header:first-child {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+> .mirrortrace-brainstorm-shell.rounded-xl.border
+> .mirrortrace-brainstorm-footer:last-child,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+> .mirrortrace-brainstorm-shell.rounded-xl.border
+.mirrortrace-brainstorm-input {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+}
+
+/* MIRRORTRACE_BRAINSTORM_EXACT_082_FINAL_END */
+
+/* MIRRORTRACE_BRAINSTORM_OUTER_080_ONLY_START */
+
+/* Reflective Brainstorm Companion:
+   OUTER shell only = rgba(0,0,0,0.80)
+   INNER body/input stay exactly as already styled.
+*/
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-shell {
+  background:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Header and footer belong to the outer shell. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+:where(
+  .mirrortrace-brainstorm-header,
+  .mirrortrace-brainstorm-footer
+) {
+  background:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-image:
+    none !important;
+}
+
+/* IMPORTANT:
+   Do not override .mirrortrace-brainstorm-body or
+   .mirrortrace-brainstorm-input here.
+   Their current inner styling remains unchanged.
+*/
+
+/* MIRRORTRACE_BRAINSTORM_OUTER_080_ONLY_END */
+
+/* MIRRORTRACE_BRAINSTORM_HEADER_LIGHTER_FONTPLUS1_START */
+
+/* ============================================================
+   REFLECTIVE BRAINSTORM — LATEST EXACT CORRECTION
+
+   Requested:
+   - outer shell stays black 0.80
+   - heading/header block becomes LIGHTER black 0.70
+   - smaller text inside this panel increases by +1px
+   - inner body styling otherwise remains unchanged
+   ============================================================ */
+
+/* Outer shell stays as previously requested. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-shell {
+  background:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-image:
+    none !important;
+}
+
+/* ONLY the heading/header block is lighter black. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-header {
+  background:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Footer remains aligned with the outer shell. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-footer {
+  background:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-image:
+    none !important;
+}
+
+/* ------------------------------------------------------------
+   +1px FOR SMALLER TEXT ONLY
+   Title stays unchanged.
+   ------------------------------------------------------------ */
+
+/* Powered by Server-Side Gemini */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-header
+p {
+  font-size:
+    13px !important;
+
+  line-height:
+    1.35 !important;
+}
+
+/* New Thread */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-thread-btn {
+  font-size:
+    13px !important;
+}
+
+/* Need help untangling a thought? */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-body
+.text-sm {
+  font-size:
+    15px !important;
+
+  line-height:
+    1.48 !important;
+}
+
+/* Supporting sentence below it */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-body
+.text-xs {
+  font-size:
+    13px !important;
+
+  line-height:
+    1.48 !important;
+}
+
+/* Keep the input appearance itself as-is; only raise its text by 1px
+   if it is currently using the standard 18px MirrorTrace size. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-input {
+  font-size:
+    19px !important;
+}
+
+/* MIRRORTRACE_BRAINSTORM_HEADER_LIGHTER_FONTPLUS1_END */
+
+/* MIRRORTRACE_BRAINSTORM_TRUE_FINAL_START */
+
+/* ============================================================
+   REFLECTIVE BRAINSTORM — TRUE FINAL AUTHORITY
+   IMPORTANT:
+   BrainstormChat.tsx must NOT import mirrortrace-brainstorm-black.css.
+   This rule assumes the app is using the intended two-style setup.
+   ============================================================ */
+
+/* Outer card stays 0.80 */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-shell {
+  background:
+    rgba(0, 0, 0, 0.80) !important;
+  background-color:
+    rgba(0, 0, 0, 0.80) !important;
+  background-image:
+    none !important;
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/*
+ * Header must LOOK lighter than its 0.80 parent.
+ * A semi-transparent black child on top of a black 0.80 parent
+ * compounds darker, so we paint the shared page background into
+ * the header and apply rgba(0,0,0,0.70) exactly once.
+ */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-header {
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.70),
+      rgba(0, 0, 0, 0.70)
+    ),
+    url("/hero/mirrortrace2.jpeg")
+      center center / cover
+      fixed
+      no-repeat !important;
+
+  background-color:
+    transparent !important;
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Keep inner conversation exactly as it already is. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-body {
+  background:
+    rgba(0, 0, 0, 0.90) !important;
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+  background-image:
+    none !important;
+}
+
+/* Footer remains part of outer 0.80 shell. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-footer {
+  background:
+    rgba(0, 0, 0, 0.80) !important;
+  background-color:
+    rgba(0, 0, 0, 0.80) !important;
+  background-image:
+    none !important;
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Input background remains unchanged/deep. Only font gets +1px. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-input {
+  font-size:
+    13px !important;
+}
+
+/* +1px on the smaller texts based on actual BrainstormChat.tsx classes. */
+
+/* Powered by Server-Side Gemini: text-[11px] -> 12px */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-header
+p.text-\[11px\] {
+  font-size:
+    12px !important;
+  line-height:
+    1.4 !important;
+}
+
+/* New Thread: text-xs 12px -> 13px */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-thread-btn {
+  font-size:
+    13px !important;
+}
+
+/* Need help untangling a thought?: text-sm 14px -> 15px */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-body
+p.text-sm {
+  font-size:
+    15px !important;
+  line-height:
+    1.45 !important;
+}
+
+/* Supporting sentence: text-xs 12px -> 13px */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-body
+p.text-xs {
+  font-size:
+    13px !important;
+  line-height:
+    1.5 !important;
+}
+
+/* MIRRORTRACE_BRAINSTORM_TRUE_FINAL_END */

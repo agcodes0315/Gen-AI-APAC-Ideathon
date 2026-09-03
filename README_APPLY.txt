@@ -1,17 +1,29 @@
-MIRRORTRACE MEMORY GOVERNANCE HEADING 0.90
-=========================================
+MIRRORTRACE BRAINSTORM HEADER LIGHT + FONT +1
+=============================================
 
-Replace:
+Replace only:
 src/styles/mirrortrace-app.css
 
-Change:
-Memory Governance heading/top block:
-rgba(0,0,0,0.90)
+Changed only in Reflective Brainstorm:
 
-KPI strip remains:
-rgba(0,0,0,0.82)
+Outer shell:
+rgba(0,0,0,0.80)
 
-No other styling or component logic changed.
+Heading/header block:
+rgba(0,0,0,0.70)
+
+Footer:
+rgba(0,0,0,0.80)
+
+Smaller text increased by +1px:
+- Powered by Server-Side Gemini -> 13px
+- New Thread -> 13px
+- Need help untangling a thought? -> 15px
+- Supporting empty-state sentence -> 13px
+- Input text -> 19px
+
+The main title "Reflective Brainstorm Companion" is not resized.
+The inner conversation body background is not changed.
 
 Run:
 Remove-Item -Recurse -Force .\node_modules\.vite -ErrorAction SilentlyContinue; npm run dev

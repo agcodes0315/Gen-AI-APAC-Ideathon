@@ -2344,3 +2344,164 @@ html body #root
 
 
 /* MIRRORTRACE_PUBLIC_FINAL_REQUESTED_CORRECTIONS_END */
+
+/* MIRRORTRACE_SECURITY_CARDS_082_START */
+
+/* Sign-in page: Security by architecture cards only.
+   Requested exact tint: rgba(0,0,0,0.82)
+   Nothing else is changed. */
+html body #root
+.mirrortrace-auth-page
+#security
+:where(
+  article,
+  .mirrortrace-security-card,
+  .mt-glass,
+  .mt-glass-cool
+) {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* MIRRORTRACE_SECURITY_CARDS_082_END */
+
+/* MIRRORTRACE_SECURITY_FORCE_BLACK_082_START */
+
+/* FINAL AUTHORITY:
+   These are the exact four Security by architecture cards in AuthView:
+   class="mt-glass mt-glass-cool mt-hover-pop rounded-[26px] p-5"
+
+   Force them to pure black glass at 0.82 and remove any blue/background
+   layer or hover override that appears earlier in this stylesheet.
+*/
+html body #root
+.mirrortrace-auth-page
+#security
+.mt-glass.mt-glass-cool.mt-hover-pop,
+html body #root
+.mirrortrace-auth-page
+#security
+.mt-glass.mt-glass-cool {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    0 18px 38px rgba(0,0,0,0.24) !important;
+}
+
+/* Do not let the generic blue hover rule repaint them. */
+html body #root
+.mirrortrace-auth-page
+#security
+.mt-glass.mt-glass-cool.mt-hover-pop:hover,
+html body #root
+.mirrortrace-auth-page
+#security
+.mt-glass.mt-glass-cool:hover {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+/* MIRRORTRACE_SECURITY_FORCE_BLACK_082_END */
+
+/* MIRRORTRACE_SECURITY_EXACT_BLACK_080_START */
+
+/* ============================================================
+   SIGN-IN PAGE — SECURITY BY ARCHITECTURE
+   Exact four cards only.
+   Final requested tint: rgba(0, 0, 0, 0.80)
+   Nothing else is changed.
+   ============================================================ */
+
+/*
+  AuthView exact card class:
+  mt-glass mt-glass-cool mt-hover-pop rounded-[26px] p-5
+
+  This final rule sits at the END of the stylesheet so it wins
+  over the older generic public-card / blue-card rules.
+*/
+html body #root
+.mirrortrace-auth-page
+#security
+.mt-glass.mt-glass-cool.mt-hover-pop,
+html body #root
+.mirrortrace-auth-page
+#security
+.mt-glass.mt-glass-cool {
+  background:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 18px 38px rgba(0, 0, 0, 0.24) !important;
+}
+
+/* Keep the same exact 0.80 tint on hover. */
+html body #root
+.mirrortrace-auth-page
+#security
+.mt-glass.mt-glass-cool.mt-hover-pop:hover,
+html body #root
+.mirrortrace-auth-page
+#security
+.mt-glass.mt-glass-cool:hover {
+  background:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.80) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(211, 148, 69, 0.32) !important;
+}
+
+/* MIRRORTRACE_SECURITY_EXACT_BLACK_080_END */
