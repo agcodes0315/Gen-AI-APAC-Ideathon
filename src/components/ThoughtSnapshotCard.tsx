@@ -110,6 +110,103 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
   };
 
   return (
+    <>
+      <style>{`
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId} {
+          background: rgba(0,0,0,0.58) !important;
+          background-color: rgba(0,0,0,0.58) !important;
+          background-image: none !important;
+          backdrop-filter: blur(3px) !important;
+          -webkit-backdrop-filter: blur(3px) !important;
+        }
+
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId} > header {
+          background: rgba(0,0,0,0.64) !important;
+          background-color: rgba(0,0,0,0.64) !important;
+          background-image: none !important;
+        }
+
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId} > div.grid > section {
+          background: rgba(0,0,0,0.64) !important;
+          background-color: rgba(0,0,0,0.64) !important;
+          background-image: none !important;
+        }
+
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        :where(.rounded-xl.border) {
+          background: rgba(0,0,0,0.82) !important;
+          background-color: rgba(0,0,0,0.82) !important;
+          background-image: none !important;
+        }
+
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-topic-label,
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-topic-value,
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-tags-label,
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-tag-chip {
+          font-size: 16px !important;
+        }
+
+        /* Current global body/button authority is 18px.
+           Requested decrease = 1px for these snapshot texts. */
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-memory-title,
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-memory-copy,
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-consent-copy,
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-time-copy {
+          font-size: 17px !important;
+          line-height: 1.42 !important;
+        }
+
+        /* Current global button authority is 18px.
+           Requested decrease = 1.5px. */
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        button[data-snapshot-action] {
+          font-size: 16.5px !important;
+          line-height: 1.15 !important;
+          padding: 5px 8px !important;
+          min-height: 0 !important;
+        }
+
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-actions {
+          gap: 4px !important;
+          flex-wrap: nowrap !important;
+          align-items: center !important;
+          justify-content: flex-end !important;
+        }
+
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-actions svg {
+          width: 14px !important;
+          height: 14px !important;
+        }
+
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-retention-label {
+          font-size: 13px !important;
+          line-height: 1.2 !important;
+        }
+
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-retention-select {
+          font-size: 13px !important;
+          line-height: 1.2 !important;
+        }
+
+        html body #root #thought-snapshot-proposal-${proposal.sourceJournalId}
+        .mirrortrace-snapshot-consent-copy {
+          font-size: 16px !important;
+          line-height: 1.42 !important;
+        }
+      `}</style>
+
     <article
       id={`thought-snapshot-proposal-${proposal.sourceJournalId}`}
       className="
@@ -277,17 +374,17 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
 
               <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-[minmax(150px,0.7fr)_minmax(0,1.3fr)]">
                 <div className="min-w-0 rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2.5">
-                  <span className="text-[16px] font-bold uppercase tracking-wide text-white/70">
+                  <span className="mirrortrace-snapshot-topic-label text-[16px] font-bold uppercase tracking-wide text-white/70">
                     Topic
                   </span>
 
-                  <p className="mt-1 break-words text-[16px] font-semibold leading-snug text-white/82">
+                  <p className="mirrortrace-snapshot-topic-value mt-1 break-words text-[16px] font-semibold leading-snug text-white/82">
                     {proposal.topic}
                   </p>
                 </div>
 
                 <div className="min-w-0 rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2.5">
-                  <div className="flex items-center gap-1 text-[16px] font-bold uppercase tracking-wide text-white/70">
+                  <div className="mirrortrace-snapshot-tags-label flex items-center gap-1 text-[16px] font-bold uppercase tracking-wide text-white/70">
                     <Tag className="h-3 w-3" />
                     Tags
                   </div>
@@ -305,6 +402,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                             bg-[rgba(0,0,0,0.78)]
                             px-2
                             py-1
+                            mirrortrace-snapshot-tag-chip
                             text-[16px]
                             font-semibold
                             text-white/70
@@ -417,12 +515,12 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
         >
           <div className="flex items-center gap-2">
             <Clock3 className="h-4 w-4 shrink-0 text-white/62" />
-            <p className="text-[9px] font-bold text-white">
+            <p className="mirrortrace-snapshot-memory-title text-[9px] font-bold text-white">
               Memory permission
             </p>
           </div>
 
-          <p className="mt-2 text-[6.5px] leading-relaxed text-white/60">
+          <p className="mirrortrace-snapshot-memory-copy mt-2 text-[6.5px] leading-relaxed text-white/60">
             Choose how long this approved interpretation may be reused for
             future Thought Diff matching.
           </p>
@@ -442,7 +540,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
               py-2
             "
           >
-            <span className="shrink-0 text-[8px] font-semibold text-white/45">
+            <span className="mirrortrace-snapshot-retention-label shrink-0 text-[13px] font-semibold text-white/45">
               Retention
             </span>
 
@@ -462,7 +560,8 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                 px-0
                 py-0
                 text-right
-                text-[9.5px]
+                mirrortrace-snapshot-retention-select
+                text-[13px]
                 font-semibold
                 text-white/82
                 outline-none
@@ -478,7 +577,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
           </div>
 
           <div className="mt-3 rounded-xl border border-white/15 bg-[rgba(0,0,0,0.82)] px-3 py-2">
-            <p className="text-[6px] leading-relaxed text-white/60">
+            <p className="mirrortrace-snapshot-time-copy text-[6px] leading-relaxed text-white/60">
               <strong className="text-white/85">
                 Time-bound consent:
               </strong>{' '}
@@ -503,7 +602,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
             <div className="flex items-start gap-2">
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
 
-              <p className="text-[6.5px] leading-relaxed text-white/66">
+              <p className="mirrortrace-snapshot-consent-copy text-[16px] leading-relaxed text-white/66">
                 <strong className="text-white">
                   Nothing becomes memory automatically.
                 </strong>{' '}
@@ -512,10 +611,14 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-end gap-2">
+          <div
+            className="mirrortrace-snapshot-actions flex flex-nowrap items-center justify-end gap-1"
+            style={{ gap: '4px' }}
+          >
             <button
               id="btn-reject-snapshot"
               type="button"
+              data-snapshot-action="reject"
               onClick={onRejected}
               disabled={approving}
               className="
@@ -543,6 +646,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                 <button
                   id="btn-edit-snapshot"
                   type="button"
+                  data-snapshot-action="edit"
                   onClick={() => {
                     setIsEditing(true);
                     setError(null);
@@ -573,6 +677,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                 <button
                   id="btn-accept-snapshot"
                   type="button"
+                  data-snapshot-action="accept"
                   onClick={() => void handleApprove(false)}
                   disabled={approving}
                   className="
@@ -625,6 +730,7 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
                 <button
                   id="btn-save-edited-snapshot"
                   type="button"
+                  data-snapshot-action="accept"
                   onClick={() => void handleApprove(true)}
                   disabled={approving}
                   className="
@@ -674,5 +780,6 @@ export const ThoughtSnapshotCard: React.FC<ThoughtSnapshotCardProps> = ({
         </div>
       )}
     </article>
+    </>
   );
 };

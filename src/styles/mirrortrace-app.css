@@ -8219,3 +8219,389 @@ html body #root
 }
 
 /* MIRRORTRACE_SUBMISSION_SAFE_REFLECT_TINT_END */
+
+/* MIRRORTRACE_BRAINSTORM_SEETHROUGH_PLUS1_FINAL_START */
+
+/* ============================================================
+   REFLECTIVE BRAINSTORM — SEE-THROUGH BLACK + FONT +1PX
+   Only this panel is changed.
+   ============================================================ */
+
+/* Entire outer card: soft black, visibly see-through */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-shell,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-shell {
+  background:
+    rgba(0, 0, 0, 0.56) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.56) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+
+  backdrop-filter:
+    blur(2px) !important;
+
+  -webkit-backdrop-filter:
+    blur(2px) !important;
+}
+
+/* Header row: soft black, not solid */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-header,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-header {
+  background:
+    rgba(0, 0, 0, 0.62) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.62) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Main body remains darker than the shell but still translucent */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-body,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body {
+  background:
+    rgba(0, 0, 0, 0.68) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.68) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Footer/composer row */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-footer,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-footer {
+  background:
+    rgba(0, 0, 0, 0.62) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.62) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Input stays darker than outer shell, but not solid black */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-input,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-input {
+  background:
+    rgba(0, 0, 0, 0.74) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.74) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* ============================================================
+   FONT SIZE +1PX FOR THE SMALL TEXT YOU LISTED
+   ============================================================ */
+
+/* Powered by Server-Side Gemini */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-header
+p.text-\[11px\] {
+  font-size:
+    12px !important;
+
+  line-height:
+    1.4 !important;
+}
+
+/* New Thread */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-thread-btn {
+  font-size:
+    14px !important;
+
+  line-height:
+    1.35 !important;
+}
+
+/* Need help untangling a thought? */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body
+p.text-sm {
+  font-size:
+    15px !important;
+
+  line-height:
+    1.45 !important;
+}
+
+/* Describe a decision... */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body
+p.text-xs {
+  font-size:
+    13px !important;
+
+  line-height:
+    1.5 !important;
+}
+
+/* MIRRORTRACE_BRAINSTORM_SEETHROUGH_PLUS1_FINAL_END */
+
+/* MIRRORTRACE_FINAL_REFLECT_SNAPSHOT_AUTHORITY_START */
+/* ============================================================
+   MIRRORTRACE — FINAL REFLECT / SNAPSHOT AUTHORITY
+   KEEP THIS AT THE VERY END OF mirrortrace-app.css
+   ============================================================ */
+
+/* ---------- REFLECTIVE BRAINSTORM ---------- */
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-shell {
+  background: rgba(0, 0, 0, 0.54) !important;
+  background-color: rgba(0, 0, 0, 0.54) !important;
+  background-image: none !important;
+  backdrop-filter: blur(2px) !important;
+  -webkit-backdrop-filter: blur(2px) !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-header {
+  background: rgba(0, 0, 0, 0.58) !important;
+  background-color: rgba(0, 0, 0, 0.58) !important;
+  background-image: none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body {
+  background: rgba(0, 0, 0, 0.58) !important;
+  background-color: rgba(0, 0, 0, 0.58) !important;
+  background-image: none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-footer,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-tags {
+  background: rgba(0, 0, 0, 0.58) !important;
+  background-color: rgba(0, 0, 0, 0.58) !important;
+  background-image: none !important;
+}
+
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-input {
+  background: rgba(0, 0, 0, 0.82) !important;
+  background-color: rgba(0, 0, 0, 0.82) !important;
+  font-size: 14px !important;
+}
+
+/* Powered by Server-Side Gemini */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-header
+p {
+  font-size: 16px !important;
+}
+
+/* New Thread */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-thread-btn {
+  font-size: 16px !important;
+}
+
+/* Need help untangling a thought? */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body
+p.text-sm {
+  font-size: 16px !important;
+}
+
+/* Description */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body
+p.text-xs {
+  font-size: 14px !important;
+}
+
+/* ---------- THOUGHT SNAPSHOT ---------- */
+
+html body #root
+article[id^="thought-snapshot-proposal-"] {
+  background: rgba(0, 0, 0, 0.58) !important;
+  background-color: rgba(0, 0, 0, 0.58) !important;
+  background-image: none !important;
+}
+
+/* Snapshot header / major columns stay translucent black. */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+> :is(header, .mirrortrace-snapshot-header),
+html body #root
+article[id^="thought-snapshot-proposal-"]
+> div.grid
+> section {
+  background: rgba(0, 0, 0, 0.64) !important;
+  background-color: rgba(0, 0, 0, 0.64) !important;
+  background-image: none !important;
+}
+
+/* Inner information cards remain darker black. */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+:where(.rounded-xl.border, .rounded-2xl.border) {
+  background: rgba(0, 0, 0, 0.82) !important;
+  background-color: rgba(0, 0, 0, 0.82) !important;
+  background-image: none !important;
+}
+
+/* Memory permission and consent copy: requested 0.5px reduction. */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+.mirrortrace-snapshot-memory-title,
+html body #root
+article[id^="thought-snapshot-proposal-"]
+.mirrortrace-snapshot-memory-copy,
+html body #root
+article[id^="thought-snapshot-proposal-"]
+.mirrortrace-snapshot-consent-copy,
+html body #root
+article[id^="thought-snapshot-proposal-"]
+.mirrortrace-snapshot-time-copy {
+  font-size: 16.5px !important;
+  line-height: 1.42 !important;
+}
+
+/* Right-side consent card only: requested -0.5px */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+.mirrortrace-snapshot-consent-copy {
+  font-size: 16px !important;
+}
+
+/* Fallback for the current snapshot component before stable classes exist. */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+select {
+  font-size: 16.5px !important;
+}
+
+/* Initial Greeting / Topic value */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+.mirrortrace-snapshot-topic-value {
+  font-size: 16px !important;
+}
+
+/* TAGS label + chips */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+.mirrortrace-snapshot-tags-label,
+html body #root
+article[id^="thought-snapshot-proposal-"]
+.mirrortrace-snapshot-tag-chip {
+  font-size: 16px !important;
+}
+
+/* Retention label + selected retention value */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+.mirrortrace-snapshot-retention-label,
+html body #root
+article[id^="thought-snapshot-proposal-"]
+span.text-\[8px\],
+html body #root
+article[id^="thought-snapshot-proposal-"]
+select {
+  font-size: 13px !important;
+}
+
+/* Reject / Edit / Accept compact */
+html body #root
+article[id^="thought-snapshot-proposal-"]
+button[data-snapshot-action] {
+  font-size: 16.5px !important;
+  line-height: 1.15 !important;
+  padding: 5px 8px !important;
+  min-height: 0 !important;
+}
+
+html body #root
+article[id^="thought-snapshot-proposal-"]
+.mirrortrace-snapshot-actions {
+  gap: 4px !important;
+  flex-wrap: nowrap !important;
+}
+/* MIRRORTRACE_FINAL_REFLECT_SNAPSHOT_AUTHORITY_END */
