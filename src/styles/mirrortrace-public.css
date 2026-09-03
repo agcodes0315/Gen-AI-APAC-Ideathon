@@ -1,4 +1,3 @@
-8..60,500;8..60,600;8..60,700;8..60,800&display=swap");
 /* ============================================================
    MIRRORTRACE — PUBLIC LANDING + FEATURE MOTION
    File: src/styles/mirrortrace-public.css
@@ -1736,3 +1735,443 @@ p {
 }
 
 /* MIRRORTRACE_PUBLIC_FINAL_GEORGIA_CAMBRIA_END */
+
+/* MIRRORTRACE_PUBLIC_ACCURACY_FIX_START */
+
+/* ============================================================
+   SIGN-IN PAGE ACCURACY FIX
+   1. Hero buttons smaller.
+   2. Upper feature cards can remain blue tinted.
+   3. Lower content cards/sections must be black tinted.
+   ============================================================ */
+
+/* Continue with Google + Explore MirrorTrace */
+.mirrortrace-auth-page
+:where(
+  .mirrortrace-hero button,
+  .mirrortrace-landing-hero button,
+  .mirrortrace-auth-hero button,
+  .mirrortrace-hero a,
+  .mirrortrace-landing-hero a
+) {
+  font-family:
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+
+  font-size:
+    14px !important;
+
+  line-height:
+    1.3 !important;
+
+  font-weight:
+    600 !important;
+}
+
+
+/* ============================================================
+   KEEP THE TOP FEATURE CARDS BLUE
+   ============================================================ */
+
+.mirrortrace-auth-page
+.mirrortrace-feature-section
+:where(
+  .mirrortrace-scroll-card,
+  .mirrortrace-arc-card
+) {
+  background:
+    rgba(16, 41, 75, 0.20) !important;
+
+  background-color:
+    rgba(16, 41, 75, 0.20) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(198, 216, 235, 0.17) !important;
+}
+
+
+/* ============================================================
+   ALL LOWER PUBLIC CARDS = BLACK TINT
+   This intentionally overrides the older blue-card rules for
+   the lower half of the landing page.
+   ============================================================ */
+
+/* Who MirrorTrace is for */
+.mirrortrace-auth-page
+#who-its-for
+:where(
+  article,
+  .rounded-2xl,
+  .rounded-3xl,
+  .mt-glass,
+  .mt-glass-cool
+) {
+  background:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* What MirrorTrace is built for */
+.mirrortrace-auth-page
+:where(
+  #built-for,
+  #what-mirrortrace-is-built-for,
+  .mirrortrace-built-for,
+  .mirrortrace-purpose-section
+)
+:where(
+  article,
+  .rounded-2xl,
+  .rounded-3xl,
+  .mt-glass,
+  .mt-glass-cool
+) {
+  background:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Security by architecture */
+.mirrortrace-auth-page
+#security
+:where(
+  article,
+  .mirrortrace-security-card,
+  .mt-glass,
+  .mt-glass-cool,
+  .rounded-2xl,
+  .rounded-3xl
+) {
+  background:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Public reviews and empty review state */
+.mirrortrace-auth-page
+#reviews
+:where(
+  article,
+  .mirrortrace-review-card,
+  .rounded-2xl,
+  .rounded-3xl,
+  .mt-glass,
+  .mt-glass-cool
+) {
+  background:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/*
+ * Generic lower-tail fallback.
+ * This catches older public cards using bg-black/30, bg-black/50
+ * or generic article wrappers below the primary feature section.
+ */
+.mirrortrace-auth-page
+.mirrortrace-auth-tail
+:where(
+  .bg-black\/30,
+  .bg-black\/50
+) {
+  background:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.50) !important;
+}
+
+/* Text contrast on all black lower cards. */
+.mirrortrace-auth-page
+:where(
+  #who-its-for,
+  #security,
+  #reviews,
+  #built-for,
+  #what-mirrortrace-is-built-for,
+  .mirrortrace-built-for,
+  .mirrortrace-purpose-section
+)
+:where(
+  h2,
+  h3,
+  h4,
+  strong
+) {
+  color:
+    #ffffff !important;
+}
+
+.mirrortrace-auth-page
+:where(
+  #who-its-for,
+  #security,
+  #reviews,
+  #built-for,
+  #what-mirrortrace-is-built-for,
+  .mirrortrace-built-for,
+  .mirrortrace-purpose-section
+)
+p {
+  color:
+    rgba(235, 242, 248, 0.84) !important;
+}
+
+/* MIRRORTRACE_PUBLIC_ACCURACY_FIX_END */
+
+/* MIRRORTRACE_PUBLIC_FINAL_CONSISTENCY_PASS_START */
+
+/* ============================================================
+   PUBLIC / SIGN-IN PAGE FINAL CONSISTENCY PASS
+
+   One font family:
+     Georgia, Cambria, "Times New Roman", Times, serif
+
+   Intentionally DO NOT change:
+   - sign-in navbar font size
+   - sign-in navbar colors
+   - sign-in navbar layout
+   - "See how your thinking evolves." sizing / color / weight
+   - hero explanatory paragraph typography
+   - Security section typography
+   ============================================================ */
+
+
+/* One font family throughout public experience and TraceBot. */
+.mirrortrace-auth-page,
+.mirrortrace-auth-page *,
+.mirrortrace-guidebot,
+.mirrortrace-guidebot * {
+  font-family:
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif !important;
+}
+
+
+/* ============================================================
+   HERO MICRO-ADJUSTMENTS ONLY
+   ============================================================ */
+
+/* Evidence-first AI reflection:
+   current final 15px -> requested +2px = 17px. */
+.mirrortrace-auth-page
+#hero
+.mirrortrace-chip {
+  font-size:
+    17px !important;
+
+  line-height:
+    1.25 !important;
+}
+
+/*
+ * Main hero CTA buttons only.
+ * Does NOT target the navbar Continue with Google button.
+ * Current final 14px -> requested -2px = 12px.
+ */
+.mirrortrace-auth-page
+#hero
+.max-w-4xl
+> .mt-8.flex.flex-wrap.gap-3
+> button {
+  font-size:
+    12px !important;
+
+  line-height:
+    1.3 !important;
+}
+
+/* Firebase Authentication • Owner-bound UID isolation • Server-side Gemini
+   Component is text-[10px]. Requested +2px = 12px. */
+.mirrortrace-auth-page
+#hero
+div[class~="text-[10px]"][class*="pb-7"] {
+  font-size:
+    12px !important;
+
+  line-height:
+    1.4 !important;
+}
+
+
+/* ============================================================
+   TOP FEATURE CARDS
+   Keep the existing blue-tinted treatment.
+   ============================================================ */
+
+.mirrortrace-auth-page
+#features
+:where(
+  .mirrortrace-scroll-card,
+  .mirrortrace-arc-card
+) {
+  /* Intentionally retain current card styling. */
+}
+
+
+/* ============================================================
+   LOWER LANDING SECTIONS MUST BE BLACK TINTED
+   No blue card tint in these areas.
+   ============================================================ */
+
+/* WHO MIRRORTRACE IS FOR:
+   all four audience cards + the large built-for block +
+   three purpose cards. */
+.mirrortrace-auth-page
+#who-its-for
+:where(
+  article,
+  div[class~="bg-black/50"],
+  div[class~="bg-black/35"],
+  article[class~="bg-black/30"],
+  .mt-glass,
+  .mt-glass-cool
+) {
+  background:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+/* Ensure nested "What MirrorTrace is built for" cards stay black too. */
+.mirrortrace-auth-page
+#who-its-for
+article {
+  background:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-image:
+    none !important;
+}
+
+
+/* SECURITY BY ARCHITECTURE:
+   text remains untouched; cards only become black tinted. */
+.mirrortrace-auth-page
+#security
+:where(
+  article,
+  .mirrortrace-security-card,
+  .mt-glass,
+  .mt-glass-cool
+) {
+  background:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+
+/* PUBLIC REVIEWS:
+   approved review cards and "No public reviews yet" block. */
+.mirrortrace-auth-page
+#reviews
+:where(
+  article,
+  .mirrortrace-review-card,
+  .mt-glass,
+  .mt-glass-cool,
+  [class*="rounded-[28px]"]
+) {
+  background:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+}
+
+
+/* Keep readable contrast in all lower black-tinted cards. */
+.mirrortrace-auth-page
+:where(
+  #who-its-for,
+  #security,
+  #reviews
+)
+:where(
+  h2,
+  h3,
+  h4,
+  strong
+) {
+  color:
+    #ffffff !important;
+}
+
+.mirrortrace-auth-page
+:where(
+  #who-its-for,
+  #security,
+  #reviews
+)
+p {
+  color:
+    rgba(235, 242, 248, 0.84) !important;
+}
+
+
+/* MIRRORTRACE_PUBLIC_FINAL_CONSISTENCY_PASS_END */
