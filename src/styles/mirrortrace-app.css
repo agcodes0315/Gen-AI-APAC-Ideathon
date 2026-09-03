@@ -7144,3 +7144,105 @@ html body #root
 }
 
 /* MIRRORTRACE_FINAL_ADMIN_MEMORY_VISIBILITY_END */
+
+/* MIRRORTRACE_MEMORY_GOVERNANCE_VISIBLE_TINT_START */
+
+/* ============================================================
+   MEMORY GOVERNANCE — FORCE VISIBLE BLACK TINT
+   The whole top card, including the title/header area, is 0.70.
+   KPI cells below it are 0.82.
+   ============================================================ */
+
+/* Top card itself */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type {
+  background:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Force the entire heading/title area to the SAME 0.70 tint */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+> :first-child,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+> :first-child
+> *,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+.mirrortrace-memory-hero,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+.mirrortrace-memory-hero
+> * {
+  background:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.70) !important;
+
+  background-image:
+    none !important;
+}
+
+/* KPI row = darker 0.82 tier */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+.grid,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+.grid
+> div,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance
+> section:first-of-type
+.grid
+> div
+> * {
+  background:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.82) !important;
+
+  background-image:
+    none !important;
+}
+
+/* Keep surrounding page transparent so the background image is visible */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-page,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-memory-governance {
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+}
+
+/* MIRRORTRACE_MEMORY_GOVERNANCE_VISIBLE_TINT_END */
