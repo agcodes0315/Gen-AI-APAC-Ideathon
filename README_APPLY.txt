@@ -1,65 +1,54 @@
-MIRRORTRACE THOUGHT SNAPSHOT — HORIZONTAL FIXED + SOFT TINT
-================================================================
+MIRRORTRACE THOUGHT SNAPSHOT — FONT + BLACK TINT FINAL
+======================================================
 
-Replace:
+Replace exactly:
 src/components/ThoughtSnapshotCard.tsx
 
-WHAT WAS WRONG
---------------
-The previous version used four fixed horizontal columns:
-250px / flexible / 220px / 300px.
+CHANGED
+-------
+Topic / Initial Greeting value:
+16px
 
-Inside the actual Reflect & Chat column there was not enough width, so the
-Memory Permission and action content got squeezed and clipped.
+TAGS label:
+16px
 
-WHAT THIS VERSION DOES
-----------------------
-The desktop snapshot uses THREE balanced columns:
+Tag chips (#greeting #reflection #journal):
+16px
 
-[ Proposed Position + Topic/Tags ] [ Memory Permission ] [ Consent + Actions ]
+Memory Permission heading:
+reduced by 1px
 
-The snapshot identity becomes a full-width horizontal header bar above those
-columns.
+Memory Permission explanatory copy:
+reduced by 1px
 
-This keeps the component horizontal without distorting its text.
+Nothing becomes memory automatically / consent copy:
+reduced by 1px
 
-SOFT BLACK TINTS
-----------------
-No solid-black main blocks are used.
+Time-bound consent:
+reduced by 1px
 
-Outer snapshot:
-rgba(0,0,0,0.68)
+Reject / Edit / Accept:
+reduced by 1.5px
 
-Horizontal header:
+BLACK TINT
+----------
+Outer Thought Snapshot:
+rgba(0,0,0,0.72)
+
+Header:
+rgba(0,0,0,0.76)
+
+Major outer sections:
 rgba(0,0,0,0.74)
 
-Main outer sections:
-rgba(0,0,0,0.70) / rgba(0,0,0,0.74)
-
-Inner blocks:
+Inner content blocks:
 rgba(0,0,0,0.82)
 
-This lets the shared page background remain subtly visible.
+No solid black main surfaces are introduced.
+No API, consent, approval, memory-retention, or snapshot logic is changed.
 
-RESPONSIVE
-----------
-At widths below the desktop breakpoint the component stacks cleanly instead of
-compressing text.
-
-PRESERVED
----------
-- Accept
-- Reject
-- Edit
-- Save & Accept
-- Memory retention
-- 30 days / 6 months / 1 year / Until I remove it
-- API calls
-- consent rules
-- retry behavior
-- user-edited snapshot support
-
-Run:
+RUN
+---
 Remove-Item -Recurse -Force .\node_modules\.vite -ErrorAction SilentlyContinue; npm run dev
 
 Then hard refresh:

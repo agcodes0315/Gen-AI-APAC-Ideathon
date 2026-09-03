@@ -8047,136 +8047,175 @@ p.text-xs {
 
 /* MIRRORTRACE_BRAINSTORM_TRUE_FINAL_END */
 
-/* MIRRORTRACE_DELETE_CONFIRM_BLACK070_START */
+/* MIRRORTRACE_SUBMISSION_SAFE_REFLECT_TINT_START */
 
 /* ============================================================
-   JOURNAL HISTORY — DELETE CONFIRMATION
-   Exact current block:
-   bg-red-50/80 border-red-200
+   SUBMISSION-SAFE FINAL REFLECT & CHAT TINTS
 
    Requested:
-   - white/red-light surface -> black rgba(0,0,0,0.70)
-   - all text in this confirmation -> 1px smaller
-   - destructive Confirm Delete button remains red
+   - Compose outer block: soft black tint, not solid
+   - Brainstorm outer block/header/footer: same soft black family
+   - Brainstorm inner body/input: darker black for readability
+   - Thought Snapshot may extend from left column across both halves
    ============================================================ */
 
+/* Make the left grid column allow the snapshot to visually span both halves. */
 html body #root
 .mirrortrace-app-shell
-.mirrortrace-history-page
-div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3 {
+.mirrortrace-reflect-page
+> .grid
+> div:first-child {
+  overflow:
+    visible !important;
+
+  position:
+    relative !important;
+
+  z-index:
+    2;
+}
+
+/* COMPOSE REFLECTION outer surface = soft black tint. */
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+> .grid
+> div:first-child
+> .space-y-4
+> .bg-white.rounded-xl.border,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+> .grid
+> div:first-child
+.bg-white.rounded-xl.border {
   background:
-    rgba(0, 0, 0, 0.70) !important;
+    rgba(0, 0, 0, 0.68) !important;
 
   background-color:
-    rgba(0, 0, 0, 0.70) !important;
+    rgba(0, 0, 0, 0.68) !important;
 
   background-image:
     none !important;
 
   border-color:
-    rgba(248, 113, 113, 0.34) !important;
+    rgba(255, 255, 255, 0.14) !important;
 
-  color:
-    rgba(255, 255, 255, 0.84) !important;
+  backdrop-filter:
+    blur(2px) !important;
+
+  -webkit-backdrop-filter:
+    blur(2px) !important;
 }
 
-/* Warning icon */
+/* REFLECTIVE BRAINSTORM outer shell = same soft tint family. */
 html body #root
 .mirrortrace-app-shell
-.mirrortrace-history-page
-div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
-svg {
-  color:
-    rgba(252, 165, 165, 0.92) !important;
-}
-
-/* "Permanently delete this reflection?" 12px -> 11px */
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-column
+.mirrortrace-brainstorm-shell,
 html body #root
 .mirrortrace-app-shell
-.mirrortrace-history-page
-div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
-p.text-xs {
-  font-size:
-    11px !important;
-
-  line-height:
-    1.42 !important;
-
-  color:
-    rgba(255, 255, 255, 0.92) !important;
-}
-
-/* Supporting copy 11px -> 10px */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-history-page
-div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
-p.text-\[11px\] {
-  font-size:
-    10px !important;
-
-  line-height:
-    1.5 !important;
-
-  color:
-    rgba(255, 255, 255, 0.68) !important;
-}
-
-/* Both action buttons 12px -> 11px */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-history-page
-div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
-button.text-xs {
-  font-size:
-    11px !important;
-}
-
-/* Cancel button stays dark/neutral on the black panel. */
-html body #root
-.mirrortrace-app-shell
-.mirrortrace-history-page
-div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
-button.text-stone-600 {
-  color:
-    rgba(255, 255, 255, 0.70) !important;
-
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-shell {
   background:
-    transparent !important;
+    rgba(0, 0, 0, 0.68) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.68) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
+
+  backdrop-filter:
+    blur(2px) !important;
+
+  -webkit-backdrop-filter:
+    blur(2px) !important;
 }
 
+/* Brainstorm heading and footer stay visibly translucent, never solid black. */
 html body #root
 .mirrortrace-app-shell
-.mirrortrace-history-page
-div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
-button.text-stone-600:hover {
+.mirrortrace-reflect-page
+:is(
+  .mirrortrace-brainstorm-header,
+  .mirrortrace-brainstorm-footer
+) {
   background:
-    rgba(255, 255, 255, 0.08) !important;
+    rgba(0, 0, 0, 0.72) !important;
 
-  color:
-    #ffffff !important;
+  background-color:
+    rgba(0, 0, 0, 0.72) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.14) !important;
 }
 
-/* Keep destructive action clearly destructive. */
+/* INNER blocks only: dark enough for text/input readability. */
 html body #root
 .mirrortrace-app-shell
-.mirrortrace-history-page
-div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
-button.bg-red-700 {
-  background:
-    rgb(185, 28, 28) !important;
-
-  color:
-    #ffffff !important;
-}
-
+.mirrortrace-reflect-page
+#journal-input-area,
 html body #root
 .mirrortrace-app-shell
-.mirrortrace-history-page
-div.mt-4.p-4.bg-red-50\/80.border.border-red-200.rounded-lg.space-y-3
-button.bg-red-700:hover {
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-body,
+html body #root
+.mirrortrace-app-shell
+.mirrortrace-reflect-page
+.mirrortrace-brainstorm-input {
   background:
-    rgb(153, 27, 27) !important;
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.90) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(255, 255, 255, 0.13) !important;
 }
 
-/* MIRRORTRACE_DELETE_CONFIRM_BLACK070_END */
+/* Keep the Thought Snapshot full-width extension safe on desktop.
+   On mobile/tablet it returns to normal width. */
+@media (min-width: 1024px) {
+  html body #root
+  .mirrortrace-app-shell
+  .mirrortrace-reflect-page
+  article[id^="thought-snapshot-proposal-"] {
+    width:
+      calc(200% + 1.5rem) !important;
+
+    max-width:
+      none !important;
+
+    position:
+      relative !important;
+
+    z-index:
+      10 !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  html body #root
+  .mirrortrace-app-shell
+  .mirrortrace-reflect-page
+  article[id^="thought-snapshot-proposal-"] {
+    width:
+      100% !important;
+
+    max-width:
+      100% !important;
+  }
+}
+
+/* MIRRORTRACE_SUBMISSION_SAFE_REFLECT_TINT_END */
