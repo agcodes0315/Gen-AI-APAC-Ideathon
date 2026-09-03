@@ -26,7 +26,6 @@ import type {
 } from '../types.ts';
 
 
-
 interface BrainstormChatProps {
   onSuggestedTagClick?: (
     tag: string
@@ -476,9 +475,23 @@ export const BrainstormChat:
 
 
     return (
-      <div className="mirrortrace-brainstorm-shell rounded-xl border shadow-xs flex flex-col h-full min-h-[520px]">
+      <div
+        className="mirrortrace-brainstorm-shell rounded-xl border shadow-xs flex flex-col h-full min-h-[520px]"
+        style={{
+          background: 'rgba(0, 0, 0, 0.56)',
+          borderColor: 'rgba(255,255,255,0.14)',
+          backdropFilter: 'blur(2px)',
+          WebkitBackdropFilter: 'blur(2px)',
+        }}
+      >
         {/* Header */}
-        <div className="mirrortrace-brainstorm-header px-5 py-4 border-b flex items-center justify-between rounded-t-xl">
+        <div
+          className="mirrortrace-brainstorm-header px-5 py-4 border-b flex items-center justify-between rounded-t-xl"
+          style={{
+            background: 'rgba(0, 0, 0, 0.62)',
+            borderColor: 'rgba(255,255,255,0.14)',
+          }}
+        >
           <div className="flex items-center gap-2.5">
             <div className="mirrortrace-brainstorm-icon w-7 h-7 rounded-md flex items-center justify-center border">
               <Sparkles className="w-3.5 h-3.5 text-amber-200" />
@@ -489,7 +502,13 @@ export const BrainstormChat:
                 Reflective Brainstorm Companion
               </h3>
 
-              <p className="text-[11px] text-white/65 font-sans">
+              <p
+                className="text-white/65"
+                style={{
+                  fontSize: '12px',
+                  lineHeight: 1.4,
+                }}
+              >
                 Powered by Server-Side Gemini
               </p>
             </div>
@@ -504,7 +523,11 @@ export const BrainstormChat:
               initLoading ||
               loading
             }
-            className="mirrortrace-brainstorm-thread-btn flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium text-white/70 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="mirrortrace-brainstorm-thread-btn flex items-center gap-1.5 px-2.5 py-1 rounded-md font-medium text-white/70 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            style={{
+              fontSize: '14px',
+              lineHeight: 1.35,
+            }}
             title="Start a fresh conversation"
           >
             <MessageSquarePlus className="w-3.5 h-3.5" />
@@ -515,12 +538,21 @@ export const BrainstormChat:
         </div>
 
         {/* Messages */}
-        <div className="mirrortrace-brainstorm-body flex-1 p-5 overflow-y-auto space-y-4 max-h-[380px]">
+        <div
+          className="mirrortrace-brainstorm-body flex-1 p-5 overflow-y-auto space-y-4 max-h-[380px]"
+          style={{
+            background: 'rgba(0, 0, 0, 0.68)',
+          }}
+        >
           {initLoading ? (
             <div className="h-full flex flex-col items-center justify-center text-white/50 space-y-2 py-12">
               <div className="w-5 h-5 border-2 border-white/20 border-t-amber-300 rounded-full animate-spin" />
 
-              <p className="text-xs">
+              <p
+                style={{
+                  fontSize: '13px',
+                }}
+              >
                 Initializing secure dialogue thread...
               </p>
             </div>
@@ -533,11 +565,23 @@ export const BrainstormChat:
               </div>
 
               <div className="space-y-1">
-                <p className="text-sm font-medium text-white/80">
+                <p
+                  className="font-medium text-white/80"
+                  style={{
+                    fontSize: '15px',
+                    lineHeight: 1.45,
+                  }}
+                >
                   Need help untangling a thought?
                 </p>
 
-                <p className="text-xs text-white/65 max-w-xs leading-relaxed">
+                <p
+                  className="text-white/65 max-w-xs"
+                  style={{
+                    fontSize: '13px',
+                    lineHeight: 1.5,
+                  }}
+                >
                   Describe a decision, conflict, or question. MirrorTrace asks focused questions to help you clarify your perspective.
                 </p>
               </div>
@@ -599,9 +643,7 @@ export const BrainstormChat:
 
               <div className="mirrortrace-brainstorm-loading rounded-lg px-4 py-3 border flex items-center gap-1.5 text-xs text-white/65">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-bounce" />
-
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-bounce [animation-delay:0.2s]" />
-
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-bounce [animation-delay:0.4s]" />
 
                 <span className="ml-1 text-[11px]">
@@ -664,52 +706,51 @@ export const BrainstormChat:
             </div>
           )}
 
-          <div
-            ref={
-              messagesEndRef
-            }
-          />
+          <div ref={messagesEndRef} />
         </div>
 
-        {suggestedTags.length >
-          0 && (
-          <div className="mirrortrace-brainstorm-tags px-5 py-2 border-t flex items-center gap-2 flex-wrap">
+        {suggestedTags.length > 0 && (
+          <div
+            className="mirrortrace-brainstorm-tags px-5 py-2 border-t flex items-center gap-2 flex-wrap"
+            style={{
+              background: 'rgba(0, 0, 0, 0.62)',
+              borderColor: 'rgba(255,255,255,0.14)',
+            }}
+          >
             <span className="text-[11px] font-medium text-amber-100 flex items-center gap-1">
               <Sparkles className="w-3 h-3 text-amber-300" />
               Suggested tags:
             </span>
 
-            {suggestedTags.map(
-              (
-                tag
-              ) => (
-                <button
-                  key={
+            {suggestedTags.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() =>
+                  onSuggestedTagClick?.(
                     tag
-                  }
-                  type="button"
-                  onClick={() =>
-                    onSuggestedTagClick?.(
-                      tag
-                    )
-                  }
-                  className="mirrortrace-brainstorm-tag inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium text-amber-100 border transition-colors shadow-2xs cursor-pointer"
-                  title="Add this tag to your journal editor"
-                >
-                  <Plus className="w-3 h-3 text-amber-300" />
-                  #{tag}
-                </button>
-              )
-            )}
+                  )
+                }
+                className="mirrortrace-brainstorm-tag inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium text-amber-100 border transition-colors shadow-2xs cursor-pointer"
+                title="Add this tag to your journal editor"
+              >
+                <Plus className="w-3 h-3 text-amber-300" />
+                #{tag}
+              </button>
+            ))}
           </div>
         )}
 
         {/* Input */}
-        <div className="mirrortrace-brainstorm-footer p-4 border-t rounded-b-xl">
+        <div
+          className="mirrortrace-brainstorm-footer p-4 border-t rounded-b-xl"
+          style={{
+            background: 'rgba(0, 0, 0, 0.62)',
+            borderColor: 'rgba(255,255,255,0.14)',
+          }}
+        >
           <form
-            onSubmit={(
-              e
-            ) => {
+            onSubmit={(e) => {
               e.preventDefault();
               void handleSend();
             }}
@@ -718,12 +759,8 @@ export const BrainstormChat:
             <input
               id="chat-input-field"
               type="text"
-              value={
-                input
-              }
-              onChange={(
-                e
-              ) =>
+              value={input}
+              onChange={(e) =>
                 setInput(
                   e.target.value
                 )
@@ -738,7 +775,12 @@ export const BrainstormChat:
                 initLoading ||
                 !conversationId
               }
-              className="mirrortrace-brainstorm-input flex-1 px-3.5 py-2.5 rounded-lg border text-white placeholder:text-white/45 text-xs font-sans focus:outline-none focus:ring-2 focus:ring-amber-300/20 focus:border-amber-300/40 disabled:opacity-50"
+              className="mirrortrace-brainstorm-input flex-1 px-3.5 py-2.5 rounded-lg border text-white placeholder:text-white/45 focus:outline-none focus:ring-2 focus:ring-amber-300/20 focus:border-amber-300/40 disabled:opacity-50"
+              style={{
+                background: 'rgba(0, 0, 0, 0.74)',
+                borderColor: 'rgba(255,255,255,0.14)',
+                fontSize: '13px',
+              }}
             />
 
             <button
@@ -760,4 +802,3 @@ export const BrainstormChat:
       </div>
     );
   };
-

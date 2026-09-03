@@ -1,51 +1,38 @@
-MIRRORTRACE THOUGHT SNAPSHOT — FONT + BLACK TINT FINAL
-======================================================
+MIRRORTRACE — BRAINSTORM COMPONENT HARD FIX
+===========================================
 
 Replace exactly:
-src/components/ThoughtSnapshotCard.tsx
+src/components/BrainstormChat.tsx
 
-CHANGED
--------
-Topic / Initial Greeting value:
-16px
+WHY THIS WILL ACTUALLY CHANGE
+-----------------------------
+The current BrainstormChat.tsx still imports:
+../styles/mirrortrace-brainstorm-black.css
 
-TAGS label:
-16px
+That stylesheet contains !important rules and was overriding the app CSS.
 
-Tag chips (#greeting #reflection #journal):
-16px
+This replacement:
+- removes that old stylesheet import entirely
+- puts the requested translucent black values directly on the actual JSX blocks
+- puts the requested font sizes directly on the actual JSX text
 
-Memory Permission heading:
-reduced by 1px
+FINAL TINTS
+-----------
+Outer card: rgba(0,0,0,0.56)
+Header: rgba(0,0,0,0.62)
+Main body: rgba(0,0,0,0.68)
+Footer: rgba(0,0,0,0.62)
+Input: rgba(0,0,0,0.74)
 
-Memory Permission explanatory copy:
-reduced by 1px
-
-Nothing becomes memory automatically / consent copy:
-reduced by 1px
-
-Time-bound consent:
-reduced by 1px
-
-Reject / Edit / Accept:
-reduced by 1.5px
-
-BLACK TINT
+FONT SIZES
 ----------
-Outer Thought Snapshot:
-rgba(0,0,0,0.72)
+Powered by Server-Side Gemini: 12px
+New Thread: 14px
+Need help untangling a thought?: 15px
+Description: 13px
+Input text: 13px
 
-Header:
-rgba(0,0,0,0.76)
-
-Major outer sections:
-rgba(0,0,0,0.74)
-
-Inner content blocks:
-rgba(0,0,0,0.82)
-
-No solid black main surfaces are introduced.
-No API, consent, approval, memory-retention, or snapshot logic is changed.
+No Gemini logic, conversation logic, API behavior, tags logic or send behavior changed.
 
 RUN
 ---
