@@ -6,530 +6,416 @@ Privacy-First Reflective Intelligence with Consent-Governed AI Memory
 
 Think privately. Remember deliberately. Compare perspectives with evidence. Share only what you choose.
 
-<br>
+<br/>
 
 
 
 
 
 
-<br>
+<br/>
 
+<img src="mirrortrace-readme-assets/hero.png"
+  alt="MirrorTrace product overview"
+  width="920"/>
 
+<br/>
 
-
-Built independently for the Google Cloud Gen AI Academy — APAC Edition
-Cloud Run Build & Deploy Social Challenge / Personal Gemini Journal track.
+Independently designed and built for the Google Cloud Gen AI Academy — APAC Edition / Cloud Run Build & Deploy Social Challenge.
 
 </div>
 
+✨ The Idea
+
+Most AI systems are optimized to remember more.
+
+MirrorTrace explores a different question:
+
+What if AI could help you remember your thinking without deciding what deserves to be remembered?
+
+MirrorTrace is a reflective-intelligence platform where Gemini can help interpret a user's reflections, but the user remains the authority over reusable AI memory.
+
+A generated interpretation is only a suggestion.
+
+AI-generated interpretation
+            ≠
+Approved reusable memory
+
+Only after the user explicitly Accepts or Edits & Accepts a Thought Snapshot can it become reusable memory.
+
 🏆 Challenge Context
 
-MirrorTrace began from the challenge baseline of a secure, authenticated Personal Gemini Journal built with Firebase Authentication, Cloud Firestore, Gemini, and Google Cloud Run.
+MirrorTrace began from the secure Personal Gemini Journal challenge baseline built around Firebase Authentication, Cloud Firestore, Gemini, and Google Cloud Run.
 
-I extended that baseline into a broader reflective-intelligence system centered on a stricter product question:
+It extends that baseline into a broader system for:
 
-How can AI help a person remember and compare their thinking without silently deciding what should become permanent memory?
+🧠 consent-governed AI memory
 
-MirrorTrace adds:
+🔄 longitudinal Thought Diffs
 
-consent-governed AI memory;
+🔎 evidence and provenance
 
-evidence-backed Thought Diffs;
+🛡️ Memory Governance
 
-provenance;
+👁️ Perspective Watch
 
-Memory Governance;
+👥 privacy-isolated collaboration through MirrorRoom
 
-Perspective Watch;
+🧑‍💻 operational administration without unrestricted journal access
 
-privacy-isolated collaboration through MirrorRoom;
-
-operational administration without unrestricted private journal access;
-
-support, feedback, and public product guidance.
+🤖 public product guidance through TraceBot
 
 🚀 What MirrorTrace Does
 
-MirrorTrace is a privacy-first reflective intelligence platform that helps users capture thoughts, brainstorm with Gemini, intentionally approve reusable AI memory, compare how their reasoning evolves, and collaborate without exposing private journal history.
+The core product loop
 
-Core product loop
+┌──────────────────────┐
+│   Write Reflection   │
+└──────────┬───────────┘
+           ↓
+┌──────────────────────┐
+│ Optional Gemini      │
+│ Brainstorm           │
+└──────────┬───────────┘
+           ↓
+┌──────────────────────┐
+│ Thought Snapshot     │
+│ Proposal             │
+└──────────┬───────────┘
+           ↓
+     ┌─────┴─────┐
+     ↓           ↓
+  Reject     Accept / Edit
+     │           │
+     ↓           ↓
+ No Memory   Approved Memory
+                 │
+                 ↓
+        Related Memory Later
+                 │
+                 ↓
+          Thought Diff
+                 │
+                 ↓
+             Provenance
+                 │
+                 ↓
+        Optional Perspective
+              Watch
 
-Write Reflection
-      ↓
-Optional Gemini Brainstorm
-      ↓
-Gemini Suggests Thought Snapshot
-      ↓
-User Accepts / Edits / Rejects
-      ↓
-Approved Memory
-      ↓
-Related Approved Snapshot Later
-      ↓
-Thought Diff + Provenance
-      ↓
-Optional Perspective Watch
-
-The important distinction is simple:
+The key product principle
 
 Gemini can suggest an interpretation. The user decides whether it becomes reusable memory.
 
 🖥️ Product at a Glance
 
-<p align="center">
-  <img src="./docs/images/Sign%20in%20page.jpeg" alt="MirrorTrace public landing and Google sign-in experience" width="100%">
-</p>
+<img src="mirrortrace-readme-assets/sign-in.png"
+  alt="MirrorTrace public landing page and Google Sign-In"
+  width="100%"/>
 
-The public experience introduces MirrorTrace as evidence-first AI reflection and gives evaluators a direct path into Google Sign-In, product explanations, privacy messaging, and TraceBot.
+The public experience introduces MirrorTrace as evidence-first AI reflection and gives users a direct path into authentication, product explanations, privacy messaging, and TraceBot.
 
-The application is designed around five principles:
+Five design principles
 
 Principle
 
 MirrorTrace approach
 
-Private reflection
+🔒 Private reflection
 
 Owner-bound Firebase UID isolation
 
-AI memory
+🧠 AI memory
 
 Explicit user approval before reuse
 
-Perspective change
+🔄 Perspective change
 
 Thought Snapshots + Thought Diffs
 
-Explainability
+🔎 Explainability
 
 Provenance back to source reflections
 
-Collaboration
+👥 Collaboration
 
-Explicit sharing only through MirrorRoom
+Explicit sharing through MirrorRoom
 
-❗ Why This Exists
+🧩 Core Features
 
-Most journaling tools preserve entries. Most AI assistants preserve conversation context. Neither naturally gives users strong control over what AI is allowed to remember as an interpretation of them.
+01 — ✍️ Reflective Space
 
-MirrorTrace addresses four problems.
+<img src="mirrortrace-readme-assets/reflective-space.png"
+  alt="MirrorTrace Reflective Space"
+  width="100%"/>
 
-1. Invisible AI memory
-
-Users should be able to inspect:
-
-what AI inferred;
-
-what became reusable;
-
-why it is being reused;
-
-how long it remains available;
-
-how to revoke it.
-
-2. Journals preserve entries, not reasoning change
-
-A normal journal can show what someone wrote.
-
-MirrorTrace aims to answer:
-
-What did I think earlier?
-
-What do I think now?
-
-What changed?
-
-What stayed consistent?
-
-Which reflections support that comparison?
-
-3. Collaboration often weakens privacy boundaries
-
-Shared spaces should not automatically import:
-
-journal history;
-
-prior Gemini conversations;
-
-Thought Snapshots;
-
-Thought Diffs;
-
-reusable AI memory.
-
-4. Administration should not become surveillance
-
-Operations teams may need system health, counts, support queues, and moderation state.
-
-That should not imply unrestricted access to private reflective content.
-
-👥 Who MirrorTrace Is For
-
-<p align="center">
-  <img src="./docs/images/Target%20Audience.jpeg" alt="MirrorTrace audiences for reflective decision making" width="100%">
-</p>
-
-🎓 Students & Early-Career Professionals
-
-Track changing reasoning around:
-
-careers;
-
-higher studies;
-
-internships;
-
-examinations;
-
-opportunities;
-
-skill priorities.
-
-Example: compare how your thinking about an MBA, MS, consulting, or engineering role evolves after internships and interviews.
-
-💼 Working Professionals
-
-Useful for:
-
-role changes;
-
-negotiations;
-
-difficult trade-offs;
-
-retrospectives;
-
-mentoring;
-
-long-term career planning.
-
-🛠️ Founders & Builders
-
-Preserve the reasoning behind:
-
-product decisions;
-
-architecture choices;
-
-user hypotheses;
-
-prioritization;
-
-pivots;
-
-risk decisions.
-
-🧠 Knowledge Workers & Leaders
-
-Use MirrorTrace for:
-
-strategic reflection;
-
-hypothesis tracking;
-
-decision calibration;
-
-structured peer reasoning.
-
-🏠 User Overview
-
-<p align="center">
-  <img src="./docs/images/User%20Overview.jpeg" alt="MirrorTrace authenticated user overview" width="100%">
-</p>
-
-The Overview acts as the user’s reflective command center.
-
-It surfaces:
-
-saved reflection count;
-
-approved Thought Snapshot count;
-
-Thought Diff count;
-
-perspective-evolution state;
-
-shortcuts into reflection and memory;
-
-entry points into MirrorRoom.
-
-Quick Actions
-
-<p align="center">
-  <img src="./docs/images/Quick%20Actions.jpeg" alt="MirrorTrace quick actions for reflection, private session and history" width="100%">
-</p>
-
-Users can jump directly into:
-
-Write Reflection
-
-Private Session
-
-Journal History
-
-The interface keeps high-frequency actions visible without exposing private content on the public surface.
-
-✍️ Reflective Space
-
-<p align="center">
-  <img src="./docs/images/User%20Reflective%20Space.jpeg" alt="MirrorTrace Reflective Space with journal composition and Gemini companion" width="100%">
-</p>
-
-The Reflect & Chat workspace combines two modes.
+The Reflective Space combines private journaling with a Gemini-powered thinking companion.
 
 Compose Reflection
 
 Users can:
 
-write a journal entry;
+write a private journal entry
 
-add topic tags;
+add topic tags
 
-save it privately to Firestore;
+save reflections to Firestore
 
-later generate a Thought Snapshot.
+later generate a Thought Snapshot
 
 Reflective Brainstorm Companion
 
-The Gemini-powered companion supports multi-turn reflection around:
+Gemini supports multi-turn reflection around:
 
-uncertainty;
+uncertainty
 
-decisions;
+decisions
 
-conflicts;
+conflicts
 
-trade-offs;
+trade-offs
 
-assumptions;
+assumptions
 
-perspective clarification.
+perspective clarification
 
 The assistant is intentionally framed as a thinking companion, not an authority that determines what the user believes.
 
 Private Session
 
-A Private Session allows reflection without automatically creating persistent journal history or reusable AI memory.
+A Private Session supports reflection without automatically creating persistent journal history or reusable AI memory.
 
-🧠 Consent-Governed AI Memory
+02 — 🧠 Consent-Governed AI Memory
 
 A saved reflection can be evaluated for a structured Thought Snapshot.
 
-A snapshot contains:
+A snapshot can contain:
 
-a position statement;
+position statement
 
-a topic;
+topic
 
-tags;
+tags
 
-retention information.
+retention information
 
 The user chooses:
 
-Accept
-Edit & Accept
-Reject
+┌───────────────┐
+│    Accept     │
+├───────────────┤
+│ Edit & Accept │
+├───────────────┤
+│    Reject     │
+└───────────────┘
 
 Only accepted snapshots become reusable AI memory.
 
-This creates a deliberate boundary between:
+This creates an explicit boundary between AI interpretation and user-approved memory.
 
-AI-generated interpretation
-        ≠
-Approved reusable memory
+03 — 🔄 Thought Diffs
 
-That distinction is one of the core design ideas behind MirrorTrace.
-
-🔄 Thought Diffs
+<img src="mirrortrace-readme-assets/thought-diffs.png"
+  alt="MirrorTrace Thought Diff and evidence comparison"
+  width="100%"/>
 
 Thought Diffs compare related approved Thought Snapshots from different moments in time.
 
-A valid comparison can surface:
+A comparison can surface:
 
-earlier position;
+earlier position
 
-later position;
+later position
 
-apparent shift;
+apparent shift
 
-apparent continuity;
+apparent continuity
 
-relationship assessment;
+relationship assessment
 
-provenance.
+supporting provenance
 
-MirrorTrace does not compare snapshots blindly. Candidate matching uses topic and tag relationship checks before Gemini is asked to evaluate whether enough evidence exists.
+Candidate matching uses topic and tag relationships before Gemini evaluates whether enough evidence exists.
 
-The result is closer to version control for human thinking than a normal journal archive.
+Think of it as:
 
-🔎 Provenance
+Version control for human thinking.
+
+Instead of only asking "What did I write?", MirrorTrace helps ask:
+
+What did I believe before?
+          ↓
+What do I believe now?
+          ↓
+What changed?
+          ↓
+What stayed consistent?
+          ↓
+What evidence supports that comparison?
+
+04 — 🔎 Provenance
 
 Every meaningful comparison should be inspectable.
 
-MirrorTrace connects Thought Diffs back to their source evidence through provenance records containing:
+MirrorTrace connects Thought Diffs back to source evidence through provenance records containing:
 
-earlier snapshot;
+earlier snapshot
 
-later snapshot;
+later snapshot
 
-earlier journal;
+earlier journal
 
-later journal;
+later journal
 
-timestamps;
+timestamps
 
-excerpts;
+excerpts
 
-source positions.
+source positions
 
-Controls such as “Why am I seeing this?” help the user inspect the evidence behind the AI-generated comparison.
+Controls such as "Why am I seeing this?" allow the user to inspect the evidence behind an AI-generated comparison.
 
-📚 Journal History & Reflection Workspace
+05 — 📚 Journal History
 
-<p align="center">
-  <img src="./docs/images/User%20Journal%20History.jpeg" alt="MirrorTrace Journal History and Reflection Workspace" width="100%">
-</p>
+<img src="mirrortrace-readme-assets/journal-history.png"
+  alt="MirrorTrace Journal History"
+  width="100%"/>
 
 Journal History turns private entries into a structured personal reasoning record.
 
-Implemented tools include:
+Available workflows
 
-search;
+🔍 search
 
-tag filters;
+🏷️ tag filtering
 
-date filtering;
+📅 date filtering
 
-list/calendar browsing;
+🗓️ calendar browsing
 
-favorites;
+⭐ favorites
 
-editing;
+✏️ editing
 
-Revisit This;
+🔁 Revisit This
 
-Weekly Review;
+📖 Weekly Review
 
-Decision Ledger;
+⚖️ Decision Ledger
 
-Reflection Chains;
+🔗 Reflection Chains
 
-Assumption Tracker;
+🧩 Assumption Tracker
 
-Version History;
+🕘 Version History
 
-Knowledge Graph;
+🕸️ Knowledge Graph
 
-export;
+📤 export
 
-reminder-oriented workflows.
+🔔 reminder-oriented workflows
 
 Year in Reflection
 
-<p align="center">
-  <img src="./docs/images/Reflection%20Wrap.jpeg" alt="MirrorTrace Year in Reflection summary" width="100%">
-</p>
+<img src="mirrortrace-readme-assets/year-in-reflection.png"
+  alt="MirrorTrace Year in Reflection"
+  width="100%"/>
 
-Year in Reflection summarizes only information already present in the user’s saved data.
+Year in Reflection summarizes information already present in the user's saved data.
 
 It can surface:
 
-reflection count;
+reflection count
 
-approved memories;
+approved memories
 
-Thought Diffs;
+Thought Diffs
 
-most active period;
+most active period
 
-revisited topics.
+revisited topics
 
 It is designed as a factual reflection summary rather than a psychological or mood inference system.
 
-🛡️ Memory Governance Center
+06 — 🛡️ Memory Governance
 
-<p align="center">
-  <img src="./docs/images/User%20Memory%20Governance.jpeg" alt="MirrorTrace Memory Governance Center" width="100%">
-</p>
+<img src="mirrortrace-readme-assets/memory-governance.png"
+  alt="MirrorTrace Memory Governance Center"
+  width="100%"/>
 
 Memory Governance is the control plane for everything MirrorTrace is allowed to reuse as reflective memory.
 
 Users can inspect and manage:
 
-approved memories;
+approved memories
 
-memory-retention state;
+retention state
 
-expiring memories;
+expiring memories
 
-Thought Diffs;
+Thought Diffs
 
-provenance;
+provenance
 
-Perspective Watches;
+Perspective Watches
 
-reminder delivery;
+reminder delivery
 
-memory export;
+memory export
 
-memory revocation.
+memory revocation
 
-Perspective Watch
+👁️ Perspective Watch
 
-Perspective Watch lets the user intentionally schedule a future revisit.
+Perspective Watch lets users intentionally schedule a future revisit.
 
 The system does not silently decide which belief deserves follow-up.
 
 The user chooses:
 
-what to watch;
+What to watch
+      +
+When to revisit it
+      +
+Whether reminders are enabled
 
-when to revisit it;
+07 — 👥 MirrorRoom
 
-whether reminder delivery is enabled.
-
-👥 MirrorRoom
-
-Consent-Based Collaborative Reflection
-
-<p align="center">
-  <img src="./docs/images/MirrorRoom%20.jpeg" alt="MirrorRoom create and join experience" width="100%">
-</p>
+<img src="mirrortrace-readme-assets/mirror-room.png"
+  alt="MirrorTrace MirrorRoom"
+  width="100%"/>
 
 Think privately. Share deliberately.
 
-MirrorRoom is a temporary collaborative reasoning environment, not a shared journal.
+MirrorRoom is a temporary collaborative reasoning environment — not a shared journal.
 
 Capabilities
 
-create a temporary room;
+create a temporary room
 
-join using an invite code;
+join using an invite code
 
-copy invite links;
+copy invite links
 
-choose display-name behavior;
+choose display-name behavior
 
-explicitly share a thought;
+explicitly share a thought
 
-view participants;
+view participants
 
-generate a factual room summary;
+generate a factual room summary
 
-save only your own takeaway;
+save only your own takeaway
 
-host-only closing;
+host-only closing
 
-expiry;
+expiry
 
-server-side membership validation.
+server-side membership validation
 
-Privacy Boundary
+Privacy boundary
 
-MirrorRoom does not automatically read or import:
+MirrorRoom does not automatically import:
 
 Private Journal Entries
 Thought Snapshots
@@ -541,61 +427,59 @@ Saved Private Takeaways
 
 Only text deliberately submitted through the room contribution flow enters collaborative scope.
 
-🧑‍💻 Admin Control Room
+08 — 🧑‍💻 Admin Control Room
 
-<p align="center">
-  <img src="./docs/images/Admin%20Dashboard.jpeg" alt="MirrorTrace Admin Control Room security and operations overview" width="100%">
-</p>
+<img src="mirrortrace-readme-assets/admin-dashboard.png"
+  alt="MirrorTrace Admin Control Room"
+  width="100%"/>
 
 The Admin Control Room provides operational visibility while maintaining a visible privacy boundary.
 
-It surfaces aggregate information such as:
+It can surface aggregate information such as:
 
-registered users;
+registered users
 
-Thought Snapshot counts;
+Thought Snapshot counts
 
-Thought Diff counts;
+Thought Diff counts
 
-active watches;
+active watches
 
-push devices;
+push devices
 
-authorization state;
+authorization state
 
-privacy-boundary status.
+privacy-boundary status
 
 The administrator is not automatically granted unrestricted journal visibility.
 
 Service Health & Aggregate Activity
 
-<p align="center">
-  <img src="./docs/images/Admin%20Dashboard%202.jpeg" alt="MirrorTrace Admin service health and aggregate activity" width="100%">
-</p>
+<img src="mirrortrace-readme-assets/admin-health.png"
+  alt="MirrorTrace Admin Service Health"
+  width="100%"/>
 
 The operations dashboard can verify:
 
-Firebase Auth;
+Firebase Authentication
 
-Firestore;
+Cloud Firestore
 
-Gemini configuration;
+Gemini configuration
 
-SMTP configuration;
+SMTP configuration
 
-FCM;
+FCM
 
-scheduler configuration;
+scheduler configuration
 
-aggregate reflection infrastructure;
+aggregate reflection infrastructure
 
-minimized account metadata.
+minimized account metadata
 
-This gives operational insight without turning the dashboard into a private-content inspection tool.
+09 — 🆘 Support & Feedback
 
-🆘 Support & Feedback
-
-MirrorTrace also includes user-facing support and feedback workflows.
+MirrorTrace includes user-facing support and feedback workflows.
 
 Customer Support
 
@@ -603,45 +487,45 @@ Users explicitly submit the information they want administrators to receive.
 
 Private journal history is not automatically attached to support requests.
 
-Feedback & Public Reviews
+Public Reviews
 
 Public review display is designed around:
 
-explicit display consent;
+explicit display consent
 
-moderation status;
+moderation status
 
-admin approval.
+admin approval
 
-🤖 TraceBot
+10 — 🤖 TraceBot
 
 TraceBot is the public product guide.
 
 It explains:
 
-what MirrorTrace does;
+what MirrorTrace does
 
-how navigation works;
+navigation
 
-Thought Snapshots;
+Thought Snapshots
 
-Thought Diffs;
+Thought Diffs
 
-provenance;
+provenance
 
-Memory Governance;
+Memory Governance
 
-Perspective Watch;
+Perspective Watch
 
-MirrorRoom;
+MirrorRoom
 
-Support and Feedback;
+Support & Feedback
 
-the privacy model.
+the privacy model
 
 TraceBot is separate from the authenticated Reflective Brainstorm Companion.
 
-🔐 Security Architecture
+🔐 Security & Privacy Architecture
 
 MirrorTrace is designed around explicit trust boundaries.
 
@@ -706,8 +590,9 @@ MirrorRoom data lives in a separate collaborative namespace.
 
 flowchart TB
     U[User] --> WEB[React + TypeScript Client]
+
     WEB --> AUTH[Firebase Authentication]
-    AUTH --> API[Express / TypeScript Backend]
+    AUTH --> API[Express + TypeScript Backend]
     API --> VERIFY[Firebase Admin Token Verification]
 
     VERIFY --> JOURNAL[Journal APIs]
@@ -749,6 +634,7 @@ flowchart LR
     E -->|Edit & Accept| G
 
     G --> H{Related Approved Memory Exists?}
+
     H -->|No| I[Wait for Future Reflection]
     H -->|Yes| J[Evidence Comparison]
 
@@ -756,7 +642,7 @@ flowchart LR
     K --> L[Provenance]
     K --> M[Optional Perspective Watch]
 
-🧩 MirrorRoom Lifecycle
+👥 MirrorRoom Lifecycle
 
 sequenceDiagram
     participant A as Participant A
@@ -785,7 +671,7 @@ sequenceDiagram
     B->>API: Save only my takeaway
     API->>DB: Write to B private journal only
 
-☁️ Google Cloud & Gemini Usage
+☁️ Google Cloud & Gemini
 
 Service
 
@@ -801,7 +687,7 @@ Journals, conversations, approved memory, Thought Diffs, provenance, watches, ro
 
 Gemini API
 
-Multi-turn reflective conversation, Thought Snapshot generation, Thought Diff evaluation
+Reflective conversation, Thought Snapshot generation, Thought Diff evaluation
 
 Firebase Admin SDK
 
@@ -809,15 +695,15 @@ Server-side token verification and privileged backend operations
 
 Google Cloud Secret Manager
 
-Secure production Gemini credential storage / injection
+Secure production Gemini credential storage
 
 Google Cloud Run
 
-Production deployment target
+Production deployment
 
 ⚙️ Key Engineering Decisions
 
-Challenge
+Engineering challenge
 
 MirrorTrace approach
 
@@ -887,7 +773,7 @@ Database
 
 Cloud Firestore
 
-Server Firebase
+Server
 
 Firebase Admin SDK
 
@@ -907,7 +793,7 @@ Icons
 
 Lucide React
 
-📡 Key API Surface
+📡 API Surface
 
 Method
 
@@ -1010,19 +896,19 @@ Unknown /api/* routes return a JSON 404 rather than falling through to the React
 📁 Repository Structure
 
 Gen-AI-APAC-Ideathon/
-├── docs/
-│   └── images/
-│       ├── Admin Dashboard.jpeg
-│       ├── Admin Dashboard 2.jpeg
-│       ├── MirrorRoom .jpeg
-│       ├── Quick Actions.jpeg
-│       ├── Reflection Wrap.jpeg
-│       ├── Sign in page.jpeg
-│       ├── Target Audience.jpeg
-│       ├── User Journal History.jpeg
-│       ├── User Memory Governance.jpeg
-│       ├── User Overview.jpeg
-│       └── User Reflective Space.jpeg
+├── mirrortrace-readme-assets/
+│   ├── hero.png
+│   ├── sign-in.png
+│   ├── audience.png
+│   ├── overview.png
+│   ├── quick-actions.png
+│   ├── reflective-space.png
+│   ├── journal-history.png
+│   ├── year-in-reflection.png
+│   ├── memory-governance.png
+│   ├── mirror-room.png
+│   ├── admin-dashboard.png
+│   └── admin-health.png
 │
 ├── public/
 ├── server/
@@ -1040,8 +926,6 @@ Gen-AI-APAC-Ideathon/
 │   ├── hooks/
 │   ├── lib/
 │   ├── styles/
-│   │   ├── mirrortrace-app.css
-│   │   └── mirrortrace-public.css
 │   ├── App.tsx
 │   └── main.tsx
 │
@@ -1078,9 +962,9 @@ npm install
 
 3. Configure environment
 
-Use the project’s .env.example as the reference for required server and Firebase configuration.
+Use .env.example as the reference for required server and Firebase configuration.
 
-Do not commit .env or service-account credentials.
+Never commit .env files or service-account credentials.
 
 4. Run
 
@@ -1103,8 +987,11 @@ Gemini credentials must remain server-side.
 
 For Cloud Run, the intended production pattern is:
 
-gcloud secrets create GEMINI_API_KEY --replication-policy="automatic"
-echo -n "YOUR_API_KEY" | gcloud secrets versions add GEMINI_API_KEY --data-file=-
+gcloud secrets create GEMINI_API_KEY \
+  --replication-policy="automatic"
+
+echo -n "YOUR_API_KEY" | \
+  gcloud secrets versions add GEMINI_API_KEY --data-file=-
 
 Grant the Cloud Run runtime service account access:
 
@@ -1114,9 +1001,9 @@ gcloud secrets add-iam-policy-binding GEMINI_API_KEY \
 
 Then bind the secret to the Cloud Run revision.
 
-Submission note: verify the deployed Cloud Run revision is actually using Secret Manager before selecting the challenge’s Secret Manager checkbox.
+Important: verify that the deployed Cloud Run revision is actually using Secret Manager before treating secret management as production-ready.
 
-☁️ Cloud Run Deployment
+☁️ Deployment
 
 MirrorTrace is designed for Google Cloud Run.
 
@@ -1126,13 +1013,23 @@ gcloud run services update YOUR_SERVICE_NAME \
   --region=YOUR_REGION \
   --update-labels=dev-tutorial=cloud-run-ai-challenge
 
-Verify it:
+Verify:
 
 gcloud run services describe YOUR_SERVICE_NAME \
   --region=YOUR_REGION \
   --format="value(metadata.labels)"
 
-✅ Submission Readiness Checklist
+🌐 Live Demo
+
+<div align="center">
+
+
+
+</div>
+
+Add your final deployed Cloud Run URL here once the production deployment is ready.
+
+✅ Submission Readiness
 
 Functional
 
@@ -1176,7 +1073,7 @@ User A cannot see User B private data
 
 Anonymous protected API access fails
 
-Normal user cannot access admin APIs
+Normal users cannot access admin APIs
 
 Admin authorization is server-side
 
@@ -1206,37 +1103,23 @@ smokeTest.ts passes
 
 Production Cloud Run journey verified
 
-Challenge
+🎯 What Makes MirrorTrace Different?
 
-Cloud Run URL is public and working
+1. Consent is part of the AI memory architecture
 
-Required Cloud Run label is present
-
-GitHub repository is public
-
-README screenshots render correctly
-
-Social post contains #AccelerateAIwithCloudRun
-
-Every submitted URL opens in incognito
-
-🎯 What Makes MirrorTrace Different
-
-1. AI memory requires explicit consent
-
-A Gemini-generated interpretation does not silently become reusable memory.
+Gemini-generated interpretations do not silently become reusable memory.
 
 2. It models perspective change over time
 
 Thought Snapshots and Thought Diffs create a longitudinal reasoning layer.
 
-3. AI comparisons are inspectable
+3. AI comparisons are evidence-backed
 
 Provenance connects generated comparisons back to approved source evidence.
 
-4. Collaboration does not require surrendering private history
+4. Collaboration is selective by design
 
-MirrorRoom creates a temporary selective reasoning layer.
+MirrorRoom creates a temporary reasoning layer without importing private history.
 
 5. Administration is separated from private reflection
 
@@ -1250,76 +1133,81 @@ Users can reject, edit, retain, export, and revoke AI memory.
 
 MirrorTrace brings together:
 
-full-stack TypeScript engineering;
+full-stack TypeScript engineering
 
-Firebase Authentication;
+React application architecture
 
-Cloud Firestore data modeling;
+Firebase Authentication
 
-Gemini integration;
+Cloud Firestore data modeling
 
-consent-aware AI memory;
+Gemini integration
 
-provenance;
+consent-aware AI memory
 
-longitudinal reasoning;
+provenance and explainability
 
-privacy boundaries;
+longitudinal reasoning
 
-collaborative workflows;
+privacy boundaries
 
-server-side authorization;
+collaborative workflows
 
-operational administration;
+server-side authorization
 
-Cloud Run deployment readiness;
+operational administration
 
-production verification.
+Cloud Run deployment
 
-🌱 Future Roadmap
+production verification
 
-Potential extensions include:
+🌱 Roadmap
 
-Phase 1 — Current Submission
-Consent-governed reflective AI
-Thought Snapshots
-Thought Diffs
-Provenance
-MirrorRoom
-Memory Governance
+Phase 1 — Current
+├── Consent-governed reflective AI
+├── Thought Snapshots
+├── Thought Diffs
+├── Provenance
+├── MirrorRoom
+└── Memory Governance
 
 Phase 2 — Memory Intelligence
-Semantic retrieval across approved memory
-Richer retention controls
-Cross-topic reasoning summaries
+├── Semantic retrieval across approved memory
+├── Richer retention controls
+└── Cross-topic reasoning summaries
 
-Phase 3 — Team & Organization Use
-Organization-level RBAC
-Shared governed workspaces
-Expanded moderation and audit telemetry
+Phase 3 — Team & Organization
+├── Organization-level RBAC
+├── Shared governed workspaces
+└── Expanded moderation and audit telemetry
 
 Phase 4 — Production Scale
-Cloud Scheduler / Tasks
-Structured observability
-Accessibility audits
-Advanced export / portability
+├── Cloud Scheduler / Tasks
+├── Structured observability
+├── Accessibility audits
+└── Advanced export / portability
 
 ⚠️ Scope
 
-MirrorTrace is a reflective intelligence application and not a medical, psychological, diagnostic, or therapeutic system.
+MirrorTrace is a reflective-intelligence application and not a medical, psychological, diagnostic, or therapeutic system.
 
 Its purpose is to help users articulate, revisit, and compare their own reasoning while keeping them in control of reusable AI memory.
 
 👩‍💻 Author
 
+<div align="center">
+
 Agrima Saxena
 
 Solo Developer · Full-Stack Engineering · AI/ML · Cloud · Security
 
+Built independently for the Google Cloud Gen AI Academy — APAC Edition / Cloud Run Build & Deploy Social Challenge.
+
+<br/>
 
 
 
-Built independently for the Google Cloud Gen AI Academy APAC Edition Ideathon / Cloud Run Build & Deploy Social Challenge.
+</div>
 
 <div align="center">
 
@@ -1329,6 +1217,6 @@ It is trying to remember only what the user deliberately permits.
 
 Private reflection · Consent-governed memory · Evidence-backed change · Selective collaboration
 
-⭐ If you find the project interesting, consider starring the repository.
+⭐ If you find MirrorTrace interesting, consider starring the repository.
 
 </div>
