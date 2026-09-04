@@ -1,7 +1,9 @@
-﻿import 'dotenv/config';
+import 'dotenv/config';
 
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import { adminRouter } from './server/adminRoutes.ts';
 import { createServer as createViteServer } from 'vite';
 
@@ -4314,46 +4316,102 @@ app.use('/api', (_req, res) => {
    ============================================================ */
 
 async function startServer() {
-  if (
-    process.env.NODE_ENV !==
-    'production'
-  ) {
-    const vite =
-      await createViteServer({
-        server: {
-          middlewareMode: true,
-        },
+  const currentFile =
+    typeof __filename !== 'undefined'
+      ? __filename
+      : fileURLToPath(import.meta.url);
 
-        appType: 'spa',
-      });
+  const currentDir =
+    typeof __dirname !== 'undefined'
+      ? __dirname
+      : path.dirname(currentFile);
 
-    app.use(
-      vite.middlewares
-    );
+  const isProduction =
+    process.env.NODE_ENV === 'production' ||
+    currentFile.endsWith('.cjs') ||
+    currentDir.includes('dist') ||
+    !fs.existsSync(path.join(process.cwd(), 'src', 'main.tsx'));
+
+  if (!isProduction) {
+    const vite = await createViteServer({
+      server: {
+        middlewareMode: true,
+      },
+      appType: 'spa',
+    });
+
+    app.use(vite.middlewares);
   } else {
-    const distPath =
-      path.join(
-        process.cwd(),
-        'dist'
-      );
+    const distPath = fs.existsSync(path.join(process.cwd(), 'dist', 'index.html'))
+      ? path.join(process.cwd(), 'dist')
+      : fs.existsSync(path.join(currentDir, 'index.html'))
+        ? currentDir
+        : path.resolve(currentDir, '..', 'dist');
 
+    const assetsPath = path.join(distPath, 'assets');
+
+    // 1. Vite production assets under /assets/* served as real static files before SPA fallback
     app.use(
-      express.static(
-        distPath
-      )
+      '/assets',
+      express.static(assetsPath, {
+        immutable: true,
+        maxAge: '1y',
+        index: false,
+        fallthrough: true,
+        setHeaders(res, filePath) {
+          if (filePath.endsWith('.js') || filePath.endsWith('.mjs')) {
+            res.setHeader(
+              'Content-Type',
+              'application/javascript; charset=UTF-8'
+            );
+          } else if (filePath.endsWith('.css')) {
+            res.setHeader(
+              'Content-Type',
+              'text/css; charset=UTF-8'
+            );
+          }
+        },
+      })
     );
 
-    app.get(
-      '*',
-      (_req, res) => {
-        res.sendFile(
-          path.join(
-            distPath,
-            'index.html'
-          )
-        );
-      }
+    // 2. Missing /assets/* requests return 404 instead of falling through to React SPA HTML
+    app.use('/assets', (_req, res) => {
+      return res.status(404).type('text/plain').send('Asset not found.');
+    });
+
+    // 3. Root static assets from dist (favicon, service worker, hero images)
+    app.use(
+      express.static(distPath, {
+        index: false,
+        maxAge: '1h',
+        setHeaders(res, filePath) {
+          if (filePath.endsWith('.js') || filePath.endsWith('.mjs')) {
+            res.setHeader(
+              'Content-Type',
+              'application/javascript; charset=UTF-8'
+            );
+          }
+        },
+      })
     );
+
+    // 4. Missing static file requests (paths with an extension) return 404, never index.html
+    app.use((req, res, next) => {
+      if (req.method === 'GET' && path.extname(req.path)) {
+        return res.status(404).type('text/plain').send('File not found.');
+      }
+      next();
+    });
+
+    // 5. SPA navigation fallback: index.html is served only for navigation routes with no-cache headers
+    app.get('*', (_req, res) => {
+      res.setHeader(
+        'Cache-Control',
+        'no-cache, no-store, must-revalidate'
+      );
+      res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+      res.sendFile(path.join(distPath, 'index.html'));
+    });
   }
 
   app.listen(
