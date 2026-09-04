@@ -1423,7 +1423,20 @@ Withhold
 ```
 
 ---
+## 🤖 How MirrorTrace Differs From a General Chatbot
 
+MirrorTrace is not designed as another general-purpose chat interface.
+
+A chatbot can help discuss a decision in the moment. MirrorTrace adds a governed reflective layer around that conversation:
+
+- **Consent-gated memory** — Gemini may propose a Thought Snapshot, but the interpretation becomes reusable memory only after the user explicitly Accepts or Edits & Accepts it.
+- **Evidence-backed evolution** — Thought Diffs compare related approved positions over time and preserve provenance back to their source reflections.
+- **Owner-isolated reflective history** — journals, approved memories, comparisons, and provenance are stored under the authenticated user's verified Firebase identity.
+- **Memory Governance** — users can inspect, retain, export, and revoke what MirrorTrace is allowed to reuse.
+- **Selective collaboration** — MirrorRoom works like a Spotify Jam for reflection: multiple people join the same temporary session, but each person shares only the thoughts they deliberately contribute.
+- **TraceBot is only the product guide** — it explains MirrorTrace's features, navigation, and privacy model. The private Reflective Brainstorm Companion handles the user's actual reflective conversation.
+
+The goal is therefore not simply to chat with AI, but to create a traceable, consent-governed record of how a user's reasoning evolves.
 ## 🧭 Design Philosophy
 
 MirrorTrace prioritizes:
