@@ -4292,6 +4292,24 @@ MirrorTrace is a reflection tool, not a medical or diagnostic system.
 );
 
 /* ============================================================
+   6.5. UNKNOWN API FALLBACK
+   ============================================================ */
+
+/**
+ * IMPORTANT:
+ * This must stay AFTER every real /api route and BEFORE Vite / SPA fallback.
+ *
+ * Without this handler, an unknown /api/* request falls through to the React
+ * SPA and returns index.html with HTTP 200.
+ */
+app.use('/api', (_req, res) => {
+  return res.status(404).json({
+    error: 'API route not found.',
+    code: 'API_ROUTE_NOT_FOUND',
+  });
+});
+
+/* ============================================================
    7. VITE / STATIC SERVING
    ============================================================ */
 
