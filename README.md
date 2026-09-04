@@ -1325,8 +1325,8 @@ gcloud run services describe YOUR_SERVICE_NAME \
 ## 🌐 Live Demo
 
 ```text
-Google Cloud Run URL:
-ADD AFTER FINAL PRODUCTION DEPLOYMENT
+**Google Cloud Run:**  
+https://gen-ai-apac-ideathon-840043864202.asia-south1.run.app/
 ```
 
 ---
