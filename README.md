@@ -8,7 +8,7 @@
 ![Google Cloud](https://img.shields.io/badge/Google%20Cloud-Gen%20AI%20Academy%20APAC-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)
 ![Gemini](https://img.shields.io/badge/Google%20Gemini-Reflective%20AI-8E75B2?style=for-the-badge&logo=google&logoColor=white)
 
-**Independently designed and built for the Google Cloud Gen AI Academy — APAC Edition / Cloud Run Build & Deploy Social Challenge.**
+**Independently designed and built for the Google Cloud Gen AI Academy  : APAC Edition / Cloud Run Build & Deploy Social Challenge.**
 
 ---
 
@@ -67,7 +67,7 @@ It helps users understand:
 - Can I inspect, export, retain, or revoke it?
 - Can I collaborate without exposing my private journal history?
 
-**MirrorTrace treats reflective AI as a consent, provenance, privacy, and longitudinal-reasoning problem — not merely a journaling interface.**
+**MirrorTrace treats reflective AI as a consent, provenance, privacy and longitudinal-reasoning problem  : not merely a journaling interface.**
 
 ---
 
@@ -115,7 +115,7 @@ The landing experience communicates three fundamental ideas:
 - AI memory should require explicit consent
 - future comparisons should remain traceable to evidence
 
-TraceBot is also available publicly to explain product features, navigation, and privacy boundaries before a user signs in.
+TraceBot is also available publicly to explain product features, navigation and privacy boundaries before a user signs in.
 
 ---
 
@@ -125,7 +125,7 @@ TraceBot is also available publicly to explain product features, navigation, and
      alt="MirrorTrace Target Audience"
      width="100%"/>
 
-MirrorTrace is designed for people who make decisions, revisit ideas, and want to understand how their reasoning changes over time.
+MirrorTrace is designed for people who make decisions, revisit ideas and want to understand how their reasoning changes over time.
 
 ### 🎓 Students & Early-Career Professionals
 
@@ -193,10 +193,10 @@ Useful for:
 
 | Page | Purpose |
 |---|---|
-| **Overview** | Reflection metrics, perspective evolution, and quick actions |
+| **Overview** | Reflection metrics, perspective evolution and quick actions |
 | **Reflect & Chat** | Private journaling and Gemini-assisted reflection |
-| **Journal History** | Search, filter, revisit, edit, and analyze saved reflections |
-| **Memory** | Approved AI memory, Thought Diffs, provenance, retention, and watches |
+| **Journal History** | Search, filter, revisit, edit and analyze saved reflections |
+| **Memory** | Approved AI memory, Thought Diffs, provenance, retention and watches |
 | **Support** | Privacy-aware customer support |
 | **Feedback** | Product feedback and consent-controlled public reviews |
 | **MirrorRoom** | Temporary selective collaborative reasoning |
@@ -992,8 +992,8 @@ sequenceDiagram
 | Service | MirrorTrace Usage |
 |---|---|
 | **Firebase Authentication** | Google Sign-In and authenticated user identity |
-| **Cloud Firestore** | Journals, conversations, approved memories, Thought Diffs, provenance, watches, rooms, support, and feedback |
-| **Google Gemini API** | Multi-turn reflection, Thought Snapshot proposals, and Thought Diff evaluation |
+| **Cloud Firestore** | Journals, conversations, approved memories, Thought Diffs, provenance, watches, rooms, support and feedback |
+| **Google Gemini API** | Multi-turn reflection, Thought Snapshot proposals and Thought Diff evaluation |
 | **Firebase Admin SDK** | Server-side identity verification and privileged backend operations |
 | **Google Cloud Secret Manager** | Secure production Gemini credential handling |
 | **Google Cloud Run** | Production full-stack deployment |
@@ -1014,7 +1014,7 @@ sequenceDiagram
 | Admin UI should not equal authority | Server-side admin authorization |
 | Gemini credentials should not reach browser code | Server-side Gemini integration |
 | Invalid API routes should not return SPA HTML | Explicit `/api` JSON 404 |
-| Production behaviour should be testable | Build, predeploy, and smoke tests |
+| Production behaviour should be testable | Build, predeploy and smoke tests |
 
 ---
 
@@ -1408,7 +1408,7 @@ Operational visibility does not automatically imply unrestricted private-content
 
 ### 👤 The User Remains the Authority
 
-Users can:
+Users can-
 
 ```text
 Accept
@@ -1429,17 +1429,17 @@ MirrorTrace is not designed as another general-purpose chat interface.
 
 A chatbot can help discuss a decision in the moment. MirrorTrace adds a governed reflective layer around that conversation:
 
-- **Consent-gated memory** — Gemini may propose a Thought Snapshot, but the interpretation becomes reusable memory only after the user explicitly Accepts or Edits & Accepts it.
-- **Evidence-backed evolution** — Thought Diffs compare related approved positions over time and preserve provenance back to their source reflections.
-- **Owner-isolated reflective history** — journals, approved memories, comparisons, and provenance are stored under the authenticated user's verified Firebase identity.
-- **Memory Governance** — users can inspect, retain, export, and revoke what MirrorTrace is allowed to reuse.
-- **Selective collaboration** — MirrorRoom works like a Spotify Jam for reflection: multiple people join the same temporary session, but each person shares only the thoughts they deliberately contribute.
-- **TraceBot is only the product guide** — it explains MirrorTrace's features, navigation, and privacy model. The private Reflective Brainstorm Companion handles the user's actual reflective conversation.
+- **Consent-gated memory**  : Gemini may propose a Thought Snapshot, but the interpretation becomes reusable memory only after the user explicitly Accepts or Edits & Accepts it.
+- **Evidence-backed evolution**  : Thought Diffs compare related approved positions over time and preserve provenance back to their source reflections.
+- **Owner-isolated reflective history**  : journals, approved memories, comparisons and provenance are stored under the authenticated user's verified Firebase identity.
+- **Memory Governance**  : users can inspect, retain, export and revoke what MirrorTrace is allowed to reuse.
+- **Selective collaboration**  : MirrorRoom works like a Spotify Jam for reflection: multiple people join the same temporary session, but each person shares only the thoughts they deliberately contribute.
+- **TraceBot is only the product guide**  : it explains MirrorTrace's features, navigation and privacy model. The private Reflective Brainstorm Companion handles the user's actual reflective conversation.
 
 The goal is therefore not simply to chat with AI, but to create a traceable, consent-governed record of how a user's reasoning evolves.
 ## 🧭 Design Philosophy
 
-MirrorTrace prioritizes:
+MirrorTrace prioritizes-
 
 ```text
 Consent
@@ -1498,7 +1498,7 @@ MirrorTrace brings together:
 ## 🌱 Production Roadmap
 
 ```text
-Phase 1 — Current Submission
+Phase 1  : Current Submission
 ├── Private Reflection
 ├── Multi-turn Gemini
 ├── Consent-Governed Memory
@@ -1510,19 +1510,19 @@ Phase 1 — Current Submission
 ├── MirrorRoom
 └── Admin Control Room
 
-Phase 2 — Memory Intelligence
+Phase 2  : Memory Intelligence
 ├── Richer semantic retrieval
 ├── Cross-topic reasoning
 ├── Advanced retention policies
 └── Improved longitudinal discovery
 
-Phase 3 — Organization Workflows
+Phase 3  : Organization Workflows
 ├── Organization-level RBAC
 ├── Governed collaborative workspaces
 ├── Richer audit telemetry
 └── Expanded moderation
 
-Phase 4 — Production Scale
+Phase 4  : Production Scale
 ├── Cloud Scheduler / Tasks
 ├── Structured observability
 ├── Accessibility audits
@@ -1535,7 +1535,7 @@ Phase 4 — Production Scale
 
 MirrorTrace is a reflective-intelligence application.
 
-It is not a:
+It is not a-
 
 ```text
 Medical System
@@ -1544,7 +1544,7 @@ Clinical Decision System
 Therapeutic System
 ```
 
-Its purpose is to help users articulate, revisit, and compare their own reasoning while keeping them in control of reusable AI memory.
+Its purpose is to help users articulate, revisit and compare their own reasoning while keeping them in control of reusable AI memory.
 
 ---
 
@@ -1597,7 +1597,7 @@ Its purpose is to help users articulate, revisit, and compare their own reasonin
      alt="MirrorTrace Project"/>
 </a>
 
-*Built independently as a solo project for the Google Cloud Gen AI Academy — APAC Edition / Cloud Run Build & Deploy Social Challenge.*
+*Built independently as a solo project for the Google Cloud Gen AI Academy  : APAC Edition / Cloud Run Build & Deploy Social Challenge.*
 
 ⭐ **If you found the project useful or interesting, consider starring the repository.**
 
