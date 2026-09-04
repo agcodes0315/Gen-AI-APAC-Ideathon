@@ -300,7 +300,7 @@ journalEnhancementRouter.post('/api/journal-enhancements/chains', authMiddleware
   const uid = req.user!.uid;
   const title = text(req.body?.title, 220);
   const journalIds: string[] = Array.isArray(req.body?.journalIds)
-    ? Array.from(new Set(req.body.journalIds.map((v: unknown) => text(v, 200)).filter(Boolean))).slice(0, 25)
+    ? (Array.from(new Set(req.body.journalIds.map((v: unknown) => text(v, 200)).filter(Boolean))) as string[]).slice(0, 25)
     : [];
   if (!title || journalIds.length < 2) return res.status(400).json({ error: 'A chain needs a title and at least two reflections.' });
   for (const id of journalIds) await ownedJournal(uid, id);

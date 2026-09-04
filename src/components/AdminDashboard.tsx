@@ -857,6 +857,7 @@ function SupportTicketCard(
   props: {
     ticket: SupportTicket;
     onSaved: () => Promise<void>;
+    key?: string | number;
   }
 ) {
   const [status, setStatus] =
@@ -962,6 +963,7 @@ function ReviewModerationCard(
   props: {
     review: ProductReview;
     onSaved: () => Promise<void>;
+    key?: string | number;
   }
 ) {
   const [saving, setSaving] =

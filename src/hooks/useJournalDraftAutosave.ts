@@ -2,6 +2,8 @@ import {
   useEffect,
   useRef,
   useState,
+  type Dispatch,
+  type SetStateAction,
 } from 'react';
 
 import { getAuth } from 'firebase/auth';
@@ -11,13 +13,13 @@ interface UseJournalDraftAutosaveInput {
   tags: string[];
 
   setContent:
-    React.Dispatch<
-      React.SetStateAction<string>
+    Dispatch<
+      SetStateAction<string>
     >;
 
   setTags:
-    React.Dispatch<
-      React.SetStateAction<string[]>
+    Dispatch<
+      SetStateAction<string[]>
     >;
 
   enabled: boolean;

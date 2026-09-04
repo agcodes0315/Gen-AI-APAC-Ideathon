@@ -389,7 +389,7 @@ reflectionRoomRouter.post(
             visibility ===
             'named'
               ? text(
-                  req.user?.name ||
+                  (req.user as { name?: string; email?: string } | undefined)?.name ||
                   req.user?.email,
                   120
                 ) ||
@@ -550,7 +550,7 @@ reflectionRoomRouter.post(
               'named'
                 ? displayName ||
                   text(
-                    req.user?.name ||
+                    (req.user as { name?: string; email?: string } | undefined)?.name ||
                     req.user?.email,
                     120
                   ) ||
