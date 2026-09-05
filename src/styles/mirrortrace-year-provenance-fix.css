@@ -1,0 +1,608 @@
+/* ============================================================
+   MIRRORTRACE
+   YEAR IN REFLECTION + PROVENANCE VISUAL FIX
+
+   PURPOSE
+   -------
+   1. Keep Year in Reflection in the existing black-glass family.
+   2. Remove remaining blue / navy Provenance surfaces.
+   3. Do NOT change Overview, Memory, Admin, landing page,
+      Journal cards, MirrorRoom or other working UI.
+   ============================================================ */
+
+:root {
+  --mt-prov-black-92:
+    rgba(0, 0, 0, 0.92);
+
+  --mt-prov-black-82:
+    rgba(0, 0, 0, 0.82);
+
+  --mt-prov-black-72:
+    rgba(0, 0, 0, 0.72);
+
+  --mt-prov-black-58:
+    rgba(0, 0, 0, 0.58);
+
+  --mt-prov-black-46:
+    rgba(0, 0, 0, 0.46);
+
+  --mt-prov-border:
+    rgba(235, 241, 245, 0.16);
+
+  --mt-prov-border-soft:
+    rgba(235, 241, 245, 0.10);
+
+  --mt-prov-text:
+    #f8fafc;
+
+  --mt-prov-copy:
+    rgba(235, 241, 245, 0.78);
+
+  --mt-prov-muted:
+    rgba(215, 224, 231, 0.60);
+
+  --mt-prov-amber:
+    #e1aa65;
+}
+
+
+/* ============================================================
+   YEAR IN REFLECTION
+   ============================================================ */
+
+.mirrortrace-year-reflection {
+  background:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.50) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(235, 241, 245, 0.14) !important;
+
+  color:
+    #ffffff !important;
+}
+
+
+.mirrortrace-year-reflection
+article {
+  background:
+    rgba(0, 0, 0, 0.42) !important;
+
+  background-color:
+    rgba(0, 0, 0, 0.42) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(235, 241, 245, 0.13) !important;
+}
+
+
+/* ============================================================
+   THOUGHT DIFF PROVENANCE MODAL
+   ============================================================ */
+
+/*
+ * Entire popup.
+ *
+ * This intentionally overrides any previous blue/navy modal
+ * definitions attached to .mt-diff-modal.
+ */
+
+html body #root
+.mt-diff-modal {
+  background:
+    var(
+      --mt-prov-black-92
+    ) !important;
+
+  background-color:
+    var(
+      --mt-prov-black-92
+    ) !important;
+
+  background-image:
+    none !important;
+
+  color:
+    var(
+      --mt-prov-text
+    ) !important;
+
+  border:
+    1px solid
+    var(
+      --mt-prov-border
+    ) !important;
+
+  box-shadow:
+    0 28px 70px
+      rgba(
+        0,
+        0,
+        0,
+        0.58
+      ) !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+
+/* ============================================================
+   MODAL HEADER
+   ============================================================ */
+
+html body #root
+.mt-diff-modal-header {
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.90
+    ) !important;
+
+  background-color:
+    rgba(
+      0,
+      0,
+      0,
+      0.90
+    ) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    var(
+      --mt-prov-border-soft
+    ) !important;
+
+  backdrop-filter:
+    blur(4px) !important;
+
+  -webkit-backdrop-filter:
+    blur(4px) !important;
+}
+
+
+html body #root
+.mt-diff-modal-header
+h3 {
+  color:
+    #ffffff !important;
+}
+
+
+html body #root
+.mt-diff-modal-header
+p {
+  color:
+    var(
+      --mt-prov-copy
+    ) !important;
+}
+
+
+/* ============================================================
+   WHY AM I SEEING THIS? EXPLANATION
+   ============================================================ */
+
+/*
+ * The amber explanatory block should still communicate
+ * "evidence explanation" without becoming a bright beige panel.
+ */
+
+html body #root
+.mt-diff-modal
+.bg-amber-50\/70 {
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.58
+    ) !important;
+
+  background-color:
+    rgba(
+      0,
+      0,
+      0,
+      0.58
+    ) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    rgba(
+      225,
+      170,
+      101,
+      0.24
+    ) !important;
+
+  color:
+    var(
+      --mt-prov-copy
+    ) !important;
+}
+
+
+/* ============================================================
+   EARLIER / LATER SOURCE CARDS
+   ============================================================ */
+
+html body #root
+.mt-diff-source-earlier,
+html body #root
+.mt-diff-source-later {
+  background:
+    var(
+      --mt-prov-black-72
+    ) !important;
+
+  background-color:
+    var(
+      --mt-prov-black-72
+    ) !important;
+
+  background-image:
+    none !important;
+
+  color:
+    var(
+      --mt-prov-text
+    ) !important;
+
+  border:
+    1px solid
+    var(
+      --mt-prov-border
+    ) !important;
+
+  box-shadow:
+    inset
+      0
+      1px
+      0
+      rgba(
+        255,
+        255,
+        255,
+        0.025
+      ) !important;
+}
+
+
+/* ============================================================
+   APPROVED STANCE BLOCKS
+   ============================================================ */
+
+html body #root
+.mt-diff-source-earlier
+blockquote,
+html body #root
+.mt-diff-source-later
+blockquote {
+  background:
+    var(
+      --mt-prov-black-58
+    ) !important;
+
+  background-color:
+    var(
+      --mt-prov-black-58
+    ) !important;
+
+  background-image:
+    none !important;
+
+  border-color:
+    var(
+      --mt-prov-border-soft
+    ) !important;
+
+  color:
+    #ffffff !important;
+}
+
+
+/* ============================================================
+   SOURCE CARD TEXT
+   ============================================================ */
+
+html body #root
+:is(
+  .mt-diff-source-earlier,
+  .mt-diff-source-later
+)
+:is(
+  h1,
+  h2,
+  h3,
+  h4,
+  strong,
+  .text-stone-950,
+  .text-stone-900,
+  .text-stone-800,
+  .text-stone-700,
+  .text-amber-950
+) {
+  color:
+    #ffffff !important;
+}
+
+
+html body #root
+:is(
+  .mt-diff-source-earlier,
+  .mt-diff-source-later
+)
+:is(
+  p,
+  .text-stone-600,
+  .text-stone-500,
+  .text-stone-400
+) {
+  color:
+    var(
+      --mt-prov-copy
+    ) !important;
+}
+
+
+html body #root
+.mt-diff-source-later
+:is(
+  .text-amber-900,
+  .text-amber-800
+),
+html body #root
+.mt-diff-source-earlier
+:is(
+  .text-amber-900,
+  .text-amber-800
+) {
+  color:
+    var(
+      --mt-prov-amber
+    ) !important;
+}
+
+
+/* ============================================================
+   DIVIDERS
+   ============================================================ */
+
+html body #root
+.mt-diff-modal
+:is(
+  .border-stone-100,
+  .border-stone-200,
+  .border-amber-200
+) {
+  border-color:
+    var(
+      --mt-prov-border-soft
+    ) !important;
+}
+
+
+/* ============================================================
+   PROVENANCE INTEGRITY
+   ============================================================ */
+
+html body #root
+.mt-diff-modal
+.mt-diff-evidence {
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.64
+    ) !important;
+
+  background-color:
+    rgba(
+      0,
+      0,
+      0,
+      0.64
+    ) !important;
+
+  background-image:
+    none !important;
+
+  border:
+    1px solid
+    var(
+      --mt-prov-border
+    ) !important;
+}
+
+
+/* ============================================================
+   CLOSE BUTTON
+   ============================================================ */
+
+html body #root
+.mt-diff-modal
+button.bg-stone-950 {
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.82
+    ) !important;
+
+  background-color:
+    rgba(
+      0,
+      0,
+      0,
+      0.82
+    ) !important;
+
+  color:
+    #ffffff !important;
+
+  border:
+    1px solid
+    var(
+      --mt-prov-border
+    ) !important;
+}
+
+
+html body #root
+.mt-diff-modal
+button.bg-stone-950:hover {
+  background:
+    rgba(
+      20,
+      20,
+      20,
+      0.96
+    ) !important;
+}
+
+
+/* Header X button */
+html body #root
+.mt-diff-modal-header
+button {
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.66
+    ) !important;
+}
+
+
+html body #root
+.mt-diff-modal-header
+button:hover {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    ) !important;
+
+  color:
+    #ffffff !important;
+}
+
+
+/* ============================================================
+   MODAL BACKDROP
+   ============================================================ */
+
+html body #root
+.fixed.inset-0:has(.mt-diff-modal) {
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.78
+    ) !important;
+
+  backdrop-filter:
+    blur(3px) !important;
+
+  -webkit-backdrop-filter:
+    blur(3px) !important;
+}
+
+
+/* ============================================================
+   ERROR STATE INSIDE PROVENANCE
+   ============================================================ */
+
+html body #root
+.mt-diff-modal
+.bg-red-50 {
+  background:
+    rgba(
+      70,
+      12,
+      12,
+      0.62
+    ) !important;
+
+  color:
+    #fecaca !important;
+
+  border-color:
+    rgba(
+      248,
+      113,
+      113,
+      0.28
+    ) !important;
+}
+
+
+/* ============================================================
+   LOADING
+   ============================================================ */
+
+html body #root
+.mt-diff-modal
+.animate-spin {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.20
+    ) !important;
+
+  border-top-color:
+    var(
+      --mt-prov-amber
+    ) !important;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (
+  max-width:
+    800px
+) {
+  html body #root
+  .mt-diff-modal {
+    max-height:
+      90vh;
+  }
+
+  html body #root
+  .mt-diff-modal-header {
+    backdrop-filter:
+      blur(2px) !important;
+
+    -webkit-backdrop-filter:
+      blur(2px) !important;
+  }
+}

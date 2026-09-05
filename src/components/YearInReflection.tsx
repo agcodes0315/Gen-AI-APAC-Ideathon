@@ -16,6 +16,8 @@ import type {
   ThoughtSnapshot,
 } from '../types.ts';
 
+import '../styles/mirrortrace-year-provenance-fix.css';
+
 interface YearInReflectionProps {
   entries: JournalEntry[];
   snapshots: ThoughtSnapshot[];
@@ -28,17 +30,50 @@ type MonthCount = {
   count: number;
 };
 
-function getYear(
-  value: string
-): number | null {
-  const date =
-    new Date(value);
+function getValidDate(
+  ...values: Array<
+    string | null | undefined
+  >
+): Date | null {
+  for (const value of values) {
+    if (!value) {
+      continue;
+    }
 
-  return Number.isNaN(
-    date.getTime()
+    const date =
+      new Date(value);
+
+    if (
+      !Number.isNaN(
+        date.getTime()
+      )
+    ) {
+      return date;
+    }
+  }
+
+  return null;
+}
+
+function dateIsInYear(
+  date: Date | null,
+  year: number
+): boolean {
+  return Boolean(
+    date &&
+      date.getFullYear() ===
+        year
+  );
+}
+
+function normalizeTopic(
+  value?: string | null
+): string {
+  return String(
+    value || ''
   )
-    ? null
-    : date.getFullYear();
+    .trim()
+    .toLowerCase();
 }
 
 export const YearInReflection:
@@ -52,29 +87,192 @@ export const YearInReflection:
     const summary =
       useMemo(
         () => {
+          /*
+           * Build source maps first.
+           *
+           * Year in Reflection should not depend only on
+           * the timestamp attached to the derived object.
+           *
+           * A Thought Snapshot belongs to a source journal.
+           * A Thought Diff belongs to earlier/later snapshots
+           * and journals.
+           *
+           * This lets the yearly summary remain accurate even
+           * if one returned derived object has an older/missing
+           * createdAt field.
+           */
+
+          const entryById =
+            new Map<
+              string,
+              JournalEntry
+            >();
+
+          for (
+            const entry of entries
+          ) {
+            entryById.set(
+              entry.id,
+              entry
+            );
+          }
+
+          const snapshotById =
+            new Map<
+              string,
+              ThoughtSnapshot
+            >();
+
+          for (
+            const snapshot of
+              snapshots
+          ) {
+            snapshotById.set(
+              snapshot.id,
+              snapshot
+            );
+          }
+
+          /*
+           * Reflections
+           */
+
           const yearEntries =
             entries.filter(
               (entry) =>
-                getYear(
-                  entry.createdAt
-                ) === year
+                dateIsInYear(
+                  getValidDate(
+                    entry.createdAt,
+                    entry.updatedAt
+                  ),
+                  year
+                )
             );
+
+          /*
+           * Approved snapshots
+           *
+           * Primary:
+           *   approvedAt
+           *
+           * Fallback:
+           *   createdAt
+           *
+           * Final relationship fallback:
+           *   source journal belongs to selected year
+           */
 
           const yearSnapshots =
             snapshots.filter(
-              (snapshot) =>
-                getYear(
-                  snapshot.createdAt
-                ) === year
+              (snapshot) => {
+                const snapshotDate =
+                  getValidDate(
+                    snapshot.approvedAt,
+                    snapshot.createdAt
+                  );
+
+                if (
+                  dateIsInYear(
+                    snapshotDate,
+                    year
+                  )
+                ) {
+                  return true;
+                }
+
+                const sourceEntry =
+                  entryById.get(
+                    snapshot.sourceJournalId
+                  );
+
+                if (
+                  !sourceEntry
+                ) {
+                  return false;
+                }
+
+                return dateIsInYear(
+                  getValidDate(
+                    sourceEntry.createdAt,
+                    sourceEntry.updatedAt
+                  ),
+                  year
+                );
+              }
             );
+
+          /*
+           * Thought Diffs
+           *
+           * Primary:
+           *   diff.createdAt
+           *
+           * Relationship fallback:
+           *   later approved snapshot date
+           *   later source journal date
+           *
+           * This is important because Year in Reflection is
+           * summarizing the user's yearly reflective record,
+           * not merely trusting one presentation timestamp.
+           */
 
           const yearDiffs =
             diffs.filter(
-              (diff) =>
-                getYear(
-                  diff.createdAt
-                ) === year
+              (diff) => {
+                if (
+                  dateIsInYear(
+                    getValidDate(
+                      diff.createdAt
+                    ),
+                    year
+                  )
+                ) {
+                  return true;
+                }
+
+                const laterSnapshot =
+                  snapshotById.get(
+                    diff.laterSnapshotId
+                  );
+
+                if (
+                  laterSnapshot &&
+                  dateIsInYear(
+                    getValidDate(
+                      laterSnapshot.approvedAt,
+                      laterSnapshot.createdAt
+                    ),
+                    year
+                  )
+                ) {
+                  return true;
+                }
+
+                const laterEntry =
+                  entryById.get(
+                    diff.laterJournalId
+                  );
+
+                if (
+                  laterEntry &&
+                  dateIsInYear(
+                    getValidDate(
+                      laterEntry.createdAt,
+                      laterEntry.updatedAt
+                    ),
+                    year
+                  )
+                ) {
+                  return true;
+                }
+
+                return false;
+              }
             );
+
+          /*
+           * Most active month
+           */
 
           const monthCounts:
             MonthCount[] =
@@ -91,55 +289,23 @@ export const YearInReflection:
                 })
               );
 
-          const tagCounts =
-            new Map<
-              string,
-              number
-            >();
-
           for (
             const entry of
-            yearEntries
+              yearEntries
           ) {
             const date =
-              new Date(
-                entry.createdAt
+              getValidDate(
+                entry.createdAt,
+                entry.updatedAt
               );
 
-            if (
-              !Number.isNaN(
-                date.getTime()
-              )
-            ) {
-              monthCounts[
-                date.getMonth()
-              ].count += 1;
+            if (!date) {
+              continue;
             }
 
-            for (
-              const tag of
-              entry.topicTags ||
-              []
-            ) {
-              const normalized =
-                tag
-                  .trim()
-                  .toLowerCase();
-
-              if (!normalized) {
-                continue;
-              }
-
-              tagCounts.set(
-                normalized,
-                (
-                  tagCounts.get(
-                    normalized
-                  ) ||
-                  0
-                ) + 1
-              );
-            }
+            monthCounts[
+              date.getMonth()
+            ].count += 1;
           }
 
           const activeMonth =
@@ -153,16 +319,104 @@ export const YearInReflection:
                   left.count
               )[0];
 
-          const topTopic =
-            [...tagCounts.entries()]
-              .sort(
+          /*
+           * Most revisited topic
+           *
+           * Previously this looked only at raw journal tags.
+           * That meant a genuinely repeated subject could still
+           * display "No repeated topic yet".
+           *
+           * We now count factual topic signals already present in:
+           * - journal tags
+           * - approved snapshot topics
+           * - Thought Diff topics
+           *
+           * No psychological inference is performed.
+           */
+
+          const topicCounts =
+            new Map<
+              string,
+              number
+            >();
+
+          const addTopic =
+            (
+              value?:
+                string | null
+            ) => {
+              const normalized =
+                normalizeTopic(
+                  value
+                );
+
+              if (!normalized) {
+                return;
+              }
+
+              topicCounts.set(
+                normalized,
                 (
-                  left,
-                  right
-                ) =>
-                  right[1] -
-                  left[1]
-              )[0];
+                  topicCounts.get(
+                    normalized
+                  ) || 0
+                ) + 1
+              );
+            };
+
+          for (
+            const entry of
+              yearEntries
+          ) {
+            for (
+              const tag of
+                entry.topicTags ||
+                []
+            ) {
+              addTopic(tag);
+            }
+          }
+
+          for (
+            const snapshot of
+              yearSnapshots
+          ) {
+            addTopic(
+              snapshot.topic
+            );
+          }
+
+          for (
+            const diff of
+              yearDiffs
+          ) {
+            addTopic(
+              diff.topic
+            );
+          }
+
+          const sortedTopics =
+            [
+              ...topicCounts.entries(),
+            ].sort(
+              (
+                left,
+                right
+              ) =>
+                right[1] -
+                left[1]
+            );
+
+          const repeatedTopic =
+            sortedTopics.find(
+              (
+                [
+                  _topic,
+                  count,
+                ]
+              ) =>
+                count >= 2
+            );
 
           return {
             reflections:
@@ -194,8 +448,8 @@ export const YearInReflection:
                 : null,
 
             topTopic:
-              topTopic
-                ? topTopic[0]
+              repeatedTopic
+                ? repeatedTopic[0]
                 : null,
           };
         },
@@ -212,30 +466,41 @@ export const YearInReflection:
         {
           label:
             'Reflections',
+
           value:
             summary.reflections,
+
           detail:
             'saved this year',
+
           icon:
             BookOpen,
         },
+
         {
           label:
             'Approved Snapshots',
+
           value:
             summary.snapshots,
+
           detail:
             'user-approved memories',
+
           icon:
             Sparkles,
         },
+
         {
           label:
             'Thought Diffs',
+
           value:
             summary.diffs,
+
           detail:
             'perspective comparisons',
+
           icon:
             GitCompare,
         },
@@ -244,6 +509,7 @@ export const YearInReflection:
     return (
       <section
         className="
+          mirrortrace-year-reflection
           rounded-[30px]
           border
           border-white/10
@@ -254,6 +520,7 @@ export const YearInReflection:
           sm:p-8
         "
       >
+
         <div
           className="
             flex
@@ -264,7 +531,9 @@ export const YearInReflection:
             sm:justify-between
           "
         >
+
           <div>
+
             <div
               className="
                 text-[10px]
@@ -304,6 +573,7 @@ export const YearInReflection:
               No mood or psychological inference
               is performed.
             </p>
+
           </div>
         </div>
 
@@ -315,6 +585,7 @@ export const YearInReflection:
             md:grid-cols-3
           "
         >
+
           {cards.map(
             (
               card
@@ -335,6 +606,7 @@ export const YearInReflection:
                     p-5
                   "
                 >
+
                   <div
                     className="
                       flex
@@ -342,6 +614,7 @@ export const YearInReflection:
                       justify-between
                     "
                   >
+
                     <span
                       className="
                         text-[10px]
@@ -361,6 +634,7 @@ export const YearInReflection:
                         text-amber-300
                       "
                     />
+
                   </div>
 
                   <div
@@ -382,10 +656,12 @@ export const YearInReflection:
                   >
                     {card.detail}
                   </p>
+
                 </article>
               );
             }
           )}
+
         </div>
 
         <div
@@ -396,6 +672,7 @@ export const YearInReflection:
             sm:grid-cols-2
           "
         >
+
           <article
             className="
               rounded-2xl
@@ -405,6 +682,7 @@ export const YearInReflection:
               p-5
             "
           >
+
             <div
               className="
                 flex
@@ -415,6 +693,7 @@ export const YearInReflection:
                 text-stone-300
               "
             >
+
               <CalendarDays
                 className="
                   h-4
@@ -422,7 +701,9 @@ export const YearInReflection:
                   text-amber-300
                 "
               />
+
               Most active month
+
             </div>
 
             <p
@@ -436,6 +717,7 @@ export const YearInReflection:
               {summary.activeMonth ||
                 'Not enough activity yet'}
             </p>
+
           </article>
 
           <article
@@ -447,6 +729,7 @@ export const YearInReflection:
               p-5
             "
           >
+
             <div
               className="
                 flex
@@ -457,6 +740,7 @@ export const YearInReflection:
                 text-stone-300
               "
             >
+
               <Tag
                 className="
                   h-4
@@ -464,7 +748,9 @@ export const YearInReflection:
                   text-amber-300
                 "
               />
+
               Most revisited topic
+
             </div>
 
             <p
@@ -479,6 +765,7 @@ export const YearInReflection:
                 ? `#${summary.topTopic}`
                 : 'No repeated topic yet'}
             </p>
+
           </article>
         </div>
       </section>
@@ -486,4 +773,3 @@ export const YearInReflection:
   };
 
 export default YearInReflection;
-
