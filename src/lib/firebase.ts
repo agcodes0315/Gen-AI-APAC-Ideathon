@@ -24,29 +24,12 @@ import {
  * authenticated backend routes and server-side Admin SDK ownership checks.
  */
 export const firebaseConfig = {
-  apiKey:
-    import.meta.env
-      .VITE_FIREBASE_API_KEY,
-
-  authDomain:
-    import.meta.env
-      .VITE_FIREBASE_AUTH_DOMAIN,
-
-  projectId:
-    import.meta.env
-      .VITE_FIREBASE_PROJECT_ID,
-
-  storageBucket:
-    import.meta.env
-      .VITE_FIREBASE_STORAGE_BUCKET,
-
-  messagingSenderId:
-    import.meta.env
-      .VITE_FIREBASE_MESSAGING_SENDER_ID,
-
-  appId:
-    import.meta.env
-      .VITE_FIREBASE_APP_ID,
+  apiKey: 'AIzaSyDd8QPtE2bm6WAjujzFTmawuAByjXpsXfQ',
+  authDomain: 'mirrortrace-9b161.firebaseapp.com',
+  projectId: 'mirrortrace-9b161',
+  storageBucket: 'mirrortrace-9b161.firebasestorage.app',
+  messagingSenderId: '840043864202',
+  appId: '1:840043864202:web:330869c6f873ca46e4cd73',
 };
 
 const requiredConfig = {

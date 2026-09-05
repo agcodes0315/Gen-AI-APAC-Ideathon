@@ -1636,64 +1636,99 @@ export const JournalList:
                         )}
   
                         {/* Delete Confirmation */}
-                        {deleteConfirmId ===
-                          entry.id && (
-                          <div className="mt-4 p-4 bg-red-50/80 border border-red-200 rounded-lg space-y-3">
-                            <div className="flex items-start gap-2.5">
-                              <ShieldAlert className="w-4 h-4 text-red-700 shrink-0 mt-0.5" />
-  
-                              <div>
-                                <p className="text-xs font-semibold text-red-900">
+                        {deleteConfirmId === entry.id && (
+                          <div
+                            className="
+                              mt-4
+                              rounded-xl
+                              border
+                              border-red-900/50
+                              bg-black/75
+                              backdrop-blur-md
+                              p-4
+                              space-y-4
+                              shadow-[0_12px_40px_rgba(0,0,0,0.45)]
+                            "
+                          >
+                            <div className="flex items-start gap-3">
+                              <ShieldAlert className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+
+                              <div className="min-w-0">
+                                <p className="text-sm font-semibold text-white">
                                   Permanently delete this reflection?
                                 </p>
-  
-                                <p className="mt-1 text-[11px] text-red-700 leading-relaxed">
+
+                                <p className="mt-1.5 text-xs leading-relaxed text-stone-300">
                                   The journal entry, linked snapshots,
                                   dependent Thought Diffs and provenance
                                   will be safely removed or invalidated.
                                 </p>
                               </div>
                             </div>
-  
+
                             <div className="flex justify-end gap-2">
                               <button
                                 type="button"
                                 onClick={() =>
-                                  setDeleteConfirmId(
-                                    null
-                                  )
+                                  setDeleteConfirmId(null)
                                 }
                                 disabled={
-                                  deletingId ===
-                                  entry.id
+                                  deletingId === entry.id
                                 }
-                                className="px-3 py-1.5 rounded-md text-xs font-medium text-stone-600 hover:bg-stone-200/60"
+                                className="
+                                  rounded-lg
+                                  border
+                                  border-white/10
+                                  bg-white/5
+                                  px-3.5
+                                  py-2
+                                  text-xs
+                                  font-semibold
+                                  text-stone-200
+                                  transition-colors
+                                  hover:bg-white/10
+                                  hover:text-white
+                                  disabled:cursor-not-allowed
+                                  disabled:opacity-50
+                                "
                               >
                                 Cancel
                               </button>
-  
+
                               <button
                                 type="button"
                                 onClick={() =>
-                                  void handleDelete(
-                                    entry.id
-                                  )
+                                  void handleDelete(entry.id)
                                 }
                                 disabled={
-                                  deletingId ===
-                                  entry.id
+                                  deletingId === entry.id
                                 }
-                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-red-700 hover:bg-red-800 text-white text-xs font-semibold"
+                                className="
+                                  flex
+                                  items-center
+                                  gap-1.5
+                                  rounded-lg
+                                  border
+                                  border-red-700/70
+                                  bg-red-700
+                                  px-3.5
+                                  py-2
+                                  text-xs
+                                  font-semibold
+                                  text-white
+                                  transition-colors
+                                  hover:bg-red-800
+                                  disabled:cursor-not-allowed
+                                  disabled:opacity-60
+                                "
                               >
-                                {deletingId ===
-                                entry.id ? (
+                                {deletingId === entry.id ? (
                                   <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                                 ) : (
                                   <Trash2 className="w-3 h-3" />
                                 )}
-  
-                                {deletingId ===
-                                entry.id
+
+                                {deletingId === entry.id
                                   ? 'Deleting...'
                                   : 'Confirm Delete'}
                               </button>
@@ -1711,4 +1746,3 @@ export const JournalList:
       </div>
     );
   };
-
