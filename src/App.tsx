@@ -1,3 +1,4 @@
+import './styles/mirrortrace-app.css';
 import {
   useEffect,
   useLayoutEffect,
@@ -51,6 +52,8 @@ import ProductReviews from './components/ProductReviews.tsx';
 
 import AdminPanelLauncher from './components/AdminPanelLauncher.tsx';
 
+import ReflectionRoomLauncher from './components/ReflectionRoomLauncher.tsx';
+
 import {
   fetchJournalEntries,
   fetchThoughtSnapshots,
@@ -64,7 +67,6 @@ import type {
   ThoughtDiff,
 } from './types.ts';
 
-import './styles/mirrortrace-authenticated-black-final.css';
 
 export type MainTab =
   | 'overview'
@@ -93,92 +95,67 @@ export default function App() {
   const [
     user,
     setUser,
-  ] =
-    useState<UserProfile | null>(
-      null
-    );
+  ] = useState<UserProfile | null>(null);
 
   const [
     authLoading,
     setAuthLoading,
-  ] =
-    useState(true);
+  ] = useState(true);
 
   const [
     activeTab,
     setActiveTab,
-  ] =
-    useState<MainTab>(
-      'overview'
-    );
+  ] = useState<MainTab>('overview');
 
   const [
     historySubTab,
     setHistorySubTab,
-  ] =
-    useState<HistorySubTab>(
-      'reflections'
-    );
+  ] = useState<HistorySubTab>('reflections');
 
   const [
     filterApprovedSnapshots,
     setFilterApprovedSnapshots,
-  ] =
-    useState(false);
+  ] = useState(false);
 
   const [
     highlightDiffId,
     setHighlightDiffId,
-  ] =
-    useState<string | null>(
-      null
-    );
+  ] = useState<string | null>(null);
 
   const [
     privateSessionMode,
     setPrivateSessionMode,
-  ] =
-    useState(false);
+  ] = useState(false);
 
   const [
     externalTags,
     setExternalTags,
-  ] =
-    useState<string[]>([]);
+  ] = useState<string[]>([]);
 
   const [
     refreshCounter,
     setRefreshCounter,
-  ] =
-    useState(0);
+  ] = useState(0);
 
   const [
     entries,
     setEntries,
-  ] =
-    useState<JournalEntry[]>([]);
+  ] = useState<JournalEntry[]>([]);
 
   const [
     snapshots,
     setSnapshots,
-  ] =
-    useState<ThoughtSnapshot[]>([]);
+  ] = useState<ThoughtSnapshot[]>([]);
 
   const [
     diffs,
     setDiffs,
-  ] =
-    useState<ThoughtDiff[]>([]);
+  ] = useState<ThoughtDiff[]>([]);
 
   const [
     dataLoading,
     setDataLoading,
-  ] =
-    useState(true);
-
-  /* ============================================================
-     AUTH
-     ============================================================ */
+  ] = useState(true);
 
   useEffect(() => {
     const unsubscribe =
@@ -219,41 +196,6 @@ export default function App() {
       unsubscribe();
   }, []);
 
-  /*
-   * Authenticated application remains dark-only.
-   */
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-
-    document.documentElement.setAttribute(
-      'data-theme',
-      'dark'
-    );
-
-    document.documentElement.style.colorScheme =
-      'dark';
-
-    try {
-      localStorage.setItem(
-        'mirrortrace-theme',
-        'dark'
-      );
-
-      localStorage.setItem(
-        'theme',
-        'dark'
-      );
-    } catch {
-      // Storage may be unavailable in restricted environments.
-    }
-  }, [user]);
-
-  /* ============================================================
-     PAGE SCROLL
-     ============================================================ */
-
   useLayoutEffect(() => {
     scrollPageToTop();
   }, [
@@ -261,10 +203,6 @@ export default function App() {
     historySubTab,
     user?.uid,
   ]);
-
-  /* ============================================================
-     USER DATA
-     ============================================================ */
 
   const loadData =
     async () => {
@@ -333,32 +271,6 @@ export default function App() {
     refreshCounter,
   ]);
 
-  /*
-   * CENTRAL DATA INVALIDATION
-   *
-   * Whenever Journal History, JournalEditor, Memory Governance,
-   * snapshot approval, Thought Diff generation, deletion, etc.
-   * changes Firestore state, call this function.
-   *
-   * App.tsx then fetches the canonical backend state again.
-   *
-   * This is what prevents Overview / Year in Reflection /
-   * Thought Diff counters from remaining stale until a hard refresh.
-   */
-  const handleDataChanged =
-    () => {
-      setRefreshCounter(
-        (
-          previous
-        ) =>
-          previous + 1
-      );
-    };
-
-  /* ============================================================
-     SIGN OUT
-     ============================================================ */
-
   const handleSignOut =
     async () => {
       try {
@@ -419,16 +331,18 @@ export default function App() {
       }
     };
 
-  /* ============================================================
-     JOURNAL EVENTS
-     ============================================================ */
-
   const handleEntrySaved =
     (
       _entry:
         JournalEntry
     ) => {
-      handleDataChanged();
+      setRefreshCounter(
+        (
+          previous
+        ) =>
+          previous +
+          1
+      );
     };
 
   const handleSuggestedTagClick =
@@ -450,10 +364,6 @@ export default function App() {
               ]
       );
     };
-
-  /* ============================================================
-     NAVIGATION
-     ============================================================ */
 
   const handleNavigate =
     (
@@ -522,36 +432,27 @@ export default function App() {
       );
     };
 
-  /* ============================================================
-     LOADING
-     ============================================================ */
-
   if (
     authLoading
   ) {
     return (
-      <div className="min-h-screen bg-[#090d11] flex flex-col items-center justify-center space-y-3 text-white">
+      <div className="min-h-screen bg-stone-100 flex flex-col items-center justify-center space-y-3">
 
-        <div className="w-10 h-10 rounded-xl bg-[#617057] flex items-center justify-center text-white shadow-xs">
+        <div className="w-10 h-10 rounded-xl bg-amber-800 flex items-center justify-center text-amber-50 shadow-xs">
 
           <span className="font-serif font-bold text-lg">
             M
           </span>
         </div>
 
-        <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-stone-300 border-t-amber-800 rounded-full animate-spin" />
 
-        <p className="text-xs text-white/60 font-sans">
-          Verifying authentication
-          session...
+        <p className="text-xs text-stone-500 font-sans">
+          Verifying authentication session...
         </p>
       </div>
     );
   }
-
-  /* ============================================================
-     SIGNED OUT
-     ============================================================ */
 
   if (!user) {
     return (
@@ -561,7 +462,13 @@ export default function App() {
             'overview'
           );
 
-          handleDataChanged();
+          setRefreshCounter(
+            (
+              previous
+            ) =>
+              previous +
+              1
+          );
 
           requestAnimationFrame(
             () => {
@@ -573,21 +480,8 @@ export default function App() {
     );
   }
 
-  /* ============================================================
-     APPLICATION
-     ============================================================ */
-
   return (
-    <div
-      className="
-        mirrortrace-app-shell
-        mirrortrace-authenticated-shell
-        min-h-screen
-        flex
-        flex-col
-        justify-between
-      "
-    >
+    <div className="mirrortrace-app-shell min-h-screen bg-stone-100 flex flex-col justify-between">
 
       <div className="w-full">
 
@@ -610,26 +504,11 @@ export default function App() {
           }
         />
 
-        <main
-          className="
-            mirrortrace-authenticated-main
-            max-w-7xl
-            mx-auto
-            px-4
-            sm:px-6
-            lg:px-8
-            py-8
-          "
-        >
-
-          {/* ==================================================
-              OVERVIEW
-              ================================================== */}
+        <main className="mirrortrace-app-main max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
           {activeTab ===
             'overview' && (
-            <div className="mirrortrace-overview-page">
-
+            <div className="mirrortrace-page-skin mirrortrace-overview-page">
               <DashboardOverview
                 entries={
                   entries
@@ -650,41 +529,19 @@ export default function App() {
             </div>
           )}
 
-          {/* ==================================================
-              REFLECT & CHAT
-              ================================================== */}
-
           {activeTab ===
             'journal' && (
-            <div
-              className="
-                mirrortrace-reflect-page
-                space-y-6
-                animate-fade-in
-              "
-            >
+            <div className="mirrortrace-page-skin mirrortrace-reflect-page space-y-6 animate-fade-in">
 
-              <div
-                className="
-                  mirrortrace-page-heading
-                  flex
-                  flex-col
-                  sm:flex-row
-                  sm:items-center
-                  justify-between
-                  gap-2
-                  border-b
-                  pb-4
-                "
-              >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
 
                 <div>
 
-                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-white">
+                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
                     Reflective Space
                   </h1>
 
-                  <p className="text-xs text-white/65 font-sans">
+                  <p className="text-xs text-stone-500 font-sans">
                     Articulate thoughts with the brainstorm
                     companion, or write down your reflection
                     directly.
@@ -694,20 +551,11 @@ export default function App() {
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-                <div
-                  className="
-                    mirrortrace-compose-column
-                    lg:col-span-6
-                    space-y-6
-                  "
-                >
+                <div className="lg:col-span-6 space-y-6">
 
                   <JournalEditor
                     onEntrySaved={
                       handleEntrySaved
-                    }
-                    onDataChanged={
-                      handleDataChanged
                     }
                     externalTags={
                       externalTags
@@ -723,12 +571,7 @@ export default function App() {
                   />
                 </div>
 
-                <div
-                  className="
-                    mirrortrace-brainstorm-column
-                    lg:col-span-6
-                  "
-                >
+                <div className="lg:col-span-6">
 
                   <BrainstormChat
                     onSuggestedTagClick={
@@ -740,41 +583,19 @@ export default function App() {
             </div>
           )}
 
-          {/* ==================================================
-              JOURNAL HISTORY
-              ================================================== */}
-
           {activeTab ===
             'history' && (
-            <div
-              className="
-                mirrortrace-history-page
-                space-y-6
-                animate-fade-in
-              "
-            >
+            <div className="mirrortrace-page-skin mirrortrace-history-page space-y-6 animate-fade-in">
 
-              <div
-                className="
-                  mirrortrace-page-heading
-                  flex
-                  flex-col
-                  sm:flex-row
-                  sm:items-center
-                  justify-between
-                  gap-2
-                  border-b
-                  pb-4
-                "
-              >
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-4">
 
                 <div>
 
-                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-white">
+                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
                     Journal History
                   </h1>
 
-                  <p className="text-xs text-white/65 font-sans">
+                  <p className="text-xs text-stone-500 font-sans">
                     All reflections saved securely under your
                     verified Firebase UID.
                   </p>
@@ -794,68 +615,45 @@ export default function App() {
                 highlightDiffId={
                   highlightDiffId
                 }
-                onDataChanged={
-                  handleDataChanged
-                }
               />
             </div>
           )}
-
-          {/* ==================================================
-              MEMORY GOVERNANCE
-              ================================================== */}
 
           {activeTab ===
             'memory' && (
-            <div
-              className="
-                mirrortrace-memory-governance
-                mirrortrace-memory-page
-              "
-            >
-
+            <div className="mirrortrace-page-skin mirrortrace-memory-page">
               <MemoryGovernanceCenter
-                onMemoryChanged={
-                  handleDataChanged
-                }
+                onMemoryChanged={() => {
+                  setRefreshCounter(
+                    (
+                      previous
+                    ) =>
+                      previous +
+                      1
+                  );
+                }}
               />
             </div>
           )}
 
-          {/* ==================================================
-              SUPPORT
-              ================================================== */}
-
           {activeTab ===
             'support' && (
-            <div
-              className="
-                mirrortrace-support-page
-                space-y-6
-                animate-fade-in
-              "
-            >
+            <div className="mirrortrace-page-skin mirrortrace-support-page space-y-6 animate-fade-in">
 
-              <div
-                className="
-                  mirrortrace-page-heading
-                  border-b
-                  pb-4
-                "
-              >
+              <div className="border-b border-stone-200 pb-4">
 
                 <div className="flex flex-wrap items-center gap-2">
 
-                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-white">
+                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
                     Customer Support
                   </h1>
 
-                  <span className="rounded-full border border-emerald-200/25 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-200">
+                  <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700">
                     Privacy-aware
                   </span>
                 </div>
 
-                <p className="mt-1 text-xs text-white/65">
+                <p className="mt-1 text-xs text-stone-500">
                   Ask for help without exposing your private
                   reflection history.
                 </p>
@@ -865,40 +663,24 @@ export default function App() {
             </div>
           )}
 
-          {/* ==================================================
-              FEEDBACK
-              ================================================== */}
-
           {activeTab ===
             'feedback' && (
-            <div
-              className="
-                mirrortrace-feedback-page
-                space-y-6
-                animate-fade-in
-              "
-            >
+            <div className="mirrortrace-page-skin mirrortrace-feedback-page space-y-6 animate-fade-in">
 
-              <div
-                className="
-                  mirrortrace-page-heading
-                  border-b
-                  pb-4
-                "
-              >
+              <div className="border-b border-stone-200 pb-4">
 
                 <div className="flex flex-wrap items-center gap-2">
 
-                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-white">
+                  <h1 className="text-xl sm:text-2xl font-serif font-bold text-stone-900">
                     Feedback
                   </h1>
 
-                  <span className="rounded-full border border-amber-200/25 bg-amber-400/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-200">
+                  <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-amber-800">
                     Consent controlled
                   </span>
                 </div>
 
-                <p className="mt-1 text-xs text-white/65">
+                <p className="mt-1 text-xs text-stone-500">
                   Share product feedback and decide whether your
                   review may be considered for public display.
                 </p>
@@ -912,7 +694,9 @@ export default function App() {
         </main>
       </div>
 
-      <AdminPanelLauncher />
+      <ReflectionRoomLauncher />
+      <AdminPanelLauncher userEmail={user?.email ?? null} />
     </div>
   );
 }
+
