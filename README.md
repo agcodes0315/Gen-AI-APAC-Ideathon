@@ -1587,16 +1587,6 @@ Its purpose is to help users articulate, revisit and compare their own reasoning
 </tr>
 </table>
 
-<a href="https://github.com/agcodes0315/Gen-AI-APAC-Ideathon">
-<img src="https://img.shields.io/badge/GitHub-View%20Repository-181717?style=flat-square&logo=github&logoColor=white"
-     alt="MirrorTrace Repository"/>
-</a>
-
-<a href="https://github.com/agcodes0315/Gen-AI-APAC-Ideathon">
-<img src="https://img.shields.io/badge/MirrorTrace-Project%20Repository-8b5cf6?style=flat-square&logo=github&logoColor=white"
-     alt="MirrorTrace Project"/>
-</a>
-
 *Built independently as a solo project for the Google Cloud Gen AI Academy  : APAC Edition / Cloud Run Build & Deploy Social Challenge.*
 
 ⭐ **If you found the project useful or interesting, consider starring the repository.**
